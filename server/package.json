@@ -1,0 +1,24 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "project_oreo is a online fashion store made with mern stack",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "run": "nodemon index.js"
+  },
+  "devDependencies": {
+    "nodemon": "*"
+  },
+  "dependencies": {
+    
+  },
+  "keywords": [
+    "project_oreo",
+    "group_oreo",
+    "mern stack"
+  ],
+  "author": "group_oreo",
+  "license": "ISC"
+}
