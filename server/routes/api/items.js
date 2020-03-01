@@ -17,11 +17,10 @@ router.get('/allitems', (req,res) => {
 
 router.post('/', (req,res) => {
     const newItem = new Item( {
-        name: req.body.name,
-        amount: req.body.amount
+        name: req.body.name
     })
 
-    newItem.save().then( item => res.json(item) )
+    newItem.save().then(item => res.json(item))
 });
 
 module.exports = router;

@@ -6,10 +6,6 @@ const ItemSchema = new Schema( {
         type: String,
         available: true
     },
-    amount: {
-        type: Number,
-        available: true
-    },
     date: {
         type: Date,
         default: Date.now
