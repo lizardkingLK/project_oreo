@@ -1,14 +1,15 @@
 const express = require('express');
-const server = express();
+const mongoose = require('mongoose');
+const app = express();
 const port = process.env.PORT || 5000;
 
+const items = require('./routes/api/items');
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-server.get('/', (req,res) => {
-    res.send('project_oreo');
+app.use('/api/items', items);
+
+app.listen(port, () => {
+    console.log('api_oreo listening on port %s', port);
 });
-
-server.listen(port, () => {
-    console.log('project_oreo listening on port %s', port);
-});
-
