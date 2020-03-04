@@ -17,10 +17,25 @@ router.get('/allitems', (req,res) => {
 
 router.post('/', (req,res) => {
     const newItem = new Item( {
-        name: req.body.name
+        name: req.body.name,
+        type: req.body.type,
+        category: req.body.category,
+        quantity: req.body.quantity,
+        size: req.body.size,
+        dateCreated: req.body.dateCreated,
+        dateUpdated: req.body.dateUpdated
     })
 
-    newItem.save().then(item => res.json(item))
+    console.log(req.body);
+
+    newItem.save(function(err,item) {
+        if(err) {
+            console.log(err);
+        }
+        else {
+            res.json(item);
+        }
+    })
 });
 
 module.exports = router;

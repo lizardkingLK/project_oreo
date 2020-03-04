@@ -4,11 +4,37 @@ const Schema = mongoose.Schema;
 const ItemSchema = new Schema( {
     name: {
         type: String,
-        available: true
+        default: '',
+        lowercase: true
     },
-    date: {
+    type: {
+        type: String,
+        default: ''
+    },
+    category: {
+        type: String,
+        default: ''
+    },
+    quantity: {
+        type: Number,
+        default: ''
+    },
+    size: {
+        type: String,
+        default: '',
+        uppercase: true
+    },
+    dateCreated: {
         type: Date,
         default: Date.now
+    },
+    dateUpdated: {
+        type: Date,
+        default: Date.now
+    },
+    availability: {
+        type: Boolean,
+        default: true
     }
 });
 
