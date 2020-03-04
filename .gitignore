@@ -2,3 +2,4 @@ node_modules
 config.env
 debug.log
 sndp.txt
+data
