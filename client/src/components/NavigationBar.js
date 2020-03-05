@@ -40,7 +40,7 @@ const AppNavbar = (props) => {
             </NavItem>
             <UncontrolledDropdown nav inNavbar>
               <DropdownToggle nav caret>
-                <i class="fas fa-user"></i>
+                <i className="fas fa-user"></i>
               </DropdownToggle>
               <DropdownMenu right>
                 <DropdownItem>
@@ -56,7 +56,7 @@ const AppNavbar = (props) => {
               </DropdownMenu>
             </UncontrolledDropdown>
           </Nav>
-            <NavbarText><NavLink href="https://github.com/lizardkingLK/project_oreo"><i class="fab fa-github col_primary_accent"></i></NavLink></NavbarText>
+            <NavbarText><NavLink href="https://github.com/lizardkingLK/project_oreo"><i className="fab fa-github col_primary_accent"></i></NavLink></NavbarText>
         </Collapse>
       </Navbar>
     </div>

@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import {
-    Button
+    Card,
+    CardHeader,
+    CardTitle,
+    CardBody,
 } from 'reactstrap';
 
 class Showcase extends Component {
@@ -9,11 +12,48 @@ class Showcase extends Component {
             <div id="showcase">
                 <div id="showcase_card">
                     <h1 className="display-3" id="showcase_title">Fashion by Oreo</h1>
-                    <p className="lead">This is a simple hero unit, a simple Jumbotron-style component for calling extra attention to featured content or information.</p>
+                    <p className="lead">Fashion because of busy life</p>
                     <hr className="my-2" />
-                    <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+                    <p>Oreo is a online shopping store made just for you.</p>
                     <p className="lead">
-                        <Button color="outline-dark">Learn More</Button>
+                        <div className="row">
+                            <div className="col-sm-4">
+                                <Card className="bg_transparent">
+                                    <CardHeader>
+                                        <CardTitle className="txt_secondary p-1">
+                                            MEN
+                                        </CardTitle>
+                                    </CardHeader>
+                                    <CardBody>
+                                        lorem
+                                    </CardBody>
+                                </Card>
+                            </div>
+                            <div className="col-sm-4">
+                                <Card className="bg_transparent">
+                                    <CardHeader>
+                                        <CardTitle className="txt_secondary p-1">
+                                            WOMEN
+                                        </CardTitle>
+                                    </CardHeader>
+                                    <CardBody>
+                                        lorem
+                                    </CardBody>
+                                </Card>
+                            </div>
+                            <div className="col-sm-4">
+                                <Card className="bg_transparent">
+                                    <CardHeader>
+                                        <CardTitle className="txt_secondary p-1">
+                                            KIDS
+                                        </CardTitle>
+                                    </CardHeader>
+                                    <CardBody>
+                                        lorem
+                                    </CardBody>
+                                </Card>
+                            </div>
+                        </div>
                     </p>
                 </div>
             </div>

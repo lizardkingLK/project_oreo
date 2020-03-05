@@ -5,6 +5,7 @@
 :root {
     --primaryDark: #333333;
     --secondaryDark: #666666;
+    --ternaryDark: #222222;
     --primaryAccent: #009399;
     --secondaryAccent: #FFF524;
     --primaryLight: #F2F2F2;
@@ -15,6 +16,7 @@
     background-color: var(--primaryLight);
     background-image: url('./images/fashion_1.jpg');
     background-blend-mode: multiply;
+    background-size: auto;
 }
 
 #showcase_card {
@@ -26,6 +28,16 @@
     font-family: 'Lobster', sans-serif;
     color: var(--primaryAccent);
     font-size: 54px;
+}
+
+#itemWindow {
+    min-height: 100vh;
+}
+
+#bottomBar {
+    min-height: 50vh;
+    background-color: var(--ternaryDark);
+    color: var(--secondaryAccent);
 }
 
 /* utility classes */
@@ -51,10 +63,30 @@
     height: 2px;
   }  
 
-  .txt_ternary {
-      font-family: 'Lobster', sans-serif;;
-  }
+    .txt_primary {
+        font-family: 'Roboto', sans-serif;
+    }
 
-  .col_primary_accent {
-      color: var(--primaryAccent);
-  } 
+    .txt_secondary {
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    .txt_ternary {
+        font-family: 'Lobster', sans-serif;
+    }
+
+    .col_primary_accent {
+        color: var(--primaryAccent);
+    }
+    
+    .bg_grey {
+        background-color: var(--secondaryDark);
+    }
+
+    .bg_light {
+        background-color: var(--primaryLight);
+    }
+
+    .bg_transparent {
+        background-color: transparent;
+    }
