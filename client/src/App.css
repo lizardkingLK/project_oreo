@@ -11,6 +11,12 @@
     --primaryLight: #F2F2F2;
 }
 
+html {
+    background: var(--primaryLight);
+    scroll-behavior: smooth;
+    transition: .5s;
+}
+
 #showcase {
     height: 90vh;
     background-color: var(--primaryLight);
@@ -37,7 +43,33 @@
 #bottomBar {
     min-height: 50vh;
     background-color: var(--ternaryDark);
+}
+
+#bottomBar #bottom_pane {
+    color: var(--primaryLight);
+}
+
+#bottomBar .p_Link {
+    text-decoration: none !important;
     color: var(--secondaryAccent);
+    transition: .25s;
+}
+
+#bottomBar .s_Link {
+    text-decoration: none !important;
+    color: var(--primaryLight);
+    transition: .25s;
+}
+
+#bottomBar .t_Link {
+    text-decoration: none !important;
+    color: var(--primaryLight);
+    transition: .25s;
+}
+
+#bottomBar a:hover {
+    color: var(--primaryAccent);
+    transition: .25s;
 }
 
 /* utility classes */
@@ -73,6 +105,14 @@
 
     .txt_ternary {
         font-family: 'Lobster', sans-serif;
+    }
+
+    .col_primary_light {
+        color: var(--primaryLight);
+    }
+
+    .col_secondary_dark {
+        color: var(--secondaryDark);
     }
 
     .col_primary_accent {
