@@ -17,6 +17,11 @@ html {
     transition: .5s;
 }
 
+#navbar a {
+    text-decoration: none !important;
+    color: var(--primaryDark);
+}
+
 #showcase {
     height: 90vh;
     background-color: var(--primaryLight);

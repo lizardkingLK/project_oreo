@@ -27,16 +27,16 @@ const AppNavbar = (props) => {
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
             <NavItem>
-              <NavLink href="#">Men</NavLink>
+              <NavLink href="#" onClick={props.handleNavigation}>Men</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="#">Women</NavLink>
+              <NavLink href="#" onClick={props.handleNavigation}>Women</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="#">Kids</NavLink>
+              <NavLink href="#" onClick={props.handleNavigation}>Kids</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="#">Collections</NavLink>
+              <NavLink href="#" onClick={props.handleNavigation}>Collections</NavLink>
             </NavItem>
             <UncontrolledDropdown nav inNavbar>
               <DropdownToggle nav caret>
@@ -51,7 +51,7 @@ const AppNavbar = (props) => {
                 </DropdownItem>
                 <DropdownItem divider />
                 <DropdownItem>
-                  Contact
+                  <a href="#bottomBar">Contact</a>
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>

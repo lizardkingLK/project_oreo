@@ -15,7 +15,7 @@ class Showcase extends Component {
                     <p className="lead">Fashion because of busy life</p>
                     <hr className="my-2" />
                     <p>Oreo is a online shopping store made just for you.</p>
-                    <p className="lead">
+                    <div className="lead">
                         <div className="row">
                             <div className="col-sm-4">
                                 <Card className="bg_transparent">
@@ -54,7 +54,7 @@ class Showcase extends Component {
                                 </Card>
                             </div>
                         </div>
-                    </p>
+                    </div>
                 </div>
             </div>
         )

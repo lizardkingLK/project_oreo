@@ -1,5 +1,8 @@
+# Node build artifacts
 node_modules
-config.env
+
+# Local Development
+*.env
 debug.log
 sndp.txt
 data
