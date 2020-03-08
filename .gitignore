@@ -3,6 +3,7 @@ node_modules
 
 # Local Development
 *.env
+test
 debug.log
 sndp.txt
 data
