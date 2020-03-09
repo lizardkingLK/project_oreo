@@ -23,8 +23,12 @@ router.post('/', (req,res) => {
         name: req.body.name,
         type: req.body.type,
         category: req.body.category,
-        quantity: req.body.quantity,
-        size: req.body.size,
+        subcategories: req.body.subcategories,
+        description: req.body.description,
+        images: req.body.images,
+        storyUrl: req.body.storyUrl,
+        sizes: req.body.sizes,
+        price: req.body.price,
         dateCreated: req.body.dateCreated,
         dateUpdated: req.body.dateUpdated
     })

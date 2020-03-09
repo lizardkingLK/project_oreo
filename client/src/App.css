@@ -19,7 +19,6 @@ html {
 
 #navbar a {
     text-decoration: none !important;
-    color: var(--primaryDark);
 }
 
 #showcase {

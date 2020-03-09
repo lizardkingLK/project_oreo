@@ -14,14 +14,29 @@ const ItemSchema = new Schema( {
         type: String,
         required: true
     },
-    quantity: {
-        type: Number,
-        required: true
+    subcategories: {
+        type: Array,
+        default: []
     },
-    size: {
+    description: {
         type: String,
-        required: true,
-        uppercase: true
+        default: ''
+    },
+    images: {
+        type: Array,
+        default: []
+    },
+    storyUrl: {
+        type: String,
+        default: ''
+    },
+    sizes: {
+        type: Array,
+        default: []
+    },
+    price: {
+        type: String,
+        required: true
     },
     dateCreated: {
         type: Date,
