@@ -2,6 +2,7 @@ require('dotenv').config({ path: './config/config.env' })
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
+const server = require('http').Server(app);
 const port = process.env.PORT || 3001;
 const items = require('./routes/api/items');
 
@@ -21,6 +22,6 @@ db.once('open', function() {
 
 app.use('/api/items', items);
 
-app.listen(port, () => {
+server.listen(port, () => {
     console.log('api_oreo listening on port %s', port);
 });
