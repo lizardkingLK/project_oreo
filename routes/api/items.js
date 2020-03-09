@@ -3,6 +3,9 @@ const router = express.Router();
 
 const Item = require('../../models/Item');
 
+router.use(express.json());
+router.use(express.urlencoded({ extended: false }));
+
 router.get('/', (req,res) => {
     res.send('items_oreo online...');
 });
@@ -26,16 +29,21 @@ router.post('/', (req,res) => {
         dateUpdated: req.body.dateUpdated
     })
 
-    console.log(req.body);
-
-    newItem.save(function(err,item) {
-        if(err) {
-            console.log(err);
-        }
-        else {
-            res.json(item);
-        }
-    })
+    newItem.save().then(item => res.json(item));
 });
+
+router.delete('/:id', (req,res) => {
+    Item.findById(req.params.id)
+    .then(item => {
+        item.remove()
+        .then(() => {
+            res.json( {success: true} )
+        })
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(404).json( {success: false} )
+    })
+})
 
 module.exports = router;
