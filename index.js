@@ -1,6 +1,7 @@
 require('dotenv').config({ path: './config/config.env' })
 const express = require('express');
 const mongoose = require('mongoose');
+const path = reuire('path');
 const app = express();
 const server = require('http').Server(app);
 const port = process.env.PORT || 3001;
@@ -21,6 +22,16 @@ db.once('open', function() {
 });
 
 app.use('/api/items', items);
+
+// serve static assests if in production
+if(process.env.NODE_ENV === 'production') {
+    // set static folder
+    app.use(express.static('client/build'));
+
+    app.get('*'), (req,res) => {
+        res.sendFile(path.resolve(__dirname,'client','build','index.html'));
+    }
+}
 
 server.listen(port, () => {
     console.log('api_oreo listening on port %s', port);
