@@ -1,7 +1,7 @@
 require('dotenv').config({ path: './config/config.env' })
 const express = require('express');
 const mongoose = require('mongoose');
-const path = reuire('path');
+const path = require('path');
 const app = express();
 const server = require('http').Server(app);
 const port = process.env.PORT || 3001;
@@ -10,7 +10,7 @@ const items = require('./routes/api/items');
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-const uri = require('./config/keys').mongoURI;
+const uri = require('./config/keys').mongoURI_A;
 mongoose.connect(uri, { useUnifiedTopology: true, useNewUrlParser: true}, (err,db) => {
     console.log('db_oreo online...');
 });
