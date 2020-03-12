@@ -9,7 +9,8 @@ import BottomBar from '../src/components/BottomBar';
 
 class App extends React.Component {      
   state = {
-    title: 'Fashion by Oreo'
+    title: 'Fashion by Oreo',
+    contents: []
   }
 
   handleNavigation = (e) => {
@@ -18,17 +19,31 @@ class App extends React.Component {
     switch(option) {
       case "Men":
         this.setState({
-          title: 'Men'
+          title: 'Men',
+          contents: [      
+            {name: "Sandeep", id: 1, value: 27, category: "Men"},
+            {name: "Mojitha", id: 2, value: 36, category: "Men"},
+            {name: "Vikum", id: 3, value: 13, category: "Men"},
+            {name: "Aruna", id: 4, value: 42, category: "Men"},
+            {name: "Lahiru", id: 5, value: 8, category: "Men"},
+            {name: "Sapnaka", id: 6, value: 53, category: "Men"}
+          ]
         })
         break;
       case "Women":
         this.setState({
-          title: 'Women'
+          title: 'Women',
+          contents: [
+            {name: "Chathumini", id: 7, value: 23, category: "Women"}
+          ]
         })
         break;
       case "Kids":
         this.setState({
-          title: 'Kids'
+          title: 'Kids',
+          contents: [
+            {name: "Kevin", id: 8, value: 78, category: "Kids"}
+          ]
         })
         break;
       case "Collections":
@@ -44,7 +59,7 @@ class App extends React.Component {
     return (
       <div>
         <NavigationBar handleNavigation={this.handleNavigation} />
-        <Showcase title={this.state.title} />
+        <Showcase title={this.state.title} contents={this.state.contents} />
         <ItemWindow />
         <BottomBar />
       </div>

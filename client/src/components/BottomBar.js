@@ -2,7 +2,7 @@ import React from 'react';
 
 function BottomBar() {
     return (
-        <div className="" id="bottomBar">
+        <div id="bottomBar">
             <div className="card-body">
                 <div className="row">
                     <div className="col-sm-3">

@@ -40,7 +40,7 @@ const AppNavbar = (props) => {
             </NavItem>
             <UncontrolledDropdown nav inNavbar>
               <DropdownToggle nav caret>
-                <i className="fas fa-user"></i>
+                <i className="far fa-user-circle"></i>
               </DropdownToggle>
               <DropdownMenu right>
                 <DropdownItem>

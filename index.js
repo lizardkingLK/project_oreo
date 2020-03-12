@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: false }));
 
 let uri = require('./config/keys').mongoURI_B || process.env.mongoURI_A;
 mongoose.connect(uri, { useUnifiedTopology: true, useNewUrlParser: true}, (err,db) => {
-    console.log('db_oreo online...');
+    console.log('db_oreo online... ',uri);
 });
 
 var db = mongoose.connection;

@@ -8,6 +8,37 @@ import {
 
 const Showcase = (props) => {
     const title = props.title;
+    const contents = props.contents;
+
+    const bodMen = contents.map(cont => {
+        if(cont.category === 'Men') {
+            return (
+                <div className="content d-flex d-flex justify-content-center mb-3" key={cont.id}>
+                    <div>Name : {cont.name}</div>
+                </div>
+            )
+        }
+    })
+
+    const bodWomen = contents.map(cont => {
+        if(cont.category === 'Women') {
+            return (
+                <div className="content d-flex d-flex justify-content-center mb-3" key={cont.id}>
+                    <div>Name : {cont.name}</div>
+                </div>
+            )
+        }
+    })
+
+    const bodKids = contents.map(cont => {
+        if(cont.category === 'Kids') {
+            return (
+                <div className="content d-flex d-flex justify-content-center mb-3" key={cont.id}>
+                    <div>Name : {cont.name}</div>
+                </div>
+            )
+        }
+    })
 
     return (
         <div id="showcase">
@@ -26,7 +57,7 @@ const Showcase = (props) => {
                                     </CardTitle>
                                 </CardHeader>
                                 <CardBody>
-                                    lorem
+                                    {bodMen}
                                 </CardBody>
                             </Card>
                         </div>
@@ -38,7 +69,7 @@ const Showcase = (props) => {
                                     </CardTitle>
                                 </CardHeader>
                                 <CardBody>
-                                    lorem
+                                    {bodWomen}
                                 </CardBody>
                             </Card>
                         </div>
@@ -50,7 +81,7 @@ const Showcase = (props) => {
                                     </CardTitle>
                                 </CardHeader>
                                 <CardBody>
-                                    lorem
+                                    {bodKids}
                                 </CardBody>
                             </Card>
                         </div>
