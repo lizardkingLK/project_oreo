@@ -10,7 +10,7 @@ const items = require('./routes/api/items');
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-const uri = require('./config/keys').mongoURI_A;
+let uri = require('./config/keys').mongoURI_B || process.env.mongoURI_A;
 mongoose.connect(uri, { useUnifiedTopology: true, useNewUrlParser: true}, (err,db) => {
     console.log('db_oreo online...');
 });
