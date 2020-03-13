@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
@@ -39,10 +40,25 @@ class App extends React.Component {
         })
         break;
       case "Kids":
+        const url = "https://api.github.com/users";
+        axios.get(url)
+        .then(function (response) {
+          // handle success
+          console.log(response);
+        })
+        .catch(function (error) {
+          // handle error
+          console.log(error);
+        })
+        .then(function () {
+          // always executed
+        });
+
         this.setState({
           title: 'Kids',
           contents: [
-            {name: "Kevin", id: 8, value: 78, category: "Kids"}
+            {name: "Kevin", id: 8, value: 78, category: "Kids"},
+            {name: "Json", id:9, value: 93, category: "Kids"}
           ]
         })
         break;
