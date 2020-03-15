@@ -10,8 +10,12 @@ import BottomBar from '../src/components/BottomBar';
 
 class App extends React.Component {      
   state = {
-    title: 'Fashion by Oreo',
+    title: 'Oreo',
     contents: []
+  }
+
+  componentDidMount = () => {
+    console.log(true);
   }
 
   handleNavigation = (e) => {
@@ -19,10 +23,24 @@ class App extends React.Component {
     console.log(option)
     switch(option) {
       case "Men":
+        const url = "/api/items/allitems";
+        axios.get(url)
+        .then(function (response) {
+          // handle success
+          console.log(response.data)
+        })
+        .catch(function (error) {
+          // handle error
+          console.log(error);
+        })
+        .then(function () {
+          // always executed
+        });
+
         this.setState({
           title: 'Men',
           contents: [      
-            {name: "Sandeep", id: 1, value: 27, category: "Men"},
+            {name: "Nike Air Max 90 FlyEase", id: 1, value: 27, category: "Men"},
             {name: "Mojitha", id: 2, value: 36, category: "Men"},
             {name: "Vikum", id: 3, value: 13, category: "Men"},
             {name: "Aruna", id: 4, value: 42, category: "Men"},
@@ -40,20 +58,6 @@ class App extends React.Component {
         })
         break;
       case "Kids":
-        const url = "https://api.github.com/users";
-        axios.get(url)
-        .then(function (response) {
-          // handle success
-          console.log(response);
-        })
-        .catch(function (error) {
-          // handle error
-          console.log(error);
-        })
-        .then(function () {
-          // always executed
-        });
-
         this.setState({
           title: 'Kids',
           contents: [

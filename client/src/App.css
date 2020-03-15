@@ -19,15 +19,20 @@ html {
 
 #navbar a {
     text-decoration: none !important;
+    cursor: pointer;
 }
 
 #showcase {
-    height: 90vh;
+    height: 100vh;
+    overflow-y: scroll;
     background-color: var(--primaryLight);
-    background-image: url('./images/fashion_1.jpg');
     background-blend-mode: multiply;
     background-size: auto;
 }
+
+/* #showcase::-webkit-scrollbar {
+    display: none;
+} */
 
 #showcase_card {
     width: 90vw;
@@ -35,7 +40,6 @@ html {
 }
 
 #showcase_title {
-    font-family: 'Lobster', sans-serif;
     color: var(--primaryAccent);
     font-size: 54px;
 }
@@ -77,28 +81,30 @@ html {
 }
 
 /* utility classes */
-.pace {
-    -webkit-pointer-events: none;
-    pointer-events: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    user-select: none;
-  }
-  
-  .pace-inactive {
-    display: none;
-  }
-  
-  .pace .pace-progress {
-    background: linear-gradient(87deg, #009399 0%, #57ffab 100%, #ffffff 100%);
-    position: fixed;
-    z-index: 2000;
-    top: 0;
-    right: 100%;
-    width: 100%;
-    height: 2px;
-  }  
+    .pace {
+        -webkit-pointer-events: none;
+        pointer-events: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+    }
 
+    .pace-inactive {
+        display: none;
+    }
+
+    .pace .pace-progress {
+        background: linear-gradient(87deg, #009399 0%, #57ffab 100%, #ffffff 100%);
+        position: fixed;
+        z-index: 2000;
+        top: 0;
+        right: 100%;
+        width: 100%;
+        height: 2px;
+    }
+    
+    
+    
     .txt_primary {
         font-family: 'Roboto', sans-serif;
     }
@@ -134,3 +140,168 @@ html {
     .bg_transparent {
         background-color: transparent;
     }
+
+    .item_card {
+        background-color: var(--primaryLight);
+        height: 75vh;
+        margin-bottom: 15vh;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .itemC_left {
+        border-radius: 2vh 0 0 2vh;
+        background-color: var(--secondaryAccent);
+        background-image: url('../src/images/fashion_4.jpg');
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 75vh;
+        flex: 2;
+    }
+
+    .itemC_right {
+        display: flex;
+        flex-direction: column;
+        color: var(--primaryLight);
+        height: 75vh;
+        overflow-y: scroll;
+        flex: 1;
+        background-color: var(--primaryAccent);
+        border-radius: 0 2vh 2vh 0;
+    }
+
+    .itemC_right::-webkit-scrollbar {
+        display: none;
+    }
+
+    .itemC_right .itemCR_topA .itemCR_topA_title {
+        text-align: left;
+        margin: .5vh 1vh .5vh 1vh;
+        font-family: 'Montserrat', sans-serif;
+        font-size: x-large;
+    }
+
+    .itemC_right .itemCR_topB .itemCR_topB_sizeSelect {
+        text-align: left;
+        margin: .5vh 1vh .5vh 1vh;
+        font-family: 'Roboto', sans-serif;
+        font-size: medium;
+    }
+
+    .itemC_right .itemCR_topB .itemCR_topB_sizesTable {
+        color: var(--primaryLight);
+    }
+
+    .itemC_right .itemCR_topB .itemCR_topB_sizesTable td {
+        size: small;
+        text-align: center;
+    }
+
+    .itemC_right .itemCR_topA {
+        min-height: 10vh;
+    }
+
+    .itemC_right .itemCR_topB {
+        min-height: 35vh;
+        margin: 1vh 0vh 1vh 0vh;
+    }
+
+    .itemC_right .itemCR_topC {
+        min-height: 5vh;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        margin: 1vh 0vh 1vh 0vh;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    .itemC_right .itemCR_topD {
+        min-height: 15vh;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        margin: 1vh 2vh 5vh 2vh;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    .itemC_right .itemCR_topE {
+        min-height: 5vh;
+        display: flex;
+        flex-direction: row;
+        justify-content: left;
+        margin: 1vh 2vh 1vh 2vh;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    .itemC_right .itemCR_topF {
+        min-height: 5vh;
+        display: flex;
+        flex-direction: row;
+        justify-content: left;
+        margin: 1vh 2vh 1vh 2vh;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    .itemC_right .itemCR_topG {
+        min-height: 10vh;
+        display: flex;
+        flex-direction: row;
+        justify-content: left;
+        margin: 1vh 2vh 1vh 2vh;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    .itemC_right .itemCR_topC .itemCR_topC_addToCart {
+        border-radius: 2vh;
+        margin: 0 1vh 0 0;
+    }
+
+    .itemCR_topC_favourite {
+        border-radius: 2vh;
+        margin: 0 0 0 1vh;
+    }
+
+    .itemC_right .itemCR_topE .itemCR_topE_readMore {
+        color: var(--primaryLight);
+    }
+
+
+@media screen and (max-width: 800px) {
+    .item_card {
+        background-color: var(--primaryLight);
+        height: 75vh;
+        margin-bottom: 15vh;
+        display: block;
+        height: auto;
+    }
+
+    .itemC_left {
+        border-radius: 0 0 0 0;
+        background-color: var(--secondaryAccent);
+        background-image: url('../src/images/fashion_4.jpg');
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        height: 75vh;
+        flex: 2;
+    }
+
+    .itemC_right {
+        display: flex;
+        flex-direction: column;
+        color: var(--primaryLight);
+        height: 75vh;
+        flex: 2;
+        background-color: var(--primaryAccent);
+        border-radius: 0 0 0 0;
+    }
+
+}
