@@ -17,6 +17,19 @@ router.get('/allitems', (req,res) => {
     })
 });
 
+router.get('/men/:limit', (req,res) => {
+    // console.log(req.params);
+    const limit = req.param.limit;
+    Item.find({
+        category: 'men'
+    })
+    .limit(limit)
+    .sort( { date: -1 })
+    .then(items => {
+        res.json(items);
+    })
+});
+
 router.post('/', (req,res) => {
     const newItem = new Item( {
         name: req.body.name,

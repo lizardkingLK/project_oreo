@@ -58,7 +58,7 @@ const Showcase = (props) => {
                         </div>
                         <div className="itemCR_topC">
                             <Button color="dark" className="btn btn-sm itemCR_topC_addToCart">Add To Cart</Button>
-                            <Button color="light" className="btn btn-sm itemCR_topC_favourite">Favourite <i class="far fa-heart"></i></Button>
+                            <Button color="light" className="btn btn-sm itemCR_topC_favourite">Favourite <i className="far fa-heart"></i></Button>
                         </div>
                         <div className="itemCR_topD">
                             <small className="itemCR_topD_description">Nike Sportswear's first collaboration by the Hatfield brothers, the Nike Air Max 90 FlyEase combines the timelessness of Tinker's original design with Tobie's FlyEase technology. The heel collapses when you step in then snaps back into place, providing quick, easy access to one of history's most iconic sneakers.</small>
@@ -90,6 +90,10 @@ const Showcase = (props) => {
                 </div>
             )
         }
+        else 
+            return (
+                null
+            )
     })
 
     return (

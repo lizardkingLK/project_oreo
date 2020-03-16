@@ -15,15 +15,15 @@ class App extends React.Component {
   }
 
   componentDidMount = () => {
-    console.log(true);
+    console.log('componentdidmount app.js');
   }
 
   handleNavigation = (e) => {
     const option = e.target.innerHTML;
-    console.log(option)
+    // console.log(option)
     switch(option) {
       case "Men":
-        const url = "/api/items/allitems";
+        const url = "/api/items/men/5";
         axios.get(url)
         .then(function (response) {
           // handle success

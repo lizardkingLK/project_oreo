@@ -152,7 +152,7 @@ html {
 
     .itemC_left {
         border-radius: 2vh 0 0 2vh;
-        background-color: var(--secondaryAccent);
+        background-color: var(--primaryLight);
         background-image: url('../src/images/fashion_4.jpg');
         background-size: cover;
         background-position: center;
