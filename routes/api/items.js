@@ -18,14 +18,49 @@ router.get('/allitems', (req,res) => {
 });
 
 router.get('/men/:limit', (req,res) => {
-    // console.log(req.params);
-    const limit = req.param.limit;
+    const limit = parseInt(req.params.limit);
     Item.find({
         category: 'men'
     })
-    .limit(limit)
     .sort( { date: -1 })
-    .then(items => {
+    .limit(limit)
+    .exec((err,items) => {
+        res.json(items);
+    })
+});
+
+router.get('/women/:limit', (req,res) => {
+    const limit = parseInt(req.params.limit);
+    Item.find({
+        category: 'women'
+    })
+    .sort( { date: -1 })
+    .limit(limit)
+    .exec((err,items) => {
+        res.json(items);
+    })
+});
+
+router.get('/kids/:limit', (req,res) => {
+    const limit = parseInt(req.params.limit);
+    Item.find({
+        category: 'kids'
+    })
+    .sort( { date: -1 })
+    .limit(limit)
+    .exec((err,items) => {
+        res.json(items);
+    })
+});
+
+router.get('/collections/:limit', (req,res) => {
+    const limit = parseInt(req.params.limit);
+    Item.find({
+        collections: true
+    })
+    .sort( { date: -1 })
+    .limit(limit)
+    .exec((err,items) => {
         res.json(items);
     })
 });

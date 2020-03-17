@@ -46,6 +46,10 @@ html {
 
 #itemWindow {
     min-height: 100vh;
+    background-color: var(--primaryDark);
+    background-image: url('../src/images/fashion_0.jpg');
+    background-blend-mode: screen;
+    color: var(--primaryLight);
 }
 
 #bottomBar {
