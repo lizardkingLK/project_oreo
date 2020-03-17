@@ -5,7 +5,7 @@ node_modules
 test
 debug.log
 info.txt
-*.env
 
 # Local Database
 data
+test

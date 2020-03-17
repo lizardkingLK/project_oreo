@@ -7,16 +7,31 @@ import NavigationBar from '../src/components/NavigationBar';
 import Showcase from '../src/components/Showcase';
 import ItemWindow from '../src/components/ItemWindow';
 import BottomBar from '../src/components/BottomBar';
+import Spinner from '../src/components/Spinner';
 
 class App extends React.Component {
   state = {
     title: 'Oreo',
-    contents: []
+    contents: [],
+    spinState: 'none',
+    blur: '0'
+  }
+
+  toggleSpinState = () => {
+    if(this.state.spinState === 'none') {
+      this.setState({
+        blur: '100vh',
+        spinState: 'inline-block'
+      });
+    } else {
+      this.setState({
+        blur: '0',
+        spinState: 'none'
+      })
+    }
   }
 
   changeState = (category,data) => {
-    // if(typeof(data) == typeof(this.state.contents)) console.log(true)
-
       this.setState({
         title: category,
         contents: data
@@ -50,27 +65,33 @@ class App extends React.Component {
       // console.log(option)
       switch(option) {
         case "Men":
-            await axios.get('/api/items/men/2')
-              .then(res => {
-                this.changeState('Men', res.data);
-            })
+            this.toggleSpinState();
+              await axios.get('/api/items/men/2')
+                .then(res => {
+                  this.changeState('Men', res.data);
+              })
+            this.toggleSpinState();
           break;
         case "Women":
-            await axios.get('/api/items/women/2')
-              .then(res => {
-                this.changeState('Women', res.data);
-            })
+            this.toggleSpinState();
+              await axios.get('/api/items/women/2')
+                .then(res => {
+                  this.changeState('Women', res.data);
+              })
+            this.toggleSpinState();
           break;
         case "Kids":
-            await axios.get('/api/items/kids/2')
-              .then(res => {
-                this.changeState('Kids', res.data);
-            })
+            this.toggleSpinState();
+              await axios.get('/api/items/kids/2')
+                .then(res => {
+                  this.changeState('Kids', res.data);
+              })
+            this.toggleSpinState();
           break;
         case "Collections":
-          this.setState({
-            title: 'Collections'
-          })
+            this.setState({
+              title: 'Collections'
+            })
           break;
         default:
       }
@@ -79,8 +100,9 @@ class App extends React.Component {
   render() {
     return (
       <div>
+        <Spinner spinState={this.state.spinState} />
         <NavigationBar handleNavigation={this.handleNavigation} />
-        <Showcase title={this.state.title} contents={this.state.contents} />
+        <Showcase title={this.state.title} contents={this.state.contents} blur={this.state.blur} />
         <ItemWindow />
         <BottomBar />
       </div>

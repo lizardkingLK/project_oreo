@@ -7,9 +7,10 @@ import {
 const Showcase = (props) => {
     let title = props.title;
     let contents = props.contents;
+    let blur = props.blur;
 
     return (
-        <div id="showcase">
+        <div id="showcase" style={{filter: "blur("+blur+")"}}>
             <div id="showcase_card">
                 <div className="row">
                     <div className="col-sm-6 d-flex flex-row mt-1">
@@ -27,11 +28,19 @@ const Showcase = (props) => {
                             return (
                                 <div className="item_card" key={cont._id}>
                                     <div className="itemC_left">
-                                        
+
                                     </div>
                                     <div className="itemC_right">
+                                        <div className="itemCR_subtitle">
+                                            {cont.subcategories.map(sub => {
+                                                return (
+                                                    <small key={sub}>&nbsp;{sub.toString().toUpperCase()}&nbsp;</small>
+                                                )
+                                            })}
+                                        </div>
                                         <div className="itemCR_topA">
                                             <div className="itemCR_topA_title">{cont.name}</div>
+                                            <div className="itemCR_topA_price">{cont.price}</div>
                                         </div>
                                         <div className="itemCR_topB">
                                             <div className="itemCR_topB_sizeSelect">Select Size</div>

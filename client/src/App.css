@@ -17,6 +17,26 @@ html {
     transition: .5s;
 }
 
+::-webkit-scrollbar {
+    width: .5vh;
+    background-color: var(--secondaryAccent);
+}
+
+::-webkit-scrollbar-corner {
+    width: 0;
+    height: 0;
+}
+
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px var(--secondaryAccent);
+    -webkit-box-shadow: inset 0 0 6px var(--secondaryAccent);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--primaryDark);
+    outline: 1px solid var(--secondaryDark);
+}
+
 #navbar a {
     text-decoration: none !important;
     cursor: pointer;
@@ -29,10 +49,6 @@ html {
     background-blend-mode: multiply;
     background-size: auto;
 }
-
-/* #showcase::-webkit-scrollbar {
-    display: none;
-} */
 
 #showcase_card {
     width: 90vw;
@@ -176,18 +192,38 @@ html {
         overflow-y: scroll;
         flex: 1;
         background-color: var(--primaryAccent);
-        border-radius: 0 2vh 2vh 0;
+        border-radius: 0 0vh 0vh 0;
     }
 
-    .itemC_right::-webkit-scrollbar {
-        display: none;
+    .itemC_right .itemCR_subtitle {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: flex-end;
+        min-height: 3vh;
+        padding: 1vh 0 0 0;
+        font-family: 'Montserrat', sans-serif;
+        font-size: medium;
+        background-color: var(--primaryDark);
     }
 
     .itemC_right .itemCR_topA .itemCR_topA_title {
         text-align: left;
         margin: .5vh 1vh .5vh 1vh;
         font-family: 'Montserrat', sans-serif;
-        font-size: x-large;
+        font-size: large;
+        flex: 2;
+    }
+
+    .itemC_right .itemCR_topA .itemCR_topA_price {
+        text-align: center;
+        margin: .5vh 2vh .5vh 1vh;
+        font-family: 'Roboto', sans-serif;
+        font-size: medium;
+        color: var(--secondaryAccent);
+        background-color: var(--secondaryDark);
+        border-radius: 1vh;
+        flex: 1;
     }
 
     .itemC_right .itemCR_topB .itemCR_topB_sizeSelect {
@@ -207,7 +243,10 @@ html {
     }
 
     .itemC_right .itemCR_topA {
-        min-height: 10vh;
+        min-height: 20vh;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
     }
 
     .itemC_right .itemCR_topB {
@@ -229,7 +268,7 @@ html {
         display: flex;
         flex-direction: row;
         justify-content: center;
-        margin: 1vh 2vh 5vh 2vh;
+        margin: .5vh 2vh .5vh 2vh;
         font-family: 'Roboto', sans-serif;
     }
 
@@ -308,4 +347,7 @@ html {
         border-radius: 0 0 0 0;
     }
 
+    .itemC_right .itemCR_topD {
+        text-align: center;
+    }
 }
