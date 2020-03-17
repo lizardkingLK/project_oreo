@@ -8,9 +8,10 @@ const Showcase = (props) => {
     let title = props.title;
     let contents = props.contents;
     let blur = props.blur;
+    let background = props.background;
 
     return (
-        <div id="showcase" style={{filter: "blur("+blur+")"}}>
+        <div id="showcase" style={{filter: "blur("+blur+")", backgroundImage: "URL("+background+")"}}>
             <div id="showcase_card">
                 <div className="row">
                     <div className="col-sm-6 d-flex flex-row mt-1">

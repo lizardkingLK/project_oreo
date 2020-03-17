@@ -14,7 +14,8 @@ class App extends React.Component {
     title: 'Oreo',
     contents: [],
     spinState: 'none',
-    blur: '0'
+    blur: '0',
+    background: '../images/fashion_1.jpeg'
   }
 
   toggleSpinState = () => {
@@ -102,7 +103,7 @@ class App extends React.Component {
       <div>
         <Spinner spinState={this.state.spinState} />
         <NavigationBar handleNavigation={this.handleNavigation} />
-        <Showcase title={this.state.title} contents={this.state.contents} blur={this.state.blur} />
+        <Showcase background={this.state.background} title={this.state.title} contents={this.state.contents} blur={this.state.blur} />
         <ItemWindow />
         <BottomBar />
       </div>
