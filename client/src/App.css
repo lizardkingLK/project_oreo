@@ -173,15 +173,40 @@ html {
     .itemC_left {
         border-radius: 2vh 0 0 2vh;
         background-color: var(--primaryLight);
-        background-image: url('../src/images/fashion_4.jpg');
+        transition: 1s;
+        -webkit-transition: background-image 1s;
         background-size: cover;
+        background-repeat: no-repeat;
         background-position: center;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
         min-height: 75vh;
         flex: 2;
+    }
+
+    .itemC_left .itemCL_imgBoxes {
+        width: 50vh;
+        height: 10vh;
+        display: flex;
+        flex-direction: row;
+        padding: .1vh 0 0 .1vh;
+    }
+
+    .itemC_left .itemCL_imgBoxes .itemCL_imgBox {
+        width: 10vh;
+        height: 10vh;
+        border: .1vh solid var(--primaryLight);
+        background-size: cover;
+        transition: .5s;
+    }
+
+    .itemC_left .itemCL_imgBoxes .itemCL_imgBox:nth-child(1) {
+        border-radius: 2vh 0 0 0;
+    }
+
+    .itemC_left .itemCL_imgBoxes .itemCL_imgBox:hover {
+        border: .125vh solid var(--primaryAccent);
+        cursor: pointer;
+        background-size: cover;
+        transition: .5s;
     }
 
     .itemC_right {
@@ -250,7 +275,7 @@ html {
     }
 
     .itemC_right .itemCR_topB {
-        min-height: 35vh;
+        min-height: 42vh;
         margin: 1vh 0vh 1vh 0vh;
     }
 
@@ -325,14 +350,10 @@ html {
 
     .itemC_left {
         border-radius: 0 0 0 0;
-        background-color: var(--secondaryAccent);
+        background-color: var(--primaryLight);
         background-image: url('../src/images/fashion_4.jpg');
         background-size: cover;
         background-position: center;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
         height: 75vh;
         flex: 2;
     }

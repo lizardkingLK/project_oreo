@@ -8,10 +8,9 @@ const Showcase = (props) => {
     let title = props.title;
     let contents = props.contents;
     let blur = props.blur;
-    let background = props.background;
 
     return (
-        <div id="showcase" style={{filter: "blur("+blur+")", backgroundImage: "URL("+background+")"}}>
+        <div id="showcase" style={{filter: "blur("+blur+")"}}>
             <div id="showcase_card">
                 <div className="row">
                     <div className="col-sm-6 d-flex flex-row mt-1">
@@ -25,17 +24,22 @@ const Showcase = (props) => {
                 <div>
                     {
                         contents.map(cont => {
-                            console.log(cont)
                             return (
                                 <div className="item_card" key={cont._id}>
-                                    <div className="itemC_left">
-
+                                    <div className="itemC_left" style={{backgroundImage: "url("+cont.images[0]+")"}}>
+                                        <div className="itemCL_imgBoxes">
+                                            {cont.images.map( (image,index) => {
+                                                return (
+                                                    <div className="itemCL_imgBox" onClick={props.handleImageClick} key={index} style={{backgroundImage: "URL("+image+")"}}></div>
+                                                )
+                                            })}
+                                        </div>
                                     </div>
                                     <div className="itemC_right">
                                         <div className="itemCR_subtitle">
-                                            {cont.subcategories.map(sub => {
+                                            {cont.subcategories.map( (sub,index) => {
                                                 return (
-                                                    <small key={sub}>&nbsp;{sub.toString().toUpperCase()}&nbsp;</small>
+                                                    <small key={index}>&nbsp;{sub.toString().toUpperCase()}&nbsp;</small>
                                                 )
                                             })}
                                         </div>
