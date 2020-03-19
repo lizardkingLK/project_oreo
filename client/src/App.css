@@ -42,6 +42,12 @@ html {
     cursor: pointer;
 }
 
+#banner {
+    height: 80vh;
+    background-color: var(--primaryLight);
+    border: 1px solid var(--primaryDark)
+}
+
 #showcase {
     height: 100vh;
     overflow-y: scroll;
@@ -62,9 +68,11 @@ html {
 
 #itemWindow {
     min-height: 100vh;
-    background-color: var(--primaryDark);
-    background-image: url('../src/images/fashion_0.jpg');
-    background-blend-mode: screen;
+    background-color: var(--secondaryDark);
+    background-image: url('../src/images/fashion_5.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-blend-mode: darken;
     color: var(--primaryLight);
 }
 
@@ -258,13 +266,8 @@ html {
         font-size: medium;
     }
 
-    .itemC_right .itemCR_topB .itemCR_topB_sizesTable {
+    .itemC_right .itemCR_topB .itemCR_topB_sizeGrid {
         color: var(--primaryLight);
-    }
-
-    .itemC_right .itemCR_topB .itemCR_topB_sizesTable td {
-        size: small;
-        text-align: center;
     }
 
     .itemC_right .itemCR_topA {
@@ -283,8 +286,8 @@ html {
         min-height: 5vh;
         display: flex;
         flex-direction: row;
-        justify-content: center;
-        margin: 1vh 0vh 1vh 0vh;
+        justify-content: flex-end;
+        margin: 1vh 2vh 1vh 0vh;
         font-family: 'Montserrat', sans-serif;
     }
 

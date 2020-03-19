@@ -14,10 +14,12 @@ class App extends React.Component {
     title: 'Oreo',
     contents: [],
     spinState: 'none',
-    blur: '0'
+    blur: '0',
+    banner: false
   }
 
   toggleSpinState = () => {
+    this.setState( {banner: false} );
     if(this.state.spinState === 'none') {
       this.setState({
         blur: '100vh',
@@ -32,31 +34,19 @@ class App extends React.Component {
   }
 
   changeState = (category,data) => {
+    
       this.setState({
         title: category,
         contents: data
 
         // [
           // {name: "Nike Air Max 90 FlyEase", _id: 1, value: 27, category: "Men"},
-          // {name: "Mojitha", _id: 2, value: 36, category: "Men"},
-          // {name: "Vikum", _id: 3, value: 13, category: "Men"},
-          // {name: "Aruna", _id: 4, value: 42, category: "Men"},
-          // {name: "Lahiru", _id: 5, value: 8, category: "Men"},
-          // {name: "Sapnaka", _id: 6, value: 53, category: "Men"} 
-        // ]
-
-        // [
-          // {name: "Chathumini", _id: 7, value: 23, category: "Women"}
-        // ]
-
-        // [
-          // {name: "Kevin", _id: 8, value: 78, category: "Kids"},
-          // {name: "Jason", _id:9, value: 93, category: "Kids"}
         // ]
       })
   }
 
   componentDidMount = () => {
+    this.setState( {banner: true} );
     console.log('componentdidmount app.js');
     // this.setState({
     //   contents: [
@@ -142,7 +132,7 @@ class App extends React.Component {
       <div>
         <Spinner spinState={this.state.spinState} />
         <NavigationBar handleNavigation={this.handleNavigation} />
-        <Showcase title={this.state.title} contents={this.state.contents} blur={this.state.blur} handleImageClick={this.handleImageClick} />
+        <Showcase title={this.state.title} contents={this.state.contents} blur={this.state.blur} handleImageClick={this.handleImageClick} banner={this.state.banner} />
         <ItemWindow />
         <BottomBar />
       </div>

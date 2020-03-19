@@ -1,13 +1,15 @@
 import React from 'react';
 import {
-    Table,
     Button
 } from 'reactstrap';
+
+import Banner from './Banner';
 
 const Showcase = (props) => {
     let title = props.title;
     let contents = props.contents;
     let blur = props.blur;
+    let banner = props.banner;
 
     return (
         <div id="showcase" style={{filter: "blur("+blur+")"}}>
@@ -22,6 +24,7 @@ const Showcase = (props) => {
                 </div>
 
                 <div>
+                    <Banner banner={banner} />
                     {
                         contents.map(cont => {
                             return (
@@ -49,15 +52,15 @@ const Showcase = (props) => {
                                         </div>
                                         <div className="itemCR_topB">
                                             <div className="itemCR_topB_sizeSelect">Select Size</div>
-                                            <Table size="sm" className="itemCR_topB_sizesTable" borderless>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>UK 5.5</td>
-                                                        <td>UK 6 (EU 39)</td>
-                                                        <td>UK 6 (EU 40)</td>
-                                                    </tr>
-                                                </tbody>
-                                            </Table>
+                                                <div className="itemCR_topB_sizeGrid" style={{display: "grid", gridTemplateColumns: "auto auto auto", maxHeight: "10vh"}}>
+                                                    {cont.sizes.map( (size,index) => {
+                                                        return ( 
+                                                            <div style={{textAlign: "center", margin: ".5vh 0 .5vh 0"}}>
+                                                                <Button color="outline-dark" className="btn btn-sm" style={{color: "var(--primaryLight)"}} key={index}>{size}</Button>
+                                                            </div>
+                                                        )
+                                                    })}
+                                                </div>
                                         </div>
                                         <div className="itemCR_topC">
                                             <Button color="dark" className="btn btn-sm itemCR_topC_addToCart">Add To Cart</Button>
