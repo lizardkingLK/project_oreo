@@ -56,7 +56,7 @@ const Showcase = (props) => {
                                                     {cont.sizes.map( (size,index) => {
                                                         return ( 
                                                             <div style={{textAlign: "center", margin: ".5vh 0 .5vh 0"}}>
-                                                                <Button color="outline-dark" className="btn btn-sm" style={{color: "var(--primaryLight)"}} key={index}>{size}</Button>
+                                                                <Button color="outline-dark" className="btn btn-sm" style={{color: "var(--primaryLight)", width: "80px"}} key={index}><small>{size}</small></Button>
                                                             </div>
                                                         )
                                                     })}

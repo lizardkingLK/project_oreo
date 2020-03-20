@@ -43,9 +43,14 @@ html {
 }
 
 #banner {
-    height: 80vh;
-    background-color: var(--primaryLight);
-    border: 1px solid var(--primaryDark)
+    height: 75vh;
+    border: 1px solid var(--primaryDark);
+    overflow: hidden;
+}
+
+#banner #banner_left {
+    transition: .25s;
+    -webkit-transition: background-image .25s;
 }
 
 #showcase {
