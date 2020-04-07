@@ -44,11 +44,10 @@ html {
 
 #banner {
     height: 75vh;
-    border: 1px solid var(--primaryDark);
     overflow: hidden;
 }
 
-#banner #banner_left {
+#banner #banner_content {
     transition: .25s;
     -webkit-transition: background-image .25s;
 }
@@ -73,11 +72,11 @@ html {
 
 #itemWindow {
     min-height: 100vh;
-    background-color: var(--secondaryDark);
-    background-image: url('../src/images/fashion_5.jpg');
+    background-color: var(--primaryDark);
+    background-image: url('../src/images/fashion_2.jpg');
     background-repeat: no-repeat;
     background-size: cover;
-    background-blend-mode: darken;
+    background-blend-mode: lighten;
     color: var(--primaryLight);
 }
 
@@ -188,7 +187,7 @@ html {
         background-color: var(--primaryLight);
         transition: 1s;
         -webkit-transition: background-image 1s;
-        background-size: cover;
+        background-size: contain;
         background-repeat: no-repeat;
         background-position: center;
         min-height: 75vh;
@@ -200,7 +199,7 @@ html {
         height: 10vh;
         display: flex;
         flex-direction: row;
-        padding: .1vh 0 0 .1vh;
+        padding: 0 0 0 0;
     }
 
     .itemC_left .itemCL_imgBoxes .itemCL_imgBox {
@@ -212,7 +211,7 @@ html {
     }
 
     .itemC_left .itemCL_imgBoxes .itemCL_imgBox:nth-child(1) {
-        border-radius: 2vh 0 0 0;
+        border-radius: 0 0 0 0;
     }
 
     .itemC_left .itemCL_imgBoxes .itemCL_imgBox:hover {

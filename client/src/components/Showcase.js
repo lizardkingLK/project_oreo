@@ -15,11 +15,8 @@ const Showcase = (props) => {
         <div id="showcase" style={{filter: "blur("+blur+")"}}>
             <div id="showcase_card">
                 <div className="row">
-                    <div className="col-sm-6 d-flex flex-row mt-1">
+                    <div className="col-sm-12 d-flex flex-row mt-1">
                         <h1 className="display-3 txt_secondary text-left" id="showcase_title">{title}</h1>
-                    </div>
-                    <div className="col-sm-6 d-flex flex-row-reverse mt-4">
-                        <small className="txt_secondary text-right">Oreo is a online shopping store made just for you.</small>
                     </div>
                 </div>
 
@@ -55,7 +52,7 @@ const Showcase = (props) => {
                                                 <div className="itemCR_topB_sizeGrid" style={{display: "grid", gridTemplateColumns: "auto auto auto", maxHeight: "10vh"}}>
                                                     {cont.sizes.map( (size,index) => {
                                                         return ( 
-                                                            <div style={{textAlign: "center", margin: ".5vh 0 .5vh 0"}}>
+                                                            <div key={index} style={{textAlign: "center", margin: ".5vh 0 .5vh 0"}}>
                                                                 <Button color="outline-dark" className="btn btn-sm" style={{color: "var(--primaryLight)", width: "80px"}} key={index}><small>{size}</small></Button>
                                                             </div>
                                                         )

@@ -23,7 +23,7 @@ if(process.env.NODE_ENV === 'production') {
     uri = process.env.MONGODB_URI;
 }
 
-uri = require('./config/keys').mongoURI_B;
+uri = require('./config/keys').mongoURI_A;
 mongoose.connect(uri, { useUnifiedTopology: true, useNewUrlParser: true}, (err,db) => {
     console.log('db_oreo online... ',uri);
 });
