@@ -34,7 +34,6 @@ class App extends React.Component {
   }
 
   changeState = (category,data) => {
-
       this.setState({
         title: category,
         contents: data

@@ -14,6 +14,8 @@ import {
   NavbarText
 } from 'reactstrap';
 
+import AuthWindow from './AuthWindow';
+
 const AppNavbar = (props) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -44,7 +46,7 @@ const AppNavbar = (props) => {
               </DropdownToggle>
               <DropdownMenu right>
                 <DropdownItem>
-                  Sign-Up
+                  <AuthWindow buttonLabel={"SignUp"} />
                 </DropdownItem>
                 <DropdownItem>
                   About
