@@ -4,10 +4,6 @@ node_modules
 # Local Development
 test
 debug.log
-info.txt
 
 # Local Database
-data
 test
-
-# config files
