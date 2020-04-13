@@ -44,7 +44,6 @@ html {
 
 #banner {
     height: 75vh;
-    overflow: hidden;
 }
 
 #banner #banner_content {
@@ -52,9 +51,10 @@ html {
     -webkit-transition: background-image .25s;
     height: 75vh;
     /* width: 10vw; */
+    border: .01vh var(--secondaryAccent) solid;
     background-size: cover;
     background-repeat: no-repeat;
-    background-color: var(--secondaryDark);
+    background-color: var(--primaryLight);
     background-blend-mode: lighten;
 }
 
@@ -74,6 +74,24 @@ html {
 #showcase_title {
     color: var(--primaryAccent);
     font-size: 54px;
+}
+
+#authWindow {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--primaryLight);
+}
+
+#authWindow #authWindow_header {
+    font-family: 'Montserrat', sans-serif;
+}
+
+#authWindow #authWindow_body {
+    font-family: 'Roboto', sans-serif;
+    height: 70vh;
+    color: var(--primaryLight);
+    background: url('./images/fashion_3.jpg');
+    background-color: var(--primaryDark);
+    background-blend-mode: overlay;
 }
 
 #itemWindow {

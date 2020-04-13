@@ -33,6 +33,7 @@ function BottomBar() {
                         <p className="p-2 bd-highlight"><small className="p_Link" ><i className="fab fa-facebook"></i></small></p>
                         <p className="p-2 bd-highlight"><small className="p_Link" ><i className="fab fa-youtube"></i></small></p>
                         <p className="p-2 bd-highlight"><small className="p_Link" ><i className="fab fa-instagram"></i></small></p>
+                        <a href="https://github.com/lizardkingLK/project_oreo" className="p-2 bd-highlight"><small className="p_Link" ><i className="fab fa-github"></i></small></a>
                     </div>
                 </div>
                 <hr className="my-4 bg_grey" />

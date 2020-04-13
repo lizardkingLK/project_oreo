@@ -41,12 +41,12 @@ const AppNavbar = (props) => {
               <NavLink onClick={props.handleNavigation}>Collections</NavLink>
             </NavItem>
             <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle nav caret>
+              <DropdownToggle nav>
                 <i className="far fa-user-circle"></i>
               </DropdownToggle>
               <DropdownMenu right>
                 <DropdownItem>
-                  <AuthWindow buttonLabel={"SignUp"} />
+                  <AuthWindow buttonLabel={"SignUp"} className={"modal-dialog modal-lg"} />
                 </DropdownItem>
                 <DropdownItem>
                   About
@@ -58,7 +58,7 @@ const AppNavbar = (props) => {
               </DropdownMenu>
             </UncontrolledDropdown>
           </Nav>
-            <NavbarText><NavLink href="https://github.com/lizardkingLK/project_oreo"><i className="fab fa-github col_primary_accent"></i></NavLink></NavbarText>
+            <NavbarText><p style={{fontFamily: "Roboto, sans-serif"}}></p>Oreo_group&trade;</NavbarText>
         </Collapse>
       </Navbar>
     </div>
