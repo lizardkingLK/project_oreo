@@ -18,8 +18,55 @@ class App extends React.Component {
     banner: false
   }
 
+  toggleBanner = (bannerOption) => {
+    this.setState( {banner: bannerOption} );
+  }
+
+  componentDidMount = () => {
+    this.toggleBanner(true);
+    console.log('project_oreo--------------');
+  }
+
+  handleNavigation = async (e) => {
+    const option = e.target.innerHTML;
+    
+    switch(option) {
+      case "Men":
+          this.toggleSpinState();
+            await axios.get('/api/items/men/5')
+              .then(res => {
+                this.changeShowcaseState('Men', res.data);
+            })
+          this.toggleSpinState();
+        break;
+      case "Women":
+          this.toggleSpinState();
+            await axios.get('/api/items/women/5')
+              .then(res => {
+                this.changeShowcaseState('Women', res.data);
+            })
+          this.toggleSpinState();
+        break;
+      case "Kids":
+          this.toggleSpinState();
+            await axios.get('/api/items/kids/5')
+              .then(res => {
+                this.changeShowcaseState('Kids', res.data);
+            })
+          this.toggleSpinState();
+        break;
+      case "Collections":
+          this.setState({
+            title: 'Collections'
+          })
+        break;
+      default:
+    }
+  }
+
   toggleSpinState = () => {
-    this.setState( {banner: false} );
+    // this.setState( {banner: false} );
+    this.toggleBanner(false);
     if(this.state.spinState === 'none') {
       this.setState({
         blur: '100vh',
@@ -33,7 +80,7 @@ class App extends React.Component {
     }
   }
 
-  changeState = (category,data) => {
+  changeShowcaseState = (category,data) => {
       this.setState({
         title: category,
         contents: data
@@ -43,48 +90,6 @@ class App extends React.Component {
         // ]
       })
   }
-
-  componentDidMount = () => {
-    this.setState( {banner: true} );
-    console.log('componentdidmount app.js');
-  }
-
-  handleNavigation = async (e) => {
-      const option = e.target.innerHTML;
-      
-      switch(option) {
-        case "Men":
-            this.toggleSpinState();
-              await axios.get('/api/items/men/5')
-                .then(res => {
-                  this.changeState('Men', res.data);
-              })
-            this.toggleSpinState();
-          break;
-        case "Women":
-            this.toggleSpinState();
-              await axios.get('/api/items/women/2')
-                .then(res => {
-                  this.changeState('Women', res.data);
-              })
-            this.toggleSpinState();
-          break;
-        case "Kids":
-            this.toggleSpinState();
-              await axios.get('/api/items/kids/2')
-                .then(res => {
-                  this.changeState('Kids', res.data);
-              })
-            this.toggleSpinState();
-          break;
-        case "Collections":
-            this.setState({
-              title: 'Collections'
-            })
-          break;
-        default:
-      }
-    }
 
   handleImageClick = (e) => {
     const reqBg = e.target.style.backgroundImage;

@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const auth = require('../../middleware/auth');
+
 const Item = require('../../models/Item');
 
 router.use(express.json());
@@ -65,7 +67,7 @@ router.get('/collections/:limit', (req,res) => {
     })
 });
 
-router.post('/', (req,res) => {
+router.post('/', auth, (req,res) => {
     const newItem = new Item( {
         name: req.body.name,
         type: req.body.type,
@@ -83,18 +85,19 @@ router.post('/', (req,res) => {
     newItem.save().then(item => res.json(item));
 });
 
-router.delete('/:id', (req,res) => {
-    Item.findById(req.params.id)
-    .then(item => {
-        item.remove()
+router.delete('/:id', auth, (req,res) => {
+    const id = req.params.id;
+    Item.findById(id)
+    .then( item => {
+        Item.deleteOne(item)
         .then(() => {
-            res.json( {success: true} )
+            res.json({ success: true });
         })
-    })
-    .catch(err => {
-        console.log(err);
-        res.status(404).json( {success: false} )
-    })
+        .catch(err => {
+            console.error(err);
+            res.status(500).json({ success: false });
+        })
+    });
 })
 
 module.exports = router;

@@ -5,14 +5,8 @@ const Banner = (props) => {
     (banner === true) ? banner = 'block' : banner = 'none';
 
     return (
-        <div id="banner" style={{display: banner, backgroundColor: "var(--primaryAccent)"}}>
-            <div id="banner_content" style={{
-                height: "75vh",
-                backgroundSize: "cover", 
-                backgroundRepeat: "no-repeat",
-                backgroundColor: "var(--primaryAccent)",
-                backgroundBlendMode: "lighten"}}
-            >
+        <div id="banner" style={{display: banner}}>
+            <div id="banner_content">
                 
             </div>
         </div>
