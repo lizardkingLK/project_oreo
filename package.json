@@ -1,0 +1,43 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "project_oreo is a online fashion store made with mern stack",
+  "engines": {
+    "node": "8.x"
+  },
+  "main": "index.js",
+  "scripts": {
+    "client-install": "npm install --prefix ./client",
+    "client": "npm start --prefix ./client",
+    "server": "nodemon index.js",
+    "start": "node index.js",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+  },
+  "devDependencies": {
+    "nodemon": "*"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "concurrently": "^5.1.0",
+    "config": "^3.3.1",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.8.11"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lizardKingLK/project_oreo"
+  },
+  "keywords": [
+    "project_oreo",
+    "group_oreo",
+    "mern stack",
+    "node",
+    "express",
+    "react"
+  ],
+  "author": "group_oreo",
+  "license": "ISC"
+}
