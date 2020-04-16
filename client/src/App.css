@@ -55,15 +55,16 @@ html {
     background-size: cover;
     background-repeat: no-repeat;
     background-color: var(--primaryLight);
-    background-blend-mode: lighten;
+    background-blend-mode: multiply;
+    background-image: url('./images/fashion_5.png');
 }
 
 #showcase {
     height: 100vh;
     overflow-y: scroll;
     background-color: var(--primaryLight);
-    background-blend-mode: multiply;
-    background-size: auto;
+    /* background-blend-mode: multiply; */
+    background-size: cover;
 }
 
 #showcase_card {
@@ -78,21 +79,65 @@ html {
 
 #authWindow {
     font-family: 'Roboto', sans-serif;
-    background-color: var(--primaryLight);
-}
-
-#authWindow #authWindow_header {
-    font-family: 'Montserrat', sans-serif;
 }
 
 #authWindow #authWindow_body {
     font-family: 'Roboto', sans-serif;
-    height: 70vh;
+    height: 90vh;
     color: var(--primaryLight);
+    background-position: center;
     background: url('./images/fashion_3.jpg');
     background-color: var(--primaryDark);
-    background-blend-mode: overlay;
+    background-blend-mode: normal;
 }
+
+#authWindow #authWindow_body #authWindowB_content {
+    display: flex;
+    flex-direction: column;
+    height: 85vh; 
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+#authWindow #authWindow_body #authWindowB_content #authWindowBC_header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--primaryDark);
+    height: 10vh;
+    width: 100%;
+}
+
+#authWindow #authWindow_body #authWindowB_content #authWindowBC_header #authWindowBCH_left {
+    margin: 0 0 0 2vh;
+}
+
+#authWindow #authWindow_body #authWindowB_content #authWindowBC_header #authWindowBCH_right {
+    margin: 0 2vh 0 0;
+}
+
+#authWindow #authWindow_body #authWindowB_content #authWindowBC_header #authWindowBCH_right #authWindowBCH_rightB {
+    color: var(--secondaryAccent);
+}
+
+#authWindow #authWindow_body #authWindowB_content #authWindowBC_body {
+    display: flex; 
+    flex-direction: row; 
+    justify-content: center; 
+    align-items: center; 
+    background-color: var(--primaryLight); 
+    height: 70vh;
+    width: 100%;
+}
+
+#authWindow #authWindow_body #authWindowB_content #authWindowBC_body #authWindowBCB_signupForm {
+    color: var(--primaryDark);
+    font-family: "Montserrat", sans-serif;
+}
+
+
 
 #itemWindow {
     min-height: 100vh;

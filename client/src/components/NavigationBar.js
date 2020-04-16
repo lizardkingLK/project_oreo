@@ -46,7 +46,7 @@ const AppNavbar = (props) => {
               </DropdownToggle>
               <DropdownMenu right>
                 <DropdownItem>
-                  <AuthWindow buttonLabel={"SignUp"} className={"modal-dialog modal-lg"} />
+                  <AuthWindow buttonLabel={"SignIn"} className={"modal-dialog modal-lg"} />
                 </DropdownItem>
                 <DropdownItem>
                   About
