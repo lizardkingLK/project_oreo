@@ -11,6 +11,12 @@ const Showcase = (props) => {
     let blur = props.blur;
     let banner = props.banner;
 
+    const handleImageClick = (e) => {
+        const reqBg = e.target.style.backgroundImage;
+        const parent = e.target.parentElement.parentElement;
+        parent.style.backgroundImage = `${reqBg}`;
+    }
+
     return (
         <div id="showcase" style={{filter: "blur("+blur+")"}}>
             <div id="showcase_card">
@@ -30,7 +36,7 @@ const Showcase = (props) => {
                                         <div className="itemCL_imgBoxes">
                                             {cont.images.map( (image,index) => {
                                                 return (
-                                                    <div className="itemCL_imgBox" onClick={props.handleImageClick} key={index} style={{backgroundImage: "URL("+image+")"}}></div>
+                                                    <div className="itemCL_imgBox" onClick={handleImageClick} key={index} style={{backgroundImage: "URL("+image+")"}}></div>
                                                 )
                                             })}
                                         </div>

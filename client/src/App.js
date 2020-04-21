@@ -65,7 +65,6 @@ class App extends React.Component {
   }
 
   toggleSpinState = () => {
-    // this.setState( {banner: false} );
     this.toggleBanner(false);
     if(this.state.spinState === 'none') {
       this.setState({
@@ -91,20 +90,15 @@ class App extends React.Component {
       })
   }
 
-  handleImageClick = (e) => {
-    const reqBg = e.target.style.backgroundImage;
-    const parent = e.target.parentElement.parentElement;
-    parent.style.backgroundImage = `${reqBg}`;
-  }
-
   render() {
     return (
       <div>
         <Spinner spinState={this.state.spinState} />
         <NavigationBar handleNavigation={this.handleNavigation} />
         <Showcase 
-          title={this.state.title} contents={this.state.contents} 
-          blur={this.state.blur} handleImageClick={this.handleImageClick} 
+          title={this.state.title} 
+          contents={this.state.contents} 
+          blur={this.state.blur} 
           banner={this.state.banner}
         />
         <ItemWindow />

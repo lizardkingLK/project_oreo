@@ -9,6 +9,8 @@
     --primaryAccent: #009399;
     --secondaryAccent: #FFF524;
     --primaryLight: #F2F2F2;
+    --primaryDanger: #FF0000;
+    --secondaryDanger: #DC143C;
 }
 
 html {
@@ -132,7 +134,7 @@ html {
     width: 100%;
 }
 
-#authWindow #authWindow_body #authWindowB_content #authWindowBC_body #authWindowBCB_signupForm {
+#authWindow #authWindow_body #authWindowB_content #authWindowBC_body #authWindowBCB_signinForm {
     color: var(--primaryDark);
     font-family: "Montserrat", sans-serif;
 }
@@ -229,7 +231,15 @@ html {
     .col_primary_accent {
         color: var(--primaryAccent);
     }
+
+    .col_primary_danger {
+        color: var(--primaryDanger);
+    }
     
+    .col_secondary_danger {
+        color: var(--secondaryDanger);
+    }
+
     .bg_grey {
         background-color: var(--secondaryDark);
     }
