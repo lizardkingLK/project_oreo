@@ -139,7 +139,10 @@ html {
     font-family: "Montserrat", sans-serif;
 }
 
-
+#authWindow #authWindow_body #authWindowB_content #authWindowBC_body #authWindowBCB_signinForm #authWindowBCBsiF_footer #authWindowBCBsiFF_errContainer #authWindowBCBsiFFerrC_errMsg {
+    color: var(--primaryAccent);
+    animation: pulse 2s infinite;
+}
 
 #itemWindow {
     min-height: 100vh;
@@ -308,7 +311,7 @@ html {
         overflow-y: scroll;
         flex: 1;
         background-color: var(--primaryAccent);
-        border-radius: 0 0vh 0vh 0;
+        border-radius: 1vh 0 1vh 0;
     }
 
     .itemC_right .itemCR_subtitle {
@@ -324,37 +327,42 @@ html {
     }
 
     .itemC_right .itemCR_topA {
-        min-height: 18vh;
+        min-height: max-content;
+        max-height: max-content;
         display: flex;
         flex-direction: row;
-        align-items: center;
+        align-items: flex-start;
     }
 
     .itemC_right .itemCR_topB {
-        min-height: 43vh;
-        margin: 1vh 0vh 1vh 0vh;
+        min-height: max-content;
+        max-height: max-content;
+        margin: 1vh 0vh 1vh 1vh;
     }
 
     .itemC_right .itemCR_topC {
-        min-height: 5vh;
+        min-height: max-content;
+        max-height: max-content;
         display: flex;
         flex-direction: row;
         justify-content: flex-end;
-        margin: 1vh 2vh 1vh 0vh;
+        margin: 0vh 2vh 0vh 0vh;
         font-family: 'Montserrat', sans-serif;
     }
 
     .itemC_right .itemCR_topD {
-        min-height: 15vh;
+        min-height: max-content;
+        max-height: max-content;
         display: flex;
         flex-direction: row;
-        justify-content: center;
+        justify-content: flex-start;
         margin: .5vh 2vh .5vh 2vh;
         font-family: 'Roboto', sans-serif;
     }
 
     .itemC_right .itemCR_topE {
-        min-height: 5vh;
+        min-height: max-content;
+        max-height: max-content;
         display: flex;
         flex-direction: row;
         justify-content: left;
@@ -363,20 +371,19 @@ html {
     }
 
     .itemC_right .itemCR_topF {
-        min-height: 5vh;
+        min-height: max-content;
+        max-height: max-content;
         display: flex;
         flex-direction: row;
-        justify-content: left;
-        margin: 1vh 2vh 1vh 2vh;
+        margin: 1vh 0vh 1vh 2vh;
         font-family: 'Roboto', sans-serif;
     }
 
     .itemC_right .itemCR_topG {
-        min-height: 10vh;
+        min-height: max-content;
+        max-height: max-content;
         display: flex;
-        flex-direction: row;
-        justify-content: left;
-        margin: 1vh 2vh 1vh 2vh;
+        margin: 1vh 0vh 1vh 2vh;
         font-family: 'Roboto', sans-serif;
     }
 
@@ -385,6 +392,7 @@ html {
         margin: .5vh 1vh .5vh 1vh;
         font-family: 'Montserrat', sans-serif;
         font-size: large;
+        color: var(--secondaryAccent);
         flex: 2;
     }
 
@@ -401,7 +409,7 @@ html {
 
     .itemC_right .itemCR_topB .itemCR_topB_sizeSelect {
         text-align: left;
-        margin: .5vh 1vh .5vh 1vh;
+        margin: 1vh 0 2vh 1vh;
         font-family: 'Roboto', sans-serif;
         font-size: medium;
     }
@@ -424,6 +432,14 @@ html {
         color: var(--primaryLight);
     }
 
+@keyframes pulse {
+    0% {
+        color: var(--primaryLight);
+    }
+    50% {
+        color: var(--primaryAccent);
+    }
+}
 
 @media screen and (max-width: 800px) {
     .item_card {

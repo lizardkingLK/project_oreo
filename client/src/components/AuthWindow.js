@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Modal, ModalBody, Fade } from 'reactstrap';
+import ReactDOM from 'react-dom';
+import {  NavLink, Modal, ModalBody } from 'reactstrap';
 import axios from 'axios';
 
 const AuthWindow = (props) => {
@@ -11,15 +12,13 @@ const AuthWindow = (props) => {
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
 
-  const [fadeIn, setFadeIn] = useState(false);
-  const fadeToggle = () => setFadeIn(!fadeIn);
-
   let msgA = 'Please enter all fields';
   let msgB = 'User does not exist';
   let msgC = 'Invalid credentials';
-
+  let errMsg = null;
   let email = '';
   let password = '';
+  
 
   const handleChange = (e) => {
     let type = e.target.id;
@@ -42,30 +41,35 @@ const AuthWindow = (props) => {
     await axios.post('/api/auth', {email,password})
     .then(res => {
       console.log(res.data);
-      // toggle();
+      //
+      toggle();
     })
     .catch(err => {
       let type = err.response.data.msg;
-      console.log(type);
-      switch(type) {
-        case msgA:
-          fadeToggle();
-          break;
-        case msgB:
-          fadeToggle();
-          break;
-        case msgC:
-          fadeToggle();
-          break;
-        default:
-          break;
-      }
+        switch(type) {
+          case msgA:
+            errMsg = React.createElement('small', {id: "authWindowBCBsiFFerrC_errMsg"}, msgA);
+            break;
+          case msgB:
+            errMsg = React.createElement('small', {id: "authWindowBCBsiFFerrC_errMsg"}, msgB);
+            break;
+          case msgC:
+            errMsg = React.createElement('small', {id: "authWindowBCBsiFFerrC_errMsg"}, msgC);
+            break;
+          default:
+            console.log(type);
+            break;
+        }
+      ReactDOM.render(
+        errMsg,
+        document.querySelector('#authWindowBCBsiFF_errContainer')
+      );
     })
   }
 
   return (
     <div>
-      <p onClick={toggle}>{buttonLabel}</p>
+      <NavLink onClick={toggle}>{buttonLabel}</NavLink>
       <Modal id="authWindow" isOpen={modal} toggle={toggle} className={className}>
         <ModalBody id="authWindow_body">
           <div id="authWindowB_content">
@@ -88,9 +92,11 @@ const AuthWindow = (props) => {
                   <input type="checkbox" className="form-check-input" id="sIsignedIn" />
                   <label htmlFor="sIsignedIn" className="form-check-label">Keep me signed in</label>
                 </div>
-                <div id="authWindowBCBsiF_footer" style={{display: "flex", flexDirection: "column", justifyContent: "space-around", alignItems: "center"}}>
+                <div id="authWindowBCBsiF_footer" style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
                   <button type="submit" className="btn btn-sm btn-outline-dark">SignIn</button>
-                  <Fade in={fadeIn} tag="small" className="col_primary_accent mt-2" id="authWindowBCBsiFF_msg"></Fade>
+                  <div id="authWindowBCBsiFF_errContainer">
+                    {/* <small id="authWindowBCBsiFFerrC_errMsg">asdf</small> */}
+                  </div>
                 </div>
               </form>
             </div>
