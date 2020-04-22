@@ -7,10 +7,6 @@ import {
   Nav,
   NavItem,
   NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
   NavbarText
 } from 'reactstrap';
 
@@ -40,25 +36,11 @@ const AppNavbar = (props) => {
             <NavItem>
               <NavLink onClick={props.handleNavigation}>Collections</NavLink>
             </NavItem>
-            <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle nav>
-                <i className="far fa-user-circle"></i>
-              </DropdownToggle>
-              <DropdownMenu right>
-                <DropdownItem>
-                  <AuthWindow buttonLabel={"SignIn"} className={"modal-dialog modal-lg"} />
-                </DropdownItem>
-                <DropdownItem>
-                  About
-                </DropdownItem>
-                <DropdownItem divider />
-                <DropdownItem>
-                  <a href="#bottomBar">Contact</a>
-                </DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown>
+            <NavItem>
+              <AuthWindow buttonLabel={"SignIn"} className={"modal-dialog modal-lg"} />
+            </NavItem>
           </Nav>
-            <NavbarText><p style={{fontFamily: "Roboto, sans-serif"}}></p>Oreo_group&trade;</NavbarText>
+            <NavbarText><p style={{fontFamily: "Roboto, sans-serif"}}></p>Oreo_Group&trade;</NavbarText>
         </Collapse>
       </Navbar>
     </div>
