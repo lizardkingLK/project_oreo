@@ -8,6 +8,7 @@ import Showcase from '../src/components/Showcase';
 import ItemWindow from '../src/components/ItemWindow';
 import BottomBar from '../src/components/BottomBar';
 import Spinner from '../src/components/Spinner';
+import Cart from '../src/components/Cart';
 
 class App extends React.Component {
   state = {
@@ -15,16 +16,69 @@ class App extends React.Component {
     contents: [],
     spinState: 'none',
     blur: '0',
-    banner: false
+    showcase: false,
+    banner: false,
+    cart: false,
+    authState: null
+  }
+
+  toggleShowcase = (showcaseOption) => {
+    this.setState( {showcase: showcaseOption} );
   }
 
   toggleBanner = (bannerOption) => {
     this.setState( {banner: bannerOption} );
   }
 
+  toggleCart = (cartOption) => {
+    this.setState( {cart: cartOption} );
+  }
+
+  toggleSpinState = () => {
+    this.toggleBanner(false);
+    if(this.state.spinState === 'none') {
+      this.setState({
+        blur: '100vh',
+        spinState: 'inline-block'
+      });
+    } else {
+      this.setState({
+        blur: '0',
+        spinState: 'none'
+      })
+    }
+  }
+
   componentDidMount = () => {
-    this.toggleBanner(true);
     console.log('project_oreo--------------');
+    this.toggleShowcase(true);
+    this.toggleBanner(true);
+    this.checkAuthState();
+  }
+
+  checkAuthState = async () => {
+    const user = localStorage.getItem('user_oreo');
+    if(user) {
+      await axios.get('/api/auth/user', { headers: {'x-auth-token': user} })
+      .then(res => {
+        this.setState({
+          authState: res.data
+        })
+      })
+    }
+  }
+
+  setAuthState = (uo) => {
+    localStorage.setItem('user_oreo', uo);
+    this.checkAuthState();
+  }
+
+  changeShowcaseState = (category,data) => {
+    this.setCartState(false);
+    this.setState({
+      title: category,
+      contents: data
+    })
   }
 
   handleNavigation = async (e) => {
@@ -64,38 +118,31 @@ class App extends React.Component {
     }
   }
 
-  toggleSpinState = () => {
-    this.toggleBanner(false);
-    if(this.state.spinState === 'none') {
-      this.setState({
-        blur: '100vh',
-        spinState: 'inline-block'
-      });
-    } else {
-      this.setState({
-        blur: '0',
-        spinState: 'none'
-      })
+  setCartState = (cartState) => {
+    if(cartState) {
+      this.toggleCart(true);
+      this.toggleShowcase(false);
     }
-  }
-
-  changeShowcaseState = (category,data) => {
-      this.setState({
-        title: category,
-        contents: data
-
-        // [
-          // {name: "Nike Air Max 90 FlyEase", _id: 1, value: 27, category: "Men"},
-        // ]
-      })
+    else {
+      this.toggleShowcase(true);
+      this.toggleCart(false);
+    }
   }
 
   render() {
     return (
       <div>
         <Spinner spinState={this.state.spinState} />
-        <NavigationBar handleNavigation={this.handleNavigation} />
-        <Showcase 
+        <NavigationBar
+          authState={this.state.authState}
+          handleNavigation={this.handleNavigation}
+          setAuthState={this.setAuthState}
+          setCartState={this.setCartState}
+          cartState={this.state.cart}
+        />
+        <Cart cart={this.state.cart} />
+        <Showcase
+          showcase={this.state.showcase}
           title={this.state.title} 
           contents={this.state.contents} 
           blur={this.state.blur} 
