@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom';
 import {  NavLink, Modal, ModalBody } from 'reactstrap';
 import axios from 'axios';
 
-const AuthWindow = (props) => {
+const SignInWindow = (props) => {
   const {
+    setAuthState,
     buttonLabel,
     className
   } = props;
@@ -19,7 +20,6 @@ const AuthWindow = (props) => {
   let email = '';
   let password = '';
   
-
   const handleChange = (e) => {
     let type = e.target.id;
     let value = e.target.value;
@@ -40,21 +40,21 @@ const AuthWindow = (props) => {
     e.preventDefault();
     await axios.post('/api/auth', {email,password})
     .then(res => {
-      console.log(res.data);
-      //
+      // set user in the state
+      setAuthState(res.data.token);
       toggle();
     })
     .catch(err => {
       let type = err.response.data.msg;
         switch(type) {
           case msgA:
-            errMsg = React.createElement('small', {id: "authWindowBCBsiFFerrC_errMsg"}, msgA);
+            errMsg = React.createElement('small', {id: "signInWindowBCBsiFFerrC_errMsg"}, msgA);
             break;
           case msgB:
-            errMsg = React.createElement('small', {id: "authWindowBCBsiFFerrC_errMsg"}, msgB);
+            errMsg = React.createElement('small', {id: "signInWindowBCBsiFFerrC_errMsg"}, msgB);
             break;
           case msgC:
-            errMsg = React.createElement('small', {id: "authWindowBCBsiFFerrC_errMsg"}, msgC);
+            errMsg = React.createElement('small', {id: "signInWindowBCBsiFFerrC_errMsg"}, msgC);
             break;
           default:
             console.log(type);
@@ -62,7 +62,7 @@ const AuthWindow = (props) => {
         }
       ReactDOM.render(
         errMsg,
-        document.querySelector('#authWindowBCBsiFF_errContainer')
+        document.querySelector('#signInWindowBCBsiFF_errContainer')
       );
     })
   }
@@ -70,15 +70,15 @@ const AuthWindow = (props) => {
   return (
     <div>
       <NavLink onClick={toggle}>{buttonLabel}</NavLink>
-      <Modal id="authWindow" isOpen={modal} toggle={toggle} className={className}>
-        <ModalBody id="authWindow_body">
-          <div id="authWindowB_content">
-            <div id="authWindowBC_header">
-              <h5 id="authWindowBCH_left">SignIn</h5>
-              <p id="authWindowBCH_right">New to Oreo? <small id="authWindowBCH_rightB">SignUp</small></p>
+      <Modal id="signInWindow" isOpen={modal} toggle={toggle} className={className}>
+        <ModalBody id="signInWindow_body">
+          <div id="signInWindowB_content">
+            <div id="signInWindowBC_header">
+              <h5 id="signInWindowBCH_left">SignIn</h5>
+              <p id="signInWindowBCH_right">New to Oreo? <small id="signInWindowBCH_rightB">SignUp</small></p>
             </div>
-            <div id="authWindowBC_body">
-              <form id="authWindowBCB_signinForm" onSubmit={handleSubmit}>
+            <div id="signInWindowBC_body">
+              <form id="signInWindowBCB_signinForm" onSubmit={handleSubmit}>
                 <div className="form-group">
                   <label htmlFor="sIemail">Email address</label>
                   <input type="email" className="form-control" id="sIemail" aria-describedby="emailHelp" onChange={handleChange} />
@@ -92,16 +92,16 @@ const AuthWindow = (props) => {
                   <input type="checkbox" className="form-check-input" id="sIsignedIn" />
                   <label htmlFor="sIsignedIn" className="form-check-label">Keep me signed in</label>
                 </div>
-                <div id="authWindowBCBsiF_footer" style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
+                <div id="signInWindowBCBsiF_footer">
                   <button type="submit" className="btn btn-sm btn-outline-dark">SignIn</button>
-                  <div id="authWindowBCBsiFF_errContainer">
-                    {/* <small id="authWindowBCBsiFFerrC_errMsg">asdf</small> */}
+                  <div id="signInWindowBCBsiFF_errContainer">
+                    {/* <small id="signInWindowBCBsiFFerrC_errMsg">asdf</small> */}
                   </div>
                 </div>
               </form>
             </div>
-            <div id="authWindowBC_footer" style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", backgroundColor: "var(--primaryAccent)", height: "5vh", width: "100%"}}>
-              <button onClick={toggle} style={{color: "var(--primaryLight"}} className="btn btn-link">Cancel</button>
+            <div id="signInWindowBC_footer">
+              <button id="signInWindowBCF_cancel" onClick={toggle} className="btn btn-link">Cancel</button>
             </div>
           </div>
         </ModalBody>
@@ -110,4 +110,4 @@ const AuthWindow = (props) => {
   );
 }
 
-export default AuthWindow;
+export default SignInWindow;
