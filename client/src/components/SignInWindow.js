@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import {  NavLink, Modal, ModalBody } from 'reactstrap';
 import axios from 'axios';
 
+import SignUpWindow from './SignUpWindow';
+
 const SignInWindow = (props) => {
   const {
     setAuthState,
@@ -11,7 +13,7 @@ const SignInWindow = (props) => {
   } = props;
 
   const [modal, setModal] = useState(false);
-  const toggle = () => setModal(!modal);
+  const togglesignin = () => setModal(!modal);
 
   let msgA = 'Please enter all fields';
   let msgB = 'User does not exist';
@@ -42,7 +44,7 @@ const SignInWindow = (props) => {
     .then(res => {
       // set user in the state
       setAuthState(res.data.token);
-      toggle();
+      togglesignin();
     })
     .catch(err => {
       let type = err.response.data.msg;
@@ -69,13 +71,13 @@ const SignInWindow = (props) => {
 
   return (
     <div>
-      <NavLink onClick={toggle}>{buttonLabel}</NavLink>
-      <Modal id="signInWindow" isOpen={modal} toggle={toggle} className={className}>
+      <NavLink style={{cursor: "pointer"}} onClick={togglesignin}>{buttonLabel}</NavLink>
+      <Modal id="signInWindow" isOpen={modal} toggleSignIn={togglesignin} className={className}>
         <ModalBody id="signInWindow_body">
           <div id="signInWindowB_content">
             <div id="signInWindowBC_header">
               <h5 id="signInWindowBCH_left">SignIn</h5>
-              <p id="signInWindowBCH_right">New to Oreo? <small id="signInWindowBCH_rightB">SignUp</small></p>
+              <p onClick={togglesignin} id="signInWindowBCH_right">New to Oreo? </p><SignUpWindow id="signInWindowBCH_rightB" setAuthState={props.setAuthState} buttonLabel={"Join us"} className={"modal-dialog modal-lg"} />
             </div>
             <div id="signInWindowBC_body">
               <form id="signInWindowBCB_signinForm" onSubmit={handleSubmit}>
@@ -101,7 +103,7 @@ const SignInWindow = (props) => {
               </form>
             </div>
             <div id="signInWindowBC_footer">
-              <button id="signInWindowBCF_cancel" onClick={toggle} className="btn btn-link">Cancel</button>
+              <button id="signInWindowBCF_cancel" onClick={togglesignin} className="btn btn-link">Cancel</button>
             </div>
           </div>
         </ModalBody>

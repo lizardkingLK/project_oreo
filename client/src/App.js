@@ -140,7 +140,11 @@ class App extends React.Component {
           setCartState={this.setCartState}
           cartState={this.state.cart}
         />
-        <Cart cart={this.state.cart} />
+        <Cart 
+          cart={this.state.cart} 
+          authState={this.state.authState}
+          setAuthState={this.setAuthState}
+        />
         <Showcase
           showcase={this.state.showcase}
           title={this.state.title} 
