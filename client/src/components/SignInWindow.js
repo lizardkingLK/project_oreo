@@ -7,11 +7,12 @@ const SignInWindow = (props) => {
   const {
     setAuthState,
     buttonLabel,
-    className
+    className,
+    message
   } = props;
 
   const [modal, setModal] = useState(false);
-  const toggle = () => setModal(!modal);
+  const togglesignin = () => setModal(!modal);
 
   let msgA = 'Please enter all fields';
   let msgB = 'User does not exist';
@@ -42,7 +43,6 @@ const SignInWindow = (props) => {
     .then(res => {
       // set user in the state
       setAuthState(res.data.token);
-      toggle();
     })
     .catch(err => {
       let type = err.response.data.msg;
@@ -69,24 +69,24 @@ const SignInWindow = (props) => {
 
   return (
     <div>
-      <NavLink onClick={toggle}>{buttonLabel}</NavLink>
-      <Modal id="signInWindow" isOpen={modal} toggle={toggle} className={className}>
+      <NavLink style={{cursor: "pointer"}} onClick={togglesignin}>{buttonLabel}</NavLink>
+      <Modal id="signInWindow" isOpen={modal} className={className}>
         <ModalBody id="signInWindow_body">
           <div id="signInWindowB_content">
             <div id="signInWindowBC_header">
               <h5 id="signInWindowBCH_left">SignIn</h5>
-              <p id="signInWindowBCH_right">New to Oreo? <small id="signInWindowBCH_rightB">SignUp</small></p>
+              {<p id="signInWindowBCH_right">{(message) ? message: ''}</p>}
             </div>
             <div id="signInWindowBC_body">
               <form id="signInWindowBCB_signinForm" onSubmit={handleSubmit}>
                 <div className="form-group">
                   <label htmlFor="sIemail">Email address</label>
-                  <input type="email" className="form-control" id="sIemail" aria-describedby="emailHelp" onChange={handleChange} />
+                  <input type="email" placeholder="Enter email..." className="form-control" id="sIemail" aria-describedby="emailHelp" onChange={handleChange} />
                   <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
                 </div>
                 <div className="form-group">
                   <label htmlFor="sIpassword">Password</label>
-                  <input type="password" className="form-control" id="sIpassword" onChange={handleChange} />
+                  <input type="password" placeholder="Enter password..." className="form-control" id="sIpassword" onChange={handleChange} />
                 </div>
                 <div className="form-group form-check">
                   <input type="checkbox" className="form-check-input" id="sIsignedIn" />
@@ -101,7 +101,7 @@ const SignInWindow = (props) => {
               </form>
             </div>
             <div id="signInWindowBC_footer">
-              <button id="signInWindowBCF_cancel" onClick={toggle} className="btn btn-link">Cancel</button>
+              <button id="signInWindowBCF_cancel" onClick={togglesignin} className="btn btn-link">Cancel</button>
             </div>
           </div>
         </ModalBody>

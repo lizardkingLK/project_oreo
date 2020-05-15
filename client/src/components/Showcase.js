@@ -9,6 +9,8 @@ const Showcase = (props) => {
     let contents = props.contents;
     let blur = props.blur;
     let banner = props.banner;
+    let authState = props.authState;
+    let setAuthState = props.setAuthState;
 
     (showcase === true) ? showcase = 'block' : showcase = 'none';
 
@@ -22,11 +24,20 @@ const Showcase = (props) => {
                 </div>
 
                 <div>
-                    <Banner banner={banner} />
+                    <Banner 
+                        banner={banner}
+                        authState={authState}
+                        setAuthState={setAuthState}
+                    />
                     {
                         contents.map(cont => {
                             return (
-                                <Item key={cont._id} cont={cont} />
+                                <Item 
+                                    key={cont._id} 
+                                    cont={cont} 
+                                    authState={authState}
+                                    setAuthState={setAuthState}
+                                />
                             )
                         })
                     }

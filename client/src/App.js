@@ -68,6 +68,13 @@ class App extends React.Component {
     }
   }
 
+  clearAuthState = () => {
+    localStorage.removeItem('user_oreo');
+    this.setState({
+      authState: null
+    })
+  }
+
   setAuthState = (uo) => {
     localStorage.setItem('user_oreo', uo);
     this.checkAuthState();
@@ -137,16 +144,23 @@ class App extends React.Component {
           authState={this.state.authState}
           handleNavigation={this.handleNavigation}
           setAuthState={this.setAuthState}
+          clearAuthState={this.clearAuthState}
           setCartState={this.setCartState}
           cartState={this.state.cart}
         />
-        <Cart cart={this.state.cart} />
+        <Cart 
+          cart={this.state.cart} 
+          authState={this.state.authState}
+          setAuthState={this.setAuthState}
+        />
         <Showcase
           showcase={this.state.showcase}
           title={this.state.title} 
           contents={this.state.contents} 
           blur={this.state.blur} 
           banner={this.state.banner}
+          authState={this.state.authState}
+          setAuthState={this.setAuthState}
         />
         <ItemWindow />
         <BottomBar />

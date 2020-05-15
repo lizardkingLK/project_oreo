@@ -9,6 +9,7 @@ const port = process.env.PORT || 3001;
 const items = require('./routes/api/items');
 const users = require('./routes/api/users');
 const auth = require('./routes/api/auth');
+const carts = require('./routes/api/carts');
 let uri = '';
 
 app.use(express.json());
@@ -38,6 +39,7 @@ db.once('open', function() {
 app.use('/api/items', items);
 app.use('/api/users', users);
 app.use('/api/auth', auth);
+app.use('/api/carts', carts);
 
 server.listen(port, () => {
     console.log('api_oreo listening on port %s', port);

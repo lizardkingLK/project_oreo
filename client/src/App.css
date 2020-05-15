@@ -89,11 +89,130 @@ html {
     margin: 0 0 0 10vh;
 }
 
+#banner #banner_content #bannerC_right #bannerCR_joinUs {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0 10vh 0 20vh;
+    cursor: pointer;
+    border-radius: 2vh;
+    width: max-content;
+    padding: .5vh 2vh .5vh 2vh;
+    font-size: large;
+    color: var(--primaryAccent);
+    background-color: var(--secondaryAccent);
+}
+
 #cart {
     height: 100vh;
-    overflow-y: scroll;
     background-color: var(--primaryLight);
-    background-size: cover;
+    display: flex;
+    flex-direction: row;
+}
+
+#cart #cart_left {
+    flex: 2;
+}
+
+#cart #cart_left #cartL_topA {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 10vh;
+    font-family: "Roboto", sans-serif;
+    margin: 0 2vh 0 2vh;
+    color: var(--primaryDark);
+}
+
+#cart #cart_left #cartL_topB {
+    display: flex;
+    flex-direction: row;
+    height: 45vh;
+    font-family: "Roboto", sans-serif;
+    margin: 0 2vh 0 2vh;
+    color: var(--primaryDark);
+}
+
+#cart #cart_left #cartL_topC {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 5vh;
+    font-family: "Roboto", sans-serif;
+    margin: 0 2vh 0 2vh;
+    color: var(--primaryDark);
+}
+
+#cart #cart_left #cartL_topD {
+    display: flex;
+    flex-direction: row;
+    height: 40vh;
+    font-family: "Roboto", sans-serif;
+    margin: 0 2vh 0 2vh;
+    color: var(--primaryDark);
+}
+
+#cart #cart_right {
+    flex: 1;
+}
+
+#cart #cart_right #cartR_topA {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 10vh;
+    font-family: "Roboto", sans-serif;
+    margin: 0 2vh 0 2vh;
+    color: var(--primaryDark);
+}
+
+#cart #cart_right #cartR_topB {
+    display: flex;
+    flex-direction: column;
+    height: 20vh;
+    font-family: "Roboto", sans-serif;
+    margin: 0 2vh 0 2vh;
+    color: var(--primaryDark);
+    position: relative;
+}
+
+#cart #cart_right #cartR_topB #cartRTopB_promo {
+    height: 10vh;
+    position: relative;
+}
+
+#cart #cart_right #cartR_topB #cartRTopB_subTotal {
+    height: 5vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#cart #cart_right #cartR_topB #cartRTopB_delivery {
+    height: 5vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#cart #cart_right #cartR_topC {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    height: 10vh;
+    font-family: "Montserrat", sans-serif;
+    margin: 0 2vh 0 2vh;
+    color: var(--primaryDark);
+    position: relative;
+}
+
+#cart #cart_right #cartR_topC #cartRTopC_A {
+    font-weight: 800;
+}
+
+#cart #cart_right #cartR_topC #cartRTopC_B {
+    font-weight: 800;
 }
 
 #showcase {
@@ -198,6 +317,94 @@ html {
 }
 
 #signInWindow #signInWindow_body #signInWindowB_content #signInWindowBC_footer #signInWindowBCF_cancel {
+    color: var(--primaryAccent);
+}
+
+#signUpWindow {
+    font-family: 'Montserrat', sans-serif;
+    width: 500px;
+}
+
+#signUpWindow #signUpWindow_body {
+    height: max-content;
+    color: var(--primaryDark);
+    background-position: center;
+    background-blend-mode: normal;
+    /* background-color: var(--secondaryAccent); */
+}
+
+#signUpWindow #signUpWindow_body #signUpWindowB_content {
+    display: flex;
+    flex-direction: column;
+    height: 85vh;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+#signUpWindow #signUpWindow_body #signUpWindowB_content #signUpWindowBC_header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--primaryLight);
+    color: var(--primaryDark);
+    height: 10vh;
+    width: 100%;
+}
+
+#signUpWindow #signUpWindow_body #signUpWindowB_content #signUpWindowBC_header #signUpWindowBCH_left {
+    margin: 0 0 0 2vh;
+}
+
+#signUpWindow #signUpWindow_body #signUpWindowB_content #signUpWindowBC_header #signUpWindowBCH_right {
+    margin: 0 2vh 0 0;
+}
+
+#signUpWindow #signUpWindow_body #signUpWindowB_content #signUpWindowBC_header #signUpWindowBCH_right #signUpWindowBCH_rightB {
+    color: var(--primaryAccent);
+}
+
+#signUpWindow #signUpWindow_body #signUpWindowB_content #signUpWindowBC_body {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--primaryLight);
+    /* background: url('./images/fashion_6.jpg'); */
+    height: 70vh;
+    width: 100%;
+}
+
+#signUpWindow #signUpWindow_body #signUpWindowB_content #signUpWindowBC_body #signUpWindowBCB_signUpForm {
+    color: var(--primaryDark);
+    font-family: "Montserrat", sans-serif;
+}
+
+#signUpWindow #signUpWindow_body #signUpWindowB_content #signUpWindowBC_body #signUpWindowBCB_signUpForm #signUpWindowBCBsiF_footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#signUpWindow #signUpWindow_body #signUpWindowB_content #signUpWindowBC_body #signUpWindowBCB_signUpForm #signUpWindowBCBsiF_footer #signUpWindowBCBsiFF_errContainer #signUpWindowBCBsiFFerrC_errMsg {
+    color: var(--primaryAccent);
+    animation: pulse 2s infinite;
+    border-radius: 2vh;
+    background-color: var(--primaryDark);
+    padding: .75vh 1.5vh .75vh 1.5vh;
+}
+
+#signUpWindow #signUpWindow_body #signUpWindowB_content #signUpWindowBC_footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 5vh;
+}
+
+#signUpWindow #signUpWindow_body #signUpWindowB_content #signUpWindowBC_footer #signUpWindowBCF_cancel {
     color: var(--primaryAccent);
 }
 
@@ -442,6 +649,7 @@ html {
     display: flex;
     margin: 1vh 0vh 1vh 2vh;
     font-family: 'Roboto', sans-serif;
+    cursor: pointer;
 }
 
 .itemC_right .itemCR_topA .itemCR_topA_title {
@@ -469,6 +677,7 @@ html {
     margin: 1vh 0 2vh 1vh;
     font-family: 'Roboto', sans-serif;
     font-size: medium;
+    cursor: pointer;
 }
 
 .itemC_right .itemCR_topB .itemCR_topB_sizeGrid {

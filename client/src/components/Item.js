@@ -3,9 +3,15 @@ import {
     Button,
     Collapse
 } from 'reactstrap';
+import axios from 'axios';
+
+import SignInWindow from './SignInWindow';
 
 const Item = (props) => {
-    const cont = props.cont;
+    const { cont, authState, setAuthState } = props;
+    const itemId = cont._id;
+    const userId = authState?._id;
+    let itemSize = '';
 
     const [collapse, setCollapse] = useState(false);
     const toggleCollapse = () => setCollapse(!collapse);
@@ -14,6 +20,29 @@ const Item = (props) => {
         const reqBg = e.target.style.backgroundImage;
         const parent = e.target.parentElement.parentElement;
         parent.style.backgroundImage = `${reqBg}`;
+    }
+
+    const handleAddToCart = async (e) => {
+        console.log(itemId);
+        console.log(userId);
+
+        // find the cart
+        await axios.get('/api/carts/cart/'+userId)
+        .then(res => {
+            console.log(res.data);
+        })
+        
+        // if available -> take cart id
+        // else -> create and take cart id
+
+        // update cart with adding, updating item
+        
+    }
+
+    const handleSize = async (i) => {
+        const size = cont.sizes[i];
+        itemSize = size;
+        console.log(itemSize);
     }
 
     return (
@@ -42,10 +71,23 @@ const Item = (props) => {
                 <div className="itemCR_topD">
                     <small className="itemCR_topD_description">{cont.description}</small>
                 </div>
+                {(!userId)
+                ?
                 <div className="itemCR_topC">
-                    <Button color="dark" className="btn btn-sm itemCR_topC_addToCart">Add To Cart</Button>
+                    <SignInWindow
+                        scrollable={false}
+                        setAuthState={setAuthState} 
+                        buttonLabel={"Add To Cart"} 
+                        className={"modal-dialog modal-lg"}
+                        message={"You have to sign in first!"}
+                    />
+                </div>
+                :
+                <div className="itemCR_topC">
+                    <Button color="dark" onClick={handleAddToCart} className="btn btn-sm itemCR_topC_addToCart">Add To Cart</Button>
                     <Button color="light" className="btn btn-sm itemCR_topC_favourite">Favourite <i className="far fa-heart"></i></Button>
                 </div>
+                }
                 <div className="itemCR_topE">
                     <a href={cont.storyUrl} className="itemCR_topE_readMore">Read More</a>
                 </div>
@@ -62,7 +104,7 @@ const Item = (props) => {
                             {cont.sizes.map( (size,index) => {
                                 return ( 
                                     <div key={index} style={{textAlign: "center", margin: ".5vh 0 .5vh 0"}}>
-                                        <Button color="outline-dark" className="btn btn-sm" style={{color: "var(--primaryLight)", width: "80px"}} key={index}><small>{size}</small></Button>
+                                        <Button onClick={() => handleSize(index)} color="outline-dark" className="btn btn-sm" style={{color: "var(--primaryLight)", width: "80px"}} key={index}><small>{size}</small></Button>
                                     </div>
                                 )
                             })}
