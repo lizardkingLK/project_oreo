@@ -13,7 +13,6 @@ import SignInWindow from './SignInWindow';
 
 const AppNavbar = (props) => {
   const [isOpen, setIsOpen] = useState(false);
-
   const toggle = () => setIsOpen(!isOpen);
 
   return (
@@ -37,13 +36,16 @@ const AppNavbar = (props) => {
             </NavItem>
             <NavItem>
               {(!props.authState)?
-                <SignInWindow 
+                <SignInWindow
+                  scrollable={false}
                   setAuthState={props.setAuthState} 
                   buttonLabel={"SignIn"} 
                   className={"modal-dialog modal-lg"}
                 />
                 :
-                <NavLink>{props.authState.name}</NavLink>
+                <div style={{display: "flex", flexDirection: "row", alignItems: "center"}} >
+                  <NavLink onClick={props.clearAuthState}>SignOut</NavLink>
+                </div>
               }
             </NavItem>
           </Nav>

@@ -31,6 +31,7 @@ const Cart = (props) => {
                 </div>
                 <div id="cartL_topB">
                     <small id="cartLTopB_emptyMsg">There are no items in your cart.</small>
+                    {/* ALL CART ITEMS */}
                 </div>
                 <div id="cartL_topC">
                     <h5 id="cartLTopC_heading">Wishlist</h5>
@@ -48,6 +49,7 @@ const Cart = (props) => {
                             Wishlist for {props.authState.name}
                         </small>
                     }
+                    {/* ALL WISHLIST ITEMS */}
                 </div>
             </div>
             <div id="cart_right">

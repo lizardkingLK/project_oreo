@@ -1,7 +1,11 @@
 import React from 'react';
 
+import SignUpWindow from './SignUpWindow';
+
 const Banner = (props) => {
     let banner = props.banner;
+    let authState = props.authState;
+    let setAuthState = props.setAuthState;
     (banner === true) ? banner = 'block' : banner = 'none';
 
     return (
@@ -13,6 +17,17 @@ const Banner = (props) => {
                 <div id="bannerC_right">
                     <h1 id="bannerCR_heading">Shop now</h1>
                     <p id="bannerCR_subHeading">With great prices</p>
+                    {(!authState)
+                    ?
+                    <SignUpWindow 
+                        setAuthState={setAuthState} 
+                        buttonLabel={"Join us"} 
+                        className={"modal-dialog modal-lg"} 
+                        linkStyle={"bannerCR_joinUs"}
+                    />
+                    :
+                    <small style={{margin: "0 0 0 10vh"}}>Welcome {authState.name}</small>
+                    }
                 </div>
             </div>
         </div>

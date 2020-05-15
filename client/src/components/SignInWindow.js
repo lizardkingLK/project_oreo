@@ -3,13 +3,12 @@ import ReactDOM from 'react-dom';
 import {  NavLink, Modal, ModalBody } from 'reactstrap';
 import axios from 'axios';
 
-import SignUpWindow from './SignUpWindow';
-
 const SignInWindow = (props) => {
   const {
     setAuthState,
     buttonLabel,
-    className
+    className,
+    message
   } = props;
 
   const [modal, setModal] = useState(false);
@@ -44,7 +43,6 @@ const SignInWindow = (props) => {
     .then(res => {
       // set user in the state
       setAuthState(res.data.token);
-      togglesignin();
     })
     .catch(err => {
       let type = err.response.data.msg;
@@ -72,23 +70,23 @@ const SignInWindow = (props) => {
   return (
     <div>
       <NavLink style={{cursor: "pointer"}} onClick={togglesignin}>{buttonLabel}</NavLink>
-      <Modal id="signInWindow" isOpen={modal} toggleSignIn={togglesignin} className={className}>
+      <Modal id="signInWindow" isOpen={modal} className={className}>
         <ModalBody id="signInWindow_body">
           <div id="signInWindowB_content">
             <div id="signInWindowBC_header">
               <h5 id="signInWindowBCH_left">SignIn</h5>
-              <p onClick={togglesignin} id="signInWindowBCH_right">New to Oreo? </p><SignUpWindow id="signInWindowBCH_rightB" setAuthState={props.setAuthState} buttonLabel={"Join us"} className={"modal-dialog modal-lg"} />
+              {<p id="signInWindowBCH_right">{(message) ? message: ''}</p>}
             </div>
             <div id="signInWindowBC_body">
               <form id="signInWindowBCB_signinForm" onSubmit={handleSubmit}>
                 <div className="form-group">
                   <label htmlFor="sIemail">Email address</label>
-                  <input type="email" className="form-control" id="sIemail" aria-describedby="emailHelp" onChange={handleChange} />
+                  <input type="email" placeholder="Enter email..." className="form-control" id="sIemail" aria-describedby="emailHelp" onChange={handleChange} />
                   <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
                 </div>
                 <div className="form-group">
                   <label htmlFor="sIpassword">Password</label>
-                  <input type="password" className="form-control" id="sIpassword" onChange={handleChange} />
+                  <input type="password" placeholder="Enter password..." className="form-control" id="sIpassword" onChange={handleChange} />
                 </div>
                 <div className="form-group form-check">
                   <input type="checkbox" className="form-check-input" id="sIsignedIn" />

@@ -89,6 +89,18 @@ html {
     margin: 0 0 0 10vh;
 }
 
+#banner #banner_content #bannerC_right #bannerCR_joinUs {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0 10vh 0 20vh;
+    cursor: pointer;
+    border-radius: 2vh;
+    width: max-content;
+    padding: .5vh 2vh .5vh 2vh;
+    font-size: large;
+    color: var(--primaryAccent);
+    background-color: var(--secondaryAccent);
+}
+
 #cart {
     height: 100vh;
     background-color: var(--primaryLight);
@@ -637,6 +649,7 @@ html {
     display: flex;
     margin: 1vh 0vh 1vh 2vh;
     font-family: 'Roboto', sans-serif;
+    cursor: pointer;
 }
 
 .itemC_right .itemCR_topA .itemCR_topA_title {
@@ -664,6 +677,7 @@ html {
     margin: 1vh 0 2vh 1vh;
     font-family: 'Roboto', sans-serif;
     font-size: medium;
+    cursor: pointer;
 }
 
 .itemC_right .itemCR_topB .itemCR_topB_sizeGrid {
