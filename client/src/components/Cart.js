@@ -32,6 +32,9 @@ const Cart = (props) => {
                 <div id="cartL_topB">
                     <small id="cartLTopB_emptyMsg">There are no items in your cart.</small>
                     {/* ALL CART ITEMS */}
+                    <div className="cartLTopB_cartItem">
+                        adf
+                    </div>
                 </div>
                 <div id="cartL_topC">
                     <h5 id="cartLTopC_heading">Wishlist</h5>

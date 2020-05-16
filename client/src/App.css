@@ -519,6 +519,7 @@ html {
     background-color: transparent;
 }
 
+/* classes */
 .item_card {
     background-color: var(--primaryLight);
     height: 75vh;
@@ -709,12 +710,17 @@ html {
     transition: .5s;
 }
 
+.cartLTopB_cartItem {
+    height: 10vh;
+}
+
 .groupLogo {
     font-family: "Montserrat", sans-serif;
     color: var(--secondaryDark); 
     margin: 0 0 0 2vh;
 }
 
+/* animations */
 @keyframes pulse {
     0% {
         color: var(--primaryAccent);
@@ -725,6 +731,7 @@ html {
     }
 }
 
+/* responsiveness */
 @media screen and (max-width: 800px) {
     .item_card {
         background-color: var(--primaryLight);
