@@ -19,7 +19,16 @@ class App extends React.Component {
     showcase: false,
     banner: false,
     cart: false,
-    authState: null
+    authState: null,
+    cartId: '',
+    cartItems: []
+  }
+
+  componentDidMount = () => {
+    console.log('project_oreo--------------');
+    this.toggleShowcase(true);
+    this.toggleBanner(true);
+    this.checkAuthState();
   }
 
   toggleShowcase = (showcaseOption) => {
@@ -49,11 +58,51 @@ class App extends React.Component {
     }
   }
 
-  componentDidMount = () => {
-    console.log('project_oreo--------------');
-    this.toggleShowcase(true);
-    this.toggleBanner(true);
-    this.checkAuthState();
+  setCartState = (cartState) => {
+    if(cartState) {
+      this.toggleCart(true);
+      this.toggleShowcase(false);
+    }
+    else {
+      this.toggleShowcase(true);
+      this.toggleCart(false);
+    }
+  }
+
+  getCartId = async (userId) => {
+    let cart = null;
+    // find the cart
+    await axios.get('/api/carts/cart/'+userId)
+    .then(res => {
+        cart = res.data[0];
+    })
+
+    if(cart)
+      return cart._id;
+    else {
+      await axios.post('/api/carts', {userId})
+      .then(res => {
+          return res.data._id;
+      })
+    }
+  }
+
+  addToCart = async (cartId, itemId, itemSize) => {
+    let result = false;
+    // add item to the cart
+    const newItem = {itemId, itemSize};
+
+    await axios.put('/api/carts', {newItem,cartId})
+    .then(res => {
+      if(res.data === 'OK') {
+        this.setState({
+          cartItems: [...this.state.cartItems, newItem]
+        })
+        result = true;
+      }
+    });
+
+    return result;
   }
 
   checkAuthState = async () => {
@@ -62,7 +111,8 @@ class App extends React.Component {
       await axios.get('/api/auth/user', { headers: {'x-auth-token': user} })
       .then(res => {
         this.setState({
-          authState: res.data
+          authState: res.data,
+          cartId: this.getCartId(res.data._id)
         })
       })
     }
@@ -125,17 +175,6 @@ class App extends React.Component {
     }
   }
 
-  setCartState = (cartState) => {
-    if(cartState) {
-      this.toggleCart(true);
-      this.toggleShowcase(false);
-    }
-    else {
-      this.toggleShowcase(true);
-      this.toggleCart(false);
-    }
-  }
-
   render() {
     return (
       <div>
@@ -161,6 +200,8 @@ class App extends React.Component {
           banner={this.state.banner}
           authState={this.state.authState}
           setAuthState={this.setAuthState}
+          getCartId={this.getCartId}
+          addToCart={this.addToCart}
         />
         <ItemWindow />
         <BottomBar />

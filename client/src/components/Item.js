@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
 import {
     Button,
-    Collapse
+    Collapse,
+    Fade
 } from 'reactstrap';
-import axios from 'axios';
 
 import SignInWindow from './SignInWindow';
 
 const Item = (props) => {
-    const { cont, authState, setAuthState } = props;
+    const { cont, authState, setAuthState, getCartId, addToCart } = props;
     const itemId = cont._id;
     const userId = authState?._id;
     let itemSize = '';
 
+    const [fadeInA, setFadeInA] = useState(false);
+    const [fadeInB, setFadeInB] = useState(false);
     const [collapse, setCollapse] = useState(false);
     const toggleCollapse = () => setCollapse(!collapse);
 
@@ -23,26 +25,45 @@ const Item = (props) => {
     }
 
     const handleAddToCart = async (e) => {
-        console.log(itemId);
-        console.log(userId);
+        if(itemSize) {
+            if(fadeInA) setFadeInA(false);
+            // e.target.innerHTML = 'Added';
 
-        // find the cart
-        await axios.get('/api/carts/cart/'+userId)
-        .then(res => {
-            console.log(res.data);
-        })
-        
-        // if available -> take cart id
-        // else -> create and take cart id
+            let cartId = '';
 
-        // update cart with adding, updating item
-        
+            await getCartId(userId)
+            .then(cId => {
+                cartId = cId;
+            })
+            
+            // console.log('USER_ID   '+userId);
+            // console.log('CART_ID   '+cartId);
+            // console.log('ITEM_ID   '+itemId);
+            // console.log('ITEM_SIZE '+itemSize);
+
+            // add to cart
+            await addToCart(cartId,itemId,itemSize)
+            .then(result => {
+                if(result)
+                    setFadeInB(true);
+                else
+                    setFadeInB(false);
+            })
+        }
+        else {
+            setFadeInA(true);
+            setCollapse(true);
+        }
     }
 
     const handleSize = async (i) => {
-        const size = cont.sizes[i];
-        itemSize = size;
-        console.log(itemSize);
+        if(!itemSize) {
+            const size = cont.sizes[i];
+            itemSize = size;
+            setCollapse(true);
+        }
+        else
+            setCollapse(false);
     }
 
     return (
@@ -84,10 +105,18 @@ const Item = (props) => {
                 </div>
                 :
                 <div className="itemCR_topC">
+                    <Fade in={fadeInA} id="itemCR_topC_sizeSelectWarningContainer" style={{margin: "0 2vh 0 0"}}>
+                        <span className="badge badge-light">please set size!</span>
+                    </Fade>
                     <Button color="dark" onClick={handleAddToCart} className="btn btn-sm itemCR_topC_addToCart">Add To Cart</Button>
                     <Button color="light" className="btn btn-sm itemCR_topC_favourite">Favourite <i className="far fa-heart"></i></Button>
                 </div>
                 }
+                <div className="itemCR_topH" style={{height: "5vh", margin: "0 2vh 0 0"}}>
+                    <Fade in={fadeInB} id="itemCR_topH_message">
+                        <span className="badge badge-light">Added to cart</span>
+                    </Fade>
+                </div>
                 <div className="itemCR_topE">
                     <a href={cont.storyUrl} className="itemCR_topE_readMore">Read More</a>
                 </div>
