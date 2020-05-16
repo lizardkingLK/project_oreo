@@ -27,20 +27,14 @@ const Item = (props) => {
     const handleAddToCart = async (e) => {
         if(itemSize) {
             if(fadeInA) setFadeInA(false);
-            // e.target.innerHTML = 'Added';
-
             let cartId = '';
 
+            // get cart id
             await getCartId(userId)
             .then(cId => {
                 cartId = cId;
             })
             
-            // console.log('USER_ID   '+userId);
-            // console.log('CART_ID   '+cartId);
-            // console.log('ITEM_ID   '+itemId);
-            // console.log('ITEM_SIZE '+itemSize);
-
             // add to cart
             await addToCart(cartId,itemId,itemSize)
             .then(result => {
@@ -49,9 +43,15 @@ const Item = (props) => {
                 else
                     setFadeInB(false);
             })
+            
+            // console.log('USER_ID   '+userId);
+            // console.log('CART_ID   '+cartId);
+            // console.log('ITEM_ID   '+itemId);
+            // console.log('ITEM_SIZE '+itemSize);
         }
         else {
             setFadeInA(true);
+            setFadeInB(false);
             setCollapse(true);
         }
     }
@@ -112,7 +112,7 @@ const Item = (props) => {
                     <Button color="light" className="btn btn-sm itemCR_topC_favourite">Favourite <i className="far fa-heart"></i></Button>
                 </div>
                 }
-                <div className="itemCR_topH" style={{height: "5vh", margin: "0 2vh 0 0"}}>
+                <div className="itemCR_topH" style={{height: "5vh", margin: "0 0 0 2vh"}}>
                     <Fade in={fadeInB} id="itemCR_topH_message">
                         <span className="badge badge-light">Added to cart</span>
                     </Fade>
