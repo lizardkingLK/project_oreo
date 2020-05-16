@@ -15,7 +15,7 @@ const Item = (props) => {
 
     const [fadeInA, setFadeInA] = useState(false);
     const [fadeInB, setFadeInB] = useState(false);
-    const [collapse, setCollapse] = useState(false);
+    const [collapse, setCollapse] = useState(true);
     const toggleCollapse = () => setCollapse(!collapse);
 
     const handleImageClick = (e) => {
@@ -43,7 +43,7 @@ const Item = (props) => {
                 else
                     setFadeInB(false);
             })
-            
+
             // console.log('USER_ID   '+userId);
             // console.log('CART_ID   '+cartId);
             // console.log('ITEM_ID   '+itemId);
