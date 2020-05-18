@@ -11,6 +11,8 @@ const Showcase = (props) => {
     let banner = props.banner;
     let authState = props.authState;
     let setAuthState = props.setAuthState;
+    let getCartId = props.getCartId;
+    let addToCart = props.addToCart;
 
     (showcase === true) ? showcase = 'block' : showcase = 'none';
 
@@ -37,6 +39,8 @@ const Showcase = (props) => {
                                     cont={cont} 
                                     authState={authState}
                                     setAuthState={setAuthState}
+                                    getCartId={getCartId}
+                                    addToCart={addToCart}
                                 />
                             )
                         })

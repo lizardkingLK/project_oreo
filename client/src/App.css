@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Lobster&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Average+Sans&display=swap');
 
 :root {
     --primaryDark: #333333;
@@ -81,12 +82,26 @@ html {
 #banner #banner_content #bannerC_right #bannerCR_heading {
     font-family: 'Lobster', sans-serif;
     font-size: 20vh;
-    margin: 0 0 0 10vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 0 2vh 0 2vh;
 }
 
 #banner #banner_content #bannerC_right #bannerCR_subHeading {
     font-family: 'Roboto', sans-serif;
-    margin: 0 0 0 10vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 0 2vh 0 2vh;
+}
+
+#banner #banner_content #bannerC_right #bannerCR_welcome {
+    font-family: 'Montserrat', sans-serif;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 2vh 2vh 2vh 2vh;
 }
 
 #banner #banner_content #bannerC_right #bannerCR_joinUs {
@@ -104,7 +119,6 @@ html {
 #cart {
     height: 100vh;
     background-color: var(--primaryLight);
-    display: flex;
     flex-direction: row;
 }
 
@@ -116,19 +130,41 @@ html {
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: space-between;
     height: 10vh;
     font-family: "Roboto", sans-serif;
     margin: 0 2vh 0 2vh;
     color: var(--primaryDark);
 }
 
+#cart #cart_left #cartL_topA #cartLTopA_message {
+    margin: 0 2vh 0 0;
+}
+
 #cart #cart_left #cartL_topB {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     height: 45vh;
     font-family: "Roboto", sans-serif;
     margin: 0 2vh 0 2vh;
     color: var(--primaryDark);
+}
+
+#cart #cart_left #cartL_topB #cartLTopB_messageContainer {
+    display: flex;
+    flex-direction: column;
+    height: 45vh;
+    align-items: center;
+    justify-content: center;
+}
+
+#cart #cart_left #cartL_topB #cartLTopB_messageContainer #cartLTopBMC_message {
+    font-family: "Lobster", sans-serif;
+}
+
+#cart #cart_left #cartL_topB #cartLTopB_cartItemContainer {
+    height: 45vh;
+    overflow-y: scroll;
 }
 
 #cart #cart_left #cartL_topC {
@@ -213,6 +249,39 @@ html {
 
 #cart #cart_right #cartR_topC #cartRTopC_B {
     font-weight: 800;
+}
+
+#cart #cart_right #cartR_topD {
+    height: 50vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#cart #cart_right #cartR_topD #cartRTopD_A {
+    height: 25vh;
+    width: max-content;
+    margin: 1vh 0 1vh 0;
+    font-family: "Lobster", sans-serif;
+    cursor: pointer;
+}
+
+#cart #cart_right #cartR_topD #cartRTopD_A:hover {
+    color: var(--primaryAccent);
+}
+
+#cart #cart_right #cartR_topD #cartRTopD_B {
+    height: 25vh;
+    width: max-content;
+    margin: 1vh 0 1vh 0;
+    font-family: "Average sans", sans-serif;
+    font-style: italic;
+    cursor: pointer;
+}
+
+#cart #cart_right #cartR_topD #cartRTopD_B:hover {
+    color: var(--primaryAccent);
 }
 
 #showcase {
@@ -409,13 +478,15 @@ html {
 }
 
 #itemWindow {
+    color: var(--primaryDark);
+    background-color: var(--secondaryAccent);
     min-height: 100vh;
-    background-color: var(--primaryDark);
-    background-image: url('../src/images/fashion_2.jpg');
+    /* background-color: var(--primaryDark); */
+    /* color: var(--primaryLight); */
+    /* background-image: url('../src/images/fashion_2.jpg'); */
     background-repeat: no-repeat;
     background-size: cover;
     background-blend-mode: lighten;
-    color: var(--primaryLight);
 }
 
 #bottomBar {
@@ -519,6 +590,7 @@ html {
     background-color: transparent;
 }
 
+/* classes */
 .item_card {
     background-color: var(--primaryLight);
     height: 75vh;
@@ -709,12 +781,105 @@ html {
     transition: .5s;
 }
 
+.cartLTopBCIC_cartItem {
+    height: 45vh;
+    display: flex;
+    flex-direction: row;
+}
+
+.cartLTopBCIC_cartItem .cartLTopBCICCI_image {
+    width: 45vh;
+    height: 45vh;
+    background-size: cover;
+}
+
+.cartLTopBCIC_cartItem .cartLTopBCICCI_detailsA {
+    height: 45vh;
+    width: max-content;
+    display: flex;
+    flex-direction: column;
+    flex: 2;
+}
+
+.cartLTopBCIC_cartItem .cartLTopBCICCI_detailsA .cartLTopBCICCIDA_name {
+    width: 5vh;
+    width: max-content;
+    margin: 1vh 0 0 1vh;
+}
+
+.cartLTopBCIC_cartItem .cartLTopBCICCI_detailsA .cartLTopBCICCIDA_subCategories {
+    width: 5vh;
+    display: flex;
+    flex-direction: row;
+}
+
+.cartLTopBCIC_cartItem .cartLTopBCICCI_detailsA .cartLTopBCICCIDASCs_subCategory {
+    margin: 0 1vh 0 1vh;
+}
+
+.cartLTopBCIC_cartItem .cartLTopBCICCI_detailsA .cartLTopBCICCIDA_price {
+    height: 5vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cartLTopBCIC_cartItem .cartLTopBCICCI_detailsA .cartLTopBCICCIDA_price .cartLTopBCICCIDAP_priceA {
+    color: var(--secondaryDark);
+}
+
+.cartLTopBCIC_cartItem .cartLTopBCICCI_detailsA .cartLTopBCICCIDA_price .cartLTopBCICCIDAP_priceB {
+    font-family: "Roboto", sans-serif;
+    margin: 0 0 0 1vh;
+}
+
+.cartLTopBCIC_cartItem .cartLTopBCICCI_detailsA .cartLTopBCICCIDA_option {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.cartLTopBCIC_cartItem .cartLTopBCICCI_detailsA .cartLTopBCICCIDA_option .cartLTopBCICCIDAO_optionA {
+    margin: 0 2vh 0 0;
+    padding: .25vh 1vh .25vh 2vh;
+    border-radius: 4vh 0 0 4vh;
+    font-family: "Montserrat", sans-serif;
+    background-color: var(--primaryDanger);
+    color: var(--primaryLight);
+    transition: .25s;
+    cursor: pointer;
+}
+
+.cartLTopBCIC_cartItem .cartLTopBCICCI_detailsA .cartLTopBCICCIDA_option .cartLTopBCICCIDAO_optionA:hover {
+    background-color: var(--primaryLight);
+    color: var(--primaryDanger);
+    transition: .25s;
+}
+
+.cartLTopBCIC_cartItem .cartLTopBCICCI_detailsA .cartLTopBCICCIDA_size {
+    height: 10vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--primaryAccent);
+}
+
+.cartLTopBCIC_cartItem .cartLTopBCICCI_detailsA .cartLTopBCICCIDA_size .cartLTopBCICCIDAS_sizeA {
+    margin: 0 0 0 1vh;
+}
+
+.cartLTopBCIC_cartItem .cartLTopBCICCI_detailsA .cartLTopBCICCIDA_size .cartLTopBCICCIDAS_sizeB {
+    margin: 0 2vh 0 0;
+}
+
 .groupLogo {
     font-family: "Montserrat", sans-serif;
     color: var(--secondaryDark); 
     margin: 0 0 0 2vh;
 }
 
+/* animations */
 @keyframes pulse {
     0% {
         color: var(--primaryAccent);
@@ -725,6 +890,7 @@ html {
     }
 }
 
+/* responsiveness */
 @media screen and (max-width: 800px) {
     .item_card {
         background-color: var(--primaryLight);
@@ -756,5 +922,9 @@ html {
 
     .itemC_right .itemCR_topD {
         text-align: center;
+    }
+
+    #cart {
+        height: 200vh;
     }
 }

@@ -19,7 +19,17 @@ class App extends React.Component {
     showcase: false,
     banner: false,
     cart: false,
-    authState: null
+    authState: null,
+    cartId: '',
+    cartItems: [],
+    cartTotal: ''
+  }
+
+  componentDidMount = () => {
+    console.log('project_oreo--------------');
+    this.toggleShowcase(true);
+    this.toggleBanner(true);
+    this.checkAuthState();
   }
 
   toggleShowcase = (showcaseOption) => {
@@ -49,11 +59,117 @@ class App extends React.Component {
     }
   }
 
-  componentDidMount = () => {
-    console.log('project_oreo--------------');
-    this.toggleShowcase(true);
-    this.toggleBanner(true);
-    this.checkAuthState();
+  setCartState = (cartState) => {
+    if(cartState) {
+      this.toggleCart(true);
+      this.toggleShowcase(false);
+    }
+    else {
+      this.toggleShowcase(true);
+      this.toggleCart(false);
+    }
+  }
+
+  getCartId = async (userId) => {
+    let cart = null;
+    // find the cart
+    await axios.get('/api/carts/cart/'+userId)
+    .then(res => {
+        cart = res.data;
+    })
+
+    if(cart)
+      return cart._id;
+    else {
+      await axios.post('/api/carts', {userId})
+      .then(res => {
+          return res.data._id;
+      })
+    }
+  }
+
+  setCartItems = async (userId) => {
+    let cart = null;
+
+    await axios.get('/api/carts/cart/'+userId)
+    .then(res => {
+        cart = res.data;
+    })  
+
+    if(cart) {
+      this.setState({
+        cartItems: cart.items
+      })
+    }
+    this.setTotal();
+    //console.log(this.state.cartItems);
+  }
+
+  setTotal = () => {
+    let total = 0;
+    this.state.cartItems.forEach(ci => {
+      let priceStr = ci.item.price+"";
+      let price = priceStr.substring(1, priceStr.length);
+      total += parseFloat(price);
+    })
+
+    total = parseFloat(total.toFixed());
+
+    this.setState({
+      cartTotal: total
+    })
+  }
+
+  addToCart = async (cartId, itemId, itemSize) => {
+    let result = false;
+    let item = await this.loadItem(itemId)
+    .then(i => {
+      return i;
+    })
+
+    // add item to the cart
+    const newItem = {item, itemSize};
+
+    await axios.put('/api/carts/addItem', {newItem,cartId})
+    .then(res => {
+      if(res.data === 'OK') {
+        const userId = this.state.authState._id;
+        this.setCartItems(userId);
+        result = true;
+      }
+    });
+
+    return result;
+  }
+
+  removeFromCart = async (cartId,index) => {
+    let result = false;
+
+    let newItems = this.state.cartItems.filter( (item,i) => {
+      return (index !== i)
+    })
+
+    console.log(newItems);
+
+    await axios.put('/api/carts/removeItem', {cartId, newItems})
+    .then(res => {
+      if(res.data === 'OK') {
+        const userId = this.state.authState._id;
+        this.setCartItems(userId);
+        result = true;
+      }
+    });
+
+    return result;
+  }
+
+  loadItem = async (itemId) => {
+    let i = null;
+    await axios.get('/api/items/item/'+itemId)
+    .then(item => {
+        i = item.data;
+    })
+    return i;
   }
 
   checkAuthState = async () => {
@@ -61,9 +177,12 @@ class App extends React.Component {
     if(user) {
       await axios.get('/api/auth/user', { headers: {'x-auth-token': user} })
       .then(res => {
+        const userId = res.data._id;
         this.setState({
-          authState: res.data
+          authState: res.data,
+          cartId: this.getCartId(userId)
         })
+        this.setCartItems(userId);
       })
     }
   }
@@ -125,17 +244,6 @@ class App extends React.Component {
     }
   }
 
-  setCartState = (cartState) => {
-    if(cartState) {
-      this.toggleCart(true);
-      this.toggleShowcase(false);
-    }
-    else {
-      this.toggleShowcase(true);
-      this.toggleCart(false);
-    }
-  }
-
   render() {
     return (
       <div>
@@ -152,6 +260,10 @@ class App extends React.Component {
           cart={this.state.cart} 
           authState={this.state.authState}
           setAuthState={this.setAuthState}
+          getCartId={this.getCartId}
+          cartItems={this.state.cartItems}
+          cartTotal={this.state.cartTotal}
+          removeFromCart={this.removeFromCart}
         />
         <Showcase
           showcase={this.state.showcase}
@@ -161,6 +273,8 @@ class App extends React.Component {
           banner={this.state.banner}
           authState={this.state.authState}
           setAuthState={this.setAuthState}
+          getCartId={this.getCartId}
+          addToCart={this.addToCart}
         />
         <ItemWindow />
         <BottomBar />
