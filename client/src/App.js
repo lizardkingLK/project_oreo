@@ -21,7 +21,8 @@ class App extends React.Component {
     cart: false,
     authState: null,
     cartId: '',
-    cartItems: []
+    cartItems: [],
+    cartTotal: ''
   }
 
   componentDidMount = () => {
@@ -74,7 +75,7 @@ class App extends React.Component {
     // find the cart
     await axios.get('/api/carts/cart/'+userId)
     .then(res => {
-        cart = res.data[0];
+        cart = res.data;
     })
 
     if(cart)
@@ -87,17 +88,53 @@ class App extends React.Component {
     }
   }
 
+  setCartItems = async (userId) => {
+    let cart = null;
+
+    await axios.get('/api/carts/cart/'+userId)
+    .then(res => {
+        cart = res.data;
+    })  
+
+    if(cart) {
+      this.setState({
+        cartItems: cart.items
+      })
+    }
+    this.setTotal();
+    //console.log(this.state.cartItems);
+  }
+
+  setTotal = () => {
+    let total = 0;
+    this.state.cartItems.forEach(ci => {
+      let priceStr = ci.item.price+"";
+      let price = priceStr.substring(1, priceStr.length);
+      total += parseFloat(price);
+    })
+
+    total = parseFloat(total.toFixed());
+
+    this.setState({
+      cartTotal: total
+    })
+  }
+
   addToCart = async (cartId, itemId, itemSize) => {
     let result = false;
-    // add item to the cart
-    const newItem = {itemId, itemSize};
+    let item = await this.loadItem(itemId)
+    .then(i => {
+      return i;
+    })
 
-    await axios.put('/api/carts', {newItem,cartId})
+    // add item to the cart
+    const newItem = {item, itemSize};
+
+    await axios.put('/api/carts/addItem', {newItem,cartId})
     .then(res => {
       if(res.data === 'OK') {
-        this.setState({
-          cartItems: [...this.state.cartItems, newItem]
-        })
+        const userId = this.state.authState._id;
+        this.setCartItems(userId);
         result = true;
       }
     });
@@ -105,15 +142,47 @@ class App extends React.Component {
     return result;
   }
 
+  removeFromCart = async (cartId,index) => {
+    let result = false;
+
+    let newItems = this.state.cartItems.filter( (item,i) => {
+      return (index !== i)
+    })
+
+    console.log(newItems);
+
+    await axios.put('/api/carts/removeItem', {cartId, newItems})
+    .then(res => {
+      if(res.data === 'OK') {
+        const userId = this.state.authState._id;
+        this.setCartItems(userId);
+        result = true;
+      }
+    });
+
+    return result;
+  }
+
+  loadItem = async (itemId) => {
+    let i = null;
+    await axios.get('/api/items/item/'+itemId)
+    .then(item => {
+        i = item.data;
+    })
+    return i;
+  }
+
   checkAuthState = async () => {
     const user = localStorage.getItem('user_oreo');
     if(user) {
       await axios.get('/api/auth/user', { headers: {'x-auth-token': user} })
       .then(res => {
+        const userId = res.data._id;
         this.setState({
           authState: res.data,
-          cartId: this.getCartId(res.data._id)
+          cartId: this.getCartId(userId)
         })
+        this.setCartItems(userId);
       })
     }
   }
@@ -191,6 +260,10 @@ class App extends React.Component {
           cart={this.state.cart} 
           authState={this.state.authState}
           setAuthState={this.setAuthState}
+          getCartId={this.getCartId}
+          cartItems={this.state.cartItems}
+          cartTotal={this.state.cartTotal}
+          removeFromCart={this.removeFromCart}
         />
         <Showcase
           showcase={this.state.showcase}

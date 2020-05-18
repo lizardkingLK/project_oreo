@@ -44,10 +44,10 @@ const Item = (props) => {
                     setFadeInB(false);
             })
 
-            // console.log('USER_ID   '+userId);
-            // console.log('CART_ID   '+cartId);
-            // console.log('ITEM_ID   '+itemId);
-            // console.log('ITEM_SIZE '+itemSize);
+            console.log('USER_ID   '+userId);
+            console.log('CART_ID   '+cartId);
+            console.log('ITEM_ID   '+itemId);
+            console.log('ITEM_SIZE '+itemSize);
         }
         else {
             setFadeInA(true);

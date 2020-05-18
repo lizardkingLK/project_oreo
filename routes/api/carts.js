@@ -21,20 +21,36 @@ router.post('/', (req,res) => {
 
 router.get('/cart/:userId', (req,res) => {
     const userId = req.params.userId;
-    Cart.find({
-        userId: userId
-    })
-    .exec((err,carts) => {
-        res.json(carts);
+    Cart.findOne({userId: userId})
+    .then(cart => {
+        res.json(cart);
     })
 });
 
-router.put('/', (req,res) => {
+router.put('/addItem', (req,res) => {
     const id = req.body.cartId;
 
     Cart.findOneAndUpdate({_id: id}, {
         $set: { dateUpdated:  new Date().toISOString() },
         $push: { items: req.body.newItem }
+    }, {useFindAndModify: false})
+    .then( () => {
+        res.sendStatus(200);
+    }).catch(err => {
+        console.error(err);
+        res.sendStatus(500);
+    })
+});
+
+router.put('/removeItem', (req,res) => {
+    const cartId = req.body.cartId;
+    const newItems = req.body.newItems;
+
+    Cart.findOneAndUpdate({_id: cartId}, {
+        $set: { 
+            dateUpdated:  new Date().toISOString(),
+            items: newItems
+         }
     }, {useFindAndModify: false})
     .then( () => {
         res.sendStatus(200);
@@ -56,23 +72,5 @@ router.delete('/:cartId', (req,res) => {
         })
     });
 });
-
-// router.put('/:cartId', (req, res) => {
-//     const id = req.params.cartId;
-
-//     Cart.findOneAndUpdate({_id: id}, {
-//         $set: {
-//             firstName: req.body.firstName, 
-//             secondName: req.body.secondName, 
-//             birthday: new Date(req.body.birthday)
-//         }
-//     }, {useFindAndModify: false})
-//     .then( () => {
-//         res.sendStatus(200);
-//     }).catch(err => {
-//         console.error(err);
-//         res.sendStatus(500);
-//     })
-// });
 
 module.exports = router;
