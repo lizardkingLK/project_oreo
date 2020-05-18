@@ -104,16 +104,24 @@ html {
     margin: 2vh 2vh 2vh 2vh;
 }
 
+#bannerCRW_B {
+    text-decoration: none !important;
+    color: var(--secondaryAccent);
+}
+
 #banner #banner_content #bannerC_right #bannerCR_joinUs {
     font-family: 'Montserrat', sans-serif;
-    margin: 0 10vh 0 20vh;
     cursor: pointer;
-    border-radius: 2vh;
+    border-radius: 2vh 0 0 2vh;
     width: max-content;
+    margin-left: 40vh;
     padding: .5vh 2vh .5vh 2vh;
     font-size: large;
     color: var(--primaryAccent);
     background-color: var(--secondaryAccent);
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
 }
 
 #cart {
@@ -480,6 +488,7 @@ html {
 #itemWindow {
     color: var(--primaryDark);
     background-color: var(--secondaryAccent);
+
     min-height: 100vh;
     /* background-color: var(--primaryDark); */
     /* color: var(--primaryLight); */
@@ -487,6 +496,56 @@ html {
     background-repeat: no-repeat;
     background-size: cover;
     background-blend-mode: lighten;
+    display: flex;
+    flex-direction: row;
+}
+
+#itemWindow #itemWindow_left {
+    width: 20vw;
+    height: 100vh;
+    background-color: var(--secondaryDark);
+    color: var(--primaryLight);
+}
+
+#itemWindow #itemWindow_left #itemWindowL_topA {
+    height: 10vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+#itemWindow #itemWindow_left #itemWindowL_topA #itemWindowLTopA_A {
+    font-family: 'Montserrat', sans-serif;
+}
+
+#itemWindow #itemWindow_left #itemWindowL_topB {
+    height: 90vh;
+    overflow-y: scroll;
+}
+
+#itemWindow #itemWindow_right {
+    width: 80vw;
+    height: 100vh;
+}
+
+#itemWindow #itemWindow_right #itemWindowR_topA {
+    height: 10vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+#itemWindow #itemWindow_right #itemWindowR_topA #itemWindowRTopA_input {
+    margin: 0 0 0 1vh;
+    border-radius: 2vh 0 0 2vh;
+    background-color: transparent;
+}
+
+#itemWindow #itemWindow_right #itemWindowR_topA #itemWindowRTopA_submit {
+    margin: 0 1vh 0 0;
+    border-radius: 0 2vh 2vh 0;
 }
 
 #bottomBar {

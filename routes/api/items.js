@@ -28,6 +28,17 @@ router.get('/item/:itemId', (req,res) => {
     })
 });
 
+router.post('/search', (req,res) => {
+    const KW = req.body.keyword;
+    Item.find( {$text: { $search: KW} })
+    .then(items => {
+        if(items)
+            res.json(items);
+        else
+            res.json({msg: "No items found"});
+    })
+});
+
 router.get('/men/:limit', (req,res) => {
     const limit = parseInt(req.params.limit);
     Item.find({
