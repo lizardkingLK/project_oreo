@@ -26,7 +26,9 @@ const Banner = (props) => {
                         linkStyle={"bannerCR_joinUs"}
                     />
                     :
-                    <small id="bannerCR_welcome">Welcome {authState.name}</small>
+                    <div id="bannerCR_welcome">
+                        <small id="bannerCRW_A">Welcome {authState.name} | <a id="bannerCRW_B" href="#itemWindow">Browse</a></small>
+                    </div>
                     }
                 </div>
             </div>

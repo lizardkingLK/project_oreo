@@ -146,10 +146,17 @@ const Cart = (props) => {
                     <h4 id="cartRTopC_B">£{cartTotal}.00</h4>
                 </div>
                 <hr/>
+                {(!authState)?
+                <div id="cartR_topD">
+                    <h4 id="cartRTopD_A"><button className="btn btn-sm" disabled="disabled">Checkout</button></h4>
+                    <h4 id="cartRTopD_B"><button className="btn btn-sm" disabled="disabled">PayPal</button></h4>
+                </div>
+                :
                 <div id="cartR_topD">
                     <h4 id="cartRTopD_A">Checkout</h4>
                     <h4 id="cartRTopD_B">PayPal</h4>
                 </div>
+                }
             </div>
         </Fade>
     )

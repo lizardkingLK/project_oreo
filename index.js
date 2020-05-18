@@ -29,12 +29,6 @@ mongoose.connect(uri, { useUnifiedTopology: true, useNewUrlParser: true, useCrea
     console.log('db_oreo online... ',uri);
 });
 
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
-    console.log('Connected');
-});
-
 app.use('/api/items', items);
 app.use('/api/users', users);
 app.use('/api/auth', auth);
