@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Lobster&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Average+Sans&display=swap');
 
 :root {
     --primaryDark: #333333;
@@ -81,12 +82,26 @@ html {
 #banner #banner_content #bannerC_right #bannerCR_heading {
     font-family: 'Lobster', sans-serif;
     font-size: 20vh;
-    margin: 0 0 0 10vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 0 2vh 0 2vh;
 }
 
 #banner #banner_content #bannerC_right #bannerCR_subHeading {
     font-family: 'Roboto', sans-serif;
-    margin: 0 0 0 10vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 0 2vh 0 2vh;
+}
+
+#banner #banner_content #bannerC_right #bannerCR_welcome {
+    font-family: 'Montserrat', sans-serif;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 2vh 2vh 2vh 2vh;
 }
 
 #banner #banner_content #bannerC_right #bannerCR_joinUs {
@@ -234,6 +249,39 @@ html {
 
 #cart #cart_right #cartR_topC #cartRTopC_B {
     font-weight: 800;
+}
+
+#cart #cart_right #cartR_topD {
+    height: 50vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#cart #cart_right #cartR_topD #cartRTopD_A {
+    height: 25vh;
+    width: max-content;
+    margin: 1vh 0 1vh 0;
+    font-family: "Lobster", sans-serif;
+    cursor: pointer;
+}
+
+#cart #cart_right #cartR_topD #cartRTopD_A:hover {
+    color: var(--primaryAccent);
+}
+
+#cart #cart_right #cartR_topD #cartRTopD_B {
+    height: 25vh;
+    width: max-content;
+    margin: 1vh 0 1vh 0;
+    font-family: "Average sans", sans-serif;
+    font-style: italic;
+    cursor: pointer;
+}
+
+#cart #cart_right #cartR_topD #cartRTopD_B:hover {
+    color: var(--primaryAccent);
 }
 
 #showcase {
@@ -430,13 +478,15 @@ html {
 }
 
 #itemWindow {
+    color: var(--primaryDark);
+    background-color: var(--secondaryAccent);
     min-height: 100vh;
-    background-color: var(--primaryDark);
-    background-image: url('../src/images/fashion_2.jpg');
+    /* background-color: var(--primaryDark); */
+    /* color: var(--primaryLight); */
+    /* background-image: url('../src/images/fashion_2.jpg'); */
     background-repeat: no-repeat;
     background-size: cover;
     background-blend-mode: lighten;
-    color: var(--primaryLight);
 }
 
 #bottomBar {

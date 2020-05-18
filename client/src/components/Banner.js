@@ -26,7 +26,7 @@ const Banner = (props) => {
                         linkStyle={"bannerCR_joinUs"}
                     />
                     :
-                    <small style={{margin: "0 0 0 10vh"}}>Welcome {authState.name}</small>
+                    <small id="bannerCR_welcome">Welcome {authState.name}</small>
                     }
                 </div>
             </div>
