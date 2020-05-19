@@ -109,7 +109,7 @@ const Cart = (props) => {
                         </small>
                         :
                         <small id="cartLTopD_titleMsg">
-                            Wishlist for {authState.name}
+                            Wishlist for {authState.name} | <a href="#itemWindow" style={{textDecoration: "none !important", color: "var(--primaryAccent)"}}>Browse</a>
                         </small>
                     }
                     {/* ALL WISHLIST ITEMS */}

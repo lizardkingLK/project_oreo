@@ -129,11 +129,14 @@ const Item = (props) => {
                 <div className="itemCR_topB">
                     <div className="itemCR_topB_sizeSelect" onClick={toggleCollapse}>Select Size <i className="fa fa-angle-right"></i></div>
                     <Collapse isOpen={collapse}>
-                        <div className="itemCR_topB_sizeGrid" style={{display: "grid", gridTemplateColumns: "auto auto auto", maxHeight: "10vh"}}>
+                        <div className="itemCR_topB_sizeGrid">
                             {cont.sizes.map( (size,index) => {
                                 return ( 
                                     <div key={index} style={{textAlign: "center", margin: ".5vh 0 .5vh 0"}}>
-                                        <Button onClick={() => handleSize(index)} color="outline-dark" className="btn btn-sm" style={{color: "var(--primaryLight)", width: "80px"}} key={index}><small>{size}</small></Button>
+                                        <Button key={index} onClick={() => handleSize(index)} color="outline-dark" className="btn btn-sm"
+                                        style={{color: "var(--primaryLight)", width: "80px"}}>
+                                            <small>{size}</small>
+                                        </Button>
                                     </div>
                                 )
                             })}

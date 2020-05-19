@@ -22,7 +22,8 @@ class App extends React.Component {
     authState: null,
     cartId: '',
     cartItems: [],
-    cartTotal: ''
+    cartTotal: '',
+    windowItems: []
   }
 
   componentDidMount = () => {
@@ -199,6 +200,15 @@ class App extends React.Component {
     this.checkAuthState();
   }
 
+  searchItems = async (keyword) => {
+    await axios.post('/api/items/search', {keyword})
+    .then(res => {
+        this.setState({
+          windowItems: res.data
+        })
+    })
+  }
+
   changeShowcaseState = (category,data) => {
     this.setCartState(false);
     this.setState({
@@ -276,7 +286,11 @@ class App extends React.Component {
           getCartId={this.getCartId}
           addToCart={this.addToCart}
         />
-        <ItemWindow />
+        <ItemWindow
+          setCartState={this.setCartState}
+          windowItems={this.state.windowItems}
+          searchItems={this.searchItems}
+        />
         <BottomBar />
       </div>
     );

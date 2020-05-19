@@ -1,23 +1,25 @@
 import React from 'react';
-import axios from 'axios';
+
+import WindowItem from './WindowItem';
 
 const ItemWindow = (props) => {
+    const { setCartState, windowItems, searchItems } = props;
     let keyword = '';
+    let bg = '';
+
+    if(windowItems.length === 0)
+        bg = "var(--secondaryAccent)";
+    else
+        bg = "var(--primaryLight)";
 
     const getKeyword = (e) => {
         keyword = e.target.value;
     }
 
-    const searchKeyword = async (e) => {
+    const searchKeyword = (e) => {
         e.preventDefault();
         if(keyword)
-            await axios.post('/api/items/search', {keyword})
-            .then(res => {
-                console.log(res.data);
-            })
-            .catch(err => {
-                console.error(err);
-            })
+            searchItems(keyword);
     }
 
     return (
@@ -34,11 +36,32 @@ const ItemWindow = (props) => {
                 </div>
             </div>
         </div>
-        <div id="itemWindow_right">
-            <form onSubmit={searchKeyword} id="itemWindowR_topA">
-                <input onChange={getKeyword} type="text" id="itemWindowRTopA_input" className="form-control form-control-sm"  placeholder="Search.." />
-                <button type="submit" id="itemWindowRTopA_submit" className="btn btn-sm btn-outline-dark" value="OK"><i className="fa fa-search"></i></button>
-            </form>
+        <div id="itemWindow_right" style={{background: bg}}>
+            <div id="itemWindowR_topA">
+                <div id="itemWindowRTopA_meta">
+                    <p id="itemWindowRTopAM_cartBtn" className="cartBtn" onClick={() => setCartState(true)}>
+                        <a id="itemWindowRTopAMCB_A" href="#navbar">
+                            <i className="fas fa-shopping-cart"></i>
+                        </a>
+                    </p>
+                    {/* SEARCH META */}
+                    <p id="itemWindowRTopAM_message">{/* META */}</p>
+                </div>
+                <form id="itemWindowRTopA_form" onSubmit={searchKeyword}>
+                    <input onChange={getKeyword} type="text" id="itemWindowRTopAF_input" className="form-control form-control-sm"  placeholder="Search.." />
+                    <button type="submit" id="itemWindowRTopAF_submit" className="btn btn-sm btn-outline-dark" value="OK"><i className="fa fa-search"></i></button>
+                </form>
+            </div>
+            <div id="itemWindowR_topB">
+                {windowItems.map( (item) => {
+                    return (
+                        <WindowItem key={item._id} item={item} />
+                    )
+                })}
+            </div>
+            <div id="itemWindowR_topC">
+                {/* PAGINATION */}
+            </div>
         </div>
     </div>
     )

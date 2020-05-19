@@ -486,13 +486,10 @@ html {
 }
 
 #itemWindow {
-    color: var(--primaryDark);
-    background-color: var(--secondaryAccent);
-
     min-height: 100vh;
-    /* background-color: var(--primaryDark); */
-    /* color: var(--primaryLight); */
-    /* background-image: url('../src/images/fashion_2.jpg'); */
+    background-color: var(--primaryDark);
+    color: var(--primaryLight);
+    background-image: url('../src/images/fashion_2.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     background-blend-mode: lighten;
@@ -534,18 +531,55 @@ html {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: flex;
 }
 
-#itemWindow #itemWindow_right #itemWindowR_topA #itemWindowRTopA_input {
+#itemWindow #itemWindow_right #itemWindowR_topA  #itemWindowRTopA_meta {
+    flex: 1;
+    margin: 0 0 0 1vh;
+    color: var(--secondaryDark);
+    display: flex;
+    flex-direction: row;
+}
+
+#itemWindow #itemWindow_right #itemWindowR_topA  #itemWindowRTopA_meta #itemWindowRTopAM_cartBtn #itemWindowRTopAMCB_A {
+    text-decoration: none !important;
+    color: var(--secondaryDark);
+}
+
+#itemWindow #itemWindow_right #itemWindowR_topA  #itemWindowRTopA_meta #itemWindowRTopAM_message {
+    margin: 0 0 0 2vh;
+}
+
+#itemWindow #itemWindow_right #itemWindowR_topA  #itemWindowRTopA_form {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+}
+
+#itemWindow #itemWindow_right #itemWindowR_topA #itemWindowRTopA_form #itemWindowRTopAF_input {
     margin: 0 0 0 1vh;
     border-radius: 2vh 0 0 2vh;
     background-color: transparent;
 }
 
-#itemWindow #itemWindow_right #itemWindowR_topA #itemWindowRTopA_submit {
+#itemWindow #itemWindow_right #itemWindowR_topA #itemWindowRTopA_form #itemWindowRTopAF_submit {
     margin: 0 1vh 0 0;
     border-radius: 0 2vh 2vh 0;
+}
+
+#itemWindow #itemWindow_right #itemWindowR_topB {
+    height: 85vh;
+    overflow-y: scroll;
+    display: grid;
+    grid-template-columns: auto auto auto;
+}
+
+#itemWindow #itemWindow_right #itemWindowR_topC {
+    height: 5vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 #bottomBar {
@@ -813,6 +847,9 @@ html {
 
 .itemC_right .itemCR_topB .itemCR_topB_sizeGrid {
     color: var(--primaryLight);
+    display: grid;
+    grid-template-columns: auto auto auto; 
+    height: 60vh;
 }
 
 .itemC_right .itemCR_topC .itemCR_topC_addToCart {
@@ -827,6 +864,188 @@ html {
 
 .itemC_right .itemCR_topE .itemCR_topE_readMore {
     color: var(--primaryLight);
+}
+
+.itemWindowRTopB_item {
+    width: 25vw;
+    height: 85vh;
+    margin: 2vh 0 0 1vh;
+    background-color: var(--primaryLight);
+    color: var(--primaryDark);
+}
+
+.itemWindowRTopB_item .itemWindowRTopBI_topA {
+    height: 55vh;
+    background-size: cover;
+    background-repeat: no-repeat;
+    transition: .5s;
+    -webkit-transition: background-image .5s;
+}
+
+.itemWindowRTopB_item .itemWindowRTopBI_topA .itemWindowRTopBITopA_name {
+    padding: 0 0 0 1vh;
+    height: max-content;
+    max-height: 34vh;
+    font-family: 'Montserrat', sans-serif;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    color: var(--primaryDark);
+    background-color: var(--primaryLight);
+    opacity: .5;
+    transition: .25s;
+    cursor: pointer;
+}
+
+.itemWindowRTopB_item .itemWindowRTopBI_topA .itemWindowRTopBITopA_name:hover {
+    opacity: 1;
+    transition: .25s;
+}
+
+.itemWindowRTopB_item .itemWindowRTopBI_topA .itemWindowRTopBITopA_category {
+    padding: 0 0 0 1vh;
+    height: max-content;
+    max-height: 9vh;
+    font-family: 'Montserrat', sans-serif;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    color: var(--secondaryDark);
+    background-color: var(--primaryLight);
+    opacity: .5;
+    transition: .25s;
+    cursor: pointer;
+}
+
+.itemWindowRTopB_item .itemWindowRTopBI_topA .itemWindowRTopBITopA_category:hover {
+    opacity: 1;
+    transition: .25s;
+}
+
+.itemWindowRTopB_item .itemWindowRTopBI_topB {
+    height: 10vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.itemWindowRTopB_item .itemWindowRTopBI_topB .itemWindowRTopBITopB_left {
+    height: 10vh;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.itemWindowRTopB_item .itemWindowRTopBI_topB .itemWindowRTopBITopB_left .itemWindowRTopBITopBA_priceContainer {
+    padding: 1vh 0 0 1vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.itemWindowRTopB_item .itemWindowRTopBI_topB .itemWindowRTopBITopB_left .itemWindowRTopBITopBA_priceContainer .itemWindowRTopBITopBA_price {
+    font-family: 'Roboto', sans-serif;
+    color: var(--secondaryDark);
+}
+
+.itemWindowRTopB_item .itemWindowRTopBI_topB .itemWindowRTopBITopB_left .itemWindowRTopBITopBA_ratingContainer {
+    padding: 0 0 0 1vh;
+    display: flex;
+    flex-direction: row;
+}
+
+.itemWindowRTopB_item .itemWindowRTopBI_topB .itemWindowRTopBITopB_left .itemWindowRTopBITopBA_ratingContainer .itemWindowRTopBITopBA_rating {
+    margin: 0 .5vh 0 0;
+    font-family: 'Montserrat', sans-serif;
+    color: var(--primaryDanger);
+}
+
+.itemWindowRTopB_item .itemWindowRTopBI_topB .itemWindowRTopBITopB_right {
+    height: 10vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    flex: 1;
+    margin: 0 1vh 0 0;
+}
+
+.itemWindowRTopB_item .itemWindowRTopBI_topB .itemWindowRTopBITopB_right .itemWindowRTopBITopBR_image {
+    color: var(--secondaryDark);
+    padding: 0 1vh 0 0;
+    cursor: pointer;
+}
+
+.itemWindowRTopB_item .itemWindowRTopBI_topB .itemWindowRTopBITopB_right .itemWindowRTopBITopBR_image:hover {
+    color: var(--secondaryAccent);
+}
+
+.itemWindowRTopB_item .itemWindowRTopBI_topC {
+    height: 20vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.itemWindowRTopB_item .itemWindowRTopBI_topC .itemWindowRTopBITopC_A {
+    height: 8vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.itemWindowRTopB_item .itemWindowRTopBI_topC .itemWindowRTopBITopC_A .itemWindowRTopBITopCA_cart {
+    background-color: var(--primaryDanger);
+    color: var(--primaryLight);
+    font-family: 'Montserrat', sans-serif;
+    flex: 1;
+    padding: 1vh;
+    border-radius: 0 3vh 3vh 0;
+    transition: .25s;
+    cursor: pointer;
+}
+
+.itemWindowRTopB_item .itemWindowRTopBI_topC .itemWindowRTopBITopC_A .itemWindowRTopBITopCA_cart:hover {
+    background-color: var(--primaryLight);
+    color: var(--primaryDanger);
+    transition: .25s;
+}
+
+.itemWindowRTopB_item .itemWindowRTopBI_topC .itemWindowRTopBITopC_A .itemWindowRTopBITopCA_message {
+    flex: 2;
+}
+
+.itemWindowRTopB_item .itemWindowRTopBI_topC .itemWindowRTopBITopC_B {
+    height: 8vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    color: var(--secondaryDark);
+}
+
+.itemWindowRTopB_item .itemWindowRTopBI_topC .itemWindowRTopBITopC_B .itemWindowRTopBITopCB_wishlist {
+    padding: 0 0 0 1vh;
+    font-family: 'Roboto', sans-serif;
+    flex: 1;
+    transition: .25s;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    cursor: pointer;
+}
+
+.itemWindowRTopB_item .itemWindowRTopBI_topC .itemWindowRTopBITopC_B .itemWindowRTopBITopCB_wishlist:hover {
+    transition: .25s;
+    color: var(--primaryAccent);
+}
+
+.itemWindowRTopB_item .itemWindowRTopBI_topC .itemWindowRTopBITopC_B .itemWindowRTopBITopCB_wishlist .itemWindowRTopBITopCB_wishlistA {
+    margin: 0 0 0 1vh;
+}
+
+.itemWindowRTopB_item .itemWindowRTopBI_topC .itemWindowRTopBITopC_B .itemWindowRTopBITopCB_message {
+    flex: 1;
 }
 
 .cartBtn {
