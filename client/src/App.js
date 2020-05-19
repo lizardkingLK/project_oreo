@@ -32,6 +32,16 @@ class App extends React.Component {
     this.toggleShowcase(true);
     this.toggleBanner(true);
     this.checkAuthState();
+    this.setItemWindow();
+  }
+
+  setItemWindow = async () => {
+    await axios.get('/api/items/kids/5')
+    .then(res => {
+      this.setState({
+        windowItems: res.data
+      })
+    })
   }
 
   toggleShowcase = (showcaseOption) => {
@@ -306,6 +316,7 @@ class App extends React.Component {
           setAuthState={this.setAuthState}
           getCartId={this.getCartId}
           addToCart={this.addToCart}
+          cartItems={this.state.cartItems}
           itemSize={this.state.itemSize}
           setItemSize={this.setItemSize}
         />

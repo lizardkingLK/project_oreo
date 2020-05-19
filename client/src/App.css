@@ -547,10 +547,6 @@ html {
     color: var(--secondaryDark);
 }
 
-#itemWindow #itemWindow_right #itemWindowR_topA  #itemWindowRTopA_meta #itemWindowRTopAM_message {
-    margin: 0 0 0 2vh;
-}
-
 #itemWindow #itemWindow_right #itemWindowR_topA  #itemWindowRTopA_form {
     flex: 1;
     display: flex;
@@ -993,7 +989,7 @@ html {
 }
 
 .itemWindowRTopB_item .itemWindowRTopBI_topC .itemWindowRTopBITopC_A {
-    height: 8vh;
+    height: 10vh;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -1034,7 +1030,7 @@ html {
 }
 
 .itemWindowRTopB_item .itemWindowRTopBI_topC .itemWindowRTopBITopC_B {
-    height: 8vh;
+    height: 10vh;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -1069,6 +1065,22 @@ html {
     align-items: center;
     justify-content: flex-end;
     margin: 0 1vh 0 0;
+}
+
+.itemWindowLTopBC_btn {
+
+}
+
+.itemWindowLTopBC_collapse {
+    
+}
+
+.itemWindowLTopBC_collapse .itemWindowLTopBCCo_card {
+    
+}
+
+.itemWindowLTopBC_collapse .itemWindowLTopBCCo_card .itemWindowLTopBCCoCa_body {
+    
 }
 
 .cartBtn {

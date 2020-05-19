@@ -120,7 +120,7 @@ const WindowItem = (props) => {
                     }
                     <div className="itemWindowRTopBITopCA_message">
                         {/* MESSAGE ASKS ENTER SIZE */}
-                        <Fade in={fadeInA} id="itemCR_topC_sizeSelectWarningContainer" style={{margin: "0 1vh 0 0"}}>
+                        <Fade in={fadeInA} id="itemCR_topC_sizeSelectWarningContainer" style={{margin: "0 1vh 0 1vh"}}>
                             <span className="badge badge-light txt_secondary">please set size!</span>
                         </Fade>
                         <Dropdown className="itemWindowRTopBITopCA_sizeSelect" group isOpen={dropdownOpen} size="sm" toggle={toggleDropdown}>
