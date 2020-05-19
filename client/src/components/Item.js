@@ -44,10 +44,10 @@ const Item = (props) => {
                     setFadeInB(false);
             })
 
-            console.log('USER_ID   '+userId);
-            console.log('CART_ID   '+cartId);
-            console.log('ITEM_ID   '+itemId);
-            console.log('ITEM_SIZE '+itemSize);
+            // console.log('USER_ID   '+userId);
+            // console.log('CART_ID   '+cartId);
+            // console.log('ITEM_ID   '+itemId);
+            // console.log('ITEM_SIZE '+itemSize);
         }
         else {
             setFadeInA(true);
@@ -112,7 +112,7 @@ const Item = (props) => {
                     <Button color="light" className="btn btn-sm itemCR_topC_favourite">Favourite <i className="far fa-heart"></i></Button>
                 </div>
                 }
-                <div className="itemCR_topH" style={{height: "5vh", margin: "0 0 0 2vh"}}>
+                <div className="itemCR_topH">
                     <Fade in={fadeInB} id="itemCR_topH_message">
                         <span className="badge badge-light">Added to cart</span>
                     </Fade>

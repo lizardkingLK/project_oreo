@@ -23,7 +23,8 @@ class App extends React.Component {
     cartId: '',
     cartItems: [],
     cartTotal: '',
-    windowItems: []
+    windowItems: [],
+    itemSize: ''
   }
 
   componentDidMount = () => {
@@ -173,6 +174,17 @@ class App extends React.Component {
     return i;
   }
 
+  setItemSize = (s) => {
+    if(this.state.itemSize)
+      this.setState({
+        itemSize: ''
+      })
+    else
+      this.setState({
+        itemSize: s
+      })
+  }
+
   checkAuthState = async () => {
     const user = localStorage.getItem('user_oreo');
     if(user) {
@@ -290,6 +302,12 @@ class App extends React.Component {
           setCartState={this.setCartState}
           windowItems={this.state.windowItems}
           searchItems={this.searchItems}
+          authState={this.state.authState}
+          setAuthState={this.setAuthState}
+          getCartId={this.getCartId}
+          addToCart={this.addToCart}
+          itemSize={this.state.itemSize}
+          setItemSize={this.setItemSize}
         />
         <BottomBar />
       </div>

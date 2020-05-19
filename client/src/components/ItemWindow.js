@@ -3,12 +3,22 @@ import React from 'react';
 import WindowItem from './WindowItem';
 
 const ItemWindow = (props) => {
-    const { setCartState, windowItems, searchItems } = props;
+    const { 
+        setCartState, 
+        windowItems, 
+        searchItems, 
+        authState, 
+        setAuthState,
+        getCartId,
+        addToCart,
+        itemSize,
+        setItemSize
+    } = props;
     let keyword = '';
     let bg = '';
 
     if(windowItems.length === 0)
-        bg = "var(--secondaryAccent)";
+        bg = "transparent";
     else
         bg = "var(--primaryLight)";
 
@@ -49,13 +59,22 @@ const ItemWindow = (props) => {
                 </div>
                 <form id="itemWindowRTopA_form" onSubmit={searchKeyword}>
                     <input onChange={getKeyword} type="text" id="itemWindowRTopAF_input" className="form-control form-control-sm"  placeholder="Search.." />
-                    <button type="submit" id="itemWindowRTopAF_submit" className="btn btn-sm btn-outline-dark" value="OK"><i className="fa fa-search"></i></button>
+                    <button type="submit" id="itemWindowRTopAF_submit" className="btn btn-sm btn-outline-secondary" value="OK"><i className="fa fa-search"></i></button>
                 </form>
             </div>
             <div id="itemWindowR_topB">
                 {windowItems.map( (item) => {
                     return (
-                        <WindowItem key={item._id} item={item} />
+                        <WindowItem 
+                            key={item._id} 
+                            item={item} 
+                            authState={authState} 
+                            setAuthState={setAuthState} 
+                            getCartId={getCartId} 
+                            addToCart={addToCart}
+                            itemSize={itemSize}
+                            setItemSize={setItemSize}
+                        />
                     )
                 })}
             </div>

@@ -817,6 +817,11 @@ html {
     cursor: pointer;
 }
 
+.itemC_right .itemCR_topH {
+    height: 5vh;
+    margin: 0 0 0 2vh;
+}
+
 .itemC_right .itemCR_topA .itemCR_topA_title {
     text-align: left;
     margin: .5vh 1vh .5vh 1vh;
@@ -992,6 +997,7 @@ html {
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: space-between;
 }
 
 .itemWindowRTopB_item .itemWindowRTopBI_topC .itemWindowRTopBITopC_A .itemWindowRTopBITopCA_cart {
@@ -1013,6 +1019,18 @@ html {
 
 .itemWindowRTopB_item .itemWindowRTopBI_topC .itemWindowRTopBITopC_A .itemWindowRTopBITopCA_message {
     flex: 2;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.itemWindowRTopB_item .itemWindowRTopBI_topC .itemWindowRTopBITopC_A .itemWindowRTopBITopCA_message .itemWindowRTopBITopCA_sizeSelect {
+    padding: 0 1vh 0 0;
+}
+
+.itemWindowRTopB_item .itemWindowRTopBI_topC .itemWindowRTopBITopC_A .itemWindowRTopBITopCA_message .itemWindowRTopBITopCA_sizeSelect .itemWindowRTopBITopCASS_A {
+    border-radius: 2vh 2vh 2vh 2vh;
 }
 
 .itemWindowRTopB_item .itemWindowRTopBI_topC .itemWindowRTopBITopC_B {
@@ -1044,8 +1062,13 @@ html {
     margin: 0 0 0 1vh;
 }
 
-.itemWindowRTopB_item .itemWindowRTopBI_topC .itemWindowRTopBITopC_B .itemWindowRTopBITopCB_message {
+.itemWindowRTopB_item .itemWindowRTopBI_topC .itemWindowRTopBITopC_B .itemWindowRTopBITopCB_messageContainer {
     flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    margin: 0 1vh 0 0;
 }
 
 .cartBtn {
@@ -1204,5 +1227,9 @@ html {
 
     #cart {
         height: 200vh;
+    }
+
+    #banner #banner_content #bannerC_left {
+        display: none;
     }
 }
