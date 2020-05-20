@@ -4,7 +4,8 @@ import {
 } from 'reactstrap';
 
 import WindowItem from './WindowItem';
-import CategoryMenu from './CategoryMenu';
+import CategoryMenuA from './CategoryMenuA';
+import CategoryMenuB from './CategoryMenuB';
 
 const ItemWindow = (props) => {
     const { 
@@ -17,12 +18,25 @@ const ItemWindow = (props) => {
         addToCart,
         cartItems,
         itemSize,
-        setItemSize
+        setItemSize,
+        categories
     } = props;
     let keyword = '';
     let bg = '';
     (windowItems.length === 0) ? bg = "transparent" : bg = "var(--primaryLight)";
     const [fadeIn, setFadeIn] = useState(false);
+    
+    let typeA = categories.filter(category => {
+        return category.categoryType === 'Primary';
+    })
+
+    let typeB = categories.filter(category => {
+        return category.categoryType === 'Secondary';
+    })
+
+    let typeC = categories.filter(category => {
+        return category.categoryType === 'Ternary';
+    })
 
     const getKeyword = (e) => {
         keyword = e.target.value;
@@ -45,28 +59,37 @@ const ItemWindow = (props) => {
             </div>
             <div id="itemWindowL_topB">
                 {/* PRIMARY CATEGORIES */}
-                <CategoryMenu
+                <CategoryMenuA
+                    collapseState={true}
                     categoryType={"Primary"}
                     btnStyle={"itemWindowLTopBC_btn"}
                     collapseStyle={"itemWindowLTopBC_collapse"}
                     cardStyle={"itemWindowLTopBCCo_card"}
                     cardBodyStyle={"itemWindowLTopBCCoCa_body"}
+                    categoryStyle={"itemWindowLTopBCCoCaB_category"}
+                    categories={typeA}
                 />
                 {/* SECONDARY CATEGORIES */}
-                <CategoryMenu
+                <CategoryMenuB
+                    collapseState={false}
                     categoryType={"Secondary"}
                     btnStyle={"itemWindowLTopBC_btn"}
                     collapseStyle={"itemWindowLTopBC_collapse"}
                     cardStyle={"itemWindowLTopBCCo_card"}
                     cardBodyStyle={"itemWindowLTopBCCoCa_body"}
+                    categoryStyle={"itemWindowLTopBCCoCaB_alphabetical"}
+                    categories={typeB}
                 />
                 {/* TERNARY CATEGORIES */}
-                <CategoryMenu
+                <CategoryMenuB
+                    collapseState={false}
                     categoryType={"Ternary"}
                     btnStyle={"itemWindowLTopBC_btn"}
                     collapseStyle={"itemWindowLTopBC_collapse"}
                     cardStyle={"itemWindowLTopBCCo_card"}
                     cardBodyStyle={"itemWindowLTopBCCoCa_body"}
+                    categoryStyle={"itemWindowLTopBCCoCaB_alphabetical"}
+                    categories={typeC}
                 />
             </div>
         </div>
@@ -83,6 +106,7 @@ const ItemWindow = (props) => {
                 <Fade in={fadeIn} id="itemWindowRTopA_resultCount" style={{margin: "0 1vh 0 0", cursor: "pointer"}}>
                     <span id="itemWindowRTopARC_A" className="badge badge-dark">{windowItems.length} found</span>
                 </Fade>
+                {/* SEARCH ITEMS */}
                 <form id="itemWindowRTopA_form" onSubmit={searchKeyword}>
                     <input onChange={getKeyword} type="text" id="itemWindowRTopAF_input" className="form-control form-control-sm"  placeholder="Search.." />
                     <button type="submit" id="itemWindowRTopAF_submit" className="btn btn-sm btn-outline-secondary" value="OK"><i className="fa fa-search"></i></button>

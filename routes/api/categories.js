@@ -51,6 +51,20 @@ router.route('/add').post(function(req, res) {
         });
 });
 
+router.route('/type/:type').get(function(req, res) {
+    const categoryType = req.params.type;
+    Category.find({
+        categoryType: categoryType
+    })
+    .then(categories => {
+        if(categories)
+            res.status(200).json(categories);
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({msg: 'error getting data'});
+    })
+
 router.route('/delete/:id').get(function (req, res) {
     Category.findByIdAndRemove({_id: req.params.id}, function(err, category){
         if(err) res.json(err);

@@ -1068,19 +1068,41 @@ html {
 }
 
 .itemWindowLTopBC_btn {
-
+    padding: 0 1vh 0 1vh;
+    height: max-content;
+    font-family: 'Roboto', sans-serif;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--primaryLight);
 }
 
-.itemWindowLTopBC_collapse {
-    
+.itemWindowLTopBC_btn:hover {
+    color: var(--secondaryAccent);
 }
 
 .itemWindowLTopBC_collapse .itemWindowLTopBCCo_card {
-    
+    background-color: transparent;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
 }
 
 .itemWindowLTopBC_collapse .itemWindowLTopBCCo_card .itemWindowLTopBCCoCa_body {
-    
+    padding: 1vh 2vh 1vh 2vh;
+}
+
+.itemWindowLTopBC_collapse .itemWindowLTopBCCo_card .itemWindowLTopBCCoCa_body .itemWindowLTopBCCoCaB_category {
+    cursor: pointer;
+    font-family: "Montserrat", sans-serif;
+}
+
+.itemWindowLTopBC_collapse .itemWindowLTopBCCo_card .itemWindowLTopBCCoCa_body .itemWindowLTopBCCoCaB_alphabetical {
+    cursor: pointer;
+    font-family: "Montserrat", sans-serif;
+    font-size: small;
 }
 
 .cartBtn {
