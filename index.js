@@ -5,10 +5,13 @@ const config = require('config');
 const app = express();
 const server = require('http').Server(app);
 const port = process.env.PORT || 3001;
-const items = require('./routes/api/items');
-const users = require('./routes/api/users');
-const auth = require('./routes/api/auth');
-const carts = require('./routes/api/carts');
+const items = require('./routes/api/items');  // items
+const users = require('./routes/api/users');  // users
+const auth = require('./routes/api/auth');  // auth
+const categories = require('./routes/api/categories');  // categories
+const collections = require('./routes/api/collections');  // collections
+const storeManagers = require('./routes/api/storeManagers');  // storemanagers
+const carts = require('./routes/api/carts');  // carts
 let uri = '';
 
 app.use(express.json());
@@ -32,6 +35,9 @@ mongoose.connect(uri, { useUnifiedTopology: true, useNewUrlParser: true, useCrea
 app.use('/api/items', items);
 app.use('/api/users', users);
 app.use('/api/auth', auth);
+app.use('/api/categories', categories);
+app.use('/api/collections', collections);
+app.use('/api/storeManagers', storeManagers);
 app.use('/api/carts', carts);
 
 server.listen(port, () => {
