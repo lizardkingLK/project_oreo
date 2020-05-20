@@ -9,6 +9,7 @@ const items = require('./routes/api/items');
 const users = require('./routes/api/users');
 const auth = require('./routes/api/auth');
 const carts = require('./routes/api/carts');
+const categories = require('./routes/api/categories');
 let uri = '';
 
 app.use(express.json());
@@ -33,6 +34,7 @@ app.use('/api/items', items);
 app.use('/api/users', users);
 app.use('/api/auth', auth);
 app.use('/api/carts', carts);
+app.use('/api/categories', categories);
 
 server.listen(port, () => {
     console.log('api_oreo listening on port %s', port);

@@ -24,7 +24,8 @@ class App extends React.Component {
     cartItems: [],
     cartTotal: '',
     windowItems: [],
-    itemSize: ''
+    itemSize: '',
+    categories: []
   }
 
   componentDidMount = () => {
@@ -32,6 +33,7 @@ class App extends React.Component {
     this.toggleShowcase(true);
     this.toggleBanner(true);
     this.checkAuthState();
+    this.setCategories();
     this.setItemWindow();
   }
 
@@ -231,6 +233,16 @@ class App extends React.Component {
     })
   }
 
+  setCategories = async () => {
+    await axios.get('/api/categories/')
+    .then(res => {
+        if(res.data)
+          this.setState({
+            categories: res.data
+          })
+    })
+  }
+
   changeShowcaseState = (category,data) => {
     this.setCartState(false);
     this.setState({
@@ -319,6 +331,7 @@ class App extends React.Component {
           cartItems={this.state.cartItems}
           itemSize={this.state.itemSize}
           setItemSize={this.setItemSize}
+          categories={this.state.categories}
         />
         <BottomBar />
       </div>
