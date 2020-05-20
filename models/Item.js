@@ -52,4 +52,6 @@ const ItemSchema = new Schema( {
     }
 });
 
+ItemSchema.index({name: "text"})
+
 module.exports = Item = mongoose.model('item', ItemSchema);

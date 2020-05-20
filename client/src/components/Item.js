@@ -44,10 +44,10 @@ const Item = (props) => {
                     setFadeInB(false);
             })
 
-            console.log('USER_ID   '+userId);
-            console.log('CART_ID   '+cartId);
-            console.log('ITEM_ID   '+itemId);
-            console.log('ITEM_SIZE '+itemSize);
+            // console.log('USER_ID   '+userId);
+            // console.log('CART_ID   '+cartId);
+            // console.log('ITEM_ID   '+itemId);
+            // console.log('ITEM_SIZE '+itemSize);
         }
         else {
             setFadeInA(true);
@@ -112,7 +112,7 @@ const Item = (props) => {
                     <Button color="light" className="btn btn-sm itemCR_topC_favourite">Favourite <i className="far fa-heart"></i></Button>
                 </div>
                 }
-                <div className="itemCR_topH" style={{height: "5vh", margin: "0 0 0 2vh"}}>
+                <div className="itemCR_topH">
                     <Fade in={fadeInB} id="itemCR_topH_message">
                         <span className="badge badge-light">Added to cart</span>
                     </Fade>
@@ -129,11 +129,14 @@ const Item = (props) => {
                 <div className="itemCR_topB">
                     <div className="itemCR_topB_sizeSelect" onClick={toggleCollapse}>Select Size <i className="fa fa-angle-right"></i></div>
                     <Collapse isOpen={collapse}>
-                        <div className="itemCR_topB_sizeGrid" style={{display: "grid", gridTemplateColumns: "auto auto auto", maxHeight: "10vh"}}>
+                        <div className="itemCR_topB_sizeGrid">
                             {cont.sizes.map( (size,index) => {
                                 return ( 
                                     <div key={index} style={{textAlign: "center", margin: ".5vh 0 .5vh 0"}}>
-                                        <Button onClick={() => handleSize(index)} color="outline-dark" className="btn btn-sm" style={{color: "var(--primaryLight)", width: "80px"}} key={index}><small>{size}</small></Button>
+                                        <Button key={index} onClick={() => handleSize(index)} color="outline-dark" className="btn btn-sm"
+                                        style={{color: "var(--primaryLight)", width: "80px"}}>
+                                            <small>{size}</small>
+                                        </Button>
                                     </div>
                                 )
                             })}

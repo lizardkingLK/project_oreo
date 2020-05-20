@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import {  Modal, ModalBody } from 'reactstrap';
+import {  
+    Modal, 
+    ModalBody 
+} from 'reactstrap';
 import axios from 'axios';
 
 const SignUpWindow = (props) => {

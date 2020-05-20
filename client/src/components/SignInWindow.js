@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import {  NavLink, Modal, ModalBody } from 'reactstrap';
+import {  
+  NavLink, 
+  Modal, 
+  ModalBody 
+} from 'reactstrap';
 import axios from 'axios';
 
 const SignInWindow = (props) => {
@@ -95,7 +99,7 @@ const SignInWindow = (props) => {
                 <div id="signInWindowBCBsiF_footer">
                   <button type="submit" className="btn btn-sm btn-outline-dark">SignIn</button>
                   <div id="signInWindowBCBsiFF_errContainer">
-                    {/* <small id="signInWindowBCBsiFFerrC_errMsg">asdf</small> */}
+                    {/* <small id="signInWindowBCBsiFFerrC_errMsg">ERROR!</small> */}
                   </div>
                 </div>
               </form>

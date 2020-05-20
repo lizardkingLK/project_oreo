@@ -1,23 +1,40 @@
-import React from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
+import {
+    Fade
+} from 'reactstrap';
+
+import WindowItem from './WindowItem';
+import CategoryMenu from './CategoryMenu';
 
 const ItemWindow = (props) => {
+    const { 
+        setCartState, 
+        windowItems, 
+        searchItems, 
+        authState, 
+        setAuthState,
+        getCartId,
+        addToCart,
+        cartItems,
+        itemSize,
+        setItemSize
+    } = props;
     let keyword = '';
+    let bg = '';
+    (windowItems.length === 0) ? bg = "transparent" : bg = "var(--primaryLight)";
+    const [fadeIn, setFadeIn] = useState(false);
 
     const getKeyword = (e) => {
         keyword = e.target.value;
     }
 
-    const searchKeyword = async (e) => {
+    const searchKeyword = (e) => {
         e.preventDefault();
+        if(fadeIn) setFadeIn(false);
         if(keyword)
-            await axios.post('/api/items/search', {keyword})
-            .then(res => {
-                console.log(res.data);
-            })
-            .catch(err => {
-                console.error(err);
-            })
+            searchItems(keyword);
+
+        setFadeIn(true);
     }
 
     return (
@@ -27,18 +44,69 @@ const ItemWindow = (props) => {
                 <h5 id="itemWindowLTopA_A">Categories</h5>
             </div>
             <div id="itemWindowL_topB">
-                <div className="itemWindowLTopB_category">
-                    {/* PRIMARY CATEGORIES */}
-                    {/* SECONDARY CATEGORIES */}
-                    {/* TERNARY CATEGORIES */}
-                </div>
+                {/* PRIMARY CATEGORIES */}
+                <CategoryMenu
+                    categoryType={"Primary"}
+                    btnStyle={"itemWindowLTopBC_btn"}
+                    collapseStyle={"itemWindowLTopBC_collapse"}
+                    cardStyle={"itemWindowLTopBCCo_card"}
+                    cardBodyStyle={"itemWindowLTopBCCoCa_body"}
+                />
+                {/* SECONDARY CATEGORIES */}
+                <CategoryMenu
+                    categoryType={"Secondary"}
+                    btnStyle={"itemWindowLTopBC_btn"}
+                    collapseStyle={"itemWindowLTopBC_collapse"}
+                    cardStyle={"itemWindowLTopBCCo_card"}
+                    cardBodyStyle={"itemWindowLTopBCCoCa_body"}
+                />
+                {/* TERNARY CATEGORIES */}
+                <CategoryMenu
+                    categoryType={"Ternary"}
+                    btnStyle={"itemWindowLTopBC_btn"}
+                    collapseStyle={"itemWindowLTopBC_collapse"}
+                    cardStyle={"itemWindowLTopBCCo_card"}
+                    cardBodyStyle={"itemWindowLTopBCCoCa_body"}
+                />
             </div>
         </div>
-        <div id="itemWindow_right">
-            <form onSubmit={searchKeyword} id="itemWindowR_topA">
-                <input onChange={getKeyword} type="text" id="itemWindowRTopA_input" className="form-control form-control-sm"  placeholder="Search.." />
-                <button type="submit" id="itemWindowRTopA_submit" className="btn btn-sm btn-outline-dark" value="OK"><i className="fa fa-search"></i></button>
-            </form>
+        <div id="itemWindow_right" style={{background: bg}}>
+            <div id="itemWindowR_topA">
+                <div id="itemWindowRTopA_meta">
+                    {/* CART LINK */}
+                    <p id="itemWindowRTopAM_cartBtn" className="cartBtn" onClick={() => setCartState(true)}>
+                        <a id="itemWindowRTopAMCB_A" href="#navbar"><i className="fas fa-shopping-cart"></i></a>
+                    </p>
+                    {/* CART COUNT */}
+                    <p id="itemWindowRTopAM_cartCount" style={{margin: "0 0 0 1vh", fontFamily: "Montserrat, sans-serif"}}>{cartItems.length}</p>
+                </div>
+                <Fade in={fadeIn} id="itemWindowRTopA_resultCount" style={{margin: "0 1vh 0 0", cursor: "pointer"}}>
+                    <span id="itemWindowRTopARC_A" className="badge badge-dark">{windowItems.length} found</span>
+                </Fade>
+                <form id="itemWindowRTopA_form" onSubmit={searchKeyword}>
+                    <input onChange={getKeyword} type="text" id="itemWindowRTopAF_input" className="form-control form-control-sm"  placeholder="Search.." />
+                    <button type="submit" id="itemWindowRTopAF_submit" className="btn btn-sm btn-outline-secondary" value="OK"><i className="fa fa-search"></i></button>
+                </form>
+            </div>
+            <div id="itemWindowR_topB">
+                {windowItems.map( (item) => {
+                    return (
+                        <WindowItem 
+                            key={item._id} 
+                            item={item} 
+                            authState={authState} 
+                            setAuthState={setAuthState} 
+                            getCartId={getCartId} 
+                            addToCart={addToCart}
+                            itemSize={itemSize}
+                            setItemSize={setItemSize}
+                        />
+                    )
+                })}
+            </div>
+            <div id="itemWindowR_topC">
+                {/* PAGINATION */}
+            </div>
         </div>
     </div>
     )

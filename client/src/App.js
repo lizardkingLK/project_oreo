@@ -22,7 +22,9 @@ class App extends React.Component {
     authState: null,
     cartId: '',
     cartItems: [],
-    cartTotal: ''
+    cartTotal: '',
+    windowItems: [],
+    itemSize: ''
   }
 
   componentDidMount = () => {
@@ -30,6 +32,16 @@ class App extends React.Component {
     this.toggleShowcase(true);
     this.toggleBanner(true);
     this.checkAuthState();
+    this.setItemWindow();
+  }
+
+  setItemWindow = async () => {
+    await axios.get('/api/items/kids/5')
+    .then(res => {
+      this.setState({
+        windowItems: res.data
+      })
+    })
   }
 
   toggleShowcase = (showcaseOption) => {
@@ -172,6 +184,17 @@ class App extends React.Component {
     return i;
   }
 
+  setItemSize = (s) => {
+    if(this.state.itemSize)
+      this.setState({
+        itemSize: ''
+      })
+    else
+      this.setState({
+        itemSize: s
+      })
+  }
+
   checkAuthState = async () => {
     const user = localStorage.getItem('user_oreo');
     if(user) {
@@ -197,6 +220,15 @@ class App extends React.Component {
   setAuthState = (uo) => {
     localStorage.setItem('user_oreo', uo);
     this.checkAuthState();
+  }
+
+  searchItems = async (keyword) => {
+    await axios.post('/api/items/search', {keyword})
+    .then(res => {
+        this.setState({
+          windowItems: res.data
+        })
+    })
   }
 
   changeShowcaseState = (category,data) => {
@@ -276,7 +308,18 @@ class App extends React.Component {
           getCartId={this.getCartId}
           addToCart={this.addToCart}
         />
-        <ItemWindow />
+        <ItemWindow
+          setCartState={this.setCartState}
+          windowItems={this.state.windowItems}
+          searchItems={this.searchItems}
+          authState={this.state.authState}
+          setAuthState={this.setAuthState}
+          getCartId={this.getCartId}
+          addToCart={this.addToCart}
+          cartItems={this.state.cartItems}
+          itemSize={this.state.itemSize}
+          setItemSize={this.setItemSize}
+        />
         <BottomBar />
       </div>
     );
