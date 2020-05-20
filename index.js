@@ -9,10 +9,21 @@ const port = process.env.PORT || 3001;
 const items = require('./routes/api/items');
 const users = require('./routes/api/users');
 const auth = require('./routes/api/auth');
+const cat = require('./routes/api/categories');
 let uri = '';
+
+/*let cors = require('cors');
+let bodyParser = require('body-parser');*/
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+/*app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+app.use(cors());*/
+
 
 // serve static assests if in production
 if(process.env.NODE_ENV === 'production') {
@@ -38,7 +49,19 @@ db.once('open', function() {
 app.use('/api/items', items);
 app.use('/api/users', users);
 app.use('/api/auth', auth);
+app.use('/api/categories',cat);
 
 server.listen(port, () => {
     console.log('api_oreo listening on port %s', port);
 });
+
+// 404 Error
+/*app.use((req, res, next) => {
+    next(createError(404));
+});
+
+app.use(function (err, req, res, next) {
+    console.error(err.message);
+    if (!err.statusCode) err.statusCode = 500;
+    res.status(err.statusCode).send(err.message);
+});*/
