@@ -51,18 +51,6 @@ router.route('/add').post(function(req, res) {
         });
 });
 
-/*router.route('/delete/:id').delete((req, res, next) => {
-    CategorySchema.findByIdAndRemove(req.params.id, (error, data) => {
-        if (error) {
-            return next(error);
-        } else {
-            res.status(200).json({
-                msg: data
-            })
-        }
-    })
-})*/
-
 router.route('/type/:type').get(function(req, res) {
     const categoryType = req.params.type;
     Category.find({
@@ -76,6 +64,12 @@ router.route('/type/:type').get(function(req, res) {
         console.log(err);
         res.status(500).json({msg: 'error getting data'});
     })
+
+router.route('/delete/:id').get(function (req, res) {
+    Category.findByIdAndRemove({_id: req.params.id}, function(err, category){
+        if(err) res.json(err);
+        else res.json('Successfully removed');
+    });
 });
 
 module.exports = router;
