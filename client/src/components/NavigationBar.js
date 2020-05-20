@@ -6,15 +6,13 @@ import {
   NavbarBrand,
   Nav,
   NavItem,
-  NavLink,
-  NavbarText
+  NavLink
 } from 'reactstrap';
 
-import AuthWindow from './AuthWindow';
+import SignInWindow from './SignInWindow';
 
 const AppNavbar = (props) => {
   const [isOpen, setIsOpen] = useState(false);
-
   const toggle = () => setIsOpen(!isOpen);
 
   return (
@@ -37,10 +35,26 @@ const AppNavbar = (props) => {
               <NavLink onClick={props.handleNavigation}>Collections</NavLink>
             </NavItem>
             <NavItem>
-              <AuthWindow buttonLabel={"SignIn"} className={"modal-dialog modal-lg"} />
+              {(!props.authState)?
+                <SignInWindow
+                  scrollable={false}
+                  setAuthState={props.setAuthState} 
+                  buttonLabel={"SignIn"} 
+                  className={"modal-dialog modal-lg"}
+                />
+                :
+                <div style={{display: "flex", flexDirection: "row", alignItems: "center"}} >
+                  <NavLink onClick={props.clearAuthState}>SignOut</NavLink>
+                </div>
+              }
             </NavItem>
           </Nav>
-            <NavbarText><p style={{fontFamily: "Roboto, sans-serif"}}></p>Oreo_Group&trade;</NavbarText>
+            <small className="cartBtn" onClick={() => props.setCartState(!props.cartState)}>
+              <i className="fas fa-shopping-cart"></i>
+            </small>
+            <small className="groupLogo">
+              Oreo_Group&trade;
+            </small>
         </Collapse>
       </Navbar>
     </div>

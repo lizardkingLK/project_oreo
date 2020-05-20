@@ -13,9 +13,29 @@ router.get('/', (req,res) => {
 
 router.get('/allitems', (req,res) => {
     Item.find()
-    .sort( { date: -1 })
+    .sort( { dateCreated: 1 })
     .then( items => {
         res.json(items);
+    })
+});
+
+router.get('/item/:itemId', (req,res) => {
+    const id = req.params.itemId;
+    Item.findById(id)
+    .then(item => {
+        if(item)
+            res.json(item);
+    })
+});
+
+router.post('/search', (req,res) => {
+    const KW = req.body.keyword;
+    Item.find( {$text: { $search: KW} })
+    .then(items => {
+        if(items)
+            res.json(items);
+        else
+            res.json({msg: "No items found"});
     })
 });
 
@@ -24,7 +44,7 @@ router.get('/men/:limit', (req,res) => {
     Item.find({
         category: 'men'
     })
-    .sort( { date: -1 })
+    .sort( { dateCreated: 1 })
     .limit(limit)
     .exec((err,items) => {
         res.json(items);
@@ -36,7 +56,7 @@ router.get('/women/:limit', (req,res) => {
     Item.find({
         category: 'women'
     })
-    .sort( { date: -1 })
+    .sort( { dateCreated: 1 })
     .limit(limit)
     .exec((err,items) => {
         res.json(items);
@@ -48,7 +68,7 @@ router.get('/kids/:limit', (req,res) => {
     Item.find({
         category: 'kids'
     })
-    .sort( { date: -1 })
+    .sort( { dateCreated: 1 })
     .limit(limit)
     .exec((err,items) => {
         res.json(items);
@@ -60,7 +80,7 @@ router.get('/collections/:limit', (req,res) => {
     Item.find({
         collections: true
     })
-    .sort( { date: -1 })
+    .sort( { dateCreated: 1 })
     .limit(limit)
     .exec((err,items) => {
         res.json(items);
