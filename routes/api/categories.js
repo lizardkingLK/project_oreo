@@ -64,6 +64,7 @@ router.route('/type/:type').get(function(req, res) {
         console.log(err);
         res.status(500).json({msg: 'error getting data'});
     })
+});
 
 router.route('/delete/:id').get(function (req, res) {
     Category.findByIdAndRemove({_id: req.params.id}, function(err, category){
