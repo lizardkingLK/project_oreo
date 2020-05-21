@@ -19,7 +19,8 @@ const ItemWindow = (props) => {
         cartItems,
         itemSize,
         setItemSize,
-        categories
+        categories,
+        getCategoryItems
     } = props;
     let keyword = '';
     let bg = '';
@@ -79,6 +80,7 @@ const ItemWindow = (props) => {
                     cardBodyStyle={"itemWindowLTopBCCoCa_body"}
                     categoryStyle={"itemWindowLTopBCCoCaB_alphabetical"}
                     categories={typeB}
+                    getCategoryItems={getCategoryItems}
                 />
                 {/* TERNARY CATEGORIES */}
                 <CategoryMenuB
@@ -90,6 +92,7 @@ const ItemWindow = (props) => {
                     cardBodyStyle={"itemWindowLTopBCCoCa_body"}
                     categoryStyle={"itemWindowLTopBCCoCaB_alphabetical"}
                     categories={typeC}
+                    getCategoryItems={getCategoryItems}
                 />
             </div>
         </div>

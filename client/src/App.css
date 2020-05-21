@@ -959,7 +959,7 @@ html {
 .itemWindowRTopB_item .itemWindowRTopBI_topB .itemWindowRTopBITopB_left .itemWindowRTopBITopBA_ratingContainer .itemWindowRTopBITopBA_rating {
     margin: 0 .5vh 0 0;
     font-family: 'Montserrat', sans-serif;
-    color: var(--primaryDanger);
+    color: var(--secondaryDanger);
 }
 
 .itemWindowRTopB_item .itemWindowRTopBI_topB .itemWindowRTopBITopB_right {
@@ -1000,11 +1000,12 @@ html {
     background-color: var(--primaryDanger);
     color: var(--primaryLight);
     font-family: 'Montserrat', sans-serif;
-    flex: 1;
+    flex: 2;
     padding: 1vh;
     border-radius: 0 3vh 3vh 0;
     transition: .25s;
     cursor: pointer;
+    font-size: small;
 }
 
 .itemWindowRTopB_item .itemWindowRTopBI_topC .itemWindowRTopBITopC_A .itemWindowRTopBITopCA_cart:hover {
@@ -1014,7 +1015,7 @@ html {
 }
 
 .itemWindowRTopB_item .itemWindowRTopBI_topC .itemWindowRTopBITopC_A .itemWindowRTopBITopCA_message {
-    flex: 2;
+    flex: 3;
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
@@ -1026,7 +1027,7 @@ html {
 }
 
 .itemWindowRTopB_item .itemWindowRTopBI_topC .itemWindowRTopBITopC_A .itemWindowRTopBITopCA_message .itemWindowRTopBITopCA_sizeSelect .itemWindowRTopBITopCASS_A {
-    border-radius: 2vh 2vh 2vh 2vh;
+    border-radius: 1vh 1vh 1vh 1vh;
 }
 
 .itemWindowRTopB_item .itemWindowRTopBI_topC .itemWindowRTopBITopC_B {
@@ -1298,7 +1299,7 @@ html {
     }
 
     .itemWindowRTopB_item {
-        width: 75vw;
+        width: 85vw;
         height: 85vh;
         margin: 2vh 0 0 1vh;
         background-color: var(--primaryLight);
@@ -1307,10 +1308,34 @@ html {
  
     .itemWindowRTopB_item .itemWindowRTopBI_topA {
         height: 55vh;
-        background-size: cover;
+        background-size: contain;
         background-repeat: no-repeat;
         transition: .5s;
         -webkit-transition: background-image .5s;
     }
-    
+
+    .itemWindowRTopB_item .itemWindowRTopBI_topC .itemWindowRTopBITopC_A .itemWindowRTopBITopCA_cart {
+        background-color: var(--primaryLight);
+        color: var(--primaryDanger);
+        font-family: 'Montserrat', sans-serif;
+        flex: 1;
+        padding: .25vh;
+        border-radius: 0 3vh 3vh 0;
+        transition: .25s;
+        cursor: pointer;
+        font-size: small;
+    }
+
+    .itemWindowRTopB_item .itemWindowRTopBI_topC .itemWindowRTopBITopC_A .itemWindowRTopBITopCA_cart:hover {
+        background-color: var(--primaryDanger);
+        color: var(--primaryLight);
+        font-family: 'Montserrat', sans-serif;
+        flex: 1;
+        padding: .25vh;
+        border-radius: 0 3vh 3vh 0;
+        transition: .25s;
+        cursor: pointer;
+        font-size: small;
+    }
+
 }

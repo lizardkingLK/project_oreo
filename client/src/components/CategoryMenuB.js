@@ -8,7 +8,7 @@ import {
 import CategoryMenuA from './CategoryMenuA';
 
 const CategoryMenuB = (props) => {
-    const { collapseState, categoryType, btnStyle, collapseStyle, cardStyle, cardBodyStyle, categoryStyle, categories } = props;
+    const { collapseState, categoryType, btnStyle, collapseStyle, cardStyle, cardBodyStyle, categoryStyle, categories, getCategoryItems } = props;
     const [isOpen, setIsOpen] = useState(collapseState);
     const toggleCollapse = () => setIsOpen(!isOpen);
     const alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
@@ -35,6 +35,7 @@ const CategoryMenuB = (props) => {
                                 cardBodyStyle={"itemWindowLTopBCCoCa_body"}
                                 categoryStyle={categoryStyle}
                                 categories={list}
+                                getCategoryItems={getCategoryItems}
                             />
                             :
                             <div key={letter}></div>

@@ -118,6 +118,19 @@ router.delete('/:id', auth, (req,res) => {
             res.status(500).json({ success: false });
         })
     });
-})
+});
+
+router.post('/category', (req,res) => {
+    const category = req.body.category;
+    Item.find({
+        subcategories: { $all: [category] }
+    })
+    .then(items => {
+        if(items)
+            res.json(items);
+        else
+            res.json({msg: "No items found"});
+    })
+});
 
 module.exports = router;
