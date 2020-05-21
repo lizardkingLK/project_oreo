@@ -1266,4 +1266,51 @@ html {
     #banner #banner_content #bannerC_left {
         display: none;
     }
+
+    #banner #banner_content #bannerC_right {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    #banner #banner_content #bannerC_right #bannerCR_subHeading {
+        font-family: 'Roboto', sans-serif;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        margin: 2vh 0 2vh 0;
+    }
+
+    #itemWindow #itemWindow_left {
+        width: 0;
+    }
+
+    #itemWindow #itemWindow_right {
+        width: 100vw;
+    }
+
+    #itemWindow #itemWindow_right #itemWindowR_topB {
+        height: 85vh;
+        overflow-y: scroll;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .itemWindowRTopB_item {
+        width: 75vw;
+        height: 85vh;
+        margin: 2vh 0 0 1vh;
+        background-color: var(--primaryLight);
+        color: var(--primaryDark);
+    }
+ 
+    .itemWindowRTopB_item .itemWindowRTopBI_topA {
+        height: 55vh;
+        background-size: cover;
+        background-repeat: no-repeat;
+        transition: .5s;
+        -webkit-transition: background-image .5s;
+    }
+    
 }

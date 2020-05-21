@@ -20,7 +20,12 @@ const CategoryMenuB = (props) => {
                 <Card className={cardStyle}>
                     <CardBody className={cardBodyStyle}>
                     {alphabet.map(letter => {
+                        let list = categories.filter(c => {
+                            return ((c.categoryName.charAt(0)).toUpperCase() === letter) 
+                        })
                         return (
+                            (list.length !== 0)
+                            ?
                             <CategoryMenuA key={letter}
                                 collapseState={false}
                                 categoryType={letter}
@@ -29,12 +34,10 @@ const CategoryMenuB = (props) => {
                                 cardStyle={"itemWindowLTopBCCo_card"}
                                 cardBodyStyle={"itemWindowLTopBCCoCa_body"}
                                 categoryStyle={categoryStyle}
-                                categories={
-                                    categories.filter(c => {
-                                        return ((c.categoryName.charAt(0)).toUpperCase() === letter) 
-                                    })
-                                }
+                                categories={list}
                             />
+                            :
+                            <div key={letter}></div>
                         )
                     })}
                     </CardBody>
