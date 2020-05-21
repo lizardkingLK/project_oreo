@@ -233,6 +233,15 @@ class App extends React.Component {
     })
   }
 
+  getCategoryItems = async (category) => {
+    await axios.post('/api/items/category', {category})
+    .then(res => {
+      this.setState({
+        windowItems: res.data
+      })
+    })
+  }
+
   setCategories = async () => {
     await axios.get('/api/categories/')
     .then(res => {
@@ -332,6 +341,7 @@ class App extends React.Component {
           itemSize={this.state.itemSize}
           setItemSize={this.setItemSize}
           categories={this.state.categories}
+          getCategoryItems={this.getCategoryItems}
         />
         <BottomBar />
       </div>

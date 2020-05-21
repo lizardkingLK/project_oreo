@@ -6,9 +6,16 @@ import {
 } from 'reactstrap';
 
 const CategoryMenuA = (props) => {
-    const { collapseState, categoryType, btnStyle, collapseStyle, cardStyle, cardBodyStyle, categoryStyle, categories } = props;
+    const { collapseState, categoryType, btnStyle, collapseStyle, cardStyle, cardBodyStyle, categoryStyle, categories, getCategoryItems } = props;
     const [isOpen, setIsOpen] = useState(collapseState);
     const toggleCollapse = () => setIsOpen(!isOpen);
+
+    const getItems = (c) => {
+        if(categoryType !== 'Primary')
+            getCategoryItems(c);
+
+        console.log(c);
+    }
 
     return (
         <div>
@@ -19,7 +26,7 @@ const CategoryMenuA = (props) => {
                         {categories.map(c => {
                             const name = c.categoryName.charAt(0).toUpperCase() + c.categoryName.slice(1);
                             return (
-                                <p className={categoryStyle} key={c._id}>{name}</p>
+                                <p className={categoryStyle} onClick={() => getItems(c.categoryName)} key={c._id}>{name}</p>
                             )
                         })}
                     </CardBody>
