@@ -1227,6 +1227,50 @@ html {
 }
 
 /* responsiveness */
+@media screen and (max-width: 1000px) {
+    #itemWindow #itemWindow_left {
+        width: 25vw;
+        height: 100vh;
+        background-color: var(--secondaryDark);
+        color: var(--primaryLight);
+    }
+
+    #itemWindow #itemWindow_right #itemWindowR_topB {
+        height: 85vh;
+        overflow-y: scroll;
+        display: grid;
+        grid-template-columns: auto auto;
+    }
+
+    .itemWindowRTopB_item {
+        width: 35vw;
+        height: 85vh;
+        margin: 2vh 0 0 1vh;
+        background-color: var(--primaryLight);
+        color: var(--primaryDark);
+    }
+
+    .itemWindowRTopB_item .itemWindowRTopBI_topC .itemWindowRTopBITopC_A .itemWindowRTopBITopCA_cart {
+        background-color: var(--primaryLight);
+        color: var(--primaryDanger);
+        font-family: 'Montserrat', sans-serif;
+        flex: 1;
+        padding: .25vh;
+        border-radius: 0 1vh 1vh 0;
+        transition: .25s;
+        cursor: pointer;
+        font-size: smaller;
+    }
+
+    .itemWindowRTopB_item .itemWindowRTopBI_topA {
+        height: 55vh;
+        background-size: contain;
+        background-repeat: no-repeat;
+        transition: .5s;
+        -webkit-transition: background-image .5s;
+    }
+}
+
 @media screen and (max-width: 800px) {
     .item_card {
         background-color: var(--primaryLight);
