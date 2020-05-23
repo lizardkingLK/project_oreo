@@ -14,6 +14,7 @@ const carts = require('./routes/api/carts');
 const categories = require('./routes/api/categories');
 const collections = require('./routes/api/collections');
 const storeManagers = require('./routes/api/storeManagers');
+const wishlists = require('./routes/api/wishlists');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -41,6 +42,7 @@ app.use('/api/collections', collections);
 app.use('/api/storeManagers', storeManagers);
 app.use('/api/carts', carts);
 app.use('/api/categories', categories);
+app.use('/api/wishlists', wishlists);
 
 server.listen(port, () => {
     console.log('api_oreo listening on port %s', port);

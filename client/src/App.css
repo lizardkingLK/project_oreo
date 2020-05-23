@@ -827,7 +827,11 @@ html {
 
 .itemC_right .itemCR_topH {
     height: 5vh;
-    margin: 0 0 0 2vh;
+    padding: 0 2vh 0 2vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .itemC_right .itemCR_topA .itemCR_topA_title {

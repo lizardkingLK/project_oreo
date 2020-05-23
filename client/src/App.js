@@ -21,12 +21,13 @@ class App extends React.Component {
     cart: false,
     authState: null,
     cartId: '',
+    wishlistId: '',
     cartItems: [],
+    wishlistItems: [],
     cartTotal: '',
     windowItems: [],
     itemSize: '',
-    categories: [],
-    mainCats: []
+    categories: []
   }
 
   componentDidMount = () => {
@@ -103,6 +104,24 @@ class App extends React.Component {
     }
   }
 
+  getWishListId = async (userId) => {
+    let wishlist = null;
+    // find the wishlist
+    await axios.get('/api/wishlists/wishlist/'+userId)
+    .then(res => {
+        wishlist = res.data;
+    })
+
+    if(wishlist)
+      return wishlist._id;
+    else {
+      await axios.post('/api/wishlists', {userId})
+      .then(res => {
+          return res.data._id;
+      })
+    }
+  }
+
   setCartItems = async (userId) => {
     let cart = null;
 
@@ -118,6 +137,22 @@ class App extends React.Component {
     }
     this.setTotal();
     //console.log(this.state.cartItems);
+  }
+
+  setWishListItems = async (userId) => {
+    let wishlist = null;
+
+    await axios.get('/api/wishlists/wishlist/'+userId)
+    .then(res => {
+        wishlist = res.data;
+    })  
+
+    if(wishlist) {
+      this.setState({
+        wishlistItems: wishlist.items
+      })
+    }
+    //console.log(this.state.wishlistItems);
   }
 
   setTotal = () => {
@@ -150,6 +185,28 @@ class App extends React.Component {
       if(res.data === 'OK') {
         const userId = this.state.authState._id;
         this.setCartItems(userId);
+        result = true;
+      }
+    });
+
+    return result;
+  }
+
+  addToWishList = async (wishListId, itemId) => {
+    let result = false;
+    let item = await this.loadItem(itemId)
+    .then(i => {
+      return i;
+    })
+    
+    // add item to the wishlist
+    const newItem = item;
+
+    await axios.put('/api/wishlists/addItem', {newItem,wishListId})
+    .then(res => {
+      if(res.data === 'OK') {
+        const userId = this.state.authState._id;
+        this.setWishListItems(userId);
         result = true;
       }
     });
@@ -206,9 +263,11 @@ class App extends React.Component {
         const userId = res.data._id;
         this.setState({
           authState: res.data,
-          cartId: this.getCartId(userId)
+          cartId: this.getCartId(userId),
+          wishlistId: this.getWishListId(userId)
         })
         this.setCartItems(userId);
+        this.setWishListItems(userId);
       })
     }
   }
@@ -234,19 +293,12 @@ class App extends React.Component {
     })
   }
 
-  getCategoryItems = async (c) => {
-    let category = [...this.state.mainCats,c];
+  getCategoryItems = async (category) => {
     await axios.post('/api/items/category', {category})
     .then(res => {
       this.setState({
         windowItems: res.data
       })
-    })
-  }
-
-  setMainCats = (c) => {
-    this.setState({
-      mainCats: c
     })
   }
 
@@ -337,6 +389,8 @@ class App extends React.Component {
           setAuthState={this.setAuthState}
           getCartId={this.getCartId}
           addToCart={this.addToCart}
+          getWishListId={this.getWishListId}
+          addToWishList={this.addToWishList}
         />
         <ItemWindow
           setCartState={this.setCartState}
@@ -351,7 +405,8 @@ class App extends React.Component {
           setItemSize={this.setItemSize}
           categories={this.state.categories}
           getCategoryItems={this.getCategoryItems}
-          setMainCats={this.setMainCats}
+          getWishListId={this.getWishListId}
+          addToWishList={this.addToWishList}
         />
         <BottomBar />
       </div>

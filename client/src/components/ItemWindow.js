@@ -21,7 +21,8 @@ const ItemWindow = (props) => {
         setItemSize,
         categories,
         getCategoryItems,
-        setMainCats
+        getWishListId,
+        addToWishList
     } = props;
     let keyword = '';
     let bg = '';
@@ -70,7 +71,7 @@ const ItemWindow = (props) => {
                     cardBodyStyle={"itemWindowLTopBCCoCa_body"}
                     categoryStyle={"itemWindowLTopBCCoCaB_category"}
                     categories={typeA}
-                    setMainCats={setMainCats}
+                    getCategoryItems={getCategoryItems}
                 />
                 {/* SECONDARY CATEGORIES */}
                 <CategoryMenuB
@@ -129,6 +130,8 @@ const ItemWindow = (props) => {
                             addToCart={addToCart}
                             itemSize={itemSize}
                             setItemSize={setItemSize}
+                            getWishListId={getWishListId}
+                            addToWishList={addToWishList}
                         />
                     )
                 })}
