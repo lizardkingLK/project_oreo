@@ -6,6 +6,7 @@ import {
 
 import SignInWindow from './SignInWindow';
 import SignUpWindow from './SignUpWindow';
+import WishListItem from './WishListItem';
 
 const Cart = (props) => {
     let { 
@@ -15,16 +16,13 @@ const Cart = (props) => {
         getCartId,
         cartItems, 
         cartTotal, 
-        removeFromCart
+        removeFromCart,
+        setCartState
     } = props;
     let fadeIn = '';
 
     if(cart === true) {
-        if(window.innerWidth > 600)
-            cart = 'flex';
-        else
-            cart = 'block';
-
+        cart = 'flex';
         fadeIn = true;
     }
     else {
@@ -37,12 +35,10 @@ const Cart = (props) => {
 
     const handleRemoveFromCart = async (index) => {
         let cartId = '';
-
         await getCartId(authState._id)
         .then(cId => {
             cartId = cId;
         })
-
         removeFromCart(cartId,index);
     }
 
@@ -62,7 +58,7 @@ const Cart = (props) => {
                     {(!authState)
                     ?
                     <div id="cartLTopB_messageContainer">
-                        <h3 id="cartLTopBMC_message">No Items added :(</h3>
+                        <h3 id="cartLTopBMC_message">No Items in Cart</h3>
                     </div>
                     :
                     <div id="cartLTopB_cartItemContainer">
@@ -98,6 +94,12 @@ const Cart = (props) => {
                 </div>
                 <div id="cartL_topC">
                     <h5 id="cartLTopC_heading">Wishlist</h5>
+                    {(!authState)
+                    ?
+                    <small id="cartLTopC_message"></small>
+                    :
+                    <h6 id="cartLTopC_message">{}<sup>items</sup></h6>
+                    }
                 </div>
                 <div id="cartL_topD">
                     {(!authState)?
@@ -109,10 +111,18 @@ const Cart = (props) => {
                         </small>
                         :
                         <small id="cartLTopD_titleMsg">
-                            Wishlist for {authState.name} | <a href="#itemWindow" style={{textDecoration: "none !important", color: "var(--primaryAccent)"}}>Browse</a>
+                            Wishlist for {authState.name} | <a href="#itemWindow" onClick={() => setCartState(false)} style={{textDecoration: "none !important", color: "var(--primaryAccent)"}}>Browse</a>
                         </small>
                     }
                     {/* ALL WISHLIST ITEMS */}
+                    {(authState)
+                    ?
+                    <div id="cartLTopD_wishListItemContainer">
+                        <WishListItem />
+                    </div>
+                    :
+                    <div></div>
+                    }
                 </div>
             </div>
             <div id="cart_right">
@@ -133,7 +143,7 @@ const Cart = (props) => {
                     </div>
                     <div id="cartRTopB_subTotal">
                         <p id="cartRTopBST_A">Subtotal <i className="fa fa-question-circle"></i></p>
-                        <p id="cartRTopBST_B">£{cartTotal}.00</p>
+                        <p id="cartRTopBST_B">£{(cartTotal)?cartTotal:0}.00</p>
                     </div>
                     <div id="cartRTopB_delivery">
                         <p id="cartRTopBD_A">Estimated Delivery & Handling</p>
@@ -143,7 +153,7 @@ const Cart = (props) => {
                 <hr/>
                 <div id="cartR_topC">
                     <h4 id="cartRTopC_A">Total</h4>
-                    <h4 id="cartRTopC_B">£{cartTotal}.00</h4>
+                    <h4 id="cartRTopC_B">£{(cartTotal)?cartTotal:0}.00</h4>
                 </div>
                 <hr/>
                 {(!authState)?

@@ -122,8 +122,9 @@ router.delete('/:id', auth, (req,res) => {
 
 router.post('/category', (req,res) => {
     const category = req.body.category;
+    // console.log(category);
     Item.find({
-        subcategories: { $all: [category] }
+        subcategories: { $all: category }
     })
     .then(items => {
         if(items)

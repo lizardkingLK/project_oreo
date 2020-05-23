@@ -25,7 +25,8 @@ class App extends React.Component {
     cartTotal: '',
     windowItems: [],
     itemSize: '',
-    categories: []
+    categories: [],
+    mainCats: []
   }
 
   componentDidMount = () => {
@@ -233,12 +234,19 @@ class App extends React.Component {
     })
   }
 
-  getCategoryItems = async (category) => {
+  getCategoryItems = async (c) => {
+    let category = [...this.state.mainCats,c];
     await axios.post('/api/items/category', {category})
     .then(res => {
       this.setState({
         windowItems: res.data
       })
+    })
+  }
+
+  setMainCats = (c) => {
+    this.setState({
+      mainCats: c
     })
   }
 
@@ -317,6 +325,7 @@ class App extends React.Component {
           cartItems={this.state.cartItems}
           cartTotal={this.state.cartTotal}
           removeFromCart={this.removeFromCart}
+          setCartState={this.setCartState}
         />
         <Showcase
           showcase={this.state.showcase}
@@ -342,6 +351,7 @@ class App extends React.Component {
           setItemSize={this.setItemSize}
           categories={this.state.categories}
           getCategoryItems={this.getCategoryItems}
+          setMainCats={this.setMainCats}
         />
         <BottomBar />
       </div>
