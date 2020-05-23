@@ -32,9 +32,6 @@ const AppNavbar = (props) => {
               <NavLink onClick={props.handleNavigation}>Kids</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink onClick={props.handleNavigation}>Collections</NavLink>
-            </NavItem>
-            <NavItem>
               {(!props.authState)?
                 <SignInWindow
                   scrollable={false}

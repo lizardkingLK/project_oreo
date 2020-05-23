@@ -1251,7 +1251,7 @@ html {
 .cartLTopDWIC_item .cartLTopDWICI_content .cartLTopDWICIC_image {
     height: 25vh;
     width: 25vh;
-    background-image: url('./images/fashion_1.jpeg');
+    /* background-image: url('./images/fashion_1.jpeg'); */
     background-size: cover;
     border-radius: 1vh 1vh 1vh 1vh;
 }
@@ -1517,8 +1517,41 @@ html {
         flex-direction: column;
     }
 
+    .cartLTopDWIC_item {
+        height: 30vh;
+        width: 80vw;
+        display: flex;
+        flex-direction: row;
+    }
+
     .cartLTopDWIC_item .cartLTopDWICI_content .cartLTopDWICIC_image {
         min-height: 25vh;
         min-width: 25vh;
+    }
+
+    .cartLTopDWIC_item .cartLTopDWICI_content .cartLTopDWICIC_description {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
+        margin: 0 1vh 0 1vh;
+        padding: 0 1vh 0 1vh;
+        height: 25vh;
+        color: var(--primaryDark);
+        flex: 3;
+    }
+
+    .cartLTopDWIC_item .cartLTopDWICI_content .cartLTopDWICIC_description .cartLTopDWICICD_name {
+        font-size: small;
+    }
+
+    .cartLTopDWIC_item .cartLTopDWICI_content .cartLTopDWICIC_description .cartLTopDWICICD_addToCartContainer {
+        font-family: 'Roboto', sans-serif;
+        max-height: 5vh;
+        height: max-content;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
     }
 }

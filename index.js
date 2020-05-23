@@ -21,11 +21,21 @@ app.use(express.urlencoded({ extended: false }));
 
 // serve static assests if in production
 if(process.env.NODE_ENV === 'production') {
-    // set static folder
+    // set static folder(s)
     app.use(express.static('client/build'));
+    app.use(express.static('admin/build'));
+    app.use(express.static('storemanager/build'));
 
-    app.get('*'), (req,res) => {
+    app.get('/'), (req,res) => {
         res.sendFile(path.resolve(__dirname,'client','build','index.html'));
+    }
+
+    app.get('/admin'), (req,res) => {
+        res.sendFile(path.resolve(__dirname,'admin','build','index.html'));
+    }
+
+    app.get('/storeManager'), (req,res) => {
+        res.sendFile(path.resolve(__dirname,'storemanager','build','index.html'));
     }
 }
 

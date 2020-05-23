@@ -73,4 +73,17 @@ router.delete('/:wishlistId', (req,res) => {
     });
 });
 
+router.post('/checkExist', (req,res) => {
+    const wishListId = req.body.wishListId;
+    const item = req.body.item;
+    // console.log(wishListId+" "+item);
+    WishList.find({
+        _id: wishListId,
+        items: { $in: [item] }
+    })
+    .then(wishlists => {
+        res.json(wishlists);
+    })
+});
+
 module.exports = router;

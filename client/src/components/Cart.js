@@ -17,7 +17,8 @@ const Cart = (props) => {
         cartItems, 
         cartTotal, 
         removeFromCart,
-        setCartState
+        setCartState,
+        wishlistItems
     } = props;
     let fadeIn = '';
 
@@ -98,7 +99,7 @@ const Cart = (props) => {
                     ?
                     <small id="cartLTopC_message"></small>
                     :
-                    <h6 id="cartLTopC_message">{}<sup>items</sup></h6>
+                    <h6 id="cartLTopC_message">{wishlistItems.length}<sup>items</sup></h6>
                     }
                 </div>
                 <div id="cartL_topD">
@@ -118,7 +119,14 @@ const Cart = (props) => {
                     {(authState)
                     ?
                     <div id="cartLTopD_wishListItemContainer">
-                        <WishListItem />
+                        {wishlistItems.map( (item) => {
+                            return (
+                                <WishListItem 
+                                    key={item._id}
+                                    item={item}
+                                />
+                            )
+                        })}
                     </div>
                     :
                     <div></div>

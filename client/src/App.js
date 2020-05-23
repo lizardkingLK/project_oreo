@@ -192,24 +192,42 @@ class App extends React.Component {
     return result;
   }
 
+  checkExistInWishList = async (wishListId, item) => {
+    let i = false;
+    await axios.post('/api/wishlists/checkExist', {wishListId, item})
+    .then(res => {
+      if(res.data.length >= 1)
+        i = true;
+    })
+    return i;
+  }
+
   addToWishList = async (wishListId, itemId) => {
     let result = false;
-    let item = await this.loadItem(itemId)
-    .then(i => {
-      return i;
-    })
     
-    // add item to the wishlist
-    const newItem = item;
+      let item = await this.loadItem(itemId)
+      .then(i => {
+        return i;
+      })
+    
+      let contains = await this.checkExistInWishList(wishListId,item)
+      .then(x => {
+        return x;
+      })
 
-    await axios.put('/api/wishlists/addItem', {newItem,wishListId})
-    .then(res => {
-      if(res.data === 'OK') {
-        const userId = this.state.authState._id;
-        this.setWishListItems(userId);
-        result = true;
-      }
-    });
+      if(!contains) {
+      // add item to the wishlist
+      const newItem = item;
+
+      await axios.put('/api/wishlists/addItem', {newItem,wishListId})
+      .then(res => {
+        if(res.data === 'OK') {
+          const userId = this.state.authState._id;
+          this.setWishListItems(userId);
+          result = true;
+        }
+      });
+    }
 
     return result;
   }
@@ -378,6 +396,7 @@ class App extends React.Component {
           cartTotal={this.state.cartTotal}
           removeFromCart={this.removeFromCart}
           setCartState={this.setCartState}
+          wishlistItems={this.state.wishlistItems}
         />
         <Showcase
           showcase={this.state.showcase}
