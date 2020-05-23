@@ -17,7 +17,9 @@ const WindowItem = (props) => {
         getCartId,
         addToCart,
         itemSize,
-        setItemSize
+        setItemSize,
+        getWishListId,
+        addToWishList
     } = props;
     const itemId = item._id;
     let img = item.images[0];
@@ -25,6 +27,7 @@ const WindowItem = (props) => {
 
     const [fadeInA, setFadeInA] = useState(false);
     const [fadeInB, setFadeInB] = useState(false);
+    const [fadeInC, setFadeInC] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const toggleDropdown = () => setDropdownOpen(prevState => !prevState);
 
@@ -39,8 +42,30 @@ const WindowItem = (props) => {
             setItemSize(size);
             setFadeInA(false);
         }
-
         console.log(itemSize);
+    }
+
+    const handleAddToWishList = async (e) => {
+        let wishListId = '';
+
+        // get wishlist id
+        await getWishListId(userId)
+        .then(wId => {
+            wishListId = wId;
+        })
+
+        // console.log('USER_ID   '+userId);
+        // console.log('WISHLIST_ID   '+wishListId);
+        // console.log('ITEM_ID   '+itemId);
+
+        // add to wishlist
+        await addToWishList(wishListId,itemId)
+        .then(result => {
+            if(result)
+                setFadeInC(true);
+            else
+                setFadeInC(false);
+        })
     }
 
     const handleAddToCart = async (e) => {
@@ -136,10 +161,24 @@ const WindowItem = (props) => {
                     </div>
                 </div>
                 <div className="itemWindowRTopBITopC_B">
-                    <p className="itemWindowRTopBITopCB_wishlist">Favourite <i className="itemWindowRTopBITopCB_wishlistA far fa-heart"></i></p>
+                    {(!userId)
+                    ?
+                    <SignInWindow
+                        scrollable={false}
+                        setAuthState={setAuthState} 
+                        buttonLabel={"Favourite"}
+                        className={"modal-dialog modal-lg"}
+                        message={"You have to sign in first!"}
+                    />
+                    :
+                    <p className="itemWindowRTopBITopCB_wishlist" onClick={handleAddToWishList}>Favourite <i className="itemWindowRTopBITopCB_wishlistA far fa-heart"></i></p>
+                    }
                     <div className="itemWindowRTopBITopCB_messageContainer">
-                        <Fade in={fadeInB} id="itemCR_topH_message">
-                            <span className="badge badge-light itemWindowRTopBITopCBMC_message">Added to cart</span>
+                        <Fade in={fadeInB} className="itemWindowRTopBITopCBMC_A">
+                            <span className="badge badge-light itemWindowRTopBITopCBMCA_message">Added to cart</span>
+                        </Fade>
+                        <Fade in={fadeInC} className="itemWindowRTopBITopCBMC_B">
+                            <span className="badge badge-light itemWindowRTopBITopCBMCB_message">Added to wishlist</span>
                         </Fade>
                     </div>
                 </div>

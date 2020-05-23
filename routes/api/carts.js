@@ -73,4 +73,8 @@ router.delete('/:cartId', (req,res) => {
     });
 });
 
+router.post('/sendBill', (req,res) => {
+    res.send('OK');
+})
+
 module.exports = router;

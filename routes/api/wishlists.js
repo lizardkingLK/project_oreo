@@ -19,8 +19,16 @@ router.post('/', (req,res) => {
     newWishList.save().then(wishList => res.json(wishList));
 });
 
+router.get('/wishlist/:userId', (req,res) => {
+    const userId = req.params.userId;
+    WishList.findOne({userId: userId})
+    .then(cart => {
+        res.json(cart);
+    })
+});
+
 router.put('/addItem', (req,res) => {
-    const id = req.body.wishListItem;
+    const id = req.body.wishListId;
 
     WishList.findOneAndUpdate({_id: id}, {
         $set: { dateUpdated:  new Date().toISOString() },
@@ -49,6 +57,32 @@ router.put('/removeItem', (req,res) => {
     }).catch(err => {
         console.error(err);
         res.sendStatus(500);
+    })
+});
+
+router.delete('/:wishlistId', (req,res) => {
+    const id = req.params.wishlistId;
+
+    WishList.findById(id).then( wishlist => {
+        WishList.deleteOne(wishlist).then( () => {
+            res.sendStatus(200);
+        }).catch(err => {
+            console.error(err);
+            res.sendStatus(500);
+        })
+    });
+});
+
+router.post('/checkExist', (req,res) => {
+    const wishListId = req.body.wishListId;
+    const item = req.body.item;
+    // console.log(wishListId+" "+item);
+    WishList.find({
+        _id: wishListId,
+        items: { $in: [item] }
+    })
+    .then(wishlists => {
+        res.json(wishlists);
     })
 });
 

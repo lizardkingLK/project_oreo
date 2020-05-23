@@ -8,13 +8,14 @@ import {
 import SignInWindow from './SignInWindow';
 
 const Item = (props) => {
-    const { cont, authState, setAuthState, getCartId, addToCart } = props;
+    const { cont, authState, setAuthState, getCartId, addToCart, getWishListId, addToWishList } = props;
     const itemId = cont._id;
     const userId = authState?._id;
     let itemSize = '';
 
     const [fadeInA, setFadeInA] = useState(false);
     const [fadeInB, setFadeInB] = useState(false);
+    const [fadeInC, setFadeInC] = useState(false);
     const [collapse, setCollapse] = useState(true);
     const toggleCollapse = () => setCollapse(!collapse);
 
@@ -54,6 +55,29 @@ const Item = (props) => {
             setFadeInB(false);
             setCollapse(true);
         }
+    }
+
+    const handleAddToWishList = async (e) => {
+        let wishListId = '';
+
+        // get wishlist id
+        await getWishListId(userId)
+        .then(wId => {
+            wishListId = wId;
+        })
+
+        // console.log('USER_ID   '+userId);
+        // console.log('WISHLIST_ID   '+wishListId);
+        // console.log('ITEM_ID   '+itemId);
+
+        // add to wishlist
+        await addToWishList(wishListId,itemId)
+        .then(result => {
+            if(result)
+                setFadeInC(true);
+            else
+                setFadeInC(false);
+        })
     }
 
     const handleSize = async (i) => {
@@ -109,12 +133,15 @@ const Item = (props) => {
                         <span className="badge badge-light">please set size!</span>
                     </Fade>
                     <Button color="dark" onClick={handleAddToCart} className="btn btn-sm itemCR_topC_addToCart">Add To Cart</Button>
-                    <Button color="light" className="btn btn-sm itemCR_topC_favourite">Favourite <i className="far fa-heart"></i></Button>
+                    <Button color="light" onClick={handleAddToWishList} className="btn btn-sm itemCR_topC_favourite">Favourite <i className="far fa-heart"></i></Button>
                 </div>
                 }
-                <div className="itemCR_topH">
-                    <Fade in={fadeInB} id="itemCR_topH_message">
+                <div className="itemCR_topH" style={{display: "row"}}>
+                    <Fade in={fadeInB} id="itemCR_topH_message" >
                         <span className="badge badge-light">Added to cart</span>
+                    </Fade>
+                    <Fade in={fadeInC} id="itemCR_topH_message">
+                        <span className="badge badge-light">Added to wishlist</span>
                     </Fade>
                 </div>
                 <div className="itemCR_topE">
