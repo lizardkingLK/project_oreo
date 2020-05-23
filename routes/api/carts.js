@@ -31,7 +31,7 @@ router.put('/addItem', (req,res) => {
     const id = req.body.cartId;
 
     Cart.findOneAndUpdate({_id: id}, {
-        $set: { dateUpdated:  new Date().toISOString() },
+        $set: { dateUpdated: new Date().toISOString() },
         $push: { items: req.body.newItem }
     }, {useFindAndModify: false})
     .then( () => {
