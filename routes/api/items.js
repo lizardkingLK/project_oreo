@@ -26,9 +26,30 @@ router.get('/searchitem/:itemId', (req,res) => {
     const itemId = req.params.itemId;
     const regex = new RegExp(escapeRegex(itemId), 'gi');
     Item.find({ "name": regex })
-    .sort({date: -1})
     .then(items => {
+    .sort( { dateCreated: 1 })
+    .then( items => {
         res.json(items);
+    })
+});
+
+router.get('/item/:itemId', (req,res) => {
+    const id = req.params.itemId;
+    Item.findById(id)
+    .then(item => {
+        if(item)
+            res.json(item);
+    })
+});
+
+router.post('/search', (req,res) => {
+    const KW = req.body.keyword;
+    Item.find( {$text: { $search: KW} })
+    .then(items => {
+        if(items)
+            res.json(items);
+        else
+            res.json({msg: "No items found"});
     })
 });
 
@@ -37,7 +58,7 @@ router.get('/men/:limit', (req,res) => {
     Item.find({
         category: 'men'
     })
-    .sort( { date: -1 })
+    .sort( { dateCreated: 1 })
     .limit(limit)
     .exec((err,items) => {
         res.json(items);
@@ -49,7 +70,7 @@ router.get('/women/:limit', (req,res) => {
     Item.find({
         category: 'women'
     })
-    .sort( { date: -1 })
+    .sort( { dateCreated: 1 })
     .limit(limit)
     .exec((err,items) => {
         res.json(items);
@@ -61,7 +82,7 @@ router.get('/kids/:limit', (req,res) => {
     Item.find({
         category: 'kids'
     })
-    .sort( { date: -1 })
+    .sort( { dateCreated: 1 })
     .limit(limit)
     .exec((err,items) => {
         res.json(items);
@@ -73,7 +94,7 @@ router.get('/collections/:limit', (req,res) => {
     Item.find({
         collections: true
     })
-    .sort( { date: -1 })
+    .sort( { dateCreated: 1 })
     .limit(limit)
     .exec((err,items) => {
         res.json(items);
@@ -118,48 +139,6 @@ router.put('/:id',(req, res) =>{
         });
 })
 
-/*router.route('/:id').get(function(req, res) {
-    let id = req.params.id;
-    Item.findById(id, function(err, item){
-        res.json(item);
-    });
-});
-
-router.route('/edit/:id').post(function (req,res) {
-    Item.findById(req.params.id, function (err, item) {
-        if(!item)
-            res.status(404).send("Not Found");
-        else
-            item.name = req.body.name;
-            itme.type = req.body.type;
-            item.category = req.body.category;
-            item.subcategories = req.body.subcategories;
-            item.description = req.body.description;
-            item.images = req.body.images;
-            item.storyUrl = req.body.storyUrl;
-            item.sizes = req.body.sizes;
-            item.price = req.body.price;
-
-            item.save().then(item => {
-                res.json('Added');
-            })
-                .catch(err => {
-                    res.status(400).send("Not Updated");
-                });
-    });
-
-})*/
-
-/*router.route('/:id.').put((req,res,next) => {
-    Item.findOneAndUpdate({_id: req.params.id}, {$set: req.body}, (error,data) => {
-        if (error) {
-            return next(error);
-        }else{
-            res.json(data);
-        }
-    })
-})*/
-
 router.put('/updatePrice/:itemId', (req,res) => {
     const id = req.params.itemId;
     const newPrice = req.body.newPrice;
@@ -193,7 +172,21 @@ router.delete('/:id', (req,res) => {
             res.status(500).json({ success: false });
         })
     });
-})
+});
+
+router.post('/category', (req,res) => {
+    const category = req.body.category;
+    // console.log(category);
+    Item.find({
+        subcategories: { $all: category }
+    })
+    .then(items => {
+        if(items)
+            res.json(items);
+        else
+            res.json({msg: "No items found"});
+    })
+});
 
 function escapeRegex(text) {
     return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");

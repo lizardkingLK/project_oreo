@@ -1,12 +1,13 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const CategorySchema = new Schema({
-    categoryName: {
+const CollectionSchema = new Schema({
+
+    collectionName: {
         type: String,
         required: true
     },
-    categoryType: {
+    availability: {
         type: String,
         required: true
     },
@@ -14,6 +15,7 @@ const CategorySchema = new Schema({
         type: Date,
         default: Date.now
     }
+
 });
 
-module.exports = Category = mongoose.model('category', CategorySchema);
+module.exports = Collection = mongoose.model('collection', CollectionSchema);
