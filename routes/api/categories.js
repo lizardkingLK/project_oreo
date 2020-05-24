@@ -51,8 +51,51 @@ router.route('/updateCategory/:id').post(function(req, res) {
     });
 });
 
-
 router.route('/deleteCategory/:id').get(function (req, res) {
+
+router.route('/primary/:limit').get(async function(req, res) {
+    const cats = await Category.find({categoryType: "Primary"});
+    if(cats){
+        res.json(cats)
+    } else {
+        res.status(404).json("Not found")
+    }
+});
+
+router.route('/secondary/:limit').get(async function(req, res) {
+    const cats = await Category.find({categoryType: "Secondary"});
+    if(cats){
+        res.json(cats)
+    } else {
+        res.status(404).json("Not found")
+    }
+});
+
+router.route('/ternary/:limit').get(async function(req, res) {
+    const cats = await Category.find({categoryType: "Ternary"});
+    if(cats){
+        res.json(cats)
+    } else {
+        res.status(404).json("Not found")
+    }
+});
+
+router.route('/type/:type').get(function(req, res) {
+    const categoryType = req.params.type;
+    Category.find({
+        categoryType: categoryType
+    })
+    .then(categories => {
+        if(categories)
+            res.status(200).json(categories);
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({msg: 'error getting data'});
+    })
+});
+
+router.route('/delete/:id').get(function (req, res) {
     Category.findByIdAndRemove({_id: req.params.id}, function(err, category){
         if(err) res.json(err);
         else res.json('Category Deleted Successfully!');

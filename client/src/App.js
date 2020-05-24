@@ -22,10 +22,14 @@ class App extends React.Component {
     cart: false,
     authState: null,
     cartId: '',
+    wishlistId: '',
     cartItems: [],
+    wishlistItems: [],
     cartTotal: '',
     windowItems: [],
-    itemSize: ''
+    itemSize: '',
+    categories: [],
+    reviews: []
   }
 
   componentDidMount = () => {
@@ -33,7 +37,9 @@ class App extends React.Component {
     this.toggleShowcase(true);
     this.toggleBanner(true);
     this.checkAuthState();
+    this.setCategories();
     this.setItemWindow();
+    this.getReviews();
   }
 
   setItemWindow = async () => {
@@ -101,6 +107,24 @@ class App extends React.Component {
     }
   }
 
+  getWishListId = async (userId) => {
+    let wishlist = null;
+    // find the wishlist
+    await axios.get('/api/wishlists/wishlist/'+userId)
+    .then(res => {
+        wishlist = res.data;
+    })
+
+    if(wishlist)
+      return wishlist._id;
+    else {
+      await axios.post('/api/wishlists', {userId})
+      .then(res => {
+          return res.data._id;
+      })
+    }
+  }
+
   setCartItems = async (userId) => {
     let cart = null;
 
@@ -116,6 +140,22 @@ class App extends React.Component {
     }
     this.setTotal();
     //console.log(this.state.cartItems);
+  }
+
+  setWishListItems = async (userId) => {
+    let wishlist = null;
+
+    await axios.get('/api/wishlists/wishlist/'+userId)
+    .then(res => {
+        wishlist = res.data;
+    })  
+
+    if(wishlist) {
+      this.setState({
+        wishlistItems: wishlist.items
+      })
+    }
+    //console.log(this.state.wishlistItems);
   }
 
   setTotal = () => {
@@ -155,6 +195,46 @@ class App extends React.Component {
     return result;
   }
 
+  checkExistInWishList = async (wishListId, item) => {
+    let i = false;
+    await axios.post('/api/wishlists/checkExist', {wishListId, item})
+    .then(res => {
+      if(res.data.length >= 1)
+        i = true;
+    })
+    return i;
+  }
+
+  addToWishList = async (wishListId, itemId) => {
+    let result = false;
+    
+      let item = await this.loadItem(itemId)
+      .then(i => {
+        return i;
+      })
+    
+      let contains = await this.checkExistInWishList(wishListId,item)
+      .then(x => {
+        return x;
+      })
+
+      if(!contains) {
+      // add item to the wishlist
+      const newItem = item;
+
+      await axios.put('/api/wishlists/addItem', {newItem,wishListId})
+      .then(res => {
+        if(res.data === 'OK') {
+          const userId = this.state.authState._id;
+          this.setWishListItems(userId);
+          result = true;
+        }
+      });
+    }
+
+    return result;
+  }
+
   removeFromCart = async (cartId,index) => {
     let result = false;
 
@@ -162,13 +242,34 @@ class App extends React.Component {
       return (index !== i)
     })
 
-    console.log(newItems);
+    // console.log(newItems);
 
     await axios.put('/api/carts/removeItem', {cartId, newItems})
     .then(res => {
       if(res.data === 'OK') {
         const userId = this.state.authState._id;
         this.setCartItems(userId);
+        result = true;
+      }
+    });
+
+    return result;
+  }
+
+  removeFromWishList = async (wishListId,index) => {
+    let result = false;
+
+    let newItems = this.state.wishlistItems.filter( (item,i) => {
+      return (index !== i)
+    })
+
+    // console.log(newItems);
+
+    await axios.put('/api/wishlists/removeItem', {wishListId, newItems})
+    .then(res => {
+      if(res.data === 'OK') {
+        const userId = this.state.authState._id;
+        this.setWishListItems(userId);
         result = true;
       }
     });
@@ -183,6 +284,15 @@ class App extends React.Component {
         i = item.data;
     })
     return i;
+  }
+  
+  getReviews = async () => {
+    await axios.get('/api/reviews/allReviews')
+    .then(r => {
+      this.setState({
+        reviews: r.data
+      })
+    });
   }
 
   setItemSize = (s) => {
@@ -204,9 +314,11 @@ class App extends React.Component {
         const userId = res.data._id;
         this.setState({
           authState: res.data,
-          cartId: this.getCartId(userId)
+          cartId: this.getCartId(userId),
+          wishlistId: this.getWishListId(userId)
         })
         this.setCartItems(userId);
+        this.setWishListItems(userId);
       })
     }
   }
@@ -214,7 +326,8 @@ class App extends React.Component {
   clearAuthState = () => {
     localStorage.removeItem('user_oreo');
     this.setState({
-      authState: null
+      authState: null,
+      cartTotal: ''
     })
   }
 
@@ -229,6 +342,25 @@ class App extends React.Component {
         this.setState({
           windowItems: res.data
         })
+    })
+  }
+
+  getCategoryItems = async (category) => {
+    await axios.post('/api/items/category', {category})
+    .then(res => {
+      this.setState({
+        windowItems: res.data
+      })
+    })
+  }
+
+  setCategories = async () => {
+    await axios.get('/api/categories/')
+    .then(res => {
+        if(res.data)
+          this.setState({
+            categories: res.data
+          })
     })
   }
 
@@ -297,6 +429,11 @@ class App extends React.Component {
           cartItems={this.state.cartItems}
           cartTotal={this.state.cartTotal}
           removeFromCart={this.removeFromCart}
+          setCartState={this.setCartState}
+          wishlistItems={this.state.wishlistItems}
+          getWishListId={this.getWishListId}
+          removeFromWishList={this.removeFromWishList}
+          addToCart={this.addToCart}
         />
         <Showcase
           showcase={this.state.showcase}
@@ -308,6 +445,10 @@ class App extends React.Component {
           setAuthState={this.setAuthState}
           getCartId={this.getCartId}
           addToCart={this.addToCart}
+          getWishListId={this.getWishListId}
+          addToWishList={this.addToWishList}
+          getReviews={this.getReviews}
+          reviews={this.state.reviews}
         />
         <ItemWindow
           setCartState={this.setCartState}
@@ -320,6 +461,12 @@ class App extends React.Component {
           cartItems={this.state.cartItems}
           itemSize={this.state.itemSize}
           setItemSize={this.setItemSize}
+          categories={this.state.categories}
+          getCategoryItems={this.getCategoryItems}
+          getWishListId={this.getWishListId}
+          addToWishList={this.addToWishList}
+          getReviews={this.getReviews}
+          reviews={this.state.reviews}
         />
         <BottomBar />
       </div>

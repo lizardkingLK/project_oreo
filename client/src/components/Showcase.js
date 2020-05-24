@@ -13,6 +13,10 @@ const Showcase = (props) => {
     let setAuthState = props.setAuthState;
     let getCartId = props.getCartId;
     let addToCart = props.addToCart;
+    let getWishListId = props.getWishListId;
+    let addToWishList = props.addToWishList;
+    let getReviews = props.getReviews;
+    let reviews = props.reviews;
 
     (showcase === true) ? showcase = 'block' : showcase = 'none';
 
@@ -33,6 +37,9 @@ const Showcase = (props) => {
                     />
                     {
                         contents.map(cont => {
+                            let filtered = reviews.filter(r => {
+                                return (r.itemId === cont._id);
+                            })
                             return (
                                 <Item 
                                     key={cont._id} 
@@ -41,6 +48,10 @@ const Showcase = (props) => {
                                     setAuthState={setAuthState}
                                     getCartId={getCartId}
                                     addToCart={addToCart}
+                                    getWishListId={getWishListId}
+                                    addToWishList={addToWishList}
+                                    getReviews={getReviews}
+                                    reviews={filtered}
                                 />
                             )
                         })
