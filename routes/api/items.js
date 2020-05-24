@@ -160,6 +160,25 @@ router.route('/edit/:id').post(function (req,res) {
     })
 })*/
 
+router.put('/updatePrice/:itemId', (req,res) => {
+    const id = req.params.itemId;
+    const newPrice = req.body.newPrice;
+
+    console.log(req.body);
+
+    Item.findOneAndUpdate({_id: id}, {
+        $set: {
+            dateUpdated:  new Date().toISOString(),
+            price: newPrice
+        }
+    }, {useFindAndModify: false})
+    .then( () => {
+        res.sendStatus(200);
+    }).catch(err => {
+        console.error(err);
+        res.sendStatus(500);
+    })
+});
 
 router.delete('/:id', (req,res) => {
     const id = req.params.id;

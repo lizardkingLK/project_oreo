@@ -4,8 +4,31 @@ import {Modal, Button, Row, Col, Form} from "react-bootstrap";
 class Update extends Component{
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {cats:[], subCats:[], tCats:[]}
         this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    componentDidMount() {
+        fetch('/api/categories/primary/null')
+            .then(res => res.json())
+            .then(data =>{
+                //console.log("DATA OF CATS:", data)
+                this.setState({cats:data});
+            });
+
+        fetch('/api/categories/secondary/null')
+            .then(res => res.json())
+            .then(data =>{
+                //console.log("DATA OF SCATS:", data)
+                this.setState({subCats:data});
+            });
+
+        fetch('/api/categories/ternary/null')
+            .then(res => res.json())
+            .then(data =>{
+                //console.log("DATA OF SCATS:", data)
+                this.setState({tCats:data});
+            });
     }
 
     handleSubmit = (event,id) => {
@@ -23,7 +46,10 @@ class Update extends Component{
                 type:event.target.ItemType.value,
                 category:event.target.category.value,
                 price:event.target.price.value,
-                description:event.target.des.value
+                subcategories: [event.target.category.value, event.target.subCategory.value, event.target.ItemType.value],
+                sizes: (event.target.size.value).split(','),
+                description:event.target.des.value,
+                images:[event.target.Image1.value, event.target.Image2.value, event.target.Image3.value, event.target.Image4.value, event.target.Image2.value,]
             })
         })
         .then(res=> {
@@ -31,6 +57,7 @@ class Update extends Component{
         })
         .then(result=> {
             alert("Success");
+            this.props.getAllItems();
         })
         .catch(error=>{
             alert("Failed");
@@ -38,7 +65,7 @@ class Update extends Component{
     }
 
     render() {
-        //console.log(this.props.id);
+
         return(
             <Modal
                 {...this.props}
@@ -60,29 +87,27 @@ class Update extends Component{
                                     <Form.Control
                                         type="text"
                                         name="ItemName"
-                                        required
                                         defaultValue = {this.props.iname}
                                         placeholder="Item Name" />
                                 </Form.Group>
 
                                 <Form.Group as={Col} controlId="ItemType">
                                     <Form.Label>Type:</Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        name="ItemType"
-                                        required
-                                        defaultValue = {this.props.itype}
-                                        placeholder="Item Type" />
-                                </Form.Group>
+                                    <Form.Control as="select" defaultValue = {this.props.itype}>
+                                        {this.state.tCats.map(tCat =>
+                                            <option key={tCat._id}>{tCat.categoryName}</option>
+                                        )}
+                                    </Form.Control>
+                                    </Form.Group>
                             </Form.Row>
 
                             <Form.Row>
                                 <Form.Group as={Col}controlId="category">
                                     <Form.Label>Category:</Form.Label>
                                     <Form.Control as="select" defaultValue = {this.props.icat}>
-                                        <option>Men</option>
-                                        <option>Women</option>
-                                        <option>Kids</option>
+                                        {this.state.cats.map(cat =>
+                                        <option key={cat._id}>{cat.categoryName}</option>
+                                        )}
                                     </Form.Control>
                                 </Form.Group>
 
@@ -91,9 +116,28 @@ class Update extends Component{
                                     <Form.Control
                                         type="text"
                                         name="price"
-                                        required
                                         defaultValue = {this.props.iprice}
                                         placeholder="Item Price" />
+                                </Form.Group>
+                            </Form.Row>
+
+                            <Form.Row>
+                                <Form.Group as={Col}controlId="subCategory">
+                                    <Form.Label>Sub Category:</Form.Label>
+                                    <Form.Control as="select" defaultValue = {this.props.isubcat}>
+                                        {this.state.subCats.map(subCat =>
+                                            <option key={subCat._id}>{subCat.categoryName}</option>
+                                        )}
+                                    </Form.Control>
+                                </Form.Group>
+
+                                <Form.Group as={Col} controlId="size">
+                                    <Form.Label>Size:</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        name="size"
+                                        defaultValue = {this.props.isize}
+                                        placeholder="Sizes" />
                                 </Form.Group>
                             </Form.Row>
 
@@ -102,10 +146,56 @@ class Update extends Component{
                                 <Form.Control
                                     type="text"
                                     name="des"
-                                    required
                                     defaultValue = {this.props.ides}
                                     placeholder="Item Description" />
                             </Form.Group>
+
+                            <Form.Row>
+                                <Form.Group as={Col} controlId="Image1">
+                                    <Form.Label>Image1</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        name="Image1"
+                                        defaultValue = {this.props.image[0]}
+                                        placeholder="Image" />
+                                </Form.Group>
+
+                                <Form.Group as={Col} controlId="Image2">
+                                    <Form.Label> Image2</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        name="Image2"
+                                        defaultValue = {this.props.image[1]}
+                                        placeholder="Image" />
+                                </Form.Group>
+
+                                <Form.Group as={Col} controlId="Image3">
+                                    <Form.Label> Image3</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        name="Image3"
+                                        defaultValue = {this.props.image[2]}
+                                        placeholder="Image" />
+                                </Form.Group>
+
+                                <Form.Group as={Col} controlId="Image4">
+                                    <Form.Label>Image4</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        name="Image4"
+                                        defaultValue = {this.props.image[3]}
+                                        placeholder="Image" />
+                                </Form.Group>
+
+                                <Form.Group as={Col} controlId="Image5">
+                                    <Form.Label>Image5</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        name="Image5"
+                                        defaultValue = {this.props.image[4]}
+                                        placeholder="Image" />
+                                </Form.Group>
+                            </Form.Row>
 
                             <Form.Group>
                                 <Button varient="primary" type="submit">

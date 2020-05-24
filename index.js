@@ -10,6 +10,7 @@ const items = require('./routes/api/items');
 const users = require('./routes/api/users');
 const auth = require('./routes/api/auth');
 const cat = require('./routes/api/categories');
+const prices = require('./routes/api/prices');
 let uri = '';
 
 /*let cors = require('cors');
@@ -50,6 +51,7 @@ app.use('/api/items', items);
 app.use('/api/users', users);
 app.use('/api/auth', auth);
 app.use('/api/categories',cat);
+app.use('/api/prices',prices);
 
 server.listen(port, () => {
     console.log('api_oreo listening on port %s', port);

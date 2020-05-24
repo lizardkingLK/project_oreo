@@ -59,16 +59,31 @@ router.route('/add').post(function(req, res) {
         });
 });
 
-router.get('/primary', (req,res) => {
-    //const limit = parseInt(req.params.limit);
-    Category.find({
-        categoryType: 'Primary'
-    })
-        //.sort( { date: -1 })
-        //.limit(limit)
-        .then((err,cat) => {
-            res.json(cat);
-        })
+router.route('/primary/:limit').get(async function(req, res) {
+    const cats = await Category.find({categoryType: "Primary"});
+    if(cats){
+        res.json(cats)
+    } else {
+        res.status(404).json("Not found")
+    }
+});
+
+router.route('/secondary/:limit').get(async function(req, res) {
+    const cats = await Category.find({categoryType: "Secondary"});
+    if(cats){
+        res.json(cats)
+    } else {
+        res.status(404).json("Not found")
+    }
+});
+
+router.route('/ternary/:limit').get(async function(req, res) {
+    const cats = await Category.find({categoryType: "Ternary"});
+    if(cats){
+        res.json(cats)
+    } else {
+        res.status(404).json("Not found")
+    }
 });
 
 

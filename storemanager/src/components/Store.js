@@ -3,8 +3,11 @@ import {Col, Form, Table} from 'react-bootstrap';
 import {Button, ButtonToolbar} from 'react-bootstrap';
 import AddItemModal from "./AddItemModal";
 import {Accordion, Card} from 'react-bootstrap';
-import {Link} from 'react-router-dom'
-import Update from "./Update"
+import Update from "./Update";
+import AddDisModal from "./AddDisModal";
+
+import axios from 'axios';
+import {forEach} from "react-bootstrap/cjs/ElementChildren";
 
 class Store extends Component{
 
@@ -16,12 +19,16 @@ class Store extends Component{
             items:[],
             addModalShow: false,
             editModalShow: false,
+            disModalShow: false,
             id: '',
             iname: '',
             itype: '',
             icat: '',
             iprice: '',
-            ides: ''
+            isubcat: '',
+            isize: '',
+            ides: '',
+            image: ''
         }
     }
 
@@ -34,13 +41,16 @@ class Store extends Component{
     //     this._isMounted = false;
     // }
 
-    getAllItems(){
+    getAllItems = () => {
         fetch('/api/items/allitems')
         .then(res => res.json())
         .then(data =>{
-            this.setState({items:data});
+            this.setState({
+                items: data
+            });
         })
     }
+
 
     setItems = (data) => {
         this.setState({
@@ -48,9 +58,9 @@ class Store extends Component{
         });
     }
 
-    // componentDidUpdate() {
-    //     this.getAllItems();
-    // }
+      // componentDidUpdate() {
+      //     this.getAllItems();
+      // }
 
     deleteItem = userId => {
         const requestOptions = {
@@ -61,6 +71,7 @@ class Store extends Component{
             return response.json();
         }).then((result) => {
             alert("item deleted succesfully.")
+            this.getAllItems();
         });
     }
 
@@ -72,6 +83,7 @@ class Store extends Component{
         }).then((data) => {
             console.log(data);
             this.setItems(data);
+            this.shouldComponentUpdate = false;
         });
     }
 
@@ -84,47 +96,56 @@ class Store extends Component{
             itype:item.type,
             icat:item.category,
             iprice:item.price,
-            ides:item.description
+            isubcat:item.subcategories,
+            isize:item.sizes,
+            ides:item.description,
+            image:item.images
         })
-        //console.log(this.state);
-        // this.setState({
-        //     editModalShow:true,
-        //     iname:item.name,
-        //     itype:item.type,
-        //     icat:item.category,
-        //     iprice:item.price,
-        //     ides:item.description
-        // })
+    }
+
+    loadPrice = (item) =>{
+        console.log(item._id);
+        this.setState({
+            disModalShow: true,
+            id: item._id,
+            iprice:item.price
+        })
     }
 
     render() {
-        let {items, iname, itype, icat, iprice, ides, id} = this.state;
+        let {items, iname, itype, icat, iprice, isubcat, isize, ides, id, image} = this.state;
         let addModalClose = () => this.setState({addModalShow: false});
         let editModalClose = () => this.setState({editModalShow: false});
+        let disModalClose = () => this.setState({disModalShow: false});
 
         return(
             <div >
+                <div className="row">
+                    <div className="col">
                 <ButtonToolbar className="mt-3">
-                    <Button varient="primary"
+                    <Button className="btn-dark ml-5 font-weight-bold" style={{width: '200px',marginLeft: '300px'}}
                     onClick = {() => this.setState({addModalShow: true})}>
-                    Add Item
+                        Add Item
                     </Button>
 
                     <AddItemModal
                      show= {this.state.addModalShow}
                      onHide= {addModalClose}
+                     getAllItems = {this.getAllItems}
                      />
                 </ButtonToolbar>
-
-            <form onSubmit={this.search} className="form-inline">
+                    </div>
+                    <div className="col">
+            <form onSubmit={this.search} className="form-inline mt-3" style={{marginLeft: '360px'}}>
                 <div className="form-group">
-                    <input id="itemId" type="text" name="search" placeholder="search item" className="form-control"/>
-                    <input type="submit" value="search" className="btn btn-default"/>
+                    <input id="itemId" type="text" name="search" placeholder="Search Item" className="form-control"/>
+                    <input type="submit" value="Search" className="btn btn-default btn-secondary" />
                 </div>
             </form>
-
+                    </div>
+                </div>
             <Table className="mt-4" striped bordered hover size="sm">
-                <thead>
+                <thead >
                     <tr>
                         <th>Name</th>
                         <th>Type</th>
@@ -132,23 +153,35 @@ class Store extends Component{
                         <th>Sub Category</th>
                         <th>Size</th>
                         <th>Price</th>
-                        <th>Discount</th>
                         <th>Description</th>
                         <th>Images</th>
                         <th>Option</th>
                     </tr>
                 </thead>
+
                 <Update show = {this.state.editModalShow}
-                  onHide={editModalClose}
-                  id = {id}
-                  iname = {iname}
-                  itype = {itype}
-                  icat = {icat}
-                  iprice = {iprice}
-                  ides = {ides}
+                        onHide={editModalClose}
+                        id = {id}
+                        iname = {iname}
+                        itype = {itype}
+                        icat = {icat}
+                        iprice = {iprice}
+                        isubcat = {isubcat}
+                        isize = {isize}
+                        ides = {ides}
+                        image = {image}
+                        getAllItems = {this.getAllItems}
+                />
+
+                <AddDisModal
+                    show = {this.state.disModalShow}
+                    onHide = {disModalClose}
+                    id = {id}
+                    iprice = {iprice}
+                    getAllItems = {this.getAllItems}
                 />
                 <tbody>
-                    {this.state.items.map(item =>
+                    {this.state.items.map( (item,index) =>
                         <tr key={item._id}   >
                             <td >
                                 {item.name}
@@ -170,7 +203,6 @@ class Store extends Component{
                                 </Card>
                                 </Accordion></td>
                             <td>{item.price}</td>
-                            <td></td>
                             <td><Accordion defaultActiveKey="1">
                                 <Card>
                                 <Card.Header>
@@ -182,7 +214,8 @@ class Store extends Component{
                                     <Card.Body>{item.description}</Card.Body>
                                     </Accordion.Collapse>
                                     </Card>
-                                    </Accordion></td>
+                                </Accordion>
+                            </td>
                             <td>{item.images.map((image,index) => {
                                 return (
                                     <div key={index} style={{width: "50px",height: "50px",backgroundSize: "cover", backgroundImage: "URL("+image+")"}}></div>
@@ -190,11 +223,14 @@ class Store extends Component{
                             })}</td>
                             <td>
                                 <ButtonToolbar>
-                                    <Button className="mr-2" variant="info" onClick={() => this.loadUpdate(item)}>
+                                    <Button className="mr-3" variant="success" onClick={() => this.loadUpdate(item)}>
                                         Edit
                                     </Button>
                                     <Button className= "mr-2" onClick= {()=>this.deleteItem(item._id)} variant="danger">
                                         Delete
+                                    </Button>
+                                    <Button className= "mt-2" variant="secondary" onClick={() => this.loadPrice(item)}>
+                                        Add Discount
                                     </Button>
                                 </ButtonToolbar>
                             </td>
