@@ -8,20 +8,57 @@ import {
 } from 'reactstrap';
 
 const WishListItem = (props) => {
-    const { item } = props;
+    const { 
+        item, 
+        index, 
+        getWishListId, 
+        removeFromWishList, 
+        authState, 
+        addToCart,
+        getCartId
+    } = props;
     const [fadeIn, setFadeIn] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const toggleDropdown = () => setDropdownOpen(prevState => !prevState);
 
-    const handleChangeSize = (i) => {
-        console.log(i);
+    const handleChangeSize = async (i) => {
+        let size = item.sizes[i];
+        let itemId = item._id;
+        let userId = authState?._id;
+
+        console.log(size);
+        
+        if(size) {
+            let cartId = '';
+
+            // get cart id
+            await getCartId(userId)
+            .then(cId => {
+                cartId = cId;
+            })
+            
+            // add to cart
+            await addToCart(cartId,itemId,size)
+            .then(result => {
+                console.log(result);
+            })
+        }
+    }
+
+    const handleRemoveFromWishList = async (i) => {
+        let wishListId = '';
+        await getWishListId(authState._id)
+        .then(cId => {
+            wishListId = cId;
+        })
+        removeFromWishList(wishListId,i);
     }
 
     return (
         <div className="cartLTopDWIC_item">
             <div className="cartLTopDWICI_content">
                 <div className="cartLTopDWICIC_image" style={{backgroundImage: "URL("+item.images[0]+")"}}>
-                    <div className="cartLTopDWICICI_heartContainer">
+                    <div className="cartLTopDWICICI_heartContainer" onClick={() => handleRemoveFromWishList(index)}>
                         <h5 className="cartLTopDWICICIHC_heart"><i className="fas fa-heart"></i></h5>
                     </div>
                 </div>

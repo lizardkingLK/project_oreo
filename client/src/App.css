@@ -546,7 +546,7 @@ html {
     justify-content: flex;
 }
 
-#itemWindow #itemWindow_right #itemWindowR_topA  #itemWindowRTopA_meta {
+#itemWindow #itemWindow_right #itemWindowR_topA #itemWindowRTopA_meta {
     flex: 1;
     margin: 0 0 0 1vh;
     color: var(--secondaryDark);
@@ -554,12 +554,12 @@ html {
     flex-direction: row;
 }
 
-#itemWindow #itemWindow_right #itemWindowR_topA  #itemWindowRTopA_meta #itemWindowRTopAM_cartBtn #itemWindowRTopAMCB_A {
+#itemWindow #itemWindow_right #itemWindowR_topA #itemWindowRTopA_meta #itemWindowRTopAM_cartBtn #itemWindowRTopAMCB_A {
     text-decoration: none !important;
     color: var(--secondaryDark);
 }
 
-#itemWindow #itemWindow_right #itemWindowR_topA  #itemWindowRTopA_form {
+#itemWindow #itemWindow_right #itemWindowR_topA #itemWindowRTopA_form {
     flex: 1;
     display: flex;
     flex-direction: row;
@@ -1430,11 +1430,24 @@ html {
     }
 
     #itemWindow #itemWindow_left {
-        width: 0;
+        width: 1vw;
+        position: absolute;
+        transition: .5s;
+    }
+
+    #itemWindow #itemWindow_left #itemWindowL_topA #itemWindowLTopA_A {
+        display: none;
     }
 
     #itemWindow #itemWindow_right {
         width: 100vw;
+    }
+
+    #itemWindow #itemWindow_left:hover {
+        width: 50vw;
+        position: absolute;
+        transition: .5s;
+        z-index: 2;
     }
 
     #itemWindow #itemWindow_right #itemWindowR_topB {

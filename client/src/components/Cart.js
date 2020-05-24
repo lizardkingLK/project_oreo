@@ -18,7 +18,10 @@ const Cart = (props) => {
         cartTotal, 
         removeFromCart,
         setCartState,
-        wishlistItems
+        wishlistItems,
+        getWishListId,
+        removeFromWishList,
+        addToCart
     } = props;
     let fadeIn = '';
 
@@ -119,11 +122,17 @@ const Cart = (props) => {
                     {(authState)
                     ?
                     <div id="cartLTopD_wishListItemContainer">
-                        {wishlistItems.map( (item) => {
+                        {wishlistItems.map( (item,index) => {
                             return (
                                 <WishListItem 
                                     key={item._id}
                                     item={item}
+                                    index={index}
+                                    getWishListId={getWishListId}
+                                    removeFromWishList={removeFromWishList}
+                                    authState={authState}
+                                    addToCart={addToCart}
+                                    getCartId={getCartId}
                                 />
                             )
                         })}

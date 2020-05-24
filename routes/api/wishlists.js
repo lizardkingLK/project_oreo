@@ -43,7 +43,7 @@ router.put('/addItem', (req,res) => {
 });
 
 router.put('/removeItem', (req,res) => {
-    const wishListId = req.body.cartId;
+    const wishListId = req.body.wishListId;
     const newItems = req.body.newItems;
 
     WishList.findOneAndUpdate({_id: wishListId}, {
