@@ -239,13 +239,34 @@ class App extends React.Component {
       return (index !== i)
     })
 
-    console.log(newItems);
+    // console.log(newItems);
 
     await axios.put('/api/carts/removeItem', {cartId, newItems})
     .then(res => {
       if(res.data === 'OK') {
         const userId = this.state.authState._id;
         this.setCartItems(userId);
+        result = true;
+      }
+    });
+
+    return result;
+  }
+
+  removeFromWishList = async (wishListId,index) => {
+    let result = false;
+
+    let newItems = this.state.wishlistItems.filter( (item,i) => {
+      return (index !== i)
+    })
+
+    // console.log(newItems);
+
+    await axios.put('/api/wishlists/removeItem', {wishListId, newItems})
+    .then(res => {
+      if(res.data === 'OK') {
+        const userId = this.state.authState._id;
+        this.setWishListItems(userId);
         result = true;
       }
     });
@@ -293,7 +314,8 @@ class App extends React.Component {
   clearAuthState = () => {
     localStorage.removeItem('user_oreo');
     this.setState({
-      authState: null
+      authState: null,
+      cartTotal: ''
     })
   }
 
@@ -397,6 +419,9 @@ class App extends React.Component {
           removeFromCart={this.removeFromCart}
           setCartState={this.setCartState}
           wishlistItems={this.state.wishlistItems}
+          getWishListId={this.getWishListId}
+          removeFromWishList={this.removeFromWishList}
+          addToCart={this.addToCart}
         />
         <Showcase
           showcase={this.state.showcase}

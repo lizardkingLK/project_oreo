@@ -28,7 +28,7 @@ const ItemWindow = (props) => {
     let bg = '';
     (windowItems.length === 0) ? bg = "transparent" : bg = "var(--primaryLight)";
     const [fadeIn, setFadeIn] = useState(false);
-    
+
     let typeA = categories.filter(category => {
         return category.categoryType === 'Primary';
     })
