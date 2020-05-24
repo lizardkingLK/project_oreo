@@ -10,13 +10,9 @@ export default class CategoryTableRow extends Component {
     }
 
     deleteCategory() {
-        axios.get('/api/categories/delete/'+this.props.category._id)
+        axios.get('/api/categories/deleteCategory/'+this.props.category._id)
             .then(console.log('Deleted'))
             .catch(err => console.log(err))
-
-        alert('Category successfully deleted!')
-
-        window.location.reload(false);
 
     }
 

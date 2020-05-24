@@ -33,11 +33,7 @@ if(process.env.NODE_ENV === 'production') {
     }
 
     app.get('/admin'), (req,res) => {
-        res.sendFile(path.resolve(__dirname,'admin','build','index.html'));
-    }
-
-    app.get('/storeManager'), (req,res) => {
-        res.sendFile(path.resolve(__dirname,'storemanager','build','index.html'));
+        res.sendFile(path.resolve(__dirname,'admin','build', 'index.html'));
     }
 }
 
@@ -51,7 +47,6 @@ app.use('/api/users', users);
 app.use('/api/auth', auth);
 app.use('/api/prices',prices);
 app.use('/api/categories', categories);
-app.use('/api/collections', collections);
 app.use('/api/storeManagers', storeManagers);
 app.use('/api/carts', carts);
 app.use('/api/wishlists', wishlists);

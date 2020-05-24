@@ -2,11 +2,12 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import CategoryList from "./CategoryList";
 import {IoIosAddCircleOutline} from 'react-icons/io';
-import {FiRefreshCcw} from 'react-icons/fi';
+
+
 
 class Categories extends Component {
 
-    constructor(props) {
+    constructor(props){
         super(props);
         this.onChangeCategoryName = this.onChangeCategoryName.bind(this);
         this.onChangeCategoryType = this.onChangeCategoryType.bind(this);
@@ -16,6 +17,7 @@ class Categories extends Component {
             categoryType: ''
         }
     }
+
 
     onChangeCategoryName(e) {
         this.setState({
@@ -39,25 +41,30 @@ class Categories extends Component {
             categoryType: this.state.categoryType,
         };
 
-        axios.post('/api/categories/add/', newCategory)
+        axios.post('/api/categories/addCategory/', newCategory)
             .then(res => console.log(res.data));
-
-        alert('Category Added Successfully! ');
 
         this.setState({
             categoryName: '',
             categoryType: ''
         })
-    }
-    refreshPage() {
-        window.location.reload(false);
+
     }
     render() {
+
         return (
             <div className="div">
                 <div className="row">
                     <div className="col">
-                    <div className="col-8 mx-auto col-md-9 mt-5">
+                        <div className="card border-warning bg-dark ml-5 mr-5 mt-4">
+                            <div className="card-body">
+                        <h3 style={{fontFamily: "Lobster"}} className="card-title text-center text-secondary">Category Types</h3>
+                        <p style={{fontFamily: "Roboto"}} className="text-white">Primary   - Main Category</p>
+                        <p style={{fontFamily: "Roboto"}} className="text-white">Secondary - Sub Category</p>
+                        <p style={{fontFamily: "Roboto"}} className="text-white">Ternary   - Product Type</p>
+                            </div>
+                        </div>
+                    <div className="col-8 mx-auto col-md-9" style={{marginTop: "1px"}}>
                     <div className="card border-warning">
                         <div className="card-header text-dark text-center">Add Categories</div>
                         <div className="card-body">
@@ -65,7 +72,7 @@ class Categories extends Component {
                                 <div className="form-group">
                                     <label className="font-weight-bold">Name</label>
                                     <input type="text"
-                                           className="form-control text-capitalize"
+                                           className="form-control"
                                            value={this.state.categoryName}
                                            onChange={this.onChangeCategoryName}/>
                                 </div>
@@ -79,18 +86,13 @@ class Categories extends Component {
                                     </select>
                                 </div>
                                 <div className="form-group">
-                                    <button type="submit" className="btn btn-dark border-warning"><IoIosAddCircleOutline size={30}/> Add</button>
+                                    <button type="submit" className="btn btn-dark border-warning"><IoIosAddCircleOutline size={25}/> Add</button>
                                 </div>
                             </form>
                         </div>
                     </div>
-
                     </div>
-                        <div>
-                            <button className="btn btn-dark border-warning mt-5" style={{fontSize: '20px',marginLeft: '215px', height: '120px', width : '120px'}} onClick={this.refreshPage}><FiRefreshCcw size={35}/> Refresh</button>
-                        </div>
                     </div>
-
                 <div className="col-7 mr-5 ml-2 mt-4">
                     <CategoryList/>
                 </div>
@@ -100,4 +102,4 @@ class Categories extends Component {
     }
 }
 
-export default Categories;
+export default Categories

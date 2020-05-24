@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {MdModeEdit} from 'react-icons/md'
 import axios from 'axios';
 
-export default class StoreManagerEdit extends Component {
+class StoreManagerEdit extends Component {
 
     constructor(props){
         super(props);
@@ -86,7 +86,7 @@ export default class StoreManagerEdit extends Component {
             password: this.state.password
         };
         console.log(obj);
-        axios.post('/api/storeManagers/update/'+this.props.match.params.id, obj)
+        axios.post('/api/storeManagers/updateStoreManager/'+this.props.match.params.id, obj)
             .then(res => console.log(res.data));
 
         this.props.history.push('/storeManagersManagement');
@@ -101,7 +101,7 @@ export default class StoreManagerEdit extends Component {
                                 <div className="form-group">
                                     <label className="font-weight-bold">Full Name</label>
                                     <input type="text"
-                                           className="form-control text-capitalize"
+                                           className="form-control"
                                            value={this.state.fullName}
                                            onChange={this.onChangeFullName}/>
                                 </div>
@@ -123,7 +123,7 @@ export default class StoreManagerEdit extends Component {
                                 <div className="form-group">
                                     <label className="font-weight-bold">Address</label>
                                     <input type="text"
-                                           className="form-control text-capitalize"
+                                           className="form-control"
                                            value={this.state.address}
                                            onChange={this.onChangeAddress}/>
                                 </div>
@@ -139,7 +139,8 @@ export default class StoreManagerEdit extends Component {
                                     <input  type="text"
                                             className="form-control"
                                             value={this.state.password}
-                                            onChange={this.onChangePassword}/>
+                                            onChange={this.onChangePassword}
+                                            readOnly/>
                                 </div>
                                 <div className="form-group">
                                     <button type="submit" className="btn btn-dark border-warning" style={{width: '120px'}}><MdModeEdit size={25}/> Update</button>
@@ -151,3 +152,5 @@ export default class StoreManagerEdit extends Component {
         )
     }
 }
+
+export default StoreManagerEdit;
