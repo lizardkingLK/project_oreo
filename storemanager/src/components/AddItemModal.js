@@ -38,7 +38,7 @@ class AddItemModal extends Component{
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlYjAyYTJjNTRjYTJhZDM1ODI4YzE3MyIsImVtYWlsIjoibGFrbWluYWFiZXlyYXRuZTU2QGdtYWlsLmNvbSIsImlhdCI6MTU5MDI1MTA2MCwiZXhwIjoxNTkwMjU0NjYwfQ.y7_UPP4NuDzpQhGDd9XFU0JCX18MtGZKZ2pxVLU8oIA'
+                'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlYjAyYTJjNTRjYTJhZDM1ODI4YzE3MyIsImVtYWlsIjoibGFrbWluYWFiZXlyYXRuZTU2QGdtYWlsLmNvbSIsImlhdCI6MTU5MDMzNTQxNSwiZXhwIjoxNTkwMzM5MDE1fQ.9zXkcv4wJXMh-yfdl3L2lRrTDPpaxXz4KoRVN_4KvSE'
             },
             body:JSON.stringify({
                 name:event.target.ItemName.value,
