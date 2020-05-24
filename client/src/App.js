@@ -3,6 +3,7 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
+
 import NavigationBar from '../src/components/NavigationBar';
 import Showcase from '../src/components/Showcase';
 import ItemWindow from '../src/components/ItemWindow';

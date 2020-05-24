@@ -8,6 +8,16 @@ class CategoryList extends Component {
         this.state = {categories: []};
     }
 
+    componentDidUpdate() {
+        axios.get('/api/categories/')
+            .then(response => {
+                this.setState({ categories: response.data });
+            })
+            .catch(function (error){
+                console.log(error);
+            })
+    }
+
     componentDidMount() {
         axios.get('/api/categories/')
             .then(response => {
@@ -22,11 +32,10 @@ class CategoryList extends Component {
             return <CategoryTableRow category={currentCategory} key={i} />;
         })
     }
-
     render() {
         return (
             <div>
-                <h3 className="text-center">Category List</h3>
+                <h3 className="text-center">Categories List</h3>
                 <table className="table table-striped" style={{ marginTop: 20 }} >
                     <thead className="bg-dark text-white">
                     <tr>

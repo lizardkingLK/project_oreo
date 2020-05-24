@@ -15,6 +15,7 @@
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "devDependencies": {
+    "cors": "^2.8.5",
     "nodemon": "*"
   },
   "dependencies": {
@@ -23,8 +24,12 @@
     "concurrently": "^5.1.0",
     "config": "^3.3.1",
     "express": "^4.17.1",
+    "is-empty": "^1.2.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.8.11"
+    "mongoose": "^5.8.11",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
+    "validator": "^13.0.0"
   },
   "repository": {
     "type": "git",

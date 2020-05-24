@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {MdModeEdit} from 'react-icons/md'
 import axios from 'axios';
 
-export default class CategoryEdit extends Component {
+class CategoryEdit extends Component {
 
     constructor(props){
         super(props);
@@ -16,7 +16,6 @@ export default class CategoryEdit extends Component {
             categoryType: ''
         }
     }
-
     componentDidMount() {
         axios.get('/api/categories/'+this.props.match.params.id)
             .then(response => {
@@ -47,7 +46,7 @@ export default class CategoryEdit extends Component {
             categoryType: this.state.categoryType
         };
         console.log(obj);
-        axios.post('/api/categories/update/'+this.props.match.params.id, obj)
+        axios.post('/api/categories/updateCategory/'+this.props.match.params.id, obj)
             .then(res => console.log(res.data));
 
         this.props.history.push('/');
@@ -64,7 +63,7 @@ export default class CategoryEdit extends Component {
                     <div className="form-group">
                         <label className="font-weight-bold">Name</label>
                         <input type="text"
-                               className="form-control text-capitalize"
+                               className="form-control"
                                value={this.state.categoryName}
                                onChange={this.onChangeCategoryName}/>
                     </div>
@@ -87,3 +86,5 @@ export default class CategoryEdit extends Component {
         )
     }
 }
+
+export default CategoryEdit;

@@ -23,38 +23,39 @@ router.route('/:id').get(function(req, res) {
     });
 });
 
-router.route('/update/:id').post(function(req, res) {
+router.route('/addCategory').post(function(req, res) {
+    let category = new Category(req.body);
+    category.save()
+        .then(category => {
+            res.status(200).json({'Category': 'Category Added Successfully!'});
+        })
+        .catch(err => {
+            res.status(400).send('Failed!');
+        });
+});
+
+router.route('/updateCategory/:id').post(function(req, res) {
     Category.findById(req.params.id, function(err, category) {
         if (!category)
-            res.status(404).send("data is not found");
+            res.status(404).send("Data Not Found");
         else
             category.categoryName = req.body.categoryName;
         category.categoryType = req.body.categoryType;
 
         category.save().then(category => {
-            res.json('Category updated!');
+            res.json('Category Updated Successfully!');
         })
             .catch(err => {
-                res.status(400).send("Update not possible");
+                res.status(400).send("Update Failed!");
             });
     });
 });
 
-router.route('/add').post(function(req, res) {
-    let category = new Category(req.body);
-    category.save()
-        .then(category => {
-            res.status(200).json({'category': 'category added successfully'});
-        })
-        .catch(err => {
-            res.status(400).send('adding new category failed');
-        });
-});
 
-router.route('/delete/:id').get(function (req, res) {
+router.route('/deleteCategory/:id').get(function (req, res) {
     Category.findByIdAndRemove({_id: req.params.id}, function(err, category){
         if(err) res.json(err);
-        else res.json('Successfully removed');
+        else res.json('Category Deleted Successfully!');
     });
 });
 

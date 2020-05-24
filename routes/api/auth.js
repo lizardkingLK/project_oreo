@@ -59,4 +59,18 @@ router.get('/user', auth, (req,res) => {
     .then(user => res.json(user));
 })
 
+router.post('/admin', (req,res) => {
+    const uname = config.get('admin_USERNAME');
+    const upass = config.get('admin_PASSWORD');
+    const ugiven = req.body.email;
+    const pgiven = req.body.password;
+
+    if(uname === ugiven && upass === pgiven) {
+        res.json({msg: 'Success'})
+    }
+    else {
+        res.json({msg: 'Failed'})
+    }
+});
+
 module.exports = router;
