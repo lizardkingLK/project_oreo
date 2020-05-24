@@ -825,6 +825,11 @@ html {
     cursor: pointer;
 }
 
+.itemC_right .itemCR_topG .itemCR_topG_reviews {
+    background-color: transparent;
+    color: var(--primaryLight);
+}
+
 .itemC_right .itemCR_topH {
     height: 5vh;
     padding: 0 2vh 0 2vh;

@@ -6,9 +6,20 @@ import {
 } from 'reactstrap';
 
 import SignInWindow from './SignInWindow';
+import Reviews from './Reviews';
 
 const Item = (props) => {
-    const { cont, authState, setAuthState, getCartId, addToCart, getWishListId, addToWishList } = props;
+    const { 
+        cont, 
+        authState, 
+        setAuthState, 
+        getCartId, 
+        addToCart, 
+        getWishListId, 
+        addToWishList,
+        getReviews,
+        reviews
+    } = props;
     const itemId = cont._id;
     const userId = authState?._id;
     let itemSize = '';
@@ -151,7 +162,16 @@ const Item = (props) => {
                     <div className="itemCR_topF_delivery">Free Delivery & Returns</div>
                 </div>
                 <div className="itemCR_topG">
-                    <div className="itemCR_topG_freeDelivery">Reviews (0)</div>
+                    <Reviews 
+                        authState={authState}
+                        setAuthState={setAuthState} 
+                        btnClass={"itemCR_topG_reviews"}
+                        item={cont} 
+                        buttonLabel={"Reviews"} 
+                        className={"modal-dialog modal-md"}
+                        reviews={reviews}
+                        getReviews={getReviews}
+                    />
                 </div>
                 <div className="itemCR_topB">
                     <div className="itemCR_topB_sizeSelect" onClick={toggleCollapse}>Select Size <i className="fa fa-angle-right"></i></div>

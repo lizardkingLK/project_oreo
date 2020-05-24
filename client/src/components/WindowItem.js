@@ -8,6 +8,7 @@ import {
 } from 'reactstrap';
 
 import SignInWindow from './SignInWindow';
+import Reviews from './Reviews';
 
 const WindowItem = (props) => {
     const { 
@@ -19,7 +20,9 @@ const WindowItem = (props) => {
         itemSize,
         setItemSize,
         getWishListId,
-        addToWishList
+        addToWishList,
+        reviews,
+        getReviews
     } = props;
     const itemId = item._id;
     let img = item.images[0];
@@ -111,14 +114,20 @@ const WindowItem = (props) => {
                 <div className="itemWindowRTopBITopB_left">
                     <div className="itemWindowRTopBITopBA_priceContainer">
                         <h3 className="itemWindowRTopBITopBA_price">{item.price}</h3>
+                        <Reviews 
+                            authState={authState}
+                            setAuthState={setAuthState} 
+                            btnClass={"itemCR_topG_reviews"}
+                            item={item} 
+                            buttonLabel={"Reviews"} 
+                            className={"modal-dialog modal-md"}
+                            reviews={reviews}
+                            getReviews={getReviews}
+                         />
                     </div>
                     <div className="itemWindowRTopBITopBA_ratingContainer">
                         {/* GETS RATINGS */}
-                        <small className="itemWindowRTopBITopBA_rating"><i className="fa fa-star"></i></small>
-                        <small className="itemWindowRTopBITopBA_rating"><i className="fa fa-star"></i></small>
-                        <small className="itemWindowRTopBITopBA_rating"><i className="fa fa-star"></i></small>
-                        <small className="itemWindowRTopBITopBA_rating"><i className="fa fa-star"></i></small>
-                        <small className="itemWindowRTopBITopBA_rating"><i className="fa fa-star"></i></small>
+                        {/* <small className="itemWindowRTopBITopBA_rating"><i className="fa fa-star"></i></small> */}
                     </div>
                 </div>
                 <div className="itemWindowRTopBITopB_right">
