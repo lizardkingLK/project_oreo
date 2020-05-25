@@ -34,6 +34,17 @@ router.route('/addCategory').post(function(req, res) {
         });
 });
 
+router.route('/add').post(function(req, res) {
+    let category = new Category(req.body);
+    category.save()
+        .then(category => {
+            res.status(200).json({'category': 'category added successfully'});
+        })
+        .catch(err => {
+            res.status(400).send('adding new category failed');
+        });
+});
+
 router.route('/updateCategory/:id').post(function(req, res) {
     Category.findById(req.params.id, function(err, category) {
         if (!category)
@@ -51,7 +62,36 @@ router.route('/updateCategory/:id').post(function(req, res) {
     });
 });
 
+router.route('/update/:id').post(function(req, res) {
+    Category.findById(req.params.id, function(err, category) {
+        if (!category)
+            res.status(404).send("data is not found");
+        else
+            category.categoryName = req.body.categoryName;
+        category.categoryType = req.body.categoryType;
+
+        category.save().then(category => {
+            res.json('Category updated!');
+        })
+            .catch(err => {
+                res.status(400).send("Update not possible");
+            });
+    });
+});
+
 router.route('/deleteCategory/:id').get(function (req, res) {
+    Category.findByIdAndRemove({_id: req.params.id}, function(err, category){
+        if(err) res.json(err);
+        else res.json('Successfully removed');
+    });
+});
+
+router.route('/delete/:id').get(function (req, res) {
+    Category.findByIdAndRemove({_id: req.params.id}, function(err, category){
+        if(err) res.json(err);
+        else res.json('Successfully removed');
+    });
+});
 
 router.route('/primary/:limit').get(async function(req, res) {
     const cats = await Category.find({categoryType: "Primary"});
@@ -93,13 +133,6 @@ router.route('/type/:type').get(function(req, res) {
         console.log(err);
         res.status(500).json({msg: 'error getting data'});
     })
-});
-
-router.route('/delete/:id').get(function (req, res) {
-    Category.findByIdAndRemove({_id: req.params.id}, function(err, category){
-        if(err) res.json(err);
-        else res.json('Category Deleted Successfully!');
-    });
 });
 
 module.exports = router;
