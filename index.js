@@ -13,7 +13,6 @@ const auth = require('./routes/api/auth');
 const prices = require('./routes/api/prices');
 const carts = require('./routes/api/carts');
 const categories = require('./routes/api/categories');
-const collections = require('./routes/api/collections');
 const storeManagers = require('./routes/api/storeManagers');
 const wishlists = require('./routes/api/wishlists');
 const reviews = require('./routes/api/reviews');
