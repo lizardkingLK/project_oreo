@@ -26,8 +26,6 @@ router.get('/searchitem/:itemId', (req,res) => {
     const itemId = req.params.itemId;
     const regex = new RegExp(escapeRegex(itemId), 'gi');
     Item.find({ "name": regex })
-    .then(items => {
-    .sort( { dateCreated: 1 })
     .then( items => {
         res.json(items);
     })
