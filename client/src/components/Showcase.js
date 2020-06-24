@@ -1,6 +1,5 @@
 import React from 'react';
 
-import Banner from './Banner';
 import Item from './Item';
 
 const Showcase = (props) => {
@@ -8,7 +7,6 @@ const Showcase = (props) => {
     let title = props.title;
     let contents = props.contents;
     let blur = props.blur;
-    let banner = props.banner;
     let authState = props.authState;
     let setAuthState = props.setAuthState;
     let getCartId = props.getCartId;
@@ -21,7 +19,7 @@ const Showcase = (props) => {
     (showcase === true) ? showcase = 'block' : showcase = 'none';
 
     return (
-        <div id="showcase" style={{display: showcase, filter: "blur("+blur+")"}}>
+        <div id="showcase" style={{ display: showcase, filter: "blur(" + blur + ")" }}>
             <div id="showcase_card">
                 <div className="row">
                     <div className="col-sm-12 d-flex flex-row mt-1">
@@ -30,20 +28,16 @@ const Showcase = (props) => {
                 </div>
 
                 <div>
-                    <Banner 
-                        banner={banner}
-                        authState={authState}
-                        setAuthState={setAuthState}
-                    />
-                    {
+                    {(contents.length !== 0)
+                        ?
                         contents.map(cont => {
                             let filtered = reviews.filter(r => {
                                 return (r.itemId === cont._id);
                             })
                             return (
-                                <Item 
-                                    key={cont._id} 
-                                    cont={cont} 
+                                <Item
+                                    key={cont._id}
+                                    cont={cont}
                                     authState={authState}
                                     setAuthState={setAuthState}
                                     getCartId={getCartId}
@@ -55,12 +49,39 @@ const Showcase = (props) => {
                                 />
                             )
                         })
+                        :
+                        <div style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            height: '85vh'
+                        }}>
+                            <div style={{ flex: '2' }}></div>
+                            <div style={{ flex: '1' }}>
+                                <h1 style={{
+                                    fontSize: '12vh',
+                                    textAlign: 'center',
+                                    color: 'var(--primaryLight)',
+                                    backgroundColor: 'var(--primaryAccent)',
+                                    fontFamily: 'Roboto, sans-serif'
+                                }}>
+                                    Best Prices
+                                    <p style={{
+                                        backgroundColor: 'var(--primaryDark)',
+                                        color: 'var(--secondaryAccent)'
+                                    }}>
+                                        Check Now
+                                    </p>
+                                </h1>
+                            </div>
+                        </div>
                     }
-                </div>   
+                </div>
             </div>
         </div>
     )
-    
+
 }
 
 export default Showcase;

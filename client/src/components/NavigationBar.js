@@ -17,7 +17,7 @@ const AppNavbar = (props) => {
 
   return (
     <div id="navbar">
-      <Navbar color="light" light expand="sm">
+      <Navbar color="light" light expand="sm" className="navbar fixed-top navbar-light bg-light">
         <NavbarBrand className="txt_ternary" href="/">Oreo</NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
@@ -32,25 +32,25 @@ const AppNavbar = (props) => {
               <NavLink onClick={props.handleNavigation}>Kids</NavLink>
             </NavItem>
             <NavItem>
-              {(!props.authState)?
+              {(!props.authState) ?
                 <SignInWindow
                   scrollable={false}
-                  setAuthState={props.setAuthState} 
-                  buttonLabel={"SignIn"} 
-                  className={"modal-dialog modal-lg"}
+                  setAuthState={props.setAuthState}
+                  buttonLabel={"SignIn"}
+                  className={"modal-dialog modal-md"}
                 />
                 :
-                <div style={{display: "flex", flexDirection: "row", alignItems: "center"}} >
+                <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }} >
                   <NavLink onClick={props.clearAuthState}>SignOut</NavLink>
                 </div>
               }
             </NavItem>
           </Nav>
-            <small className="cartBtn" onClick={() => props.setCartState(!props.cartState)}>
-              <i className="fas fa-shopping-cart"></i>
-            </small>
-            <small className="groupLogo">
-              Oreo_Group&trade;
+          <small className="cartBtn" onClick={() => props.setCartState(!props.cartState)}>
+            <i className="fas fa-shopping-cart"></i>
+          </small>
+          <small className="groupLogo">
+            Oreo_Group&trade;
             </small>
         </Collapse>
       </Navbar>

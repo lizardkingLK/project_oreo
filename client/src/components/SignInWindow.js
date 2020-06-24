@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import {  
-  NavLink, 
-  Modal, 
-  ModalBody 
+import {
+  NavLink,
+  Modal,
+  ModalBody
 } from 'reactstrap';
 import axios from 'axios';
 
@@ -24,12 +24,12 @@ const SignInWindow = (props) => {
   let errMsg = null;
   let email = '';
   let password = '';
-  
+
   const handleChange = (e) => {
     let type = e.target.id;
     let value = e.target.value;
 
-    switch(type) {
+    switch (type) {
       case 'sIemail':
         email = value;
         break;
@@ -43,54 +43,54 @@ const SignInWindow = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await axios.post('/api/auth', {email,password})
-    .then(res => {
-      // set user in the state
-      setAuthState(res.data.token);
-    })
-    .catch(err => {
-      let type = err.response.data.msg;
-        switch(type) {
+    await axios.post('/api/auth', { email, password })
+      .then(res => {
+        // set user in the state
+        setAuthState(res.data.token);
+      })
+      .catch(err => {
+        let type = err.response.data.msg;
+        switch (type) {
           case msgA:
-            errMsg = React.createElement('small', {id: "signInWindowBCBsiFFerrC_errMsg"}, msgA);
+            errMsg = React.createElement('small', { id: "signInWindowBCBsiFFerrC_errMsg" }, msgA);
             break;
           case msgB:
-            errMsg = React.createElement('small', {id: "signInWindowBCBsiFFerrC_errMsg"}, msgB);
+            errMsg = React.createElement('small', { id: "signInWindowBCBsiFFerrC_errMsg" }, msgB);
             break;
           case msgC:
-            errMsg = React.createElement('small', {id: "signInWindowBCBsiFFerrC_errMsg"}, msgC);
+            errMsg = React.createElement('small', { id: "signInWindowBCBsiFFerrC_errMsg" }, msgC);
             break;
           default:
             console.log(type);
             break;
         }
-      ReactDOM.render(
-        errMsg,
-        document.querySelector('#signInWindowBCBsiFF_errContainer')
-      );
-    })
+        ReactDOM.render(
+          errMsg,
+          document.querySelector('#signInWindowBCBsiFF_errContainer')
+        );
+      })
   }
 
   return (
     <div>
-      <NavLink style={{cursor: "pointer"}} onClick={togglesignin}>{buttonLabel}</NavLink>
+      <NavLink style={{ cursor: "pointer" }} onClick={togglesignin}>{buttonLabel}</NavLink>
       <Modal id="signInWindow" isOpen={modal} className={className}>
         <ModalBody id="signInWindow_body">
           <div id="signInWindowB_content">
             <div id="signInWindowBC_header">
               <h5 id="signInWindowBCH_left">SignIn</h5>
-              {<p id="signInWindowBCH_right">{(message) ? message: ''}</p>}
+              {<p id="signInWindowBCH_right">{(message) ? message : ''}</p>}
             </div>
             <div id="signInWindowBC_body">
               <form id="signInWindowBCB_signinForm" onSubmit={handleSubmit}>
                 <div className="form-group">
                   <label htmlFor="sIemail">Email address</label>
-                  <input type="email" placeholder="Enter email..." className="form-control" id="sIemail" aria-describedby="emailHelp" onChange={handleChange} />
+                  <input type="email" placeholder="Enter email..." className="form-control form-control-sm" id="sIemail" aria-describedby="emailHelp" onChange={handleChange} />
                   <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
                 </div>
                 <div className="form-group">
                   <label htmlFor="sIpassword">Password</label>
-                  <input type="password" placeholder="Enter password..." className="form-control" id="sIpassword" onChange={handleChange} />
+                  <input type="password" placeholder="Enter password..." className="form-control form-control-sm" id="sIpassword" onChange={handleChange} />
                 </div>
                 <div className="form-group form-check">
                   <input type="checkbox" className="form-check-input" id="sIsignedIn" />

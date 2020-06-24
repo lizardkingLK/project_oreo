@@ -9,13 +9,13 @@ import SignInWindow from './SignInWindow';
 import Reviews from './Reviews';
 
 const Item = (props) => {
-    const { 
-        cont, 
-        authState, 
-        setAuthState, 
-        getCartId, 
-        addToCart, 
-        getWishListId, 
+    const {
+        cont,
+        authState,
+        setAuthState,
+        getCartId,
+        addToCart,
+        getWishListId,
         addToWishList,
         getReviews,
         reviews
@@ -32,34 +32,29 @@ const Item = (props) => {
 
     const handleImageClick = (e) => {
         const reqBg = e.target.style.backgroundImage;
-        const parent = e.target.parentElement.parentElement;
-        parent.style.backgroundImage = `${reqBg}`;
+        const target = e.target.parentElement.parentElement.nextElementSibling;
+        target.style.backgroundImage = `${reqBg}`;
     }
 
     const handleAddToCart = async (e) => {
-        if(itemSize) {
-            if(fadeInA) setFadeInA(false);
+        if (itemSize) {
+            if (fadeInA) setFadeInA(false);
             let cartId = '';
 
             // get cart id
             await getCartId(userId)
-            .then(cId => {
-                cartId = cId;
-            })
-            
-            // add to cart
-            await addToCart(cartId,itemId,itemSize)
-            .then(result => {
-                if(result)
-                    setFadeInB(true);
-                else
-                    setFadeInB(false);
-            })
+                .then(cId => {
+                    cartId = cId;
+                })
 
-            // console.log('USER_ID   '+userId);
-            // console.log('CART_ID   '+cartId);
-            // console.log('ITEM_ID   '+itemId);
-            // console.log('ITEM_SIZE '+itemSize);
+            // add to cart
+            await addToCart(cartId, itemId, itemSize)
+                .then(result => {
+                    if (result)
+                        setFadeInB(true);
+                    else
+                        setFadeInB(false);
+                })
         }
         else {
             setFadeInA(true);
@@ -73,26 +68,22 @@ const Item = (props) => {
 
         // get wishlist id
         await getWishListId(userId)
-        .then(wId => {
-            wishListId = wId;
-        })
-
-        // console.log('USER_ID   '+userId);
-        // console.log('WISHLIST_ID   '+wishListId);
-        // console.log('ITEM_ID   '+itemId);
+            .then(wId => {
+                wishListId = wId;
+            })
 
         // add to wishlist
-        await addToWishList(wishListId,itemId)
-        .then(result => {
-            if(result)
-                setFadeInC(true);
-            else
-                setFadeInC(false);
-        })
+        await addToWishList(wishListId, itemId)
+            .then(result => {
+                if (result)
+                    setFadeInC(true);
+                else
+                    setFadeInC(false);
+            })
     }
 
     const handleSize = async (i) => {
-        if(!itemSize) {
+        if (!itemSize) {
             const size = cont.sizes[i];
             itemSize = size;
             setCollapse(true);
@@ -103,18 +94,21 @@ const Item = (props) => {
 
     return (
         <div className="item_card">
-            <div className="itemC_left" style={{backgroundImage: "url("+cont.images[0]+")"}}>
+            <div className="itemC_left">
                 <div className="itemCL_imgBoxes">
-                    {cont.images.map( (image,index) => {
+                    {cont.images.map((image, index) => {
                         return (
-                            <div className="itemCL_imgBox" onClick={handleImageClick} key={index} style={{backgroundImage: "URL("+image+")"}}></div>
+                            <div className="itemCL_imgBox" onClick={handleImageClick} key={index} style={{ backgroundImage: "URL(" + image + ")" }}></div>
                         )
                     })}
                 </div>
             </div>
+            <div className="itemC_center" style={{ backgroundImage: "url(" + cont.images[0] + ")" }}>
+
+            </div>
             <div className="itemC_right">
                 <div className="itemCR_subtitle">
-                    {cont.subcategories.map( (sub,index) => {
+                    {cont.subcategories.map((sub, index) => {
                         return (
                             <small key={index}>&nbsp;{sub.toString().toUpperCase()}&nbsp;</small>
                         )
@@ -128,26 +122,26 @@ const Item = (props) => {
                     <small className="itemCR_topD_description">{cont.description}</small>
                 </div>
                 {(!userId)
-                ?
-                <div className="itemCR_topC">
-                    <SignInWindow
-                        scrollable={false}
-                        setAuthState={setAuthState} 
-                        buttonLabel={"Add To Cart"} 
-                        className={"modal-dialog modal-lg"}
-                        message={"You have to sign in first!"}
-                    />
-                </div>
-                :
-                <div className="itemCR_topC">
-                    <Fade in={fadeInA} id="itemCR_topC_sizeSelectWarningContainer" style={{margin: "0 2vh 0 0"}}>
-                        <span className="badge badge-light">please set size!</span>
-                    </Fade>
-                    <Button color="dark" onClick={handleAddToCart} className="btn btn-sm itemCR_topC_addToCart">Add To Cart</Button>
-                    <Button color="light" onClick={handleAddToWishList} className="btn btn-sm itemCR_topC_favourite">Favourite <i className="far fa-heart"></i></Button>
-                </div>
+                    ?
+                    <div className="itemCR_topC">
+                        <SignInWindow
+                            scrollable={false}
+                            setAuthState={setAuthState}
+                            buttonLabel={"Add To Cart"}
+                            className={"modal-dialog modal-md"}
+                            message={"You have to sign in first!"}
+                        />
+                    </div>
+                    :
+                    <div className="itemCR_topC">
+                        <Fade in={fadeInA} id="itemCR_topC_sizeSelectWarningContainer" style={{ margin: "0 1vh 0 1vh" }}>
+                            <span className="badge badge-light">please set size!</span>
+                        </Fade>
+                        <Button color="dark" onClick={handleAddToCart} className="btn btn-sm itemCR_topC_addToCart">Add To Cart</Button>
+                        <Button color="light" onClick={handleAddToWishList} className="btn btn-sm itemCR_topC_favourite">Favourite <i className="far fa-heart"></i></Button>
+                    </div>
                 }
-                <div className="itemCR_topH" style={{display: "row"}}>
+                <div className="itemCR_topH" style={{ display: "row" }}>
                     <Fade in={fadeInB} id="itemCR_topH_message" >
                         <span className="badge badge-light">Added to cart</span>
                     </Fade>
@@ -162,12 +156,12 @@ const Item = (props) => {
                     <div className="itemCR_topF_delivery">Free Delivery & Returns</div>
                 </div>
                 <div className="itemCR_topG">
-                    <Reviews 
+                    <Reviews
                         authState={authState}
-                        setAuthState={setAuthState} 
+                        setAuthState={setAuthState}
                         btnClass={"itemCR_topG_reviews"}
-                        item={cont} 
-                        buttonLabel={"Reviews"} 
+                        item={cont}
+                        buttonLabel={"Reviews"}
                         className={"modal-dialog modal-md"}
                         reviews={reviews}
                         getReviews={getReviews}
@@ -177,11 +171,11 @@ const Item = (props) => {
                     <div className="itemCR_topB_sizeSelect" onClick={toggleCollapse}>Select Size <i className="fa fa-angle-right"></i></div>
                     <Collapse isOpen={collapse}>
                         <div className="itemCR_topB_sizeGrid">
-                            {cont.sizes.map( (size,index) => {
-                                return ( 
-                                    <div key={index} style={{textAlign: "center", margin: ".5vh 0 .5vh 0"}}>
+                            {cont.sizes.map((size, index) => {
+                                return (
+                                    <div key={index} style={{ textAlign: "center", margin: ".5vh 0 .5vh 0" }}>
                                         <Button key={index} onClick={() => handleSize(index)} color="outline-dark" className="btn btn-sm"
-                                        style={{color: "var(--primaryLight)", width: "80px"}}>
+                                            style={{ color: "var(--primaryLight)", width: "80px" }}>
                                             <small>{size}</small>
                                         </Button>
                                     </div>
