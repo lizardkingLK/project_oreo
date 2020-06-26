@@ -118,8 +118,20 @@ const ItemWindow = (props) => {
                     </Fade>
                     {/* SEARCH ITEMS */}
                     <form id="itemWindowRTopA_form" onSubmit={searchKeyword}>
-                        <input onChange={getKeyword} type="text" id="itemWindowRTopAF_input" className="form-control form-control-sm" placeholder="Search.." />
-                        <button type="submit" id="itemWindowRTopAF_submit" className="btn btn-sm btn-outline-secondary" value="OK"><i className="fa fa-search"></i></button>
+                        <input
+                            onChange={getKeyword}
+                            type="text"
+                            id="itemWindowRTopAF_input"
+                            placeholder="Search.."
+                        />
+                        <button
+                            type="submit"
+                            id="itemWindowRTopAF_submit"
+                            className="btn btn-sm btn-outline-secondary"
+                            value="OK"
+                        >
+                            <i className="fa fa-search"></i>
+                        </button>
                     </form>
                 </div>
                 <div id="itemWindowR_topB">

@@ -5,7 +5,7 @@ import Item from './Item';
 const Showcase = (props) => {
     let showcase = props.showcase;
     let title = props.title;
-    let contents = props.contents;
+    let showcaseItems = props.showcaseItems;
     let blur = props.blur;
     let authState = props.authState;
     let setAuthState = props.setAuthState;
@@ -28,9 +28,9 @@ const Showcase = (props) => {
                 </div>
 
                 <div>
-                    {(contents.length !== 0)
+                    {(showcaseItems.length !== 0)
                         ?
-                        contents.map(cont => {
+                        showcaseItems.map(cont => {
                             let filtered = reviews.filter(r => {
                                 return (r.itemId === cont._id);
                             })
@@ -67,12 +67,14 @@ const Showcase = (props) => {
                                     fontFamily: 'Roboto, sans-serif'
                                 }}>
                                     Best Prices
-                                    <p style={{
-                                        backgroundColor: 'var(--primaryDark)',
-                                        color: 'var(--secondaryAccent)'
-                                    }}>
-                                        Check Now
-                                    </p>
+                                    <a href="#itemWindow" style={{ textDecoration: 'none' }}>
+                                        <p style={{
+                                            backgroundColor: 'var(--primaryDark)',
+                                            color: 'var(--secondaryAccent)'
+                                        }}>
+                                            Check Now
+                                        </p>
+                                    </a>
                                 </h1>
                             </div>
                         </div>

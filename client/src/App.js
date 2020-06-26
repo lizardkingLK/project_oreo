@@ -1,6 +1,5 @@
 import React from 'react';
 import axios from 'axios';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
 import NavigationBar from '../src/components/NavigationBar';
@@ -13,7 +12,7 @@ import Cart from './components/cart/Cart';
 class App extends React.Component {
   state = {
     title: '',
-    contents: [],
+    showcaseItems: [],
     spinState: 'none',
     blur: '0',
     showcase: false,
@@ -25,7 +24,6 @@ class App extends React.Component {
     wishlistItems: [],
     cartTotal: '',
     windowItems: [],
-    itemSize: '',
     categories: [],
     reviews: []
   }
@@ -283,21 +281,9 @@ class App extends React.Component {
       });
   }
 
-  setItemSize = (s) => {
-    if (this.state.itemSize)
-      this.setState({
-        itemSize: ''
-      })
-    else
-      this.setState({
-        itemSize: s
-      })
-  }
-
   checkAuthState = async () => {
     const user = localStorage.getItem('user_oreo');
-    if (user) {
-      this.toggleSpinState();
+    if (user !== null) {
       await axios.get('/api/auth/user', { headers: { 'x-auth-token': user } })
         .then(res => {
           const userId = res.data._id;
@@ -309,16 +295,15 @@ class App extends React.Component {
           this.setCartItems(userId);
           this.setWishListItems(userId);
         })
-      this.toggleSpinState();
     }
   }
 
   clearAuthState = () => {
-    localStorage.removeItem('user_oreo');
     this.setState({
       authState: null,
       cartTotal: ''
     })
+    localStorage.setItem('user_oreo', null);
   }
 
   setAuthState = (uo) => {
@@ -358,7 +343,7 @@ class App extends React.Component {
     this.setCartState(false);
     this.setState({
       title: category,
-      contents: data
+      showcaseItems: data
     })
   }
 
@@ -428,7 +413,7 @@ class App extends React.Component {
         <Showcase
           showcase={this.state.showcase}
           title={this.state.title}
-          contents={this.state.contents}
+          showcaseItems={this.state.showcaseItems}
           blur={this.state.blur}
           authState={this.state.authState}
           setAuthState={this.setAuthState}
@@ -448,8 +433,6 @@ class App extends React.Component {
           getCartId={this.getCartId}
           addToCart={this.addToCart}
           cartItems={this.state.cartItems}
-          itemSize={this.state.itemSize}
-          setItemSize={this.setItemSize}
           categories={this.state.categories}
           getCategoryItems={this.getCategoryItems}
           getWishListId={this.getWishListId}

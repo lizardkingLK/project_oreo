@@ -10,6 +10,7 @@
     --primaryAccent: #009399;
     --secondaryAccent: #FFF524;
     --primaryLight: #F2F2F2;
+    --secondaryLight: #cfcfcf;
     --primaryDanger: #FF0000;
     --secondaryDanger: #DC143C;
 }
@@ -486,12 +487,23 @@ html {
     flex: 1;
     display: flex;
     flex-direction: row;
+    justify-content: flex-end;
 }
 
 #itemWindow #itemWindow_right #itemWindowR_topA #itemWindowRTopA_form #itemWindowRTopAF_input {
     margin: 0 0 0 1vh;
     border-radius: 2vh 0 0 2vh;
     background-color: transparent;
+    border: 1px solid var(--secondaryLight);
+    border-right: none;
+    padding: 0 2vh;
+    width: 40vw;
+    color: var(--secondaryDark);
+    font-family: 'Roboto', sans-serif;
+}
+
+#itemWindow #itemWindow_right #itemWindowR_topA #itemWindowRTopA_form #itemWindowRTopAF_input:focus {
+    outline: none;
 }
 
 #itemWindow #itemWindow_right #itemWindowR_topA #itemWindowRTopA_form #itemWindowRTopAF_submit {
@@ -636,6 +648,7 @@ html {
     height: 10vh;
     display: flex;
     flex-direction: row;
+    background-color: transparent;
 }
 
 .itemC_left .itemCL_imgBoxes .itemCL_imgBox {
@@ -930,20 +943,17 @@ html {
 }
 
 .itemWindowRTopB_item .itemWindowRTopBI_topC .itemWindowRTopBITopC_A .itemWindowRTopBITopCA_cart {
-    background-color: var(--primaryDanger);
-    color: var(--primaryLight);
+    color: var(--primaryAccent);
     font-family: 'Montserrat', sans-serif;
     flex: 2;
     padding: 1vh;
-    border-radius: 0 3vh 3vh 0;
     transition: .25s;
     cursor: pointer;
     font-size: small;
 }
 
 .itemWindowRTopB_item .itemWindowRTopBI_topC .itemWindowRTopBITopC_A .itemWindowRTopBITopCA_cart:hover {
-    background-color: var(--primaryLight);
-    color: var(--primaryDanger);
+    color: var(--primaryDark);
     transition: .25s;
 }
 
@@ -951,8 +961,8 @@ html {
     flex: 3;
     display: flex;
     flex-direction: row;
-    justify-content: flex-end;
     align-items: center;
+    justify-content: flex-end;
 }
 
 .itemWindowRTopB_item .itemWindowRTopBI_topC .itemWindowRTopBITopC_A .itemWindowRTopBITopCA_message .itemWindowRTopBITopCA_sizeSelect {
@@ -960,7 +970,7 @@ html {
 }
 
 .itemWindowRTopB_item .itemWindowRTopBI_topC .itemWindowRTopBITopC_A .itemWindowRTopBITopCA_message .itemWindowRTopBITopCA_sizeSelect .itemWindowRTopBITopCASS_A {
-    border-radius: 1vh 1vh 1vh 1vh;
+    border-radius: 2vh;
 }
 
 .itemWindowRTopB_item .itemWindowRTopBI_topC .itemWindowRTopBITopC_B {
@@ -973,13 +983,13 @@ html {
 }
 
 .itemWindowRTopB_item .itemWindowRTopBI_topC .itemWindowRTopBITopC_B .itemWindowRTopBITopCB_wishlist {
-    padding: 0 0 0 1vh;
     font-family: 'Roboto', sans-serif;
     flex: 1;
     transition: .25s;
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: center;
     cursor: pointer;
 }
 
@@ -992,13 +1002,13 @@ html {
     margin: 0 0 0 1vh;
 }
 
-.itemWindowRTopB_item .itemWindowRTopBI_topC .itemWindowRTopBITopC_B .itemWindowRTopBITopCB_messageContainer {
+.itemWindowRTopB_item .itemWindowRTopBI_topC .itemWindowRTopBITopC_C {
     flex: 1;
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: flex-end;
-    margin: 0 1vh 0 0;
+    justify-content: space-evenly;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .itemWindowLTopBC_btn {
@@ -1249,28 +1259,24 @@ html {
 @media screen and (max-width: 1000px) {
     .item_card {
         background-color: var(--primaryLight);
-        height: 75vh;
-        margin-bottom: 15vh;
+        height: auto;
         display: block;
         height: auto;
+        width: 80vw;
+        margin: 7.5vh auto;
     }
 
     .itemC_left {
         background-color: var(--primaryLight);
         background-size: cover;
         background-position: center;
-        height: 15vh;
         flex: 1;
     }
 
     .itemC_right {
-        display: flex;
-        width: 75vw;
-        margin: auto;
-        flex-direction: column;
         color: var(--primaryLight);
-        height: auto;
         flex: 1;
+        height: auto;
     }
 
     .itemC_right .itemCR_topC {
@@ -1285,27 +1291,6 @@ html {
         height: 200vh;
     }
 
-    #itemWindow #itemWindow_left {
-        width: 1vw;
-        position: absolute;
-        transition: .5s;
-    }
-
-    #itemWindow #itemWindow_left #itemWindowL_topA #itemWindowLTopA_A {
-        display: none;
-    }
-
-    #itemWindow #itemWindow_right {
-        width: 100vw;
-    }
-
-    #itemWindow #itemWindow_left:hover {
-        width: 50vw;
-        position: absolute;
-        transition: .5s;
-        z-index: 2;
-    }
-
     #itemWindow #itemWindow_right #itemWindowR_topB {
         height: 85vh;
         overflow-y: scroll;
@@ -1314,9 +1299,9 @@ html {
     }
 
     .itemWindowRTopB_item {
-        width: 85vw;
+        width: 80vw;
         height: auto;
-        margin: 2vh 0 0 1vh;
+        margin: 2vh auto;
         background-color: var(--primaryLight);
         color: var(--primaryDark);
     }
@@ -1329,24 +1314,20 @@ html {
     }
 
     .itemWindowRTopB_item .itemWindowRTopBI_topC .itemWindowRTopBITopC_A .itemWindowRTopBITopCA_cart {
-        background-color: var(--primaryLight);
-        color: var(--primaryDanger);
+        color: var(--primaryAccent);
         font-family: 'Montserrat', sans-serif;
         flex: 1;
-        padding: .25vh;
-        border-radius: 0 3vh 3vh 0;
+        padding: 1vh;
         transition: .25s;
         cursor: pointer;
         font-size: small;
     }
 
     .itemWindowRTopB_item .itemWindowRTopBI_topC .itemWindowRTopBITopC_A .itemWindowRTopBITopCA_cart:hover {
-        background-color: var(--primaryDanger);
-        color: var(--primaryLight);
+        color: var(--primaryDark);
         font-family: 'Montserrat', sans-serif;
         flex: 1;
-        padding: .25vh;
-        border-radius: 0 3vh 3vh 0;
+        padding: 1vh;
         transition: .25s;
         cursor: pointer;
         font-size: small;

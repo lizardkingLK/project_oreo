@@ -85,12 +85,25 @@ const SignInWindow = (props) => {
               <form id="signInWindowBCB_signinForm" onSubmit={handleSubmit}>
                 <div className="form-group">
                   <label htmlFor="sIemail">Email address</label>
-                  <input type="email" placeholder="Enter email..." className="form-control form-control-sm" id="sIemail" aria-describedby="emailHelp" onChange={handleChange} />
+                  <input
+                    type="email"
+                    placeholder="Enter email..."
+                    className="form-control form-control-sm"
+                    id="sIemail"
+                    aria-describedby="emailHelp"
+                    onChange={handleChange}
+                  />
                   <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
                 </div>
                 <div className="form-group">
                   <label htmlFor="sIpassword">Password</label>
-                  <input type="password" placeholder="Enter password..." className="form-control form-control-sm" id="sIpassword" onChange={handleChange} />
+                  <input
+                    type="password"
+                    placeholder="Enter password..."
+                    className="form-control form-control-sm"
+                    id="sIpassword"
+                    onChange={handleChange}
+                  />
                 </div>
                 <div className="form-group form-check">
                   <input type="checkbox" className="form-check-input" id="sIsignedIn" />

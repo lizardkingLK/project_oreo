@@ -22,12 +22,13 @@ const Item = (props) => {
     } = props;
     const itemId = cont._id;
     const userId = authState?._id;
-    let itemSize = '';
 
+    const [itemSize, setItemSize] = useState('');
     const [fadeInA, setFadeInA] = useState(false);
     const [fadeInB, setFadeInB] = useState(false);
     const [fadeInC, setFadeInC] = useState(false);
     const [collapse, setCollapse] = useState(true);
+
     const toggleCollapse = () => setCollapse(!collapse);
 
     const handleImageClick = (e) => {
@@ -85,7 +86,7 @@ const Item = (props) => {
     const handleSize = async (i) => {
         if (!itemSize) {
             const size = cont.sizes[i];
-            itemSize = size;
+            setItemSize(size);
             setCollapse(true);
         }
         else
@@ -98,7 +99,14 @@ const Item = (props) => {
                 <div className="itemCL_imgBoxes">
                     {cont.images.map((image, index) => {
                         return (
-                            <div className="itemCL_imgBox" onClick={handleImageClick} key={index} style={{ backgroundImage: "URL(" + image + ")" }}></div>
+                            <div
+                                className="itemCL_imgBox"
+                                onClick={handleImageClick}
+                                key={index}
+                                style={{ backgroundImage: "URL(" + image + ")" }}
+                            >
+
+                            </div>
                         )
                     })}
                 </div>
@@ -137,8 +145,20 @@ const Item = (props) => {
                         <Fade in={fadeInA} id="itemCR_topC_sizeSelectWarningContainer" style={{ margin: "0 1vh 0 1vh" }}>
                             <span className="badge badge-light">please set size!</span>
                         </Fade>
-                        <Button color="dark" onClick={handleAddToCart} className="btn btn-sm itemCR_topC_addToCart">Add To Cart</Button>
-                        <Button color="light" onClick={handleAddToWishList} className="btn btn-sm itemCR_topC_favourite">Favourite <i className="far fa-heart"></i></Button>
+                        <Button
+                            color="dark"
+                            onClick={handleAddToCart}
+                            className="btn btn-sm itemCR_topC_addToCart"
+                        >
+                            Add To Cart
+                        </Button>
+                        <Button
+                            color="light"
+                            onClick={handleAddToWishList}
+                            className="btn btn-sm itemCR_topC_favourite"
+                        >
+                            Favourite <i className="far fa-heart"></i>
+                        </Button>
                     </div>
                 }
                 <div className="itemCR_topH" style={{ display: "row" }}>
