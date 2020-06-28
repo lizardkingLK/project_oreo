@@ -237,7 +237,7 @@ html {
 }
 
 #showcase_card {
-    width: 95vw;
+    width: 90vw;
     margin: auto;
 }
 
@@ -831,7 +831,7 @@ html {
 .itemWindowRTopB_item {
     width: 25vw;
     height: 95vh;
-    margin: 2vh 0 0 1vh;
+    margin: 1vh 0 0 1vh;
     background-color: var(--primaryLight);
     color: var(--primaryDark);
 }
@@ -1312,7 +1312,7 @@ html {
     }
 
     .itemWindowRTopB_item {
-        width: 80vw;
+        width: 75vw;
         height: auto;
         margin: 2vh auto;
         background-color: var(--primaryLight);

@@ -6,6 +6,7 @@ import {
 import WindowItem from './WindowItem';
 import CategoryMenuA from './CategoryMenuA';
 import CategoryMenuB from './CategoryMenuB';
+import Pagination from './pagination/Pagination';
 
 const ItemWindow = (props) => {
     const {
@@ -17,15 +18,15 @@ const ItemWindow = (props) => {
         getCartId,
         addToCart,
         cartItems,
-        itemSize,
-        setItemSize,
         categories,
         getCategoryItems,
         getWishListId,
         addToWishList
     } = props;
+
     let keyword = '';
     let bg = '';
+
     (windowItems.length === 0) ? bg = "transparent" : bg = "var(--primaryLight)";
     const [fadeIn, setFadeIn] = useState(false);
 
@@ -41,9 +42,17 @@ const ItemWindow = (props) => {
         return category.categoryType === 'Ternary';
     })
 
-    const getKeyword = (e) => {
-        keyword = e.target.value;
-    }
+    const [loading, setLoading] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage] = useState(3);
+
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = windowItems.slice(indexOfFirstItem, indexOfLastItem);
+
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+    const getKeyword = (e) => keyword = e.target.value;
 
     const searchKeyword = (e) => {
         e.preventDefault();
@@ -132,8 +141,19 @@ const ItemWindow = (props) => {
                         </button>
                     </form>
                 </div>
+                <div id="itemWindowR_topC"
+                    style={{
+                        margin: "0 2vh",
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "flex-end"
+                    }}
+                >
+                    {/* PAGINATION */}
+                    <Pagination itemsPerPage={itemsPerPage} totalItems={windowItems.length} paginate={paginate} />
+                </div>
                 <div id="itemWindowR_topB">
-                    {windowItems.map((item) => {
+                    {currentItems.map((item) => {
                         return (
                             <WindowItem
                                 key={item._id}
@@ -142,17 +162,11 @@ const ItemWindow = (props) => {
                                 setAuthState={setAuthState}
                                 getCartId={getCartId}
                                 addToCart={addToCart}
-                                itemSize={itemSize}
-                                setItemSize={setItemSize}
                                 getWishListId={getWishListId}
                                 addToWishList={addToWishList}
                             />
                         )
                     })}
-                </div>
-                <div id="itemWindowR_topC">
-                    {/* PAGINATION */}
-                    PAGINATION
                 </div>
             </div>
         </div>
