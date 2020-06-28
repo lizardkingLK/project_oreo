@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
     Button,
-    Collapse,
     Fade
 } from 'reactstrap';
 
@@ -17,8 +16,6 @@ const Item = (props) => {
         addToCart,
         getWishListId,
         addToWishList,
-        getReviews,
-        reviews
     } = props;
     const itemId = cont._id;
     const userId = authState?._id;
@@ -27,9 +24,6 @@ const Item = (props) => {
     const [fadeInA, setFadeInA] = useState(false);
     const [fadeInB, setFadeInB] = useState(false);
     const [fadeInC, setFadeInC] = useState(false);
-    const [collapse, setCollapse] = useState(true);
-
-    const toggleCollapse = () => setCollapse(!collapse);
 
     const handleImageClick = (e) => {
         const reqBg = e.target.style.backgroundImage;
@@ -60,7 +54,6 @@ const Item = (props) => {
         else {
             setFadeInA(true);
             setFadeInB(false);
-            setCollapse(true);
         }
     }
 
@@ -87,10 +80,7 @@ const Item = (props) => {
         if (!itemSize) {
             const size = cont.sizes[i];
             setItemSize(size);
-            setCollapse(true);
         }
-        else
-            setCollapse(false);
     }
 
     return (
@@ -153,7 +143,7 @@ const Item = (props) => {
                             Add To Cart
                         </Button>
                         <Button
-                            color="light"
+                            color="info"
                             onClick={handleAddToWishList}
                             className="btn btn-sm itemCR_topC_favourite"
                         >
@@ -183,26 +173,26 @@ const Item = (props) => {
                         item={cont}
                         buttonLabel={"Reviews"}
                         className={"modal-dialog modal-md"}
-                        reviews={reviews}
-                        getReviews={getReviews}
                     />
                 </div>
                 <div className="itemCR_topB">
-                    <div className="itemCR_topB_sizeSelect" onClick={toggleCollapse}>Select Size <i className="fa fa-angle-right"></i></div>
-                    <Collapse isOpen={collapse}>
-                        <div className="itemCR_topB_sizeGrid">
-                            {cont.sizes.map((size, index) => {
-                                return (
-                                    <div key={index} style={{ textAlign: "center", margin: ".5vh 0 .5vh 0" }}>
-                                        <Button key={index} onClick={() => handleSize(index)} color="outline-dark" className="btn btn-sm"
-                                            style={{ color: "var(--primaryLight)", width: "80px" }}>
-                                            <small>{size}</small>
-                                        </Button>
-                                    </div>
-                                )
-                            })}
-                        </div>
-                    </Collapse>
+                    <div className="itemCR_topB_sizeSelect">Select Size <i className="fa fa-angle-right"></i></div>
+                    <div className="itemCR_topB_sizeGrid">
+                        {cont.sizes.map((size, index) => {
+                            return (
+                                <div key={index} className="itemCR_topB_sizeGrid_buttons">
+                                    <Button
+                                        key={index}
+                                        onClick={() => handleSize(index)}
+                                        color="light"
+                                        className="btn btn-sm itemCR_topB_sizeGridB_btn"
+                                    >
+                                        <small>{size}</small>
+                                    </Button>
+                                </div>
+                            )
+                        })}
+                    </div>
                 </div>
             </div>
         </div>

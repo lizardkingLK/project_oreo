@@ -22,9 +22,7 @@ const ItemWindow = (props) => {
         categories,
         getCategoryItems,
         getWishListId,
-        addToWishList,
-        getReviews,
-        reviews
+        addToWishList
     } = props;
     let keyword = '';
     let bg = '';
@@ -136,9 +134,6 @@ const ItemWindow = (props) => {
                 </div>
                 <div id="itemWindowR_topB">
                     {windowItems.map((item) => {
-                        let filtered = reviews.filter(r => {
-                            return (r.itemId === item._id);
-                        })
                         return (
                             <WindowItem
                                 key={item._id}
@@ -151,14 +146,13 @@ const ItemWindow = (props) => {
                                 setItemSize={setItemSize}
                                 getWishListId={getWishListId}
                                 addToWishList={addToWishList}
-                                reviews={filtered}
-                                getReviews={getReviews}
                             />
                         )
                     })}
                 </div>
                 <div id="itemWindowR_topC">
                     {/* PAGINATION */}
+                    PAGINATION
                 </div>
             </div>
         </div>

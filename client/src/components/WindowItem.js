@@ -18,9 +18,7 @@ const WindowItem = (props) => {
         getCartId,
         addToCart,
         getWishListId,
-        addToWishList,
-        reviews,
-        getReviews
+        addToWishList
     } = props;
     const itemId = item._id;
     let img = item.images[0];
@@ -117,8 +115,6 @@ const WindowItem = (props) => {
                             item={item}
                             buttonLabel={"Reviews"}
                             className={"modal-dialog modal-md"}
-                            reviews={reviews}
-                            getReviews={getReviews}
                         />
                     </div>
                     <div className="itemWindowRTopBITopBA_ratingContainer">

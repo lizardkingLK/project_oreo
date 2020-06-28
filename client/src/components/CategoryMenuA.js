@@ -6,28 +6,27 @@ import {
 } from 'reactstrap';
 
 const CategoryMenuA = (props) => {
-    const { 
-        collapseState, 
-        categoryType, 
-        btnStyle, 
-        collapseStyle, 
-        cardStyle, 
-        cardBodyStyle, 
-        categoryStyle, 
-        categories, 
+    const {
+        collapseState,
+        categoryType,
+        btnStyle,
+        collapseStyle,
+        cardStyle,
+        cardBodyStyle,
+        categoryStyle,
+        categories,
         getCategoryItems
     } = props;
     const [isOpen, setIsOpen] = useState(collapseState);
     const toggleCollapse = () => setIsOpen(!isOpen);
 
-    const getItems = (c) => {
-        console.log(c);
-        getCategoryItems(c);
-    }
+    const getItems = (c) => getCategoryItems(c);
 
     return (
         <div>
-            <div className={btnStyle} onClick={toggleCollapse}><h6>{categoryType}</h6> <i className={!isOpen ? "fa fa-angle-down" : "fa fa-angle-up"}></i></div>
+            <div className={btnStyle} onClick={toggleCollapse}>
+                <h6>{categoryType}</h6> <i className={!isOpen ? "fa fa-angle-down" : "fa fa-angle-up"}></i>
+            </div>
             <Collapse className={collapseStyle} isOpen={isOpen}>
                 <Card className={cardStyle}>
                     <CardBody className={cardBodyStyle}>

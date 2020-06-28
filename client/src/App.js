@@ -24,8 +24,7 @@ class App extends React.Component {
     wishlistItems: [],
     cartTotal: '',
     windowItems: [],
-    categories: [],
-    reviews: []
+    categories: []
   }
 
   componentDidMount = () => {
@@ -34,7 +33,6 @@ class App extends React.Component {
     this.checkAuthState();
     this.setCategories();
     this.setItemWindow();
-    this.getReviews();
   }
 
   setItemWindow = async () => {
@@ -272,15 +270,6 @@ class App extends React.Component {
     return i;
   }
 
-  getReviews = async () => {
-    await axios.get('/api/reviews/allReviews')
-      .then(r => {
-        this.setState({
-          reviews: r.data
-        })
-      });
-  }
-
   checkAuthState = async () => {
     const user = localStorage.getItem('user_oreo');
     if (user !== null) {
@@ -421,8 +410,6 @@ class App extends React.Component {
           addToCart={this.addToCart}
           getWishListId={this.getWishListId}
           addToWishList={this.addToWishList}
-          getReviews={this.getReviews}
-          reviews={this.state.reviews}
         />
         <ItemWindow
           setCartState={this.setCartState}
@@ -437,8 +424,6 @@ class App extends React.Component {
           getCategoryItems={this.getCategoryItems}
           getWishListId={this.getWishListId}
           addToWishList={this.addToWishList}
-          getReviews={this.getReviews}
-          reviews={this.state.reviews}
         />
         <BottomBar />
       </div>
