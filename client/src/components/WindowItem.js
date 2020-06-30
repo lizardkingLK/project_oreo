@@ -33,7 +33,7 @@ const WindowItem = (props) => {
     const toggleDropdown = () => setDropdownOpen(prevState => !prevState);
 
     const handleImages = (e, i) => {
-        let parent = e.target.parentElement.parentElement.previousElementSibling;
+        let parent = e.target.parentElement.parentElement.parentElement.previousElementSibling;
         parent.style.backgroundImage = `URL(${i})`;
     }
 
@@ -123,17 +123,35 @@ const WindowItem = (props) => {
                     </div>
                 </div>
                 <div className="itemWindowRTopBITopB_right">
-                    {item.images.map((img, index) => {
-                        return (
-                            <small
-                                key={index}
-                                onMouseOver={(e) => handleImages(e, img)}
-                                className="itemWindowRTopBITopBR_image"
-                            >
-                                {index + 1}
-                            </small>
-                        )
-                    })}
+                    <div className="itemWindowRTopBITopBR_upper">
+                        {item.images.map((img, index) => {
+                            return (
+                                <small
+                                    key={index}
+                                    onMouseOver={(e) => handleImages(e, img)}
+                                    className="itemWindowRTopBITopBRU_image"
+                                >
+                                    {index + 1}
+                                </small>
+                            )
+                        })}
+                    </div>
+                    <div className="itemWindowRTopBITopBR_lower">
+                        {(!userId)
+                            ?
+                            <SignInWindow
+                                scrollable={false}
+                                setAuthState={setAuthState}
+                                buttonLabel={"Favourite"}
+                                className={"modal-dialog modal-md"}
+                                message={"You have to sign in first!"}
+                            />
+                            :
+                            <p className="itemWindowRTopBITopBRL_wishlist" onClick={handleAddToWishList}>
+                                <i className="itemWindowRTopBITopBRL_wishlistA far fa-heart"></i>
+                            </p>
+                        }
+                    </div>
                 </div>
             </div>
             <div className="itemWindowRTopBI_topC">
@@ -184,8 +202,16 @@ const WindowItem = (props) => {
                         </Dropdown>
                     </div>
                 </div>
+                <div className="itemWindowRTopBITopC_C">
+                    <Fade in={fadeInB} className="itemWindowRTopBITopCC_A">
+                        <span className="badge badge-light itemWindowRTopBITopCCA_message">Added to cart</span>
+                    </Fade>
+                    <Fade in={fadeInC} className="itemWindowRTopBITopCC_B">
+                        <span className="badge badge-light itemWindowRTopBITopCCB_message">Added to wishlist</span>
+                    </Fade>
+                </div>
                 <div className="itemWindowRTopBITopC_B">
-                    {(!userId)
+                    {/* {(!userId)
                         ?
                         <SignInWindow
                             scrollable={false}
@@ -198,15 +224,7 @@ const WindowItem = (props) => {
                         <p className="itemWindowRTopBITopCB_wishlist" onClick={handleAddToWishList}>
                             <i className="itemWindowRTopBITopCB_wishlistA far fa-heart"></i>
                         </p>
-                    }
-                </div>
-                <div className="itemWindowRTopBITopC_C">
-                    <Fade in={fadeInB} className="itemWindowRTopBITopCC_A">
-                        <span className="badge badge-light itemWindowRTopBITopCCA_message">Added to cart</span>
-                    </Fade>
-                    <Fade in={fadeInC} className="itemWindowRTopBITopCC_B">
-                        <span className="badge badge-light itemWindowRTopBITopCCB_message">Added to wishlist</span>
-                    </Fade>
+                    } */}
                 </div>
             </div>
         </div>

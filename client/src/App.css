@@ -436,9 +436,10 @@ html {
 
 #itemWindow #itemWindow_left {
     padding: 8vh 0 0 0;
-    width: 20vw;
+    /* width: 20vw; */
     background-color: var(--secondaryDark);
     color: var(--primaryLight);
+    transition: All .25s ease-in;
 }
 
 #itemWindow #itemWindow_left #itemWindowL_topA {
@@ -460,7 +461,8 @@ html {
 
 #itemWindow #itemWindow_right {
     padding: 8vh 0 0 0;
-    width: 80vw;
+    /* width: 80vw; */
+    transition: All .25s ease-in;
 }
 
 #itemWindow #itemWindow_right #itemWindowR_topA {
@@ -477,6 +479,7 @@ html {
     color: var(--secondaryDark);
     display: flex;
     flex-direction: row;
+    align-items: center;
 }
 
 #itemWindow #itemWindow_right #itemWindowR_topA #itemWindowRTopA_meta #itemWindowRTopAM_cartBtn #itemWindowRTopAMCB_A {
@@ -517,6 +520,7 @@ html {
     overflow-y: scroll;
     display: grid;
     grid-template-columns: auto auto auto;
+    justify-content: center;
 }
 
 #itemWindow #itemWindow_right #itemWindowR_topC {
@@ -681,6 +685,7 @@ html {
     overflow-y: scroll;
     flex: 1;
     background-color: var(--ternaryLight);
+    padding: 2vh;
 }
 
 .itemC_right .itemCR_subtitle {
@@ -927,20 +932,45 @@ html {
 .itemWindowRTopB_item .itemWindowRTopBI_topB .itemWindowRTopBITopB_right {
     height: 10vh;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     justify-content: flex-end;
     flex: 1;
-    margin: 0 1vh 0 0;
 }
 
-.itemWindowRTopB_item .itemWindowRTopBI_topB .itemWindowRTopBITopB_right .itemWindowRTopBITopBR_image {
+.itemWindowRTopB_item .itemWindowRTopBI_topB .itemWindowRTopBITopB_right .itemWindowRTopBITopBR_upper {
+    height: 5vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.itemWindowRTopB_item .itemWindowRTopBI_topB .itemWindowRTopBITopB_right .itemWindowRTopBITopBR_lower {
+    height: 5vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.itemWindowRTopB_item .itemWindowRTopBI_topB .itemWindowRTopBITopB_right .itemWindowRTopBITopBR_lower .itemWindowRTopBITopBRL_wishlist {
+    font-family: 'Roboto', sans-serif;
+    flex: 1;
+    transition: .25s;
+    cursor: pointer;
+}
+
+.itemWindowRTopB_item .itemWindowRTopBI_topB .itemWindowRTopBITopB_right .itemWindowRTopBITopBR_lower .itemWindowRTopBITopBRL_wishlist:hover {
+    transition: .25s;
+    color: var(--primaryAccent);
+}
+
+.itemWindowRTopB_item .itemWindowRTopBI_topB .itemWindowRTopBITopB_right .itemWindowRTopBITopBR_upper .itemWindowRTopBITopBRU_image {
     color: var(--secondaryDark);
     padding: 0 1vh 0 0;
     cursor: pointer;
 }
 
-.itemWindowRTopB_item .itemWindowRTopBI_topB .itemWindowRTopBITopB_right .itemWindowRTopBITopBR_image:hover {
+.itemWindowRTopB_item .itemWindowRTopBI_topB .itemWindowRTopBITopB_right .itemWindowRTopBITopBR_upper .itemWindowRTopBITopBRU_image:hover {
     color: var(--secondaryAccent);
 }
 
@@ -996,26 +1026,6 @@ html {
     align-items: center;
     justify-content: space-around;
     color: var(--secondaryDark);
-}
-
-.itemWindowRTopB_item .itemWindowRTopBI_topC .itemWindowRTopBITopC_B .itemWindowRTopBITopCB_wishlist {
-    font-family: 'Roboto', sans-serif;
-    flex: 1;
-    transition: .25s;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-}
-
-.itemWindowRTopB_item .itemWindowRTopBI_topC .itemWindowRTopBITopC_B .itemWindowRTopBITopCB_wishlist:hover {
-    transition: .25s;
-    color: var(--primaryAccent);
-}
-
-.itemWindowRTopB_item .itemWindowRTopBI_topC .itemWindowRTopBITopC_B .itemWindowRTopBITopCB_wishlist .itemWindowRTopBITopCB_wishlistA {
-    margin: 0 0 0 1vh;
 }
 
 .itemWindowRTopB_item .itemWindowRTopBI_topC .itemWindowRTopBITopC_C {
@@ -1307,8 +1317,10 @@ html {
     #itemWindow #itemWindow_right #itemWindowR_topB {
         height: 85vh;
         overflow-y: scroll;
-        display: flex;
-        flex-direction: column;
+        display: grid;
+        grid-template-columns: auto;
+        align-items: center;
+        justify-content: center;
     }
 
     .itemWindowRTopB_item {

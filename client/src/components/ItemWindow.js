@@ -24,34 +24,24 @@ const ItemWindow = (props) => {
         addToWishList
     } = props;
 
-    let keyword = '';
-    let bg = '';
-
+    let bg;
     (windowItems.length === 0) ? bg = "transparent" : bg = "var(--primaryLight)";
-    const [fadeIn, setFadeIn] = useState(false);
 
-    let typeA = categories.filter(category => {
-        return category.categoryType === 'Primary';
-    })
-
-    let typeB = categories.filter(category => {
-        return category.categoryType === 'Secondary';
-    })
-
-    let typeC = categories.filter(category => {
-        return category.categoryType === 'Ternary';
-    })
-
+    const [toggleLeft, setToggleLeft] = useState(true);
     const [loading, setLoading] = useState(false);
+    const [fadeIn, setFadeIn] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(3);
-
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentItems = windowItems.slice(indexOfFirstItem, indexOfLastItem);
-
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+    let typeA = categories.filter(category => category.categoryType === 'Primary');
+    let typeB = categories.filter(category => category.categoryType === 'Secondary');
+    let typeC = categories.filter(category => category.categoryType === 'Ternary');
+
+    let keyword;
     const getKeyword = (e) => keyword = e.target.value;
 
     const searchKeyword = (e) => {
@@ -65,7 +55,12 @@ const ItemWindow = (props) => {
 
     return (
         <div id="itemWindow">
-            <div id="itemWindow_left">
+            <div
+                id="itemWindow_left"
+                style={{
+                    width: (toggleLeft) ? "0" : "20vw"
+                }}
+            >
                 <div id="itemWindowL_topA">
                     <h5 id="itemWindowLTopA_A">Browse</h5>
                 </div>
@@ -108,17 +103,45 @@ const ItemWindow = (props) => {
                     />
                 </div>
             </div>
-            <div id="itemWindow_right" style={{ background: bg }}>
+            <div
+                id="itemWindow_right"
+                style={{
+                    background: bg,
+                    width: (toggleLeft) ? "100vw" : "80vw"
+                }}
+            >
                 <div id="itemWindowR_topA">
                     <div id="itemWindowRTopA_meta">
+                        {/* TOGGLE LEFT PANE */}
+                        <div
+                            id="itemWindowRTopAM_toggleLeftPane"
+                            style={{
+                                margin: "0 2vh",
+                                fontFamily: "Montserrat, sans-serif",
+                                cursor: "pointer"
+                            }}
+                            onClick={() => setToggleLeft(!toggleLeft)}
+                        >
+                            <i className="fa fa-bars"></i>
+                        </div>
                         {/* CART LINK */}
-                        <p id="itemWindowRTopAM_cartBtn" className="cartBtn" onClick={() => setCartState(true)}>
+                        <div
+                            id="itemWindowRTopAM_cartBtn"
+                            className="cartBtn"
+                            onClick={() => setCartState(true)}
+                        >
                             <a id="itemWindowRTopAMCB_A" href="#navbar"><i className="fas fa-shopping-cart"></i></a>
-                        </p>
+                        </div>
                         {/* CART COUNT */}
-                        <p id="itemWindowRTopAM_cartCount" style={{ margin: "0 0 0 1vh", fontFamily: "Montserrat, sans-serif" }}>
+                        <div
+                            id="itemWindowRTopAM_cartCount"
+                            style={{
+                                margin: "0 0 0 1vh",
+                                fontFamily: "Montserrat, sans-serif"
+                            }}
+                        >
                             {cartItems.length}
-                        </p>
+                        </div>
                     </div>
                     <Fade in={fadeIn} id="itemWindowRTopA_resultCount" style={{ margin: "0 1vh 0 0", cursor: "pointer" }}>
                         <span id="itemWindowRTopARC_A" className="badge badge-dark">{windowItems.length} found</span>
