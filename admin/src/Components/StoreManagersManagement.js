@@ -3,11 +3,14 @@ import {IoIosAddCircleOutline} from 'react-icons/io';
 import {MdContentCopy} from 'react-icons/md';
 import axios from "axios";
 import StoreManagerList from "./StoreManagerList";
+import {FiRefreshCcw} from 'react-icons/fi';
+
 
 class StoreManagersManagement extends Component {
 
     constructor(props) {
-        super(props);
+        super(props)
+
         this.onChangeFullName = this.onChangeFullName.bind(this);
         this.onChangeGender = this.onChangeGender.bind(this);
         this.onChangeDob = this.onChangeDob.bind(this);
@@ -22,8 +25,9 @@ class StoreManagersManagement extends Component {
             dob: '',
             address: '',
             email: '',
-            password: ''
+            password: '',
         }
+
     }
 
     onChangeFullName(e) {
@@ -58,6 +62,7 @@ class StoreManagersManagement extends Component {
         });
     }
 
+
     onSubmit(e) {
         e.preventDefault();
 
@@ -78,10 +83,8 @@ class StoreManagersManagement extends Component {
             password: this.state.password,
         };
 
-        axios.post('/api/storeManagers/add', newStoreManager)
+        axios.post('/api/storeManagers/addStoreManager', newStoreManager)
             .then(res => console.log(res.data));
-
-        alert('Store Manager Added Successfully! ');
 
         this.setState({
             fullName: '',
@@ -91,8 +94,8 @@ class StoreManagersManagement extends Component {
             email: '',
             password: ''
         })
-    }
 
+    }
 
    generatePassword() {
         var pass = Math.random().toString(36).slice(-8);
@@ -104,22 +107,21 @@ class StoreManagersManagement extends Component {
     render() {
         return (
             <div>
-
                 <div className="row">
                     <div className="col">
-                <form name="form" onSubmit={this.onSubmit}>
+                <form onSubmit={this.onSubmit}>
                 <div className="form-row ml-4 mt-4">
                         <div className="form-group col-md-5">
                             <label className="font-weight-bold">Full Name</label>
                             <input type="text"
-                                   className="form-control form-control-sm text-capitalize"
+                                   className="form-control form-control-sm"
                                    value={this.state.fullName}
                                    onChange={this.onChangeFullName}/>
                         </div>
                         <div className="form-group col-md-5 ml-2">
                             <label className="font-weight-bold">Address</label>
                             <input type="text"
-                                   className="form-control form-control-sm text-capitalize"
+                                   className="form-control form-control-sm"
                                    value={this.state.address}
                                    onChange={this.onChangeAddress}/>
                         </div>
@@ -156,7 +158,7 @@ class StoreManagersManagement extends Component {
                                     value={this.state.password}
                                     onChange={this.onChangePassword}/>
                         </div>
-                        <button type="submit" className="btn btn-dark border-warning btn-sm ml-1" style={{marginTop: '30px',height: '35px'}}><IoIosAddCircleOutline size={20}/> Add</button>
+                        <button type="submit" className="btn btn-dark border-warning btn-sm ml-1 font-weight-bold" style={{marginTop: '30px',height: '35px'}}><IoIosAddCircleOutline size={25}/> Add</button>
                         </div>
                 </form>
                     </div>
@@ -179,7 +181,7 @@ class StoreManagersManagement extends Component {
                                     <MdContentCopy size={20}/>
                                 </button>
                                 </div>
-                                <button onClick={this.generatePassword} className="btn btn-dark border-warning btn-sm mt-3" style={{marginLeft: '143px'}}>Generate</button>
+                                <button onClick={this.generatePassword} className="btn btn-dark border-warning btn-sm mt-3" style={{marginLeft: '143px'}}><FiRefreshCcw size={20}/> Generate</button>
                             </div>
                         </div>
                     </div>

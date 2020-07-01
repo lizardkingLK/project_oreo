@@ -8,6 +8,16 @@ class StoreManagerList extends Component {
         this.state = {storeManagers: []};
     }
 
+    componentDidUpdate() {
+        axios.get('/api/storeManagers/')
+            .then(response => {
+                this.setState({ storeManagers: response.data });
+            })
+            .catch(function (error){
+                console.log(error);
+            })
+    }
+
     componentDidMount() {
         axios.get('/api/storeManagers/')
             .then(response => {

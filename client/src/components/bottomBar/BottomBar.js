@@ -24,7 +24,19 @@ function BottomBar() {
                     <div className="col-sm-3">
                         <p className="card-title txt_primary"><small className="p_Link" >ABOUT <small className="txt_ternary">Oreo</small></small></p>
                         <p className="card-title txt_secondary"><small className="s_Link" >News</small></p>
-                        <p className="card-title txt_secondary"><small className="s_Link" >Careers</small></p>
+                        <p className="card-title txt_secondary">
+                            <small className="s_Link" >
+                                <a
+                                    href="/admin"
+                                    style={{
+                                        textDecoration: "none",
+                                        color: "var(--primaryLight)"
+                                    }}
+                                >
+                                    Careers
+                                </a>
+                            </small>
+                        </p>
                         <p className="card-title txt_secondary"><small className="s_Link" >Investors</small></p>
                         <p className="card-title txt_secondary"><small className="s_Link" >Sustainability</small></p>
                     </div>

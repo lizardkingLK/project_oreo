@@ -10,13 +10,9 @@ export default class StoreManagerTableRow extends Component {
     }
 
     deleteStoreManager() {
-        axios.get('/api/storeManagers/delete/'+this.props.storeManager._id)
+        axios.get('/api/storeManagers/deleteStoreManager/'+this.props.storeManager._id)
             .then(console.log('Deleted'))
             .catch(err => console.log(err))
-
-        alert('Store Manager successfully deleted!')
-
-        window.location.reload(false);
 
     }
 
@@ -31,7 +27,7 @@ export default class StoreManagerTableRow extends Component {
                 <td>{this.props.storeManager.password}</td>
                 <td>
                     <Link to={"/editStoreManager/"+this.props.storeManager._id}>
-                        <button className="btn btn-primary btn-sm">
+                        <button className="btn btn-success btn-sm">
                             <span>Update</span>
                         </button>
                     </Link>

@@ -1,4 +1,6 @@
 {
     "mongoURI": "mongodb+srv://sndp:Ie81BF1o9Z9LfDgk@cluster0-mkvg6.mongodb.net/db_oreo",
-    "jwtSecret": "project_oreo_secret"
+    "jwtSecret": "project_oreo_secret",
+    "admin_USERNAME": "johnwick96@gmail.com",
+    "admin_PASSWORD": "john"
 }
