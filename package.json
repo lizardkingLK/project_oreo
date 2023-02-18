@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "project_oreo is a online fashion store made with mern stack",
   "main": "index.js",
+  "engines": {
+    "node": "18.x"
+  },
   "scripts": {
     "client-install": "npm install --prefix ./client",
     "admin-install": "npm install --prefix ./admin",
