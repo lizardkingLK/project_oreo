@@ -13,7 +13,8 @@
     "client": "npm start --prefix ./client",
     "server": "nodemon index.js",
     "start": "node index.js",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev:conc": "concurrently \"npm run server\" \"npm run client\"",
+    "dev": "cd oreoclient && npm run dev"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"
