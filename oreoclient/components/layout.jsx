@@ -9,10 +9,8 @@ const Layout = (props) => {
         <Navigation />
       </div>
       <div className="container">{props.children}</div>
-      <div className="bg-green-700">
-        <div className="container">
-          <Footer />
-        </div>
+      <div className="container">
+        <Footer />
       </div>
     </>
   );
