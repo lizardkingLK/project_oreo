@@ -6,7 +6,7 @@ export default function Dashboard() {
     <Layout>
       <main className="bg-black p-2">
         <div className="pt-8 pb-24" id="dashboard">
-          <h1 className="text-5xl text-white"># Dashboard</h1>
+          <h1 className="text-xl text-white font-bold"># Dashboard</h1>
           <div className="flex justify-center">
             <div className="pt-16 grid grid-cols-2 md:grid-cols-4 gap-4 justify-center">
               {Array(7)
