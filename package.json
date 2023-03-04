@@ -1,50 +1,28 @@
 {
-  "name": "project_oreo",
-  "version": "1.0.0",
-  "description": "project_oreo is a online fashion store made with mern stack",
-  "main": "index.js",
-  "engines": {
-    "node": "18.x"
-  },
+  "name": "oreoclient",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "client-install": "npm install --prefix ./client",
-    "admin-install": "npm install --prefix ./admin",
-    "admin": "npm start --prefix ./admin",
-    "client": "npm start --prefix ./client",
-    "server": "nodemon index.js",
-    "start": "node index.js",
-    "dev:conc": "concurrently \"npm run server\" \"npm run client\"",
-    "dev": "cd oreoclient && npm run dev"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.20"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "concurrently": "^7.6.0",
-    "dotenv": "^16.0.3",
-    "express": "^4.18.2",
-    "jsonwebtoken": "^9.0.0",
-    "locus": "^2.0.4",
-    "mongoose": "^6.9.2",
-    "nodemailer": "^6.9.1",
-    "passport": "^0.6.0",
-    "passport-jwt": "^4.0.1",
-    "save-dev": "0.0.1-security",
-    "validator": "^13.9.0"
+    "@next/font": "13.1.6",
+    "@types/node": "18.14.0",
+    "@types/react": "18.0.28",
+    "@types/react-dom": "18.0.11",
+    "eslint": "8.34.0",
+    "eslint-config-next": "13.1.6",
+    "next": "13.1.6",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "typescript": "4.9.5"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/lizardKingLK/project_oreo"
-  },
-  "keywords": [
-    "project_oreo",
-    "group_oreo",
-    "mern stack",
-    "node",
-    "express",
-    "react"
-  ],
-  "author": "group_oreo",
-  "license": "ISC"
+  "devDependencies": {
+    "autoprefixer": "^10.4.13",
+    "postcss": "^8.4.21",
+    "tailwindcss": "^3.2.7"
+  }
 }
