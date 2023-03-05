@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Layout from "@/components/layout";
 import io from "socket.io-client";
+import Avatar from "@/components/avatar";
 let socket;
 
 const Messages = () => {
@@ -31,57 +32,47 @@ const Messages = () => {
 
   return (
     <Layout>
-      <main className="bg-black p-2 h-screen" id="messages">
+      <main className="bg-black p-2" id="messages">
         <div className="pt-8 pb-24" id="dashboard">
           <div className="flex items-center pb-4 border-b-2 border-gray-800">
             <div className="basis-1/4">
               <h1 className="text-xl text-white font-bold"># Messages</h1>
             </div>
             <div className="basis-3/4 flex justify-end">
-              <div className="flex justify-center items-center flex-wrap w-10 p-1 bg-black rounded-full border-2 border-red-300 ml-2">
-                <Image
-                  className="rounded-full"
-                  width={50}
-                  height={50}
-                  src={"/static/pfp1.jpg"}
-                  alt={"avatar_image"}
+              <a href="#1">
+                <Avatar
+                  imagePath={"/static/pfp1.jpg"}
+                  size={50}
+                  isOnline={false}
                 />
-              </div>
-              <div className="flex justify-center items-center flex-wrap w-10 p-1 bg-black rounded-full border-2 border-red-400 ml-2">
-                <Image
-                  className="rounded-full"
-                  width={50}
-                  height={50}
-                  src={"/static/pfp2.jpg"}
-                  alt={"avatar_image"}
+              </a>
+              <a href="#2">
+                <Avatar
+                  imagePath={"/static/pfp2.jpg"}
+                  size={50}
+                  isOnline={true}
                 />
-              </div>
-              <div className="flex justify-center items-center flex-wrap w-10 p-1 bg-black rounded-full border-2 border-red-500 ml-2">
-                <Image
-                  className="rounded-full"
-                  width={50}
-                  height={50}
-                  src={"/static/pfp3.jpg"}
-                  alt={"avatar_image"}
+              </a>
+              <a href="#3">
+                <Avatar
+                  imagePath={"/static/pfp3.jpg"}
+                  size={50}
+                  isOnline={true}
                 />
-              </div>
+              </a>
             </div>
           </div>
-          <div className="py-4 flex">
+          <div className="pb-4 flex">
             <div className="basis-1/4">
-              {/* chat item link */}
+              {/* chat item link 1 */}
               <a href="#1">
-                <div className="flex items-start py-2 hover:bg-gray-900">
+                <div className="flex items-start py-4 hover:bg-gray-900">
                   {/* item pfp */}
-                  <div className="flex justify-center items-center flex-wrap w-12 p-1 bg-black rounded-full border-2 border-red-500 ml-2">
-                    <Image
-                      className="rounded-full"
-                      width={60}
-                      height={60}
-                      src={"/static/pfp3.jpg"}
-                      alt={"avatar_image"}
-                    />
-                  </div>
+                  <Avatar
+                    imagePath={"/static/pfp3.jpg"}
+                    size={60}
+                    isOnline={true}
+                  />
                   <div className="basis-2/4 ml-4">
                     <h1 className="text-xl text-white font-bold">John Doe</h1>
                     <p className="text-sm text-gray-500 font-bold">
@@ -96,17 +87,13 @@ const Messages = () => {
 
               {/* chat item link 2 */}
               <a href="#2">
-                <div className="flex items-start py-2 mt-2 hover:bg-gray-900">
+                <div className="flex items-start py-4 mt-2 hover:bg-gray-900">
                   {/* item pfp */}
-                  <div className="flex justify-center items-center flex-wrap w-12 p-1 bg-black rounded-full border-2 border-red-400 ml-2">
-                    <Image
-                      className="rounded-full"
-                      width={60}
-                      height={60}
-                      src={"/static/pfp2.jpg"}
-                      alt={"avatar_image"}
-                    />
-                  </div>
+                  <Avatar
+                    imagePath={"/static/pfp2.jpg"}
+                    size={60}
+                    isOnline={true}
+                  />
                   <div className="basis-2/4 ml-4">
                     <h1 className="text-xl text-white font-bold">
                       Sam Jetstream
@@ -123,17 +110,13 @@ const Messages = () => {
 
               {/* chat item link 3 */}
               <a href="#3">
-                <div className="flex items-start py-2 mt-2 hover:bg-gray-900">
+                <div className="flex items-start py-4 mt-2 hover:bg-gray-900">
                   {/* item pfp */}
-                  <div className="flex justify-center items-center flex-wrap w-12 p-1 bg-black rounded-full border-2 border-red-400 ml-2">
-                    <Image
-                      className="rounded-full"
-                      width={60}
-                      height={60}
-                      src={"/static/pfp1.jpg"}
-                      alt={"avatar_image"}
-                    />
-                  </div>
+                  <Avatar
+                    imagePath={"/static/pfp1.jpg"}
+                    size={60}
+                    isOnline={false}
+                  />
                   <div className="basis-2/4 ml-4">
                     <h1 className="text-xl text-white font-bold">
                       Amelia Nelson
@@ -149,7 +132,9 @@ const Messages = () => {
               </a>
             </div>
             <div className="basis-3/4">
-              {/* <h1 className="text-xl text-white font-bold">_</h1> */}
+              {/* message card item */}
+              <div></div>
+
               <input
                 placeholder="Type something"
                 value={input}
