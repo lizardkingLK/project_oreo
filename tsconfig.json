@@ -31,7 +31,9 @@
     "**/*.tsx",
     "components/layout.jsx",
     "pages/api/socket.js",
-    "pages/index.jsx"
+    "pages/index.tsx",
+    "utils/providers/socket.provider.js",
+    "pages/messages.jsx"
   ],
   "exclude": [
     "node_modules"

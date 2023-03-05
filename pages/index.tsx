@@ -1,21 +1,8 @@
 import Layout from "@/components/layout";
 import Image from "next/image";
 import React from "react";
-import io from 'socket.io-client';
-let socket;
 
 export default function Home() {
-  const socketInitializer = async () => {
-    await fetch('/api/socket')
-    socket = io()
-
-    socket.on('connect', () => {
-      console.log('connected')
-    })
-  }
-
-  React.useEffect(() => socketInitializer(), []);
-
   return (
     <Layout>
       <main className="bg-black p-2">
