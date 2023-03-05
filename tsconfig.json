@@ -29,7 +29,11 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "components/layout.jsx"
+    "components/layout.jsx",
+    "pages/api/socket.js",
+    "pages/index.tsx",
+    "utils/providers/socket.provider.js",
+    "pages/messages.jsx"
   ],
   "exclude": [
     "node_modules"
