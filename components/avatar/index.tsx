@@ -9,11 +9,9 @@ interface IAvatarProps {
 
 export default function Avatar(props: IAvatarProps) {
   if (props) {
-    const [widthStyles] = React.useState(props.size === 50 ? 'w-10' : 'w-12');
-    const [onlineStyles] = React.useState(props.isOnline ? 'p-1 border-2 border-red-500' : null);
-
     return (
-      <div className={`flex justify-center items-center flex-wrap bg-black rounded-full ml-2 ${onlineStyles} ${widthStyles}`}>
+      <div className={`flex justify-center items-center flex-wrap bg-black rounded-full ml-2 
+      ${props.isOnline && 'p-1 border-2 border-orange-500'} ${props.size === 50 ? 'w-10' : 'w-12'}`}>
         <Image
           className="rounded-full"
           width={props.size}

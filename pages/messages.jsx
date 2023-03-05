@@ -1,8 +1,8 @@
 import React from "react";
-import Image from "next/image";
 import Layout from "@/components/layout";
 import io from "socket.io-client";
 import Avatar from "@/components/avatar";
+import MessageCard from "@/components/card/message";
 let socket;
 
 const Messages = () => {
@@ -14,9 +14,13 @@ const Messages = () => {
     await fetch("/api/socket");
     socket = io();
 
-    socket.on("connect", () => console.log("connected"));
+    socket.on("connect", () => {
+      console.log("connected");
+    });
 
-    socket.on("update-input", (msg) => setOutput(msg));
+    socket.on("update-input", (msg) => {
+      setOutput(msg);
+    });
   };
 
   React.useEffect(() => {
@@ -26,8 +30,9 @@ const Messages = () => {
   }, [output]);
 
   const onChangeHandler = (e) => {
-    setInput(e.target.value);
-    socket.emit("input-change", e.target.value);
+    const value = e.target.value;
+    setInput(value);
+    socket.emit("input-change", value);
   };
 
   return (
@@ -132,8 +137,21 @@ const Messages = () => {
               </a>
             </div>
             <div className="basis-3/4">
-              {/* message card item */}
-              <div></div>
+              {/* incoming message card item */}
+              <MessageCard
+                type={0}
+                content={
+                  "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit, maiores."
+                }
+              />
+
+              {/* outgoing message card item */}
+              <MessageCard
+                type={1}
+                content={
+                  "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit, maiores."
+                }
+              />
 
               <input
                 placeholder="Type something"
