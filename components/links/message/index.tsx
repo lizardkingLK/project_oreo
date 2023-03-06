@@ -6,6 +6,7 @@ interface IMessageLinkProps {
     messageLink: string,
     messageImagePath: string,
     messageAuthorType: number,
+    messageAuthorIsStatus: boolean,
     messageAuthorIsOnline: boolean,
     messageAuthorName: string,
     messageContent: string,
@@ -18,9 +19,10 @@ const MessageLink = (props: IMessageLinkProps) => {
             <Link href={props.messageLink} title={props.messageAuthorName}>
                 <div className="flex items-start mt-4 p-4 hover:bg-gray-900">
                     <Avatar
+                        name={props.messageAuthorName}
                         imagePath={props.messageImagePath}
                         size={60}
-                        isOnline={props.messageAuthorIsOnline}
+                        isStatus={props.messageAuthorIsStatus}
                     />
                     <div className="basis-2/4 ml-4 font-bold truncate">
                         <h1 className="text-xl text-white">{props.messageAuthorName}</h1>

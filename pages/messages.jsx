@@ -51,23 +51,26 @@ const Messages = () => {
             <div className="basis-3/4 flex justify-center md:justify-end">
               <a href="#1">
                 <Avatar
+                  name="Amelia Nelson"
                   imagePath={"/static/pfp1.jpg"}
                   size={50}
-                  isOnline={false}
+                  isStatus={false}
                 />
               </a>
               <a href="#2">
                 <Avatar
+                  name="Sam Jetstream"
                   imagePath={"/static/pfp2.jpg"}
                   size={50}
-                  isOnline={true}
+                  isStatus={true}
                 />
               </a>
               <a href="#3">
                 <Avatar
+                  name="Arnold Schwarzenegger"
                   imagePath={"/static/pfp3.jpg"}
                   size={50}
-                  isOnline={true}
+                  isStatus={true}
                 />
               </a>
             </div>
@@ -83,7 +86,7 @@ const Messages = () => {
                 messageContent="Hi how are you?"
                 messageTime="9:00"
                 messageAuthorType={0}
-                messageAuthorIsOnline={true}
+                messageAuthorIsStatus={true}
               />
 
               {/* chat item link 2 */}
@@ -94,7 +97,7 @@ const Messages = () => {
                 messageContent="Working with you today."
                 messageTime="8:55"
                 messageAuthorType={0}
-                messageAuthorIsOnline={true}
+                messageAuthorIsStatus={true}
               />
 
               {/* chat item link 3 */}
@@ -105,7 +108,8 @@ const Messages = () => {
                 messageContent="Thank you very much!"
                 messageTime="8:33"
                 messageAuthorType={0}
-                messageAuthorIsOnline={false}
+                messageAuthorIsStatus={false}
+                messageAuthorIsOnline={true}
               />
             </div>
             <div className="hidden md:block basis-3/4">
@@ -113,7 +117,13 @@ const Messages = () => {
               <MessageCard type={1} content={"Lorem ipsum dolor sit am."} />
 
               {/* incoming message card item */}
-              <MessageCard type={0} content={"Hi How are you?"} />
+              <MessageCard
+                type={0}
+                content={"Hi How are you?"}
+                messageAuthorName={"Amelia Nelson"}
+                messageTime="8:33"
+                messageImagePath="/static/pfp1.jpg"
+              />
 
               <div className="flex items-center m-4">
                 <button

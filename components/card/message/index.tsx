@@ -1,8 +1,12 @@
+import Avatar from '@/components/avatar';
 import React from 'react'
 
-interface IMessageProps {
+interface IMessageCardProps {
   content: string,
   type: number,
+  messageImagePath: string,
+  messageTime: string,
+  messageAuthorName: string,
 }
 
 const messageTypes = {
@@ -10,9 +14,9 @@ const messageTypes = {
   SENT: 1,
 }
 
-export default function MessageCard(props: IMessageProps) {
+export default function MessageCard(props: IMessageCardProps) {
   if (props) {
-    const parentContainerClass = `flex ${props.type === 1 && 'justify-end'}`;
+    const parentContainerClass = `flex ${props.type === messageTypes.SENT && 'justify-end'}`;
     const containerClass = `p-4 m-4 min-w-max rounded-xl bg-gradient-to-r 
     ${props.type === messageTypes.RECEIVED
         ? 'from-green-400 to-green-500 rounded-tl-none cursor-pointer'
@@ -21,6 +25,16 @@ export default function MessageCard(props: IMessageProps) {
 
     return (
       <div className={parentContainerClass}>
+        {props.type === messageTypes.RECEIVED && props.messageImagePath && props.messageTime && props.messageAuthorName
+          ? <div className='flex flex-col justify-center items-center'>
+            <Avatar
+              name={props.messageAuthorName}
+              imagePath={props.messageImagePath}
+              size={60}
+            />
+            <p className='text-sm text-white ml-2'>{props.messageTime}</p>
+          </div>
+          : null}
         <div className={containerClass}>
           <h1 className={contentClass}>
             {props.content}
