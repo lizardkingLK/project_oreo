@@ -7,7 +7,7 @@ interface IAvatarProps {
   isOnline: boolean
 };
 
-export default function Avatar(props: IAvatarProps) {
+const Avatar = (props: IAvatarProps) => {
   if (props) {
     return (
       <div className={`flex justify-center items-center flex-wrap bg-black rounded-full ml-2 
@@ -22,5 +22,7 @@ export default function Avatar(props: IAvatarProps) {
         />
       </div>
     );
-  }
+  } else return null;
 }
+
+export default Avatar
