@@ -6,7 +6,6 @@ interface IAvatarProps {
   imagePath: string,
   size: number,
   isStatus?: boolean,
-  isOnline?: boolean,
 };
 
 const Avatar = (props: IAvatarProps) => {
@@ -24,7 +23,6 @@ const Avatar = (props: IAvatarProps) => {
             title={props.name}
           />
         </div>
-        {props.isOnline ? <div className="w-2 bg-green-500">A</div> : null}
       </>
     );
   } else return null;
