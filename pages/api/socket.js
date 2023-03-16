@@ -8,7 +8,7 @@ const SocketHandler = (_, res) => {
     const io = new Server(res.socket.server)
     res.socket.server.io = io
     io.on('connection', socket => {
-      socket.on('input-change', msg => {
+      socket.on('new-message', msg => {
         socket.broadcast.emit('update-input', msg)
       })
     })

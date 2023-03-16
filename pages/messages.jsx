@@ -7,8 +7,26 @@ import MessageLink from "@/components/links/message";
 let socket;
 
 const Messages = () => {
+  const [messages, setMessages] = React.useState([
+    {
+      type: 1,
+      content: "Lorem ipsum dolor sit am.",
+    },
+    {
+      type: 0,
+      content: "Hi How are you?",
+      messageAuthorName: "Amelia Nelson",
+      messageTime: "8:33",
+      messageImagePath: "/static/pfp1.jpg",
+    },
+  ]);
   const [input, setInput] = React.useState("");
   const [output, setOutput] = React.useState("");
+
+  React.useEffect(() => {
+    console.log(screen.width);
+  }, []);
+
   React.useEffect(() => socketInitializer, []);
 
   const socketInitializer = async () => {
@@ -33,8 +51,11 @@ const Messages = () => {
   const onChangeHandler = (e) => {
     const value = e.target.value;
     setInput(value);
+  };
+
+  const onSubmitHandler = () => {
     if (socket) {
-      socket.emit("input-change", value);
+      socket.emit("new-message", input);
     }
   };
 
@@ -113,17 +134,17 @@ const Messages = () => {
               />
             </div>
             <div className="hidden md:block basis-3/4">
-              {/* outgoing message card item */}
-              <MessageCard type={1} content={"Lorem ipsum dolor sit am."} />
-
-              {/* incoming message card item */}
-              <MessageCard
-                type={0}
-                content={"Hi How are you?"}
-                messageAuthorName={"Amelia Nelson"}
-                messageTime="8:33"
-                messageImagePath="/static/pfp1.jpg"
-              />
+              {messages &&
+                messages.map((message, index) => (
+                  <MessageCard
+                    key={index}
+                    type={message.type}
+                    content={message.content}
+                    messageAuthorName={message.messageAuthorName}
+                    messageTime={message.messageTime}
+                    messageImagePath={message.messageImagePath}
+                  />
+                ))}
 
               <div className="flex items-center m-4">
                 <button
@@ -175,6 +196,7 @@ const Messages = () => {
                 <button
                   className="p-4 ml-4 rounded-full bg-green-500 text-white"
                   title="Send Message"
+                  onClick={onSubmitHandler}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
