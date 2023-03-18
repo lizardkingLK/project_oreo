@@ -56,6 +56,15 @@ const Messages = () => {
   const onSubmitHandler = () => {
     if (socket) {
       socket.emit("new-message", input);
+      setMessages(
+        messages.concat({
+          type: 1,
+          content: input,
+          messageAuthorName: "Arnold Swarzenegger",
+          messageTime: "8:33",
+          messageImagePath: "/static/pfp2.jpg",
+        })
+      );
     }
   };
 
@@ -65,8 +74,8 @@ const Messages = () => {
         <div className="py-8">
           <div className="block md:flex items-center pb-4 border-b-2 border-gray-900">
             <div className="my-4 md:m-0 basis-1/4">
-              <h1 className="text-xl text-center md:text-left text-white font-bold">
-                # Messages
+              <h1 className="text-3xl text-center md:text-left text-white font-bold">
+                Oreo
               </h1>
             </div>
             <div className="basis-3/4 flex justify-center md:justify-end">
@@ -98,7 +107,6 @@ const Messages = () => {
           </div>
           <div className="pb-4 flex justify-center">
             <div className="basis-1/4">
-              {/* chat item link 1 */}
               <MessageLink
                 messageLink="#1"
                 messageImagePath="/static/pfp3.jpg"
@@ -109,8 +117,6 @@ const Messages = () => {
                 messageAuthorType={0}
                 messageAuthorIsStatus={true}
               />
-
-              {/* chat item link 2 */}
               <MessageLink
                 messageLink="#2"
                 messageImagePath="/static/pfp2.jpg"
@@ -120,8 +126,6 @@ const Messages = () => {
                 messageAuthorType={0}
                 messageAuthorIsStatus={true}
               />
-
-              {/* chat item link 3 */}
               <MessageLink
                 messageLink="#3"
                 messageImagePath="/static/pfp1.jpg"
@@ -145,8 +149,18 @@ const Messages = () => {
                     messageImagePath={message.messageImagePath}
                   />
                 ))}
-
-              <div className="flex items-center m-4">
+            </div>
+          </div>
+        </div>
+        <div className="container absolute text-white bottom-0 w-full">
+          <div className="block md:flex items-center pb-4">
+            <div className="my-4 md:m-0 basis-1/4">
+              <h1 className="text-sm text-center md:text-left text-white font-bold">
+                Oreo 2023
+              </h1>
+            </div>
+            <div className="basis-3/4 flex justify-center md:justify-end">
+              <div className="flex items-center m-4 w-full">
                 <button
                   className="py-4 pl-4 rounded-l-full bg-gray-900 text-white flex items-center justify-center"
                   title="Insert Emoji"
@@ -166,14 +180,13 @@ const Messages = () => {
                     />
                   </svg>
                 </button>
-                <textarea
-                  rows={1}
+                <input
                   className="basis-11/12 p-4 outline-none text-xl font-semibold bg-gray-900 text-white"
                   placeholder="Type a message"
                   value={input}
                   onChange={onChangeHandler}
                   title="Type Message Here"
-                ></textarea>
+                />
                 <button
                   className="p-4 rounded-r-full bg-gray-900 text-white"
                   title="Attach File"
@@ -194,6 +207,7 @@ const Messages = () => {
                   </svg>
                 </button>
                 <button
+                  type="submit"
                   className="p-4 ml-4 rounded-full bg-green-500 text-white"
                   title="Send Message"
                   onClick={onSubmitHandler}
