@@ -31,7 +31,7 @@
     "**/*.tsx",
     "components/layout.jsx",
     "pages/api/socket.js",
-    "pages/index.tsx",
+    "pages/index.jsx",
     "utils/providers/socket.provider.js",
     "pages/messages.jsx"
   ],
