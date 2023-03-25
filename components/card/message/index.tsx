@@ -10,8 +10,8 @@ interface IMessageCardProps {
 }
 
 const messageTypes = {
-  RECEIVED: 0,
   SENT: 1,
+  RECEIVED: 2,
 }
 
 export default function MessageCard(props: IMessageCardProps) {

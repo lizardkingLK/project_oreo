@@ -1,8 +1,8 @@
 import Avatar from '@/components/avatar'
-import Link from 'next/link'
 import React from 'react'
 
 interface IMessageLinkProps {
+    messageId: number,
     messageLink: string,
     messageImagePath: string,
     messageAuthorType: number,
@@ -11,13 +11,17 @@ interface IMessageLinkProps {
     messageAuthorName: string,
     messageContent: string,
     messageTime: string,
+    messageIsActive: boolean,
+    messageOnClick: Function,
 }
 
 const MessageLink = (props: IMessageLinkProps) => {
     if (props) {
+        const activeState = props.messageIsActive ? "bg-gray-900" : null;
         return (
-            <Link href={props.messageLink} title={props.messageAuthorName}>
-                <div className="flex items-start mt-4 p-4 hover:bg-gray-900">
+            <a href={void (0)} className="cursor-pointer" title={props.messageAuthorName}
+                onClick={() => props.messageOnClick(props.messageId)}>
+                <div className={`flex items-start mt-4 p-4 max-w-xs hover:bg-gray-800 ${activeState}`}>
                     <Avatar
                         name={props.messageAuthorName}
                         imagePath={props.messageImagePath}
@@ -37,7 +41,7 @@ const MessageLink = (props: IMessageLinkProps) => {
                         <p className="ml-2 text-md text-white font-bold">{props.messageTime}</p>
                     </div>
                 </div>
-            </Link>
+            </a>
         );
     } else return null;
 }
