@@ -10,14 +10,14 @@ const FeedList = ({ feeds }) => {
   return (
     feeds &&
     feeds.map((feed, index) => (
-      <a href={"#" + (index + 1)} key={index}>
+      <button key={index}>
         <Avatar
           name={feed.name}
           imagePath={feed.imagePath}
           size={50}
           isStatus={feed.isStatus}
         />
-      </a>
+      </button>
     ))
   );
 };
@@ -76,7 +76,7 @@ const MessageEditor = ({
 }) => {
   return (
     group && (
-      <div className="flex items-center m-4">
+      <div className="flex items-center">
         <button
           className="py-4 pl-4 rounded-l-full bg-gray-900 text-white hover:text-green-500 flex items-center justify-center"
           title="Insert Emoji"
@@ -150,80 +150,35 @@ const MessageEditor = ({
 };
 
 const Messages = () => {
-  const [feeds, setFeeds] = React.useState([
-    {
-      name: "Amelia Nelson",
-      imagePath: "/static/pfp1.jpg",
-      size: 50,
-      isStatus: false,
-    },
-    {
-      name: "Sam Jetstream",
-      imagePath: "/static/pfp2.jpg",
-      size: 50,
-      isStatus: true,
-    },
-  ]);
-  const [groups, setGroups] = React.useState([
-    {
-      id: 1,
-      name: "Amelia Nelson",
-      displayImage: "/static/pfp1.jpg",
-      isStatus: false,
-      messages: [
-        {
-          type: 2,
-          content: "Hi How are you?",
-          authorId: 2,
-          createdOn: "08:30",
-        },
-        {
-          type: 1,
-          content: "Lorem ipsum dolor sit am.",
-          authorId: 1,
-          createdOn: "09:12",
-        },
-      ],
-      lastMessage: {
-        type: 0,
-        content: "Hi How are you? I'm doing great.",
-        authorId: 2,
-        createdOn: "09:12",
-      },
-    },
-    {
-      id: 2,
-      name: "Sam Jetstream",
-      displayImage: "/static/pfp2.jpg",
-      isStatus: true,
-      messages: [
-        {
-          type: 2,
-          content: "I am JetStream Sam.",
-          authorId: 2,
-          createdOn: "10:00",
-        },
-        {
-          type: 1,
-          content: "Okay Man",
-          authorId: 1,
-          createdOn: "02:12",
-        },
-      ],
-      lastMessage: {
-        type: 1,
-        content: "Okay Man",
-        authorId: 1,
-        createdOn: "02:12",
-      },
-    },
-  ]);
+  const [feeds, setFeeds] = React.useState([]);
+  const [groups, setGroups] = React.useState([]);
   const [group, setGroup] = React.useState(null);
   const [input, setInput] = React.useState("");
   const [output, setOutput] = React.useState("");
   const [typing, setTyping] = React.useState(false);
   const textInputRef = React.useRef(null);
   const lastMessageRef = React.useRef(null);
+
+  React.useEffect(() => initializeData, []);
+  React.useEffect(() => socketInitializer, []);
+  React.useEffect(() => {
+    lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
+  }, [input, output]);
+  React.useEffect(() => {
+    if (output) {
+      console.log(output);
+    }
+  }, [output]);
+
+  const initializeData = async () => {
+    await fetch("/api/feed")
+      .then((response) => response.json())
+      .then((data) => setFeeds(data));
+
+    await fetch("/api/message")
+      .then((response) => response.json())
+      .then((data) => setGroups(data));
+  };
 
   const socketInitializer = async () => {
     await fetch("/api/socket");
@@ -248,18 +203,22 @@ const Messages = () => {
     socket.emit("is-typing", true);
   };
 
+  const getCurrentTime = () => {
+    const tempDate = new Date(),
+      tempHours = tempDate.getHours().toString().padStart(2, 0),
+      tempMinutes = tempDate.getMinutes().toString().padStart(2, 0);
+    return `${tempHours}:${tempMinutes}`;
+  };
+
   const onSubmitHandler = () => {
     if (input && socket) {
       const tempGroup = group,
         tempGroupMessages = tempGroup.messages,
-        tempDate = new Date(),
-        tempHours = tempDate.getHours().toString().padStart(2, 0),
-        tempMinutes = tempDate.getMinutes().toString().padStart(2, 0),
         tempLastMessage = {
           type: 1,
           content: input,
           authorId: 1,
-          createdOn: `${tempHours}:${tempMinutes}`,
+          createdOn: getCurrentTime(),
         };
       tempGroupMessages[tempGroupMessages.length] = tempLastMessage;
       Object.assign(tempGroup, {
@@ -277,18 +236,6 @@ const Messages = () => {
   const onSelectGroupHandler = (groupId) => {
     setGroup(groups && groups.find((g) => g.id === groupId));
   };
-
-  React.useEffect(() => socketInitializer, []);
-
-  React.useEffect(() => {
-    if (output) {
-      console.log(output);
-    }
-  }, [output]);
-
-  React.useEffect(() => {
-    lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
-  }, [input, output]);
 
   return (
     <Layout>
@@ -313,14 +260,19 @@ const Messages = () => {
               />
             </div>
             <div className="hidden md:block basis-3/4">
-              <div className="h-96 overflow-y-scroll">
+              {group && (
+                <div className="ml-4 my-8">
+                  <h1 className="text-xl text-white font-bold">{group.name}</h1>
+                </div>
+              )}
+              <div className="h-80 overflow-y-scroll">
                 <MessageList
                   group={group}
                   typing={typing}
                   lastMessageRef={lastMessageRef}
                 />
               </div>
-              <div className="mt-20">
+              <div className="mt-8 mx-4">
                 <MessageEditor
                   group={group}
                   input={input}

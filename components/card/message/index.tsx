@@ -21,7 +21,7 @@ export default function MessageCard(props: IMessageCardProps) {
     ${props.type === messageTypes.RECEIVED
         ? 'from-green-400 to-green-500 rounded-tl-none cursor-pointer'
         : 'from-orange-400 to-orange-500 rounded-tr-none cursor-pointer'}`;
-    const contentClass = `text-md text-black font-bold ${props.type === messageTypes.SENT && 'text-right'}`;
+    const contentClass = `max-w-sm text-md text-black font-bold ${props.type === messageTypes.SENT && 'text-right'}`;
 
     return (
       <div className={parentContainerClass}>
