@@ -225,8 +225,6 @@ const Messages = () => {
   const textInputRef = React.useRef(null);
   const lastMessageRef = React.useRef(null);
 
-  React.useEffect(() => socketInitializer, []);
-
   const socketInitializer = async () => {
     await fetch("/api/socket");
     socket = io();
@@ -243,12 +241,6 @@ const Messages = () => {
       setTyping(typing);
     });
   };
-
-  React.useEffect(() => {
-    if (output) {
-      console.log(output);
-    }
-  }, [output]);
 
   const onChangeHandler = (e) => {
     const value = e.target.value;
@@ -282,13 +274,21 @@ const Messages = () => {
     }
   };
 
-  React.useEffect(() => {
-    lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
-  }, [input, output]);
-
   const onSelectGroupHandler = (groupId) => {
     setGroup(groups && groups.find((g) => g.id === groupId));
   };
+
+  React.useEffect(() => socketInitializer, []);
+
+  React.useEffect(() => {
+    if (output) {
+      console.log(output);
+    }
+  }, [output]);
+
+  React.useEffect(() => {
+    lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
+  }, [input, output]);
 
   return (
     <Layout>
