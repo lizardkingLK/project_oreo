@@ -4,7 +4,6 @@ import io from "socket.io-client";
 import Avatar from "@/components/avatar";
 import MessageCard from "@/components/card/message";
 import MessageLink from "@/components/links/message";
-import Image from "next/image";
 let socket;
 
 const FeedList = ({ feeds }) => {
@@ -54,16 +53,15 @@ const MessageList = ({ group, typing, lastMessageRef }) => {
             key={index}
             type={message.type}
             content={message.content}
-            messageAuthorName={message.messageAuthorName}
-            messageTime={message.messageTime}
+            messageAuthorName={group.name}
+            messageTime={message.createdOn}
             messageImagePath={group.displayImage}
           />
         ))}
-      <div ref={lastMessageRef}>
-        {typing && (
-          <p className="text-sm m-8 text-gray-500">Someone is typing...</p>
-        )}
-      </div>
+      {typing && (
+        <p className="text-sm m-8 text-gray-500">Someone is typing...</p>
+      )}
+      <div ref={lastMessageRef}></div>
     </>
   );
 };
@@ -275,12 +273,12 @@ const Messages = () => {
         messages: tempGroupMessages,
         lastMessage: tempLastMessage,
       });
-      setGroup(tempGroup);
       setInput("");
+      setGroup(tempGroup);
       textInputRef.current.focus();
       lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
-      socket.emit("new-message", input);
       socket.emit("is-typing", false);
+      socket.emit("new-message", input);
     }
   };
 
