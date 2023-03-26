@@ -5,6 +5,7 @@ type Message = {
   content: string;
   authorId: number;
   createdOn: string;
+  groupId: number;
 };
 
 type Group = {
@@ -32,12 +33,14 @@ export default function handler(
           content: "Hi How are you?",
           authorId: 2,
           createdOn: "08:30",
+          groupId: 1,
         },
         {
           type: 1,
           content: "Lorem ipsum dolor sit am.",
           authorId: 1,
           createdOn: "09:12",
+          groupId: 1,
         },
       ],
       lastMessage: {
@@ -45,6 +48,7 @@ export default function handler(
         content: "Hi How are you? I'm doing great.",
         authorId: 2,
         createdOn: "09:12",
+        groupId: 1,
       },
     },
     {
@@ -58,12 +62,14 @@ export default function handler(
           content: "I am JetStream Sam.",
           authorId: 2,
           createdOn: "10:00",
+          groupId: 2,
         },
         {
           type: 1,
           content: "Okay Man",
           authorId: 1,
           createdOn: "02:12",
+          groupId: 2,
         },
       ],
       lastMessage: {
@@ -71,6 +77,7 @@ export default function handler(
         content: "Okay Man",
         authorId: 1,
         createdOn: "02:12",
+        groupId: 2,
       },
     },
   ]);

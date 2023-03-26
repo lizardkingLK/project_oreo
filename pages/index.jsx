@@ -4,6 +4,7 @@ import io from "socket.io-client";
 import Avatar from "@/components/avatar";
 import MessageCard from "@/components/card/message";
 import MessageLink from "@/components/links/message";
+import { messageTypes } from "@/utils/enums";
 let socket;
 
 const FeedList = ({ feeds }) => {
@@ -43,7 +44,7 @@ const MessageLinkList = ({ groups, setGroup, selectedGroup }) => {
   );
 };
 
-const MessageList = ({ group, typing, lastMessageRef }) => {
+const MessageList = ({ group, typing, notifs, lastMessageRef }) => {
   return (
     <>
       {group &&
@@ -156,6 +157,7 @@ const Messages = () => {
   const [input, setInput] = React.useState("");
   const [output, setOutput] = React.useState("");
   const [typing, setTyping] = React.useState(false);
+  const [notifs, setNotifs] = React.useState(false);
   const textInputRef = React.useRef(null);
   const lastMessageRef = React.useRef(null);
 
@@ -163,12 +165,29 @@ const Messages = () => {
   React.useEffect(() => socketInitializer, []);
   React.useEffect(() => {
     lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
-  }, [input, output]);
+  }, [notifs, typing]);
   React.useEffect(() => {
     if (output) {
-      console.log(output);
+      const tempGroup = groups.find((group) => group.id === output.groupId);
+      if (tempGroup) {
+        const tempGroupMessages = tempGroup.messages,
+          tempLastMessage = {
+            type: messageTypes.RECEIVED,
+            content: output.content,
+            authorId: 1,
+            createdOn: output.createdOn,
+            groupId: tempGroup.id,
+          };
+        tempGroupMessages[tempGroupMessages.length] = tempLastMessage;
+        Object.assign(tempGroup, {
+          messages: tempGroupMessages,
+          lastMessage: tempLastMessage,
+        });
+        setGroup(tempGroup);
+        setNotifs(true);
+      }
     }
-  }, [output]);
+  }, [output, groups]);
 
   const initializeData = async () => {
     await fetch("/api/feed")
@@ -215,10 +234,11 @@ const Messages = () => {
       const tempGroup = group,
         tempGroupMessages = tempGroup.messages,
         tempLastMessage = {
-          type: 1,
+          type: messageTypes.SENT,
           content: input,
           authorId: 1,
           createdOn: getCurrentTime(),
+          groupId: tempGroup.id,
         };
       tempGroupMessages[tempGroupMessages.length] = tempLastMessage;
       Object.assign(tempGroup, {
@@ -227,9 +247,10 @@ const Messages = () => {
       });
       setInput("");
       setGroup(tempGroup);
+      setNotifs(false);
       textInputRef.current.focus();
       socket.emit("is-typing", false);
-      socket.emit("new-message", input);
+      socket.emit("new-message", tempLastMessage);
     }
   };
 
@@ -269,6 +290,7 @@ const Messages = () => {
                 <MessageList
                   group={group}
                   typing={typing}
+                  notifs={notifs}
                   lastMessageRef={lastMessageRef}
                 />
               </div>

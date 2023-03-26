@@ -1,5 +1,6 @@
 import Avatar from '@/components/avatar';
-import React from 'react'
+import React from 'react';
+import { messageTypes } from "@/utils/enums";
 
 interface IMessageCardProps {
   content: string,
@@ -7,11 +8,6 @@ interface IMessageCardProps {
   messageImagePath: string,
   messageTime: string,
   messageAuthorName: string,
-}
-
-const messageTypes = {
-  SENT: 1,
-  RECEIVED: 2,
 }
 
 export default function MessageCard(props: IMessageCardProps) {
