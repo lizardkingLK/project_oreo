@@ -33,7 +33,8 @@
     "pages/api/socket.js",
     "pages/index.jsx",
     "utils/providers/socket.provider.js",
-    "pages/messages.jsx"
+    "pages/messages.jsx",
+    "utils/enums.js"
   ],
   "exclude": [
     "node_modules"
