@@ -58,10 +58,11 @@ const MessageList = ({ group, typing, lastMessageRef }) => {
             messageImagePath={group.displayImage}
           />
         ))}
-      {typing && (
-        <p className="text-sm m-8 text-gray-500">Someone is typing...</p>
-      )}
-      <div ref={lastMessageRef}></div>
+      <div ref={lastMessageRef}>
+        {typing && (
+          <p className="text-sm m-8 text-gray-500">Someone is typing...</p>
+        )}
+      </div>
     </>
   );
 };
@@ -77,7 +78,7 @@ const MessageEditor = ({
     group && (
       <div className="flex items-center m-4">
         <button
-          className="py-4 pl-4 rounded-l-full bg-gray-900 text-white flex items-center justify-center"
+          className="py-4 pl-4 rounded-l-full bg-gray-900 text-white hover:text-green-500 flex items-center justify-center"
           title="Insert Emoji"
         >
           <svg
@@ -104,7 +105,7 @@ const MessageEditor = ({
           title="Type Message Here"
         />
         <button
-          className="p-4 rounded-r-full bg-gray-900 text-white"
+          className="p-4 rounded-r-full bg-gray-900 text-white hover:text-green-500"
           title="Attach File"
         >
           <svg
@@ -124,7 +125,7 @@ const MessageEditor = ({
         </button>
         <button
           type="submit"
-          className="p-4 ml-4 rounded-full bg-green-500 text-white"
+          className="p-4 ml-4 rounded-full bg-green-500 hover:bg-green-600 text-white"
           title="Send Message"
           onClick={onSubmitHandler}
         >
@@ -256,7 +257,7 @@ const Messages = () => {
   };
 
   const onSubmitHandler = () => {
-    if (socket) {
+    if (input && socket) {
       const tempGroup = group,
         tempGroupMessages = tempGroup.messages,
         tempDate = new Date(),
@@ -276,11 +277,14 @@ const Messages = () => {
       setInput("");
       setGroup(tempGroup);
       textInputRef.current.focus();
-      lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
       socket.emit("is-typing", false);
       socket.emit("new-message", input);
     }
   };
+
+  React.useEffect(() => {
+    lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
+  }, [input, output]);
 
   const onSelectGroupHandler = (groupId) => {
     setGroup(groups && groups.find((g) => g.id === groupId));
