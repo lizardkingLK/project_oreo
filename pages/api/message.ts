@@ -13,6 +13,7 @@ type Group = {
   name: string;
   displayImage: string;
   isStatus: boolean;
+  isOnline: boolean;
   messages: Array<Message>;
   lastMessage: Message;
 };
@@ -27,6 +28,7 @@ export default function handler(
       name: "Amelia Nelson",
       displayImage: "/static/pfp1.jpg",
       isStatus: false,
+      isOnline: true,
       messages: [
         {
           type: 2,
@@ -56,6 +58,7 @@ export default function handler(
       name: "Sam Jetstream",
       displayImage: "/static/pfp2.jpg",
       isStatus: true,
+      isOnline: false,
       messages: [
         {
           type: 2,
