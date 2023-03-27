@@ -155,7 +155,7 @@ const Messages = () => {
                   )}
                 </div>
               )}
-              <div className="max-h-80 overflow-y-scroll">
+              <div className="h-80 overflow-y-scroll">
                 <MessageList
                   group={group}
                   typing={typing}

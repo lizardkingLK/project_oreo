@@ -21,7 +21,7 @@ const MessageLink = (props: IMessageLinkProps) => {
         return (
             <a href={void (0)} className="cursor-pointer" title={props.messageAuthorName}
                 onClick={() => props.messageOnClick(props.messageId)}>
-                <div className={`flex items-start mb-4 py-4 px-2 rounded-md max-w-sm hover:bg-gray-800 ${activeState}`}>
+                <div className={`flex items-start mb-4 py-4 px-2 rounded-md max-w-sm md:max-w-xs hover:bg-gray-800 ${activeState}`}>
                     <Avatar
                         name={props.messageAuthorName}
                         imagePath={props.messageImagePath}
