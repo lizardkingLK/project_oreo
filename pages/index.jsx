@@ -180,7 +180,7 @@ const Messages = () => {
                   </div>
                 </div>
               )}
-              <div className="h-[calc(100vh_-_24vh)] md:h-[calc(100vh_-_36vh)] overflow-y-scroll">
+              <div className="h-[calc(100vh_-_28vh)] md:h-[calc(100vh_-_36vh)] overflow-y-scroll">
                 <MessageList
                   group={group}
                   typing={typing}

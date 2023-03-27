@@ -23,7 +23,7 @@ interface IMessageEditorProps {
     input: string;
     onChangeHandler: ChangeEventHandler<HTMLInputElement>;
     onSubmitHandler: MouseEventHandler<HTMLButtonElement>;
-    textInputRef: LegacyRef<HTMLInputElement>
+    textInputRef: LegacyRef<HTMLInputElement>;
 }
 
 const MessageEditor = (props: IMessageEditorProps) => {
