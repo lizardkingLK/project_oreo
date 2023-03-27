@@ -23,7 +23,7 @@ const Messages = () => {
   React.useEffect(() => socketInitializer, []);
   React.useEffect(() => {
     lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
-  }, [notifs, input]);
+  }, [notifs, input, group]);
   React.useEffect(() => {
     if (output) {
       const tempGroup = groups.find((group) => group.id === output.groupId);
@@ -118,10 +118,10 @@ const Messages = () => {
 
   return (
     <Layout>
-      <main className="bg-black p-2" id="messages">
-        <div className="py-8">
-          <div className="block md:flex items-center pb-4 border-b-2 border-gray-900">
-            <div className="my-4 md:m-0 basis-1/4">
+      <main className="bg-black" id="messages">
+        <div>
+          <div className="block md:flex items-center m-4 border-gray-900">
+            <div className="basis-1/4 my-4 md:m-0">
               <h1 className="text-3xl text-center md:text-left text-white font-bold">
                 Oreo
               </h1>
@@ -130,7 +130,7 @@ const Messages = () => {
               <FeedList feeds={feeds} />
             </div>
           </div>
-          <div className="pb-4 flex justify-center">
+          <div className="flex justify-center">
             <div className="basis-1/4">
               <MessageLinkList
                 groups={groups}
@@ -138,17 +138,46 @@ const Messages = () => {
                 selectedGroup={group}
               />
             </div>
-            <div className="hidden md:block basis-3/4">
+            <div
+              className={`${
+                group ? "block" : "hidden"
+              } absolute top-0 bg-black md:relative md:block container basis-3/4`}
+            >
               {group && (
-                <div className="ml-4 my-8">
-                  <h1 className="text-xl text-white font-bold">{group.name}</h1>
-                  {group.isOnline ? (
-                    <h1 className="text-md font-bold text-green-500">Online</h1>
-                  ) : (
-                    <h1 className="text-md font-bold text-white">
-                      {group.lastMessage.createdOn}
+                <div className="p-4 flex justify-center items-center">
+                  <button
+                    className="block md:hidden text-white hover:text-green-500 basis-1/12 mr-4"
+                    onClick={() => setGroup(null)}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="w-8 h-8"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M15.75 19.5L8.25 12l7.5-7.5"
+                      />
+                    </svg>
+                  </button>
+                  <div className="basis-11/12">
+                    <h1 className="flex text-xl text-white font-bold">
+                      <span>{group.name}</span>
                     </h1>
-                  )}
+                    {group.isOnline ? (
+                      <h1 className="text-md font-bold text-green-500">
+                        Online
+                      </h1>
+                    ) : (
+                      <h1 className="text-md font-bold text-white">
+                        {group.lastMessage.createdOn}
+                      </h1>
+                    )}
+                  </div>
                 </div>
               )}
               <div className="h-80 overflow-y-scroll">
@@ -159,7 +188,7 @@ const Messages = () => {
                   lastMessageRef={lastMessageRef}
                 />
               </div>
-              <div className="mt-8 mx-4">
+              <div className="bottom-0 m-4">
                 <MessageEditor
                   group={group}
                   input={input}
@@ -168,15 +197,6 @@ const Messages = () => {
                   textInputRef={textInputRef}
                 />
               </div>
-            </div>
-          </div>
-        </div>
-        <div className="hidden md:block container absolute text-white bottom-0 w-full">
-          <div className="block md:flex items-center pb-4">
-            <div className="my-4 md:m-0 basis-1/4">
-              <h1 className="text-sm text-center md:text-left text-white font-bold">
-                Oreo 2023
-              </h1>
             </div>
           </div>
         </div>
