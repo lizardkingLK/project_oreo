@@ -23,7 +23,7 @@ const Messages = () => {
   React.useEffect(() => socketInitializer, []);
   React.useEffect(() => {
     lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
-  }, [notifs, input, group]);
+  }, [notifs, input]);
   React.useEffect(() => {
     if (output) {
       const tempGroup = groups.find((group) => group.id === output.groupId);
