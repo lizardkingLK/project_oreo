@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler, LegacyRef, MouseEventHandler } from 'react'
+import React, { ChangeEventHandler, KeyboardEventHandler, LegacyRef, MouseEventHandler } from 'react'
 
 interface IMessageProps {
     type: number;
@@ -22,13 +22,14 @@ interface IMessageEditorProps {
     group: IGroupProps;
     input: string;
     onChangeHandler: ChangeEventHandler<HTMLInputElement>;
+    onKeyDownHandler: KeyboardEventHandler<HTMLInputElement>;
     onSubmitHandler: MouseEventHandler<HTMLButtonElement>;
     textInputRef: LegacyRef<HTMLInputElement>;
 }
 
 const MessageEditor = (props: IMessageEditorProps) => {
     if (props) {
-        const { group, input, onChangeHandler, onSubmitHandler, textInputRef } = props;
+        const { group, input, onChangeHandler, onKeyDownHandler, onSubmitHandler, textInputRef } = props;
         return (
             group && (
                 <div className="flex items-center">
@@ -57,6 +58,7 @@ const MessageEditor = (props: IMessageEditorProps) => {
                         placeholder="Type a message"
                         value={input}
                         onChange={onChangeHandler}
+                        onKeyDown={onKeyDownHandler}
                         title="Type Message Here"
                     />
                     <button

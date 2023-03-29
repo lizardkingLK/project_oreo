@@ -23,7 +23,7 @@ const Messages = () => {
   React.useEffect(() => socketInitializer, []);
   React.useEffect(() => {
     lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
-  }, [notifs, input]);
+  }, [notifs, input, group]);
   React.useEffect(() => {
     if (output) {
       const tempGroup = groups.find((group) => group.id === output.groupId);
@@ -116,6 +116,12 @@ const Messages = () => {
     setGroup(groups && groups.find((g) => g.id === groupId));
   };
 
+  const onKeyDownHandler = (e) => {
+    if (e.key === "Enter") {
+      onSubmitHandler();
+    }
+  };
+
   return (
     <Layout>
       <main className="bg-black" id="messages">
@@ -193,6 +199,7 @@ const Messages = () => {
                   group={group}
                   input={input}
                   onChangeHandler={onChangeHandler}
+                  onKeyDownHandler={onKeyDownHandler}
                   onSubmitHandler={onSubmitHandler}
                   textInputRef={textInputRef}
                 />
