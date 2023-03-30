@@ -83,5 +83,35 @@ export default function handler(
         groupId: 2,
       },
     },
+    {
+      id: 3,
+      name: "Rob Halford",
+      displayImage: "/static/pfp3.jpg",
+      isStatus: false,
+      isOnline: false,
+      messages: [
+        {
+          type: 2,
+          content: "Hello, I am Rob Halford.",
+          authorId: 3,
+          createdOn: "11:00",
+          groupId: 3,
+        },
+        {
+          type: 1,
+          content: "Hello Rob. Nice to meet you.",
+          authorId: 1,
+          createdOn: "11:15",
+          groupId: 3,
+        },
+      ],
+      lastMessage: {
+        type: 1,
+        content: "Hello Rob. Nice to meet you.",
+        authorId: 1,
+        createdOn: "11:15",
+        groupId: 3,
+      },
+    },
   ]);
 }

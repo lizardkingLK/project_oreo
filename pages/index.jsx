@@ -116,11 +116,17 @@ const Messages = () => {
     setGroup(groups && groups.find((g) => g.id === groupId));
   };
 
+  const onKeyDownHandler = (e) => {
+    if (e.key === "Enter") {
+      onSubmitHandler();
+    }
+  };
+
   return (
     <Layout>
       <main className="bg-black" id="messages">
         <div>
-          <div className="block md:flex items-center m-4 border-gray-900">
+          <div className="block md:flex items-center p-4 border-gray-900">
             <div className="basis-1/4 my-4 md:m-0">
               <h1 className="text-3xl text-center md:text-left text-white font-bold">
                 Oreo
@@ -144,7 +150,7 @@ const Messages = () => {
               } absolute top-0 bg-black md:relative md:block container basis-3/4`}
             >
               {group && (
-                <div className="p-4 flex justify-center items-center">
+                <div className="p-4 flex items-center">
                   <button
                     className="block md:hidden text-white hover:text-green-500 basis-1/12 mr-4"
                     onClick={() => setGroup(null)}
@@ -180,7 +186,7 @@ const Messages = () => {
                   </div>
                 </div>
               )}
-              <div className="h-80 overflow-y-scroll">
+              <div className="h-[calc(100vh_-_28vh)] md:h-[calc(100vh_-_36vh)] overflow-y-scroll">
                 <MessageList
                   group={group}
                   typing={typing}
@@ -193,6 +199,7 @@ const Messages = () => {
                   group={group}
                   input={input}
                   onChangeHandler={onChangeHandler}
+                  onKeyDownHandler={onKeyDownHandler}
                   onSubmitHandler={onSubmitHandler}
                   textInputRef={textInputRef}
                 />
