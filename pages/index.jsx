@@ -6,7 +6,9 @@ import MessageList from "@/components/lists/message/MessageList";
 import MessageEditor from "@/components/forms/message";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { messageTypes } from "@/utils/enums";
+import { authStates } from "@/utils/globals";
 import io from "socket.io-client";
+import Image from "next/image";
 let socket;
 
 const Messages = () => {
@@ -139,13 +141,6 @@ const Messages = () => {
             </div>
             <div className="basis-3/4 flex justify-center md:justify-end">
               <FeedList feeds={feeds} />
-              <button
-                type="button"
-                onClick={() => signIn()}
-                className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-              >
-                Login
-              </button>
             </div>
           </div>
           <div className="flex justify-center">
@@ -161,26 +156,35 @@ const Messages = () => {
                 group ? "block" : "hidden"
               } absolute top-0 bg-black md:relative md:block container basis-3/4`}
             >
+              {/* {status === authStates.unauthenticated ? (
+                <button
+                  type="button"
+                  onClick={() => signIn()}
+                  className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                >
+                  Login
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => signOut()}
+                  className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+                >
+                  Logout
+                </button>
+              )} */}
               {group && (
                 <div className="p-4 flex items-center">
                   <button
                     className="block md:hidden text-white hover:text-green-500 basis-1/12 mr-4"
                     onClick={() => setGroup(null)}
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="w-8 h-8"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M15.75 19.5L8.25 12l7.5-7.5"
-                      />
-                    </svg>
+                    <Image
+                      src={"/chevron-back"}
+                      alt="back icon"
+                      width={8}
+                      height={8}
+                    />
                   </button>
                   <div className="basis-11/12">
                     <h1 className="flex text-xl text-white font-bold">
