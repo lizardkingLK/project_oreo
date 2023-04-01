@@ -9,6 +9,7 @@ import { apiUrls, authStates, messageTypes } from "@/utils/enums";
 import io from "socket.io-client";
 import ChevronBack from "@/components/svgs/chevronBack";
 import Bars from "@/components/svgs/bars";
+import Link from "next/link";
 let socket;
 
 const Messages = () => {
@@ -138,123 +139,123 @@ const Messages = () => {
   return (
     <Layout>
       <main className="bg-black" id="messages">
-        <div>
-          <div className="block md:flex items-center p-4 border-gray-900">
-            <div className="basis-1/4 flex justify-between md:justify-start items-center my-4 md:m-0">
-              <button
-                className={`pr-4 ${
-                  navbar ? "text-orange-800" : "text-white"
-                } hover:text-orange-600`}
-                onClick={() => setNavbar(!navbar)}
-              >
-                <Bars />
-              </button>
-              <h1 className="text-3xl text-center md:text-left text-white font-bold">
-                Oreo
-              </h1>
-            </div>
-            <div className="basis-3/4 flex justify-center md:justify-end">
-              {status === authStates.authenticated && (
-                <FeedList feeds={feeds} />
-              )}
-            </div>
+        <div className="block md:flex items-center p-4 border-gray-900">
+          <div className="basis-1/4 flex justify-between md:justify-start items-center my-4 md:m-0">
+            <button
+              className={`pr-4 ${
+                navbar ? "text-orange-800" : "text-white"
+              } hover:text-orange-600`}
+              onClick={() => setNavbar(!navbar)}
+            >
+              <Bars />
+            </button>
+            <h1 className="text-3xl text-center md:text-left text-white font-bold">
+              Oreo
+            </h1>
           </div>
-          <nav
-            className={`px-4 pb-4 ${
-              navbar ? "flex" : "hidden"
-            } justify-between`}
-          >
+          <div className="basis-3/4 flex justify-center md:justify-end">
+            {status === authStates.authenticated && <FeedList feeds={feeds} />}
+          </div>
+        </div>
+        <nav
+          className={`px-4 pb-4 ${navbar ? "flex" : "hidden"} justify-between`}
+        >
+          <ul className="flex">
             {status === authStates.authenticated && (
               <>
-                <button
-                  type="button"
-                  className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-                >
-                  Profile
-                </button>
-                <button
-                  type="button"
-                  onClick={() => signOut()}
-                  className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-orange-700 rounded-lg hover:bg-orange-800 focus:ring-4 focus:outline-none focus:ring-orange-300 dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800"
-                >
-                  Logout
-                </button>
+                <li className="mr-6">
+                  <button className="text-green-500 hover:text-green-800 font-bold">
+                    Profile
+                  </button>
+                </li>
+                <li className="mr-6">
+                  <button
+                    className="text-orange-500 hover:text-orange-800 font-bold"
+                    onClick={() => signOut()}
+                  >
+                    Logout
+                  </button>
+                </li>
               </>
             )}
             {status === authStates.unauthenticated && (
-              <button
-                type="button"
-                onClick={() => signIn()}
-                className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-              >
-                Login
-              </button>
-            )}
-          </nav>
-          <section className="flex justify-center">
-            {status === authStates.authenticated && (
-              <>
-                <div className="basis-1/4">
-                  <MessageLinkList
-                    groups={groups}
-                    setGroup={onSelectGroupHandler}
-                    selectedGroup={group}
-                  />
-                </div>
-                <div
-                  className={`${
-                    group ? "block" : "hidden"
-                  } absolute top-0 bg-black md:relative md:block container basis-3/4`}
+              <li className="mr-6">
+                <button
+                  className="text-green-500 hover:text-green-800 font-bold"
+                  onClick={() => signIn()}
                 >
-                  {group && (
-                    <>
-                      <div className="p-4 flex items-center">
-                        <button
-                          className="block md:hidden text-white hover:text-green-500 basis-1/12 mr-4"
-                          onClick={() => setGroup(null)}
-                        >
-                          <ChevronBack />
-                        </button>
-                        <div className="basis-11/12">
-                          <h1 className="flex text-xl text-white font-bold">
-                            <span>{group.name}</span>
-                          </h1>
-                          {group.isOnline ? (
-                            <h1 className="text-md font-bold text-green-500">
-                              Online
-                            </h1>
-                          ) : (
-                            <h1 className="text-md font-bold text-white">
-                              {group.lastMessage.createdOn}
-                            </h1>
-                          )}
-                        </div>
-                      </div>
-                      <div className="h-[calc(100vh_-_28vh)] md:h-[calc(100vh_-_36vh)] overflow-y-scroll">
-                        <MessageList
-                          group={group}
-                          typing={typing}
-                          notifs={notifs}
-                          lastMessageRef={lastMessageRef}
-                        />
-                      </div>
-                      <div className="bottom-0 m-4">
-                        <MessageEditor
-                          group={group}
-                          input={input}
-                          onChangeHandler={onChangeHandler}
-                          onKeyDownHandler={onKeyDownHandler}
-                          onSubmitHandler={onSubmitHandler}
-                          textInputRef={textInputRef}
-                        />
-                      </div>
-                    </>
-                  )}
-                </div>
-              </>
+                  Login
+                </button>
+              </li>
             )}
-          </section>
-        </div>
+          </ul>
+        </nav>
+        <section className="flex justify-center">
+          {status === authStates.authenticated && (
+            <>
+              <div className="basis-1/4">
+                <MessageLinkList
+                  groups={groups}
+                  setGroup={onSelectGroupHandler}
+                  selectedGroup={group}
+                />
+              </div>
+              <div
+                className={`${
+                  group ? "block" : "hidden"
+                } absolute top-0 bg-black md:relative md:block container basis-3/4`}
+              >
+                {group && (
+                  <>
+                    <div className="p-4 flex items-center">
+                      <button
+                        className="block md:hidden text-white hover:text-green-500 basis-1/12 mr-4"
+                        onClick={() => setGroup(null)}
+                      >
+                        <ChevronBack />
+                      </button>
+                      <div className="basis-11/12">
+                        <h1 className="flex text-xl text-white font-bold">
+                          <span>{group.name}</span>
+                        </h1>
+                        {group.isOnline ? (
+                          <h1 className="text-md font-bold text-green-500">
+                            Online
+                          </h1>
+                        ) : (
+                          <h1 className="text-md font-bold text-white">
+                            {group.lastMessage.createdOn}
+                          </h1>
+                        )}
+                      </div>
+                    </div>
+                    <div className="h-[calc(100vh_-_28vh)] md:h-[calc(100vh_-_36vh)] overflow-y-scroll">
+                      <MessageList
+                        group={group}
+                        typing={typing}
+                        notifs={notifs}
+                        lastMessageRef={lastMessageRef}
+                      />
+                    </div>
+                    <div className="bottom-0 m-4">
+                      <MessageEditor
+                        group={group}
+                        input={input}
+                        onChangeHandler={onChangeHandler}
+                        onKeyDownHandler={onKeyDownHandler}
+                        onSubmitHandler={onSubmitHandler}
+                        textInputRef={textInputRef}
+                      />
+                    </div>
+                  </>
+                )}
+              </div>
+            </>
+          )}
+        </section>
+        {status === authStates.loading && (
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+        )}
       </main>
     </Layout>
   );

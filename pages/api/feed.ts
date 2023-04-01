@@ -1,11 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-
-type Feed = {
-  name: string;
-  imagePath: string;
-  size: number;
-  isStatus: boolean;
-};
+import type { Feed } from "@/utils/types";
 
 export default function handler(
   _req: NextApiRequest,
