@@ -1,12 +1,6 @@
 import React from "react";
 import Image from "next/image";
-
-interface IAvatarProps {
-  name: string,
-  imagePath: string,
-  size: number,
-  isStatus?: boolean,
-};
+import { IAvatarProps } from "@/utils/types";
 
 const Avatar = (props: IAvatarProps) => {
   if (props) {

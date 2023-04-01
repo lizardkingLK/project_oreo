@@ -1,16 +1,6 @@
 import React from 'react'
-import Avatar from '../avatar';
-
-interface IFeedProps {
-    name: string;
-    imagePath: string;
-    size: number;
-    isStatus: boolean;
-}
-
-interface IFeedProps {
-    feeds: Array<IFeedProps>
-}
+import Avatar from '@/components/avatar';
+import { IFeedProps } from "@/utils/types";
 
 const FeedList = (props: IFeedProps) => {
     if (props) {
