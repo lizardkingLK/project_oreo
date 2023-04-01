@@ -1,29 +1,6 @@
-import MessageLink from '@/components/links/message';
 import React from 'react'
-
-interface IMessageProps {
-  type: number;
-  content: string;
-  authorId: number;
-  createdOn: string;
-  groupId: number;
-}
-
-interface IGroupProps {
-  id: number;
-  name: string;
-  displayImage: string;
-  isStatus: boolean;
-  isOnline: boolean;
-  messages: Array<IMessageProps>;
-  lastMessage: IMessageProps;
-}
-
-interface IMessageLinkListProps {
-  groups: Array<IGroupProps>;
-  setGroup: Function;
-  selectedGroup: IGroupProps;
-}
+import MessageLink from '@/components/links/message';
+import { IMessageLinkListProps } from '@/utils/types';
 
 const MessageLinkList = (props: IMessageLinkListProps) => {
   if (props) {

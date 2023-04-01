@@ -1,30 +1,37 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Layout from "@/components/layout";
-import io from "socket.io-client";
-import { messageTypes } from "@/utils/enums";
 import FeedList from "@/components/feeds";
 import MessageLinkList from "@/components/lists/message/MessageLinkList";
 import MessageList from "@/components/lists/message/MessageList";
 import MessageEditor from "@/components/forms/message";
+import { useSession, signIn, signOut } from "next-auth/react";
+import { apiUrls, authStates, messageTypes } from "@/utils/enums";
+import io from "socket.io-client";
+import ChevronBack from "@/components/svgs/chevronBack";
+import Bars from "@/components/svgs/bars";
 let socket;
 
 const Messages = () => {
-  const [feeds, setFeeds] = React.useState([]);
-  const [groups, setGroups] = React.useState([]);
-  const [group, setGroup] = React.useState(null);
-  const [input, setInput] = React.useState("");
-  const [output, setOutput] = React.useState("");
-  const [typing, setTyping] = React.useState(false);
-  const [notifs, setNotifs] = React.useState(false);
-  const textInputRef = React.useRef(null);
-  const lastMessageRef = React.useRef(null);
+  const { data: session, status } = useSession();
+  const [navbar, setNavbar] = useState(false);
+  const [feeds, setFeeds] = useState([]);
+  const [groups, setGroups] = useState([]);
+  const [group, setGroup] = useState(null);
+  const [input, setInput] = useState("");
+  const [output, setOutput] = useState("");
+  const [typing, setTyping] = useState(false);
+  const [notifs, setNotifs] = useState(false);
+  const textInputRef = useRef(null);
+  const lastMessageRef = useRef(null);
 
-  React.useEffect(() => initializeData, []);
-  React.useEffect(() => socketInitializer, []);
-  React.useEffect(() => {
-    lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
+  useEffect(() => initializeData, []);
+  useEffect(() => socketInitializer, []);
+  useEffect(() => {
+    if (lastMessageRef.current) {
+      lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
+    }
   }, [notifs, input, group]);
-  React.useEffect(() => {
+  useEffect(() => {
     if (output) {
       const tempGroup = groups.find((group) => group.id === output.groupId);
       if (tempGroup) {
@@ -46,19 +53,25 @@ const Messages = () => {
       }
     }
   }, [output, groups]);
+  useEffect(() => {
+    setNavbar(false);
+  }, [group]);
+  useEffect(() => {
+    console.log({ data: session, status });
+  }, [session, status]);
 
   const initializeData = async () => {
-    await fetch("/api/feed")
+    await fetch(apiUrls.feed)
       .then((response) => response.json())
       .then((data) => setFeeds(data));
 
-    await fetch("/api/message")
+    await fetch(apiUrls.message)
       .then((response) => response.json())
       .then((data) => setGroups(data));
   };
 
   const socketInitializer = async () => {
-    await fetch("/api/socket");
+    await fetch(apiUrls.socket);
     socket = io();
 
     socket.on("connect", () => {
@@ -127,85 +140,120 @@ const Messages = () => {
       <main className="bg-black" id="messages">
         <div>
           <div className="block md:flex items-center p-4 border-gray-900">
-            <div className="basis-1/4 my-4 md:m-0">
+            <div className="basis-1/4 flex justify-between md:justify-start items-center my-4 md:m-0">
+              <button
+                className={`pr-4 ${
+                  navbar ? "text-orange-800" : "text-white"
+                } hover:text-orange-600`}
+                onClick={() => setNavbar(!navbar)}
+              >
+                <Bars />
+              </button>
               <h1 className="text-3xl text-center md:text-left text-white font-bold">
                 Oreo
               </h1>
             </div>
             <div className="basis-3/4 flex justify-center md:justify-end">
-              <FeedList feeds={feeds} />
-            </div>
-          </div>
-          <div className="flex justify-center">
-            <div className="basis-1/4">
-              <MessageLinkList
-                groups={groups}
-                setGroup={onSelectGroupHandler}
-                selectedGroup={group}
-              />
-            </div>
-            <div
-              className={`${
-                group ? "block" : "hidden"
-              } absolute top-0 bg-black md:relative md:block container basis-3/4`}
-            >
-              {group && (
-                <div className="p-4 flex items-center">
-                  <button
-                    className="block md:hidden text-white hover:text-green-500 basis-1/12 mr-4"
-                    onClick={() => setGroup(null)}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="w-8 h-8"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M15.75 19.5L8.25 12l7.5-7.5"
-                      />
-                    </svg>
-                  </button>
-                  <div className="basis-11/12">
-                    <h1 className="flex text-xl text-white font-bold">
-                      <span>{group.name}</span>
-                    </h1>
-                    {group.isOnline ? (
-                      <h1 className="text-md font-bold text-green-500">
-                        Online
-                      </h1>
-                    ) : (
-                      <h1 className="text-md font-bold text-white">
-                        {group.lastMessage.createdOn}
-                      </h1>
-                    )}
-                  </div>
-                </div>
+              {status === authStates.authenticated && (
+                <FeedList feeds={feeds} />
               )}
-              <div className="h-[calc(100vh_-_28vh)] md:h-[calc(100vh_-_36vh)] overflow-y-scroll">
-                <MessageList
-                  group={group}
-                  typing={typing}
-                  notifs={notifs}
-                  lastMessageRef={lastMessageRef}
-                />
-              </div>
-              <div className="bottom-0 m-4">
-                <MessageEditor
-                  group={group}
-                  input={input}
-                  onChangeHandler={onChangeHandler}
-                  onKeyDownHandler={onKeyDownHandler}
-                  onSubmitHandler={onSubmitHandler}
-                  textInputRef={textInputRef}
-                />
-              </div>
             </div>
           </div>
+          <nav
+            className={`px-4 pb-4 ${
+              navbar ? "flex" : "hidden"
+            } justify-between`}
+          >
+            {status === authStates.authenticated && (
+              <>
+                <button
+                  type="button"
+                  className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                >
+                  Profile
+                </button>
+                <button
+                  type="button"
+                  onClick={() => signOut()}
+                  className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-orange-700 rounded-lg hover:bg-orange-800 focus:ring-4 focus:outline-none focus:ring-orange-300 dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800"
+                >
+                  Logout
+                </button>
+              </>
+            )}
+            {status === authStates.unauthenticated && (
+              <button
+                type="button"
+                onClick={() => signIn()}
+                className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+              >
+                Login
+              </button>
+            )}
+          </nav>
+          <section className="flex justify-center">
+            {status === authStates.authenticated && (
+              <>
+                <div className="basis-1/4">
+                  <MessageLinkList
+                    groups={groups}
+                    setGroup={onSelectGroupHandler}
+                    selectedGroup={group}
+                  />
+                </div>
+                <div
+                  className={`${
+                    group ? "block" : "hidden"
+                  } absolute top-0 bg-black md:relative md:block container basis-3/4`}
+                >
+                  {group && (
+                    <>
+                      <div className="p-4 flex items-center">
+                        <button
+                          className="block md:hidden text-white hover:text-green-500 basis-1/12 mr-4"
+                          onClick={() => setGroup(null)}
+                        >
+                          <ChevronBack />
+                        </button>
+                        <div className="basis-11/12">
+                          <h1 className="flex text-xl text-white font-bold">
+                            <span>{group.name}</span>
+                          </h1>
+                          {group.isOnline ? (
+                            <h1 className="text-md font-bold text-green-500">
+                              Online
+                            </h1>
+                          ) : (
+                            <h1 className="text-md font-bold text-white">
+                              {group.lastMessage.createdOn}
+                            </h1>
+                          )}
+                        </div>
+                      </div>
+                      <div className="h-[calc(100vh_-_28vh)] md:h-[calc(100vh_-_36vh)] overflow-y-scroll">
+                        <MessageList
+                          group={group}
+                          typing={typing}
+                          notifs={notifs}
+                          lastMessageRef={lastMessageRef}
+                        />
+                      </div>
+                      <div className="bottom-0 m-4">
+                        <MessageEditor
+                          group={group}
+                          input={input}
+                          onChangeHandler={onChangeHandler}
+                          onKeyDownHandler={onKeyDownHandler}
+                          onSubmitHandler={onSubmitHandler}
+                          textInputRef={textInputRef}
+                        />
+                      </div>
+                    </>
+                  )}
+                </div>
+              </>
+            )}
+          </section>
         </div>
       </main>
     </Layout>

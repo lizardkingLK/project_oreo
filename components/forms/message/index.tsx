@@ -1,31 +1,5 @@
-import React, { ChangeEventHandler, KeyboardEventHandler, LegacyRef, MouseEventHandler } from 'react'
-
-interface IMessageProps {
-    type: number;
-    content: string;
-    authorId: number;
-    createdOn: string;
-    groupId: number;
-}
-
-interface IGroupProps {
-    id: number;
-    name: string;
-    displayImage: string;
-    isStatus: boolean;
-    isOnline: boolean;
-    messages: Array<IMessageProps>;
-    lastMessage: IMessageProps;
-}
-
-interface IMessageEditorProps {
-    group: IGroupProps;
-    input: string;
-    onChangeHandler: ChangeEventHandler<HTMLInputElement>;
-    onKeyDownHandler: KeyboardEventHandler<HTMLInputElement>;
-    onSubmitHandler: MouseEventHandler<HTMLButtonElement>;
-    textInputRef: LegacyRef<HTMLInputElement>;
-}
+import React from 'react'
+import { IMessageEditorProps } from '@/utils/types';
 
 const MessageEditor = (props: IMessageEditorProps) => {
     if (props) {
@@ -41,7 +15,7 @@ const MessageEditor = (props: IMessageEditorProps) => {
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
-                            strokeWidth={1.5}
+                            strokeWidth={2}
                             stroke="currentColor"
                             className="w-7 h-7"
                         >
@@ -69,7 +43,7 @@ const MessageEditor = (props: IMessageEditorProps) => {
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
-                            strokeWidth={1.5}
+                            strokeWidth={2}
                             stroke="currentColor"
                             className="w-7 h-7"
                         >
@@ -90,7 +64,7 @@ const MessageEditor = (props: IMessageEditorProps) => {
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
-                            strokeWidth={1.5}
+                            strokeWidth={2}
                             stroke="currentColor"
                             className="w-7 h-7"
                         >

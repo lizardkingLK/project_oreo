@@ -1,19 +1,6 @@
-import Avatar from '@/components/avatar'
 import React from 'react'
-
-interface IMessageLinkProps {
-    messageId: number,
-    messageLink: string,
-    messageImagePath: string,
-    messageImageSize: number,
-    messageAuthorType: number,
-    messageAuthorIsStatus: boolean,
-    messageAuthorName: string,
-    messageContent: string,
-    messageTime: string,
-    messageIsActive: boolean,
-    messageOnClick: Function,
-}
+import Avatar from '@/components/avatar'
+import { IMessageLinkProps } from '@/utils/types';
 
 const MessageLink = (props: IMessageLinkProps) => {
     if (props) {

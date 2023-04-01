@@ -1,30 +1,5 @@
 import MessageCard from '@/components/cards/message';
-import React, { LegacyRef } from 'react'
-
-interface IMessageProps {
-    type: number;
-    content: string;
-    authorId: number;
-    createdOn: string;
-    groupId: number;
-}
-
-interface IGroupProps {
-    id: number;
-    name: string;
-    displayImage: string;
-    isStatus: boolean;
-    isOnline: boolean;
-    messages: Array<IMessageProps>;
-    lastMessage: IMessageProps;
-}
-
-interface IMessageListProps {
-    group: IGroupProps;
-    typing: boolean;
-    notifs: boolean;
-    lastMessageRef: LegacyRef<HTMLInputElement>
-}
+import { IMessageListProps } from '@/utils/types';
 
 const MessageList = (props: IMessageListProps) => {
     if (props) {
