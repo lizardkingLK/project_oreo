@@ -40,6 +40,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 ## .env.local file to be added
 
 ```
+APP_URL=YOUR_APP_URL
 GITHUB_ID=YOUR_GITHUB_ID
 GITHUB_SECRET=YOUR_GITHUB_SECRET
 NextAuth_SECRET=YOUR_NEXTAUTH_SECRET

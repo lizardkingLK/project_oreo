@@ -1,22 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-
-type Message = {
-  type: number;
-  content: string;
-  authorId: number;
-  createdOn: string;
-  groupId: number;
-};
-
-type Group = {
-  id: number;
-  name: string;
-  displayImage: string;
-  isStatus: boolean;
-  isOnline: boolean;
-  messages: Array<Message>;
-  lastMessage: Message;
-};
+import type { Group } from "@/utils/types";
 
 export default function handler(
   _req: NextApiRequest,

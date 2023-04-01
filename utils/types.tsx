@@ -87,3 +87,28 @@ export interface IAvatarProps {
     size: number,
     isStatus?: boolean,
 };
+
+export type Feed = {
+    name: string;
+    imagePath: string;
+    size: number;
+    isStatus: boolean;
+};
+
+export type Message = {
+    type: number;
+    content: string;
+    authorId: number;
+    createdOn: string;
+    groupId: number;
+};
+
+export type Group = {
+    id: number;
+    name: string;
+    displayImage: string;
+    isStatus: boolean;
+    isOnline: boolean;
+    messages: Array<Message>;
+    lastMessage: Message;
+};

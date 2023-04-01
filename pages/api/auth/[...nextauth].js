@@ -21,8 +21,8 @@ export const authOptions = {
                 },
             },
             async authorize(credentials, _req) {
-                const { email, password } = credentials
-                const res = await fetch(apiUrls.login, {
+                const { email, password } = credentials;
+                const res = await fetch(`${process.env.APP_URL}${apiUrls.login}`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -43,11 +43,21 @@ export const authOptions = {
             clientSecret: process.env.GITHUB_SECRET,
         }),
     ],
+    callbacks: {
+        async jwt({ token, user }) {
+            return { ...token, ...user };
+        },
+        async session({ session, token, user }) {
+            session.user = user;
+            session.token = token;
+            return session;
+        },
+    },
     theme: {
         colorScheme: "dark",
         brandColor: "#15803D",
-        logo: "/favicon.png", // Absolute URL to image
-        buttonText: "#15803D" // Hex color code
+        logo: "/favicon.png",
+        buttonText: "#15803D",
     },
 };
 
