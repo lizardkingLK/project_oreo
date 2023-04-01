@@ -13,4 +13,5 @@ export enum apiUrls {
   feed = "/api/feed",
   message = "/api/message",
   socket = "/api/socket",
+  login = "/api/login",
 }
