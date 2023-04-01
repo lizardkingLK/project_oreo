@@ -1,30 +1,32 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Layout from "@/components/layout";
-import io from "socket.io-client";
-import { messageTypes } from "@/utils/enums";
 import FeedList from "@/components/feeds";
 import MessageLinkList from "@/components/lists/message/MessageLinkList";
 import MessageList from "@/components/lists/message/MessageList";
 import MessageEditor from "@/components/forms/message";
+import { useSession, signIn, signOut } from "next-auth/react";
+import { messageTypes } from "@/utils/enums";
+import io from "socket.io-client";
 let socket;
 
 const Messages = () => {
-  const [feeds, setFeeds] = React.useState([]);
-  const [groups, setGroups] = React.useState([]);
-  const [group, setGroup] = React.useState(null);
-  const [input, setInput] = React.useState("");
-  const [output, setOutput] = React.useState("");
-  const [typing, setTyping] = React.useState(false);
-  const [notifs, setNotifs] = React.useState(false);
-  const textInputRef = React.useRef(null);
-  const lastMessageRef = React.useRef(null);
+  const { data: session, status } = useSession();
+  const [feeds, setFeeds] = useState([]);
+  const [groups, setGroups] = useState([]);
+  const [group, setGroup] = useState(null);
+  const [input, setInput] = useState("");
+  const [output, setOutput] = useState("");
+  const [typing, setTyping] = useState(false);
+  const [notifs, setNotifs] = useState(false);
+  const textInputRef = useRef(null);
+  const lastMessageRef = useRef(null);
 
-  React.useEffect(() => initializeData, []);
-  React.useEffect(() => socketInitializer, []);
-  React.useEffect(() => {
+  useEffect(() => initializeData, []);
+  useEffect(() => socketInitializer, []);
+  useEffect(() => {
     lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
   }, [notifs, input, group]);
-  React.useEffect(() => {
+  useEffect(() => {
     if (output) {
       const tempGroup = groups.find((group) => group.id === output.groupId);
       if (tempGroup) {
@@ -46,6 +48,9 @@ const Messages = () => {
       }
     }
   }, [output, groups]);
+  useEffect(() => {
+    console.log({ data: session, status });
+  }, [session, status]);
 
   const initializeData = async () => {
     await fetch("/api/feed")
@@ -134,6 +139,13 @@ const Messages = () => {
             </div>
             <div className="basis-3/4 flex justify-center md:justify-end">
               <FeedList feeds={feeds} />
+              <button
+                type="button"
+                onClick={() => signIn()}
+                className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+              >
+                Login
+              </button>
             </div>
           </div>
           <div className="flex justify-center">
