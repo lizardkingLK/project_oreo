@@ -24,5 +24,11 @@ export default function handler(
       size: 50,
       isStatus: true,
     },
+    {
+      name: "Rob Halford",
+      imagePath: "/static/pfp3.jpg",
+      size: 50,
+      isStatus: false,
+    },
   ]);
 }
