@@ -1,4 +1,4 @@
-import { ChangeEventHandler, KeyboardEventHandler, LegacyRef, MouseEventHandler } from 'react'
+import { ChangeEventHandler, KeyboardEventHandler, LegacyRef, MouseEventHandler, ReactElement } from 'react'
 
 export interface IMessageProps {
     type: number;
@@ -79,6 +79,14 @@ export interface IMessageCardProps {
     messageImagePath: string,
     messageTime: string,
     messageAuthorName: string,
+}
+
+export interface ISummaryCardProps {
+    cardStyle: string,
+    cardHeaderTitle: string,
+    cardHeaderContent: any,
+    cardBodyType: number,
+    cardBodyContent: any,
 }
 
 export interface IAvatarProps {
