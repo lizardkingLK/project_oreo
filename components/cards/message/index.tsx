@@ -15,7 +15,7 @@ export default function MessageCard(props: IMessageCardProps) {
     return (
       <div className={parentContainerClass}>
         {props.type === messageTypes.RECEIVED && props.messageAuthorName && props.messageTime && props.messageImagePath
-          ? <div className='flex flex-col justify-center items-center'>
+          ? <div className='flex flex-col justify-start items-center mt-4'>
             <Avatar
               name={props.messageAuthorName}
               imagePath={props.messageImagePath}

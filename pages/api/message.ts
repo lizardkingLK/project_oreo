@@ -27,12 +27,21 @@ export default function handler(
           createdOn: "09:12",
           groupId: 1,
         },
+        {
+          type: 2,
+          content:
+            "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Magni quos non cupiditate mollitia temporibus expedita nobis natus totam exercitationem alias similique optio quisquam quidem ducimus id, odio excepturi illo at.",
+          authorId: 2,
+          createdOn: "11:34",
+          groupId: 1,
+        },
       ],
       lastMessage: {
-        type: 0,
-        content: "Hi How are you? I'm doing great.",
+        type: 2,
+        content:
+          "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Magni quos non cupiditate mollitia temporibus expedita nobis natus totam exercitationem alias similique optio quisquam quidem ducimus id, odio excepturi illo at.",
         authorId: 2,
-        createdOn: "09:12",
+        createdOn: "11:34",
         groupId: 1,
       },
     },

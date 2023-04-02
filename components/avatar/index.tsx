@@ -4,17 +4,18 @@ import { IAvatarProps } from "@/utils/types";
 
 const Avatar = (props: IAvatarProps) => {
   if (props) {
+    const { isStatus, size, imagePath, name } = props;
     return (
       <>
-        <div className={`flex justify-center items-center flex-wrap bg-black rounded-full ml-2 
-        ${props.isStatus && 'p-1 border-2 border-orange-500'} ${props.size === 50 ? 'w-10' : 'w-12'}`}>
+        <div className={`flex justify-center items-center flex-wrap rounded-full ml-2 
+        ${isStatus && 'p-1 border-2 border-orange-500'} ${size === 50 ? 'w-10' : 'w-12'}`}>
           <Image
             className="rounded-full"
-            width={props.size}
-            height={props.size}
-            src={props.imagePath}
-            alt={props.name}
-            title={props.name}
+            width={size}
+            height={size}
+            src={imagePath}
+            alt={name}
+            title={name}
           />
         </div>
       </>

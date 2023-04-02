@@ -5,10 +5,18 @@ import MessageLinkList from "@/components/lists/message/MessageLinkList";
 import MessageList from "@/components/lists/message/MessageList";
 import MessageEditor from "@/components/forms/message";
 import { useSession, signIn, signOut } from "next-auth/react";
-import { apiUrls, authStates, messageTypes } from "@/utils/enums";
+import {
+  apiUrls,
+  authStates,
+  cardBodyTypes,
+  messageTypes,
+} from "@/utils/enums";
 import io from "socket.io-client";
 import ChevronBack from "@/components/svgs/chevronBack";
 import Bars from "@/components/svgs/bars";
+import SummaryCard from "@/components/cards/summary";
+import { getCurrentTime } from "@/utils/helpers";
+import Avatar from "@/components/avatar";
 import Link from "next/link";
 let socket;
 
@@ -94,13 +102,6 @@ const Messages = () => {
     socket.emit("is-typing", true);
   };
 
-  const getCurrentTime = () => {
-    const tempDate = new Date(),
-      tempHours = tempDate.getHours().toString().padStart(2, 0),
-      tempMinutes = tempDate.getMinutes().toString().padStart(2, 0);
-    return `${tempHours}:${tempMinutes}`;
-  };
-
   const onSubmitHandler = () => {
     if (input && socket) {
       const tempGroup = group,
@@ -128,6 +129,9 @@ const Messages = () => {
 
   const onSelectGroupHandler = (groupId) => {
     setGroup(groups && groups.find((g) => g.id === groupId));
+    if (group) {
+      textInputRef.current.focus();
+    }
   };
 
   const onKeyDownHandler = (e) => {
@@ -207,7 +211,7 @@ const Messages = () => {
               >
                 {group && (
                   <>
-                    <div className="p-4 flex items-center">
+                    <div className="p-2 flex items-center">
                       <button
                         className="block md:hidden text-white hover:text-green-500 basis-1/12 mr-4"
                         onClick={() => setGroup(null)}
@@ -215,7 +219,7 @@ const Messages = () => {
                         <ChevronBack />
                       </button>
                       <div className="basis-11/12">
-                        <h1 className="flex text-xl text-white font-bold">
+                        <h1 className="flex text-2xl text-white font-bold">
                           <span>{group.name}</span>
                         </h1>
                         {group.isOnline ? (
@@ -249,13 +253,106 @@ const Messages = () => {
                     </div>
                   </>
                 )}
+                {session && !group && (
+                  <div className="p-4">
+                    <h1 className="text-2xl text-white font-bold">
+                      Hello{" "}
+                      <span className="text-green-400">
+                        {session.token.name}
+                      </span>
+                    </h1>
+                    <div className="pt-4 grid grid-flow-row-dense grid-cols-3 grid-rows-3 gap-2">
+                      <SummaryCard
+                        cardStyle={"bg-orange-300 rounded-md"}
+                        cardHeaderTitle={"Groups"}
+                        cardBodyType={cardBodyTypes.NUMBER}
+                        cardBodyContent={4200}
+                      />
+                      <SummaryCard
+                        cardStyle={"bg-orange-300 rounded-md"}
+                        cardHeaderTitle={"Friends"}
+                        cardBodyType={cardBodyTypes.NUMBER}
+                        cardBodyContent={1039}
+                      />
+                      <SummaryCard
+                        cardStyle={
+                          "bg-gradient-to-r from-orange-300 to-orange-400 rounded-md"
+                        }
+                        cardHeaderTitle={"Online"}
+                        cardBodyType={cardBodyTypes.NUMBER}
+                        cardBodyContent={103}
+                      />
+                      <SummaryCard
+                        cardStyle={
+                          "col-span-2 bg-gradient-to-r from-green-300 to-green-400 rounded-md"
+                        }
+                        cardHeaderTitle={"Add Friend"}
+                        cardBodyType={cardBodyTypes.ELEMENT}
+                        cardBodyContent={
+                          <input
+                            className="text-4xl font-bold w-full bg-transparent outline-none placeholder-black"
+                            placeholder="Enter email..."
+                          />
+                        }
+                      />
+                      <SummaryCard
+                        cardStyle={"bg-green-200 rounded-md"}
+                        cardHeaderTitle={"Latest"}
+                        cardHeaderContent={
+                          <Avatar
+                            imagePath="/static/pfp1.jpg"
+                            size={30}
+                            name="Amelia Nelson"
+                            isStatus={false}
+                          />
+                        }
+                        cardBodyType={cardBodyTypes.STRING}
+                        cardBodyContent={
+                          "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Magni quos non cupiditate mollitia temporibus expedita nobis natus totam exercitationem alias similique optio quisquam quidem ducimus id, odio excepturi illo at."
+                        }
+                      />
+                      <SummaryCard
+                        cardStyle={"bg-orange-300 rounded-md"}
+                        cardHeaderTitle={"Unread"}
+                        cardBodyType={cardBodyTypes.NUMBER}
+                        cardBodyContent={34}
+                      />
+                      <SummaryCard
+                        cardStyle={"bg-orange-300 rounded-md"}
+                        cardHeaderTitle={"Feeds"}
+                        cardBodyType={cardBodyTypes.NUMBER}
+                        cardBodyContent={12}
+                      />
+                      <SummaryCard
+                        cardStyle={"bg-orange-300 rounded-md"}
+                        cardHeaderTitle={"Profile"}
+                        cardBodyType={cardBodyTypes.ELEMENT}
+                        cardBodyContent={
+                          <Link
+                            href={"/"}
+                            className="flex justify-start items-center"
+                          >
+                            <Avatar
+                              imagePath={
+                                session.token.picture ?? "/favicon.png"
+                              }
+                              size={35}
+                              name={session.token.name}
+                              isStatus={false}
+                            />
+                            <h1 className="text-3xl w-full max-h-20 overflow-hidden ml-4">
+                              {session.token.name}
+                            </h1>
+                          </Link>
+                        }
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
             </>
           )}
         </section>
-        {status === authStates.loading && (
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-        )}
       </main>
     </Layout>
   );
