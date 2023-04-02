@@ -4,7 +4,7 @@ import FeedList from "@/components/feeds";
 import MessageLinkList from "@/components/lists/message/MessageLinkList";
 import MessageList from "@/components/lists/message/MessageList";
 import MessageEditor from "@/components/forms/message";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import {
   apiUrls,
   authStates,
@@ -18,6 +18,8 @@ import SummaryCard from "@/components/cards/summary";
 import { getCurrentTime } from "@/utils/helpers";
 import Avatar from "@/components/avatar";
 import Link from "next/link";
+import UserNavbar from "@/components/navs/user";
+import Spinner from "@/components/svgs/spinner";
 let socket;
 
 const Messages = () => {
@@ -142,11 +144,16 @@ const Messages = () => {
 
   return (
     <Layout>
+      {status === authStates.loading && (
+        <section className="h-screen flex justify-center items-center">
+          <Spinner size={24} />
+        </section>
+      )}
       <main className="bg-black" id="messages">
         <div className="block md:flex items-center p-4 border-gray-900">
           <div className="basis-1/4 flex justify-between md:justify-start items-center my-4 md:m-0">
             <button
-              className={`pr-4 ${
+              className={`pr-0 md:pr-4 ${
                 navbar ? "text-orange-800" : "text-white"
               } hover:text-orange-600`}
               onClick={() => setNavbar(!navbar)}
@@ -161,39 +168,7 @@ const Messages = () => {
             {status === authStates.authenticated && <FeedList feeds={feeds} />}
           </div>
         </div>
-        <nav
-          className={`px-4 pb-4 ${navbar ? "flex" : "hidden"} justify-between`}
-        >
-          <ul className="flex">
-            {status === authStates.authenticated && (
-              <>
-                <li className="mr-6">
-                  <button className="text-green-500 hover:text-green-800 font-bold">
-                    Profile
-                  </button>
-                </li>
-                <li className="mr-6">
-                  <button
-                    className="text-orange-500 hover:text-orange-800 font-bold"
-                    onClick={() => signOut()}
-                  >
-                    Logout
-                  </button>
-                </li>
-              </>
-            )}
-            {status === authStates.unauthenticated && (
-              <li className="mr-6">
-                <button
-                  className="text-green-500 hover:text-green-800 font-bold"
-                  onClick={() => signIn()}
-                >
-                  Login
-                </button>
-              </li>
-            )}
-          </ul>
-        </nav>
+        <UserNavbar navbar={navbar} status={status} />
         <section className="flex justify-center">
           {status === authStates.authenticated && (
             <>

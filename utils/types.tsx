@@ -1,4 +1,4 @@
-import { ChangeEventHandler, KeyboardEventHandler, LegacyRef, MouseEventHandler, ReactElement } from 'react'
+import { ChangeEventHandler, KeyboardEventHandler, LegacyRef, MouseEventHandler } from 'react'
 
 export interface IMessageProps {
     type: number;
@@ -69,7 +69,7 @@ export interface IFeedProps {
     isStatus: boolean;
 }
 
-export interface IFeedProps {
+export interface IFeedListProps {
     feeds: Array<IFeedProps>
 }
 
@@ -95,6 +95,15 @@ export interface IAvatarProps {
     size: number,
     isStatus?: boolean,
 };
+
+export interface IUserNavbarProps {
+    navbar: boolean,
+    status: string,
+};
+
+export interface ISpinnerProps {
+    size: number,
+}
 
 export type Feed = {
     name: string;
