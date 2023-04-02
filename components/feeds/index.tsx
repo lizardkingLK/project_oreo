@@ -1,10 +1,10 @@
 import React from 'react'
 import Avatar from '@/components/avatar';
-import { IFeedProps } from "@/utils/types";
+import { IFeedListProps } from "@/utils/types";
 
-const FeedList = (props: IFeedProps) => {
+const FeedList = (props: IFeedListProps) => {
     if (props) {
-        const feeds = props.feeds;
+        const { feeds } = props;
         return (
             feeds &&
             feeds.map((feed, index) => (
