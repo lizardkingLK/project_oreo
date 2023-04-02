@@ -146,7 +146,7 @@ const Messages = () => {
     <Layout>
       {status === authStates.loading && (
         <section className="h-screen flex justify-center items-center">
-          <Spinner size={24} />
+          <Spinner size={12} />
         </section>
       )}
       <main className="bg-black" id="messages">
