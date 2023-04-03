@@ -180,9 +180,9 @@ const Messages = () => {
                 />
               </div>
               <div
-                className={`${
+                className={`basis-3/4 absolute top-0 bg-black md:relative md:block container ${
                   group ? "block" : "hidden"
-                } absolute top-0 bg-black md:relative md:block container basis-3/4`}
+                }`}
               >
                 {group && (
                   <>
