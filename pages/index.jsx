@@ -153,9 +153,11 @@ const Messages = () => {
         <div className="block md:flex items-center p-4 border-gray-900">
           <div className="basis-1/4 flex justify-between md:justify-start items-center my-4 md:m-0">
             <button
-              className={`pr-0 md:pr-4 ${
-                navbar ? "text-orange-800" : "text-white"
-              } hover:text-orange-600`}
+              className={`pr-0 md:pr-4 hover:text-orange-600 z-20 ${
+                navbar
+                  ? "text-orange-800 absolute left-2/4 md:left-1/4 ml-4"
+                  : "text-white relative"
+              }`}
               onClick={() => setNavbar(!navbar)}
             >
               <Bars />
