@@ -41,6 +41,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 ```
 APP_URL=YOUR_APP_URL
+NEXTAUTH_URL=YOUR_NEXTAUTH_URL
 GITHUB_ID=YOUR_GITHUB_ID
 GITHUB_SECRET=YOUR_GITHUB_SECRET
 NextAuth_SECRET=YOUR_NEXTAUTH_SECRET
