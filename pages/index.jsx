@@ -150,25 +150,25 @@ const Messages = () => {
         </section>
       )}
       <main className="bg-black" id="messages">
-        <div className="block md:flex items-center py-4 border-gray-900">
+        <div className="block md:flex items-center p-4 border-gray-900">
           <div className="basis-1/4 flex justify-between md:justify-start items-center my-4 md:m-0">
             <button
-              className={`mr-4 md:mr-2 hover:text-orange-600 z-20 absolute right-0 md:left-0 md:relative ${
-                navbar ? "text-orange-800 right-0 md:left-3/4" : "text-white"
-              }`}
+              className="mr-4 md:mr-2 text-white hover:text-orange-600"
               onClick={() => setNavbar(!navbar)}
             >
               <Bars />
             </button>
-            <h1 className="ml-4 md:ml-2 text-3xl text-center md:text-left text-white font-bold">
-              OREO
-            </h1>
+            {!navbar && (
+              <h1 className="ml-4 md:ml-2 text-3xl text-center md:text-left text-white font-bold">
+                OREO
+              </h1>
+            )}
           </div>
           <div className="basis-3/4 flex justify-center md:justify-end">
             {status === authStates.authenticated && <FeedList feeds={feeds} />}
           </div>
         </div>
-        <UserNavbar navbar={navbar} status={status} />
+        <UserNavbar navbar={navbar} setNavbar={setNavbar} status={status} />
         <section className="flex justify-center">
           {status === authStates.authenticated && (
             <>

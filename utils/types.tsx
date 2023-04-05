@@ -98,6 +98,7 @@ export interface IAvatarProps {
 
 export interface IUserNavbarProps {
     navbar: boolean,
+    setNavbar: Function,
     status: string,
 };
 
