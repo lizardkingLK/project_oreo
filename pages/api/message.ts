@@ -105,5 +105,35 @@ export default function handler(
         groupId: 3,
       },
     },
+    {
+      id: 4,
+      name: "Ashley Graham",
+      displayImage: "/static/pfp4.png",
+      isStatus: false,
+      isOnline: false,
+      messages: [
+        {
+          type: 2,
+          content: "Hello, I am Ahsley Graham.",
+          authorId: 4,
+          createdOn: "03:00",
+          groupId: 4,
+        },
+        {
+          type: 1,
+          content: "Hello Ashley. What's up?",
+          authorId: 1,
+          createdOn: "03:04",
+          groupId: 4,
+        },
+      ],
+      lastMessage: {
+        type: 1,
+        content: "Hello Ashley. What's up?",
+        authorId: 1,
+        createdOn: "03:04",
+        groupId: 4,
+      },
+    },
   ]);
 }

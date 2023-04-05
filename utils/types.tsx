@@ -106,27 +106,39 @@ export interface ISpinnerProps {
     size: number,
 }
 
+export interface IPictureProps {
+    src: string,
+    width: number,
+    height: number,
+    alt: string,
+}
+
+export interface IMediaRendererProps {
+    type: string,
+    pictureProps: IPictureProps,
+}
+
 export type Feed = {
-    name: string;
-    imagePath: string;
-    size: number;
-    isStatus: boolean;
-};
+    name: string,
+    imagePath: string,
+    size: number,
+    isStatus: boolean,
+}
 
 export type Message = {
-    type: number;
-    content: string;
-    authorId: number;
-    createdOn: string;
-    groupId: number;
-};
+    type: number,
+    content: string,
+    authorId: number,
+    createdOn: string,
+    groupId: number,
+}
 
 export type Group = {
-    id: number;
-    name: string;
-    displayImage: string;
-    isStatus: boolean;
-    isOnline: boolean;
-    messages: Array<Message>;
-    lastMessage: Message;
-};
+    id: number,
+    name: string,
+    displayImage: string,
+    isStatus: boolean,
+    isOnline: boolean,
+    messages: Array<Message>,
+    lastMessage: Message,
+}
