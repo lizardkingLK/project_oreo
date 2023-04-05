@@ -150,20 +150,18 @@ const Messages = () => {
         </section>
       )}
       <main className="bg-black" id="messages">
-        <div className="block md:flex items-center p-4 border-gray-900">
+        <div className="block md:flex items-center py-4 border-gray-900">
           <div className="basis-1/4 flex justify-between md:justify-start items-center my-4 md:m-0">
             <button
-              className={`pr-0 md:pr-4 hover:text-orange-600 z-20 ${
-                navbar
-                  ? "text-orange-800 absolute left-2/4 md:left-1/4 ml-4"
-                  : "text-white relative"
+              className={`mr-4 md:mr-2 hover:text-orange-600 z-20 absolute right-0 md:left-0 md:relative ${
+                navbar ? "text-orange-800 right-0 md:left-3/4" : "text-white"
               }`}
               onClick={() => setNavbar(!navbar)}
             >
               <Bars />
             </button>
-            <h1 className="text-3xl text-center md:text-left text-white font-bold">
-              Oreo
+            <h1 className="ml-4 md:ml-2 text-3xl text-center md:text-left text-white font-bold">
+              OREO
             </h1>
           </div>
           <div className="basis-3/4 flex justify-center md:justify-end">
@@ -188,7 +186,7 @@ const Messages = () => {
               >
                 {group && (
                   <>
-                    <div className="p-2 flex items-center">
+                    <div className="p-4 flex items-center">
                       <button
                         className="block md:hidden text-white hover:text-green-500 basis-1/12 mr-4"
                         onClick={() => setGroup(null)}

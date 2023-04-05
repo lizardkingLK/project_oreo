@@ -1,15 +1,29 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { IMessageEditorProps } from '@/utils/types';
+import Close from '@/components/svgs/close';
 
 const MessageEditor = (props: IMessageEditorProps) => {
+    const [mediaModal, setMediaModal] = useState(false);
     if (props) {
         const { group, input, onChangeHandler, onKeyDownHandler, onSubmitHandler, textInputRef } = props;
+        console.log(group);
         return (
             group && (
                 <>
-                    <div className={`absolute top-0 left-0 h-4/5 w-full rounded-md bg-slate-900`}>
-                        <h1 className="text-white">Hello</h1>
-                    </div>
+                    {mediaModal && (
+                        <div className={`absolute top-0 left-0 h-4/5 w-full rounded-md bg-slate-900`}>
+                            <div className='flex justify-between p-4'>
+                                <h1 className="text-white text-2xl font-bold">Send Media</h1>
+                                <button className='text-white hover:text-green-400' title='Cancel Attachment'
+                                    onClick={() => setMediaModal(false)}>
+                                    <Close />
+                                </button>
+                            </div>
+                            <div className='flex justify-between p-4'>
+                                <h1 className="text-white text-lg font-bold">Select Type</h1>
+                            </div>
+                        </div>
+                    )}
                     <div className="flex items-center">
                         <button
                             className="py-4 pl-4 rounded-l-full bg-gray-900 text-white hover:text-green-500 flex items-center justify-center"
@@ -41,7 +55,7 @@ const MessageEditor = (props: IMessageEditorProps) => {
                         />
                         <button
                             className="p-4 rounded-r-full bg-gray-900 text-white hover:text-green-500"
-                            title="Attach File"
+                            title="Send Media" onClick={() => setMediaModal(true)}
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
