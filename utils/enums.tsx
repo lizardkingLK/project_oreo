@@ -14,6 +14,7 @@ export enum apiUrls {
   message = "/api/message",
   socket = "/api/socket",
   login = "/api/login",
+  file = "/api/file",
 }
 
 export enum cardBodyTypes {

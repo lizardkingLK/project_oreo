@@ -59,6 +59,7 @@ export interface IMessageEditorProps {
     onChangeHandler: ChangeEventHandler<HTMLInputElement>;
     onKeyDownHandler: KeyboardEventHandler<HTMLInputElement>;
     onSubmitHandler: MouseEventHandler<HTMLButtonElement>;
+    onMediaHandler: Function;
     textInputRef: LegacyRef<HTMLInputElement>;
 }
 
@@ -142,3 +143,9 @@ export type Group = {
     messages: Array<Message>,
     lastMessage: Message,
 }
+
+export type CommonResponse = {
+    status: string;
+    message: string;
+    data?: string;
+};
