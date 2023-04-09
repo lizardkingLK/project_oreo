@@ -47,17 +47,17 @@ const Messages = () => {
       const tempGroup = groups.find((group) => group.id === output.groupId);
       if (tempGroup) {
         const tempGroupMessages = tempGroup.messages,
-          tempLastMessage = {
+          newMessage = {
             type: messageTypes.RECEIVED,
             content: output.content,
             authorId: 1,
             createdOn: output.createdOn,
             groupId: tempGroup.id,
           };
-        tempGroupMessages[tempGroupMessages.length] = tempLastMessage;
+        tempGroupMessages[tempGroupMessages.length] = newMessage;
         Object.assign(tempGroup, {
           messages: tempGroupMessages,
-          lastMessage: tempLastMessage,
+          lastMessage: newMessage,
         });
         setGroup(tempGroup);
         setNotifs(true);
@@ -104,29 +104,47 @@ const Messages = () => {
     socket.emit("is-typing", true);
   };
 
-  const onSubmitHandler = () => {
-    if (input && socket) {
+  const sendMessage = (newMessage) => {
+    if (newMessage && newMessage.content && socket) {
       const tempGroup = group,
-        tempGroupMessages = tempGroup.messages,
-        tempLastMessage = {
-          type: messageTypes.SENT,
-          content: input,
-          authorId: 1,
-          createdOn: getCurrentTime(),
-          groupId: tempGroup.id,
-        };
-      tempGroupMessages[tempGroupMessages.length] = tempLastMessage;
+        tempGroupMessages = tempGroup.messages;
+      tempGroupMessages[tempGroupMessages.length] = newMessage;
       Object.assign(tempGroup, {
         messages: tempGroupMessages,
-        lastMessage: tempLastMessage,
+        lastMessage: newMessage,
       });
       setInput("");
       setGroup(tempGroup);
       setNotifs(false);
       textInputRef.current.focus();
       socket.emit("is-typing", false);
-      socket.emit("new-message", tempLastMessage);
+      socket.emit("new-message", newMessage);
     }
+  };
+
+  const onSubmitHandler = () => {
+    sendMessage({
+      type: messageTypes.SENT,
+      content: input,
+      authorId: 1,
+      createdOn: getCurrentTime(),
+      groupId: group.id,
+    });
+  };
+
+  const onMediaHandler = async (files) => {
+    const formData = new FormData();
+    Object.values(files).forEach((file) => {
+      formData.append("file", file);
+    });
+
+    /* Send request to our api route */
+    await fetch(apiUrls.file, {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data));
   };
 
   const onSelectGroupHandler = (groupId) => {
@@ -224,6 +242,7 @@ const Messages = () => {
                         onKeyDownHandler={onKeyDownHandler}
                         onSubmitHandler={onSubmitHandler}
                         textInputRef={textInputRef}
+                        onMediaHandler={onMediaHandler}
                       />
                     </div>
                   </>
