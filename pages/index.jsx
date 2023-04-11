@@ -167,7 +167,7 @@ const Messages = () => {
           <Spinner size={12} />
         </section>
       )}
-      <main className="bg-black" id="messages">
+      <main className="bg-black min-h-screen" id="messages">
         <div className="block md:flex items-center p-4 border-gray-900">
           <div className="basis-1/4 flex justify-between md:justify-start items-center my-4 md:m-0">
             <button

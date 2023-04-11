@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import type { Feed } from "@/utils/types";
+import type { Feed } from "@/types";
 
 export default function handler(
   _req: NextApiRequest,

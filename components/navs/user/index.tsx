@@ -1,6 +1,6 @@
 import React from 'react';
 import { signIn, signOut } from 'next-auth/react';
-import { IUserNavbarProps } from "@/utils/types";
+import { IUserNavbarProps } from "@/types";
 import { authStates } from '@/utils/enums';
 import Image from 'next/image';
 import Bars from '@/components/svgs/bars';

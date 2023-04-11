@@ -95,6 +95,7 @@ export interface IAvatarProps {
     imagePath: string,
     size: number,
     isStatus?: boolean,
+    displayActive?: boolean,
 };
 
 export interface IUserNavbarProps {

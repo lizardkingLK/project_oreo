@@ -1,6 +1,6 @@
 import React from 'react'
 import Avatar from '@/components/avatar'
-import { IMessageLinkProps } from '@/utils/types';
+import { IMessageLinkProps } from '@/types';
 
 const MessageLink = (props: IMessageLinkProps) => {
     if (props) {

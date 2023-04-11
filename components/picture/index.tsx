@@ -1,4 +1,4 @@
-import { IPictureProps } from '@/utils/types';
+import { IPictureProps } from '@/types';
 import Image from 'next/image';
 import React from 'react'
 

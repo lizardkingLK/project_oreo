@@ -1,10 +1,29 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import type { Group } from "@/utils/types";
+import type { Group } from "@/types";
+import clientPromise from "@/lib/mongodb";
+
+const getMessages = async () => {
+  const client = await clientPromise;
+  const db = client.db("oreosocial");
+
+  const groups = await db
+    .collection("groups")
+    .find({})
+    .sort({ foo: 1 })
+    .limit(10)
+    .toArray();
+
+  console.log(groups);
+
+  return groups;
+};
 
 export default function handler(
   _req: NextApiRequest,
   res: NextApiResponse<Array<Group>>
 ) {
+  getMessages();
+
   res.status(200).json([
     {
       id: 1,

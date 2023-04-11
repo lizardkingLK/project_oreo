@@ -40,6 +40,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 ## .env.local file to be added
 
 ```
+MONGODB_URI=YOUR_MONGODB_URI
 APP_URL=YOUR_APP_URL
 NEXTAUTH_URL=YOUR_NEXTAUTH_URL
 GITHUB_ID=YOUR_GITHUB_ID

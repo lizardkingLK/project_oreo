@@ -1,5 +1,5 @@
 import React from 'react';
-import { ISummaryCardProps } from "@/utils/types";
+import { ISummaryCardProps } from "@/types";
 import { cardBodyTypes } from '@/utils/enums';
 import { formatCompactNumber } from '@/utils/helpers';
 
