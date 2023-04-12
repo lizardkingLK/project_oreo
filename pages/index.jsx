@@ -35,7 +35,6 @@ const Messages = () => {
   const textInputRef = useRef(null);
   const lastMessageRef = useRef(null);
 
-  useEffect(() => initializeData, []);
   useEffect(() => socketInitializer, []);
   useEffect(() => {
     if (lastMessageRef.current) {
@@ -68,18 +67,20 @@ const Messages = () => {
     setNavbar(false);
   }, [group]);
   useEffect(() => {
-    console.log({ data: session, status });
-  }, [session, status]);
+    const initializeData = async () => {
+      if (session) {
+        await fetch(`${apiUrls.message}?id=${session?.token?._id}`)
+          .then((response) => response.json())
+          .then((data) => setGroups(data));
 
-  const initializeData = async () => {
-    await fetch(apiUrls.feed)
-      .then((response) => response.json())
-      .then((data) => setFeeds(data));
+        await fetch(apiUrls.feed)
+          .then((response) => response.json())
+          .then((data) => setFeeds(data));
+      }
+    };
 
-    await fetch(apiUrls.message)
-      .then((response) => response.json())
-      .then((data) => setGroups(data));
-  };
+    initializeData();
+  }, [session]);
 
   const socketInitializer = async () => {
     await fetch(apiUrls.socket);
@@ -138,7 +139,6 @@ const Messages = () => {
       formData.append("file", file);
     });
 
-    /* Send request to our api route */
     await fetch(apiUrls.file, {
       method: "POST",
       body: formData,

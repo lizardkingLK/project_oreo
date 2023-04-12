@@ -1,26 +1,9 @@
+import { getUserByEmail } from "@/services/mongodb";
 import type { NextApiRequest, NextApiResponse } from "next";
 
-const Users = [
-  {
-    id: "111",
-    name: "John Doe",
-    email: "john@gmail.com",
-    password: "john",
-    role: "user",
-  },
-];
-
-type User = {
-  id: string;
-  name: string;
-  email: string;
-  password: string;
-  role: string;
-};
-
-export default function handler(
+export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<User | object>
+  res: NextApiResponse<object>
 ) {
   try {
     if (req.method !== "POST") {
@@ -28,11 +11,10 @@ export default function handler(
       return;
     }
     const body = JSON.parse(JSON.stringify(req.body));
-    const user = Users.find(
-      (user) => user.email === body.email && user.password === body.password
-    );
-    if (!user) {
-      res.status(404).send({ message: "User does not exit!" });
+    const user = await getUserByEmail(body.email);
+
+    if (!user || user.password !== body.password) {
+      res.status(404).send({ message: "Invalid credentials!" });
       return;
     }
 
