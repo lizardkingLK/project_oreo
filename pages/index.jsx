@@ -5,21 +5,14 @@ import MessageLinkList from "@/components/lists/message/MessageLinkList";
 import MessageList from "@/components/lists/message/MessageList";
 import MessageEditor from "@/components/forms/message";
 import { useSession } from "next-auth/react";
-import {
-  apiUrls,
-  authStates,
-  cardBodyTypes,
-  messageTypes,
-} from "@/utils/enums";
+import { apiUrls, authStates, messageTypes } from "@/utils/enums";
 import io from "socket.io-client";
 import ChevronBack from "@/components/svgs/chevronBack";
 import Bars from "@/components/svgs/bars";
-import SummaryCard from "@/components/cards/summary";
 import { getTimeConverted } from "@/utils/helpers";
-import Avatar from "@/components/avatar";
-import Link from "next/link";
 import UserNavbar from "@/components/navs/user";
 import Spinner from "@/components/svgs/spinner";
+import Dashboard from "@/components/dashboard";
 let socket;
 
 const Messages = () => {
@@ -63,63 +56,60 @@ const Messages = () => {
       }
     }
   }, [output, groups]);
+  useEffect(() => setNavbar(false), [group, input]);
   useEffect(() => {
-    setNavbar(false);
-  }, [group, input]);
-  useEffect(() => {
-    const groupMessages = (messages) => {
-      const groups = new Map();
-      let groupId,
-        group,
-        userId = session.token._id,
-        tempMessages;
-      messages.forEach((message, _) => {
-        groupId = message.groupId;
-        Object.assign(message, {
-          type:
-            message.fromId === userId
-              ? messageTypes.SENT
-              : messageTypes.RECEIVED,
-          createdOn: getTimeConverted(new Date(message.createdOn)),
-        });
-        if (groups.has(groupId)) {
-          group = groups.get(groupId);
-          tempMessages = group.messages;
-          tempMessages[tempMessages.length] = message;
-          Object.assign(group, {
-            lastMessage: message,
-            messages: tempMessages,
-          });
-        } else {
-          groups.set(groupId, {
-            id: groupId,
-            name: message.to.name,
-            displayImage: message.to.displayImage,
-            isStatus: false,
-            isOnline: false,
-            messages: [message],
-            lastMessage: message,
-          });
-        }
-      });
-      console.log(groups);
-      setGroups(Array.from(groups.values()));
+    const initializeMessages = async (userId) => {
+      await fetch(`${apiUrls.message}?id=${userId}`)
+        .then((response) => response.json())
+        .then((data) => groupMessages(data, userId));
     };
 
-    const initializeData = async () => {
-      if (session && session.token && session.token._id) {
-        await fetch(`${apiUrls.message}?id=${session.token._id}`)
-          .then((response) => response.json())
-          .then((data) => groupMessages(data));
-
-        await fetch(apiUrls.feed)
-          .then((response) => response.json())
-          .then((data) => setFeeds(data));
-      }
+    const initializeFeeds = async (userId) => {
+      await fetch(`${apiUrls.feed}?id=${userId}`)
+        .then((response) => response.json())
+        .then((data) => setFeeds(data));
     };
 
-    initializeData();
+    if (session && session.token && session.token._id) {
+      const userId = session.token._id;
+      initializeMessages(userId);
+      initializeFeeds(userId);
+    }
   }, [session]);
+
+  const groupMessages = (messages, userId) => {
+    const groups = new Map();
+    let groupId, group, tempMessages, target;
+    messages.forEach((message, _) => {
+      groupId = message.groupId;
+      Object.assign(message, {
+        type:
+          message.fromId === userId ? messageTypes.SENT : messageTypes.RECEIVED,
+        createdOn: getTimeConverted(new Date(message.createdOn)),
+      });
+      if (groups.has(groupId)) {
+        group = groups.get(groupId);
+        tempMessages = group.messages;
+        tempMessages[tempMessages.length] = message;
+        Object.assign(group, {
+          lastMessage: message,
+          messages: tempMessages,
+        });
+      } else {
+        target = message.fromId === userId ? message.to : message.from;
+        groups.set(groupId, {
+          id: groupId,
+          name: target.name,
+          displayImage: target.displayImage,
+          isStatus: false,
+          isOnline: false,
+          messages: [message],
+          lastMessage: message,
+        });
+      }
+    });
+    setGroups(Array.from(groups.values()));
+  };
 
   const socketInitializer = async () => {
     await fetch(apiUrls.socket);
@@ -139,9 +129,8 @@ const Messages = () => {
   };
 
   const onChangeHandler = (e) => {
-    const value = e.target.value;
-    setInput(value);
-    socket.emit("is-typing", true);
+    setInput(e.target.value);
+    socket && socket.emit("is-typing", true);
   };
 
   const sendMessage = (newMessage) => {
@@ -237,9 +226,8 @@ const Messages = () => {
                 />
               </div>
               <div
-                className={`basis-3/4 absolute top-0 bg-black md:relative md:block container ${
-                  group ? "block" : "hidden"
-                }`}
+                className={`basis-3/4 absolute top-0 bg-black md:relative md:block container 
+                ${group ? "block" : "hidden"}`}
               >
                 {group && (
                   <>
@@ -287,100 +275,10 @@ const Messages = () => {
                   </>
                 )}
                 {session && !group && (
-                  <div className="p-4">
-                    <h1 className="text-2xl text-white font-bold">
-                      Hello{" "}
-                      <span className="text-green-400">
-                        {session.token.name}
-                      </span>
-                    </h1>
-                    <div className="pt-4 grid grid-flow-row-dense grid-cols-3 grid-rows-3 gap-2">
-                      <SummaryCard
-                        cardStyle={"bg-orange-300 rounded-md"}
-                        cardHeaderTitle={"Groups"}
-                        cardBodyType={cardBodyTypes.NUMBER}
-                        cardBodyContent={4200}
-                      />
-                      <SummaryCard
-                        cardStyle={"bg-orange-300 rounded-md"}
-                        cardHeaderTitle={"Friends"}
-                        cardBodyType={cardBodyTypes.NUMBER}
-                        cardBodyContent={1039}
-                      />
-                      <SummaryCard
-                        cardStyle={
-                          "bg-gradient-to-r from-orange-300 to-orange-400 rounded-md"
-                        }
-                        cardHeaderTitle={"Online"}
-                        cardBodyType={cardBodyTypes.NUMBER}
-                        cardBodyContent={103}
-                      />
-                      <SummaryCard
-                        cardStyle={
-                          "col-span-2 bg-gradient-to-r from-green-300 to-green-400 rounded-md"
-                        }
-                        cardHeaderTitle={"Add Friend"}
-                        cardBodyType={cardBodyTypes.ELEMENT}
-                        cardBodyContent={
-                          <input
-                            className="text-4xl font-bold w-full bg-transparent outline-none placeholder-black"
-                            placeholder="Enter email..."
-                          />
-                        }
-                      />
-                      <SummaryCard
-                        cardStyle={"bg-green-200 rounded-md"}
-                        cardHeaderTitle={"Latest"}
-                        cardHeaderContent={
-                          <Avatar
-                            imagePath="/static/pfp1.jpg"
-                            size={30}
-                            name="Amelia Nelson"
-                            isStatus={false}
-                          />
-                        }
-                        cardBodyType={cardBodyTypes.STRING}
-                        cardBodyContent={
-                          "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Magni quos non cupiditate mollitia temporibus expedita nobis natus totam exercitationem alias similique optio quisquam quidem ducimus id, odio excepturi illo at."
-                        }
-                      />
-                      <SummaryCard
-                        cardStyle={"bg-orange-300 rounded-md"}
-                        cardHeaderTitle={"Unread"}
-                        cardBodyType={cardBodyTypes.NUMBER}
-                        cardBodyContent={34}
-                      />
-                      <SummaryCard
-                        cardStyle={"bg-orange-300 rounded-md"}
-                        cardHeaderTitle={"Feeds"}
-                        cardBodyType={cardBodyTypes.NUMBER}
-                        cardBodyContent={12}
-                      />
-                      <SummaryCard
-                        cardStyle={"bg-orange-300 rounded-md"}
-                        cardHeaderTitle={"Profile"}
-                        cardBodyType={cardBodyTypes.ELEMENT}
-                        cardBodyContent={
-                          <Link
-                            href={"/"}
-                            className="flex justify-start items-center"
-                          >
-                            <Avatar
-                              imagePath={
-                                session.token.picture ?? "/favicon.png"
-                              }
-                              size={35}
-                              name={session.token.name}
-                              isStatus={false}
-                            />
-                            <h1 className="text-3xl w-full max-h-20 overflow-hidden ml-4">
-                              {session.token.name}
-                            </h1>
-                          </Link>
-                        }
-                      />
-                    </div>
-                  </div>
+                  <Dashboard
+                    name={session.token.name}
+                    picture={session.token.displayImage || session.token.image}
+                  />
                 )}
               </div>
             </>

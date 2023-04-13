@@ -3,6 +3,10 @@ export enum messageTypes {
   RECEIVED = 2,
 }
 
+export enum interTypes {
+  PRIVATE = 1,
+}
+
 export enum authStates {
   loading = "loading",
   authenticated = "authenticated",
@@ -10,6 +14,7 @@ export enum authStates {
 }
 
 export enum apiUrls {
+  inters = "/api/inters",
   feed = "/api/feed",
   message = "/api/message",
   socket = "/api/socket",
@@ -26,4 +31,5 @@ export enum cardBodyTypes {
 export enum dbCollections {
   users = "users",
   messages = "messages",
+  inters = "interactions",
 }

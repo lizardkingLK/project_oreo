@@ -24,6 +24,17 @@ export const getMessages = async (userId: string) => {
       {
         $lookup: {
           from: dbCollections.users,
+          localField: "fromId",
+          foreignField: "_id",
+          as: "from",
+        },
+      },
+      {
+        $unwind: "$from",
+      },
+      {
+        $lookup: {
+          from: dbCollections.users,
           localField: "toId",
           foreignField: "_id",
           as: "to",
@@ -33,7 +44,10 @@ export const getMessages = async (userId: string) => {
         $unwind: "$to",
       },
       {
-        $project: { to: { email: 0, password: 0 } },
+        $project: {
+          from: { email: 0, password: 0 },
+          to: { email: 0, password: 0 },
+        },
       },
       {
         $sort: { createdOn: 1 },
