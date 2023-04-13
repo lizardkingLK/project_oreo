@@ -15,7 +15,7 @@ import io from "socket.io-client";
 import ChevronBack from "@/components/svgs/chevronBack";
 import Bars from "@/components/svgs/bars";
 import SummaryCard from "@/components/cards/summary";
-import { getCurrentTime } from "@/utils/helpers";
+import { getTimeConverted } from "@/utils/helpers";
 import Avatar from "@/components/avatar";
 import Link from "next/link";
 import UserNavbar from "@/components/navs/user";
@@ -49,7 +49,7 @@ const Messages = () => {
           newMessage = {
             type: messageTypes.RECEIVED,
             content: output.content,
-            authorId: 1,
+            fromId: 1,
             createdOn: output.createdOn,
             groupId: tempGroup.id,
           };
@@ -65,13 +65,52 @@ const Messages = () => {
   }, [output, groups]);
   useEffect(() => {
     setNavbar(false);
-  }, [group]);
+  }, [group, input]);
   useEffect(() => {
+    const groupMessages = (messages) => {
+      const groups = new Map();
+      let groupId,
+        group,
+        userId = session.token._id,
+        tempMessages;
+      messages.forEach((message, _) => {
+        groupId = message.groupId;
+        Object.assign(message, {
+          type:
+            message.fromId === userId
+              ? messageTypes.SENT
+              : messageTypes.RECEIVED,
+          createdOn: getTimeConverted(new Date(message.createdOn)),
+        });
+        if (groups.has(groupId)) {
+          group = groups.get(groupId);
+          tempMessages = group.messages;
+          tempMessages[tempMessages.length] = message;
+          Object.assign(group, {
+            lastMessage: message,
+            messages: tempMessages,
+          });
+        } else {
+          groups.set(groupId, {
+            id: groupId,
+            name: message.to.name,
+            displayImage: message.to.displayImage,
+            isStatus: false,
+            isOnline: false,
+            messages: [message],
+            lastMessage: message,
+          });
+        }
+      });
+      console.log(groups);
+      setGroups(Array.from(groups.values()));
+    };
+
     const initializeData = async () => {
-      if (session) {
-        await fetch(`${apiUrls.message}?id=${session?.token?._id}`)
+      if (session && session.token && session.token._id) {
+        await fetch(`${apiUrls.message}?id=${session.token._id}`)
           .then((response) => response.json())
-          .then((data) => setGroups(data));
+          .then((data) => groupMessages(data));
 
         await fetch(apiUrls.feed)
           .then((response) => response.json())
@@ -127,8 +166,8 @@ const Messages = () => {
     sendMessage({
       type: messageTypes.SENT,
       content: input,
-      authorId: 1,
-      createdOn: getCurrentTime(),
+      fromId: 1,
+      createdOn: getTimeConverted(),
       groupId: group.id,
     });
   };

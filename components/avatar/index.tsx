@@ -13,7 +13,7 @@ const Avatar = (props: IAvatarProps) => {
             className="rounded-full"
             width={size}
             height={size}
-            src={imagePath}
+            src={imagePath ?? "/favicon.png"}
             alt={name}
             title={name}
           />

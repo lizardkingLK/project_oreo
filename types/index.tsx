@@ -1,9 +1,10 @@
+import { ObjectId } from 'mongodb';
 import { ChangeEventHandler, KeyboardEventHandler, LegacyRef, MouseEventHandler } from 'react'
 
 export interface IMessageProps {
     type: number;
     content: string;
-    authorId: number;
+    fromId: number;
     createdOn: string;
     groupId: number;
 }
@@ -43,14 +44,6 @@ export interface IMessageLinkProps {
     messageTime: string,
     messageIsActive: boolean,
     messageOnClick: Function,
-}
-
-export interface IMessageProps {
-    type: number;
-    content: string;
-    authorId: number;
-    createdOn: string;
-    groupId: number;
 }
 
 export interface IMessageEditorProps {
@@ -128,21 +121,13 @@ export type Feed = {
 }
 
 export type Message = {
-    type: number,
+    _id: ObjectId,
     content: string,
-    authorId: number,
-    createdOn: string,
-    groupId: number,
-}
-
-export type Group = {
-    id: number,
-    name: string,
-    displayImage: string,
-    isStatus: boolean,
-    isOnline: boolean,
-    messages: Array<Message>,
-    lastMessage: Message,
+    createdOn: Date,
+    type: number,
+    fromId: ObjectId,
+    toId: ObjectId,
+    groupId: ObjectId,
 }
 
 export type CommonResponse = {

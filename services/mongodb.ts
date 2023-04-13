@@ -1,4 +1,5 @@
 import clientPromise from "@/lib/mongodb";
+import { Message } from "@/types";
 import { dbCollections } from "@/utils/enums";
 import { ObjectId } from "mongodb";
 
@@ -14,6 +15,29 @@ export const getMessages = async (userId: string) => {
     userObjectId = new ObjectId(userId);
   return db
     .collection(dbCollections.messages)
-    .find({ $or: [{ from: userObjectId }, { to: userObjectId }] })
+    .aggregate<Message>([
+      {
+        $match: {
+          $or: [{ fromId: userObjectId }, { toId: userObjectId }],
+        },
+      },
+      {
+        $lookup: {
+          from: dbCollections.users,
+          localField: "toId",
+          foreignField: "_id",
+          as: "to",
+        },
+      },
+      {
+        $unwind: "$to",
+      },
+      {
+        $project: { to: { email: 0, password: 0 } },
+      },
+      {
+        $sort: { createdOn: 1 },
+      },
+    ])
     .toArray();
 };

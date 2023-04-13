@@ -1,6 +1,5 @@
-const getCurrentTime = () => {
-    const tempDate = new Date(),
-        tempHours = tempDate.getHours().toString().padStart(2, "0"),
+const getTimeConverted = (tempDate: Date = new Date()) => {
+    const tempHours = tempDate.getHours().toString().padStart(2, "0"),
         tempMinutes = tempDate.getMinutes().toString().padStart(2, "0");
     return `${tempHours}:${tempMinutes}`;
 };
@@ -12,4 +11,4 @@ const formatCompactNumber = (input: string) => {
     return formatter.format(number);
 }
 
-export { getCurrentTime, formatCompactNumber };
+export { getTimeConverted, formatCompactNumber };
