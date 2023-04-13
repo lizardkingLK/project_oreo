@@ -5,7 +5,7 @@ import { IAvatarProps } from "@/types";
 const Avatar = (props: IAvatarProps) => {
   const [loading, setLoading] = useState(true);
   if (props) {
-    const { isStatus, size, imagePath, name } = props;
+    const { isStatus, isOnline, size, imagePath, name } = props;
     return (
       <>
         <div className={`flex justify-center items-center flex-wrap rounded-full ml-2
@@ -26,8 +26,14 @@ const Avatar = (props: IAvatarProps) => {
             src={imagePath ?? "/favicon.png"}
             alt={name}
             title={name}
+            priority={true}
+            blurDataURL={'/favicon.png'}
             onLoadingComplete={() => setLoading(false)}
           />
+          {isOnline
+            ? <span className="top-0 left-9 absolute w-3.5 h-3.5 bg-green-500 border-2 border-white dark:border-gray-800 rounded-full"></span>
+            : null
+          }
         </div>
       </>
     );

@@ -2,6 +2,7 @@ import NextAuth from "next-auth/next";
 import GithubProvider from "next-auth/providers/github";
 import Credentials from "next-auth/providers/credentials";
 import { apiUrls } from "@/utils/enums";
+import { getUserByEmail } from "@/services/mongodb";
 
 export const authOptions = {
     secret: process.env.NextAuth_SECRET,
@@ -47,8 +48,8 @@ export const authOptions = {
         async jwt({ token, user }) {
             return { ...token, ...user };
         },
-        async session({ session, token, user }) {
-            session.user = user;
+        async session({ session, token }) {
+            session.user = await getUserByEmail(token.email);
             session.token = token;
             return session;
         },
