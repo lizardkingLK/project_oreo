@@ -3,7 +3,6 @@ import path from "path";
 import { promises as fs } from "fs";
 import formidable, { File } from "formidable";
 import { randomUUID } from "crypto";
-import { CommonResponse } from "@/types";
 
 export const config = {
   api: {
@@ -13,11 +12,17 @@ export const config = {
 
 type ProcessedFiles = Array<[string, File]>;
 
+type UploadResponse = {
+  status: string;
+  message: string;
+  data?: string;
+};
+
 const uploads = "/public/uploads/";
 
 const handler = async (
   req: NextApiRequest,
-  res: NextApiResponse<CommonResponse>
+  res: NextApiResponse<UploadResponse>
 ) => {
   let status = 200,
     resultBody = {

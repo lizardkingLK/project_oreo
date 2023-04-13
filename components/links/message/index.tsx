@@ -4,23 +4,39 @@ import { IMessageLinkProps } from '@/types';
 
 const MessageLink = (props: IMessageLinkProps) => {
     if (props) {
-        const activeState = props.messageIsActive ? "bg-gray-900" : null;
+        const {
+            messageOnClick,
+            messageAuthorName,
+            messageId,
+            messageImagePath,
+            messageImageSize,
+            messageIsActive,
+            messageAuthorIsStatus,
+            messageAuthorIsOnline,
+            messageContent,
+            messageTime
+        } = props;
         return (
-            <a href={void (0)} className="cursor-pointer" title={props.messageAuthorName}
-                onClick={() => props.messageOnClick(props.messageId)}>
-                <div className={`flex items-start mb-4 py-4 px-2 rounded-md max-w-sm md:max-w-xs hover:bg-gray-800 ${activeState}`}>
+            <a href={void (0)} className="cursor-pointer" title={messageAuthorName}
+                onClick={() => messageOnClick(messageId)}>
+                <div className={`flex items-start mb-4 py-4 px-2 rounded-md max-w-sm md:max-w-xs hover:bg-gray-800
+                ${messageIsActive
+                        ? "bg-gray-900"
+                        : null
+                    }`}>
                     <Avatar
-                        name={props.messageAuthorName}
-                        imagePath={props.messageImagePath}
-                        size={props.messageImageSize}
-                        isStatus={props.messageAuthorIsStatus}
+                        name={messageAuthorName}
+                        imagePath={messageImagePath}
+                        size={messageImageSize}
+                        isStatus={messageAuthorIsStatus}
+                        isOnline={messageAuthorIsOnline}
                     />
                     <div className="basis-2/4 ml-4 font-bold truncate">
-                        <h1 className="text-xl text-white">{props.messageAuthorName}</h1>
-                        <p className="text-sm text-gray-500">{props.messageContent}</p>
+                        <h1 className="text-xl text-white">{messageAuthorName}</h1>
+                        <p className="text-sm text-gray-500">{messageContent}</p>
                     </div>
                     <div className="basis-1/4 flex justify-end items-center">
-                        <p className="ml-2 text-md text-white font-bold">{props.messageTime}</p>
+                        <p className="ml-2 text-md text-white font-bold">{messageTime}</p>
                     </div>
                 </div>
             </a>

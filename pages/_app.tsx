@@ -11,7 +11,7 @@ export default function App({
     <>
       <Head>
         <title>Oreo</title>
-        <meta name="description" content="Oreo online shopping store" />
+        <meta name="description" content="Oreo Social" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <SessionProvider session={session}>

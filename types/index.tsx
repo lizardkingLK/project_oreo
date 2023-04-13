@@ -1,5 +1,9 @@
-import { Int32, ObjectId } from 'mongodb';
-import { ChangeEventHandler, KeyboardEventHandler, LegacyRef, MouseEventHandler } from 'react'
+import {
+    ChangeEventHandler,
+    KeyboardEventHandler,
+    LegacyRef,
+    MouseEventHandler
+} from 'react'
 
 export interface IMessageProps {
     type: number;
@@ -34,11 +38,10 @@ export interface IMessageListProps {
 
 export interface IMessageLinkProps {
     messageId: number,
-    messageLink: string,
     messageImagePath: string,
     messageImageSize: number,
-    messageAuthorType: number,
     messageAuthorIsStatus: boolean,
+    messageAuthorIsOnline: boolean,
     messageAuthorName: string,
     messageContent: string,
     messageTime: string,
@@ -88,6 +91,7 @@ export interface IAvatarProps {
     imagePath: string,
     size: number,
     isStatus?: boolean,
+    isOnline?: boolean,
     displayActive?: boolean,
 };
 
@@ -117,36 +121,3 @@ export interface IDashboardProps {
     name: string,
     picture: string,
 }
-
-export type Feed = {
-    name: string,
-    imagePath: string,
-    size: number,
-    isStatus: boolean,
-}
-
-export type Message = {
-    _id: ObjectId,
-    content: string,
-    createdOn: Date,
-    type: number,
-    fromId: ObjectId,
-    toId: ObjectId,
-    groupId: ObjectId,
-}
-
-export type Inter = {
-    _id: ObjectId,
-    userId: ObjectId,
-    status: boolean,
-    isOnline: boolean,
-    isStatus: boolean,
-    otherId: ObjectId,
-    type: Int32
-}
-
-export type CommonResponse = {
-    status: string;
-    message: string;
-    data?: string;
-};
