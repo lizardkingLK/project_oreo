@@ -15,7 +15,7 @@ import io from "socket.io-client";
 import ChevronBack from "@/components/svgs/chevronBack";
 import Bars from "@/components/svgs/bars";
 import SummaryCard from "@/components/cards/summary";
-import { getCurrentTime } from "@/utils/helpers";
+import { getTimeConverted } from "@/utils/helpers";
 import Avatar from "@/components/avatar";
 import Link from "next/link";
 import UserNavbar from "@/components/navs/user";
@@ -35,7 +35,6 @@ const Messages = () => {
   const textInputRef = useRef(null);
   const lastMessageRef = useRef(null);
 
-  useEffect(() => initializeData, []);
   useEffect(() => socketInitializer, []);
   useEffect(() => {
     if (lastMessageRef.current) {
@@ -50,7 +49,7 @@ const Messages = () => {
           newMessage = {
             type: messageTypes.RECEIVED,
             content: output.content,
-            authorId: 1,
+            fromId: 1,
             createdOn: output.createdOn,
             groupId: tempGroup.id,
           };
@@ -66,20 +65,61 @@ const Messages = () => {
   }, [output, groups]);
   useEffect(() => {
     setNavbar(false);
-  }, [group]);
+  }, [group, input]);
   useEffect(() => {
-    console.log({ data: session, status });
-  }, [session, status]);
+    const groupMessages = (messages) => {
+      const groups = new Map();
+      let groupId,
+        group,
+        userId = session.token._id,
+        tempMessages;
+      messages.forEach((message, _) => {
+        groupId = message.groupId;
+        Object.assign(message, {
+          type:
+            message.fromId === userId
+              ? messageTypes.SENT
+              : messageTypes.RECEIVED,
+          createdOn: getTimeConverted(new Date(message.createdOn)),
+        });
+        if (groups.has(groupId)) {
+          group = groups.get(groupId);
+          tempMessages = group.messages;
+          tempMessages[tempMessages.length] = message;
+          Object.assign(group, {
+            lastMessage: message,
+            messages: tempMessages,
+          });
+        } else {
+          groups.set(groupId, {
+            id: groupId,
+            name: message.to.name,
+            displayImage: message.to.displayImage,
+            isStatus: false,
+            isOnline: false,
+            messages: [message],
+            lastMessage: message,
+          });
+        }
+      });
+      console.log(groups);
+      setGroups(Array.from(groups.values()));
+    };
 
-  const initializeData = async () => {
-    await fetch(apiUrls.feed)
-      .then((response) => response.json())
-      .then((data) => setFeeds(data));
+    const initializeData = async () => {
+      if (session && session.token && session.token._id) {
+        await fetch(`${apiUrls.message}?id=${session.token._id}`)
+          .then((response) => response.json())
+          .then((data) => groupMessages(data));
 
-    await fetch(apiUrls.message)
-      .then((response) => response.json())
-      .then((data) => setGroups(data));
-  };
+        await fetch(apiUrls.feed)
+          .then((response) => response.json())
+          .then((data) => setFeeds(data));
+      }
+    };
+
+    initializeData();
+  }, [session]);
 
   const socketInitializer = async () => {
     await fetch(apiUrls.socket);
@@ -126,8 +166,8 @@ const Messages = () => {
     sendMessage({
       type: messageTypes.SENT,
       content: input,
-      authorId: 1,
-      createdOn: getCurrentTime(),
+      fromId: 1,
+      createdOn: getTimeConverted(),
       groupId: group.id,
     });
   };
@@ -138,7 +178,6 @@ const Messages = () => {
       formData.append("file", file);
     });
 
-    /* Send request to our api route */
     await fetch(apiUrls.file, {
       method: "POST",
       body: formData,
@@ -167,7 +206,7 @@ const Messages = () => {
           <Spinner size={12} />
         </section>
       )}
-      <main className="bg-black" id="messages">
+      <main className="bg-black min-h-screen" id="messages">
         <div className="block md:flex items-center p-4 border-gray-900">
           <div className="basis-1/4 flex justify-between md:justify-start items-center my-4 md:m-0">
             <button

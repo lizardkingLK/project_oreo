@@ -1,6 +1,6 @@
 import React from 'react'
 import MessageLink from '@/components/links/message';
-import { IMessageLinkListProps } from '@/utils/types';
+import { IMessageLinkListProps } from '@/types';
 
 const MessageLinkList = (props: IMessageLinkListProps) => {
   if (props) {

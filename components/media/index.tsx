@@ -1,4 +1,4 @@
-import { IMediaRendererProps } from '@/utils/types';
+import { IMediaRendererProps } from '@/types';
 import React from 'react'
 import Picture from '../picture';
 

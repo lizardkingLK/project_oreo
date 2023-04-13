@@ -22,3 +22,8 @@ export enum cardBodyTypes {
   STRING = 2,
   ELEMENT = 3,
 }
+
+export enum dbCollections {
+  users = "users",
+  messages = "messages",
+}

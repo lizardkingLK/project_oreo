@@ -1,7 +1,7 @@
 import React from 'react';
 import Avatar from '@/components/avatar';
 import { messageTypes } from "@/utils/enums";
-import { IMessageCardProps } from "@/utils/types";
+import { IMessageCardProps } from "@/types";
 
 export default function MessageCard(props: IMessageCardProps) {
   if (props) {

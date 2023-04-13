@@ -1,5 +1,5 @@
 import MessageCard from '@/components/cards/message';
-import { IMessageListProps } from '@/utils/types';
+import { IMessageListProps } from '@/types';
 
 const MessageList = (props: IMessageListProps) => {
     if (props) {

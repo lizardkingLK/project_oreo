@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { IMessageEditorProps } from '@/utils/types';
+import React, { useRef, useState } from 'react';
+import { IMessageEditorProps } from '@/types';
 import Close from '@/components/svgs/close';
 import Send from '@/components/svgs/send';
 import Emoji from '@/components/svgs/emoji';
@@ -13,6 +13,7 @@ const MessageEditor = (props: IMessageEditorProps) => {
     const [files, setFiles] = useState(null);
     const [file, setFile] = useState(null);
     const [type, setType] = useState(null);
+    const attachmentRef = useRef(null);
 
     if (props) {
         const {
@@ -56,7 +57,7 @@ const MessageEditor = (props: IMessageEditorProps) => {
             group && (
                 <>
                     {mediaModal && (
-                        <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-md bg-gradient-to-r from-orange-400 to-orange-500 shadow-black shadow-2xl w-2/4`}>
+                        <div ref={attachmentRef} className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-md bg-gradient-to-r from-orange-400 to-orange-500 shadow-black shadow-2xl w-2/4`}>
                             <div className='flex justify-between items-center p-4'>
                                 <h1 className="hidden md:block text-white text-md md:text-xl font-bold">Send Attachment</h1>
                                 <h1 className="block md:hidden text-white text-md md:text-xl font-bold">Attachment</h1>

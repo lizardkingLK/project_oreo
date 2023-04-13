@@ -1,6 +1,6 @@
 import React from 'react'
 import Avatar from '@/components/avatar';
-import { IFeedListProps } from "@/utils/types";
+import { IFeedListProps } from "@/types";
 
 const FeedList = (props: IFeedListProps) => {
     if (props) {
