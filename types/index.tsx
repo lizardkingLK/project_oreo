@@ -1,4 +1,4 @@
-import { ObjectId } from 'mongodb';
+import { Int32, ObjectId } from 'mongodb';
 import { ChangeEventHandler, KeyboardEventHandler, LegacyRef, MouseEventHandler } from 'react'
 
 export interface IMessageProps {
@@ -113,6 +113,11 @@ export interface IMediaRendererProps {
     pictureProps: IPictureProps,
 }
 
+export interface IDashboardProps {
+    name: string,
+    picture: string,
+}
+
 export type Feed = {
     name: string,
     imagePath: string,
@@ -128,6 +133,16 @@ export type Message = {
     fromId: ObjectId,
     toId: ObjectId,
     groupId: ObjectId,
+}
+
+export type Inter = {
+    _id: ObjectId,
+    userId: ObjectId,
+    status: boolean,
+    isOnline: boolean,
+    isStatus: boolean,
+    otherId: ObjectId,
+    type: Int32
 }
 
 export type CommonResponse = {
