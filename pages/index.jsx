@@ -24,7 +24,7 @@ const Messages = () => {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [typing, setTyping] = useState(false);
-  const [notifs, setNotifs] = useState(false);
+  const [notifs, setNotifs] = useState(null);
   const textInputRef = useRef(null);
   const lastMessageRef = useRef(null);
 
@@ -36,6 +36,7 @@ const Messages = () => {
   }, [notifs, input, group]);
   useEffect(() => {
     if (output) {
+      console.log(output);
       const tempGroup = groups.find((group) => group.id === output.groupId);
       if (tempGroup) {
         const tempGroupMessages = tempGroup.messages,
@@ -52,7 +53,7 @@ const Messages = () => {
           lastMessage: newMessage,
         });
         setGroup(tempGroup);
-        setNotifs(true);
+        setNotifs(Math.random());
       }
     }
   }, [output, groups]);
@@ -144,7 +145,7 @@ const Messages = () => {
       });
       setInput("");
       setGroup(tempGroup);
-      setNotifs(false);
+      setNotifs(null);
       textInputRef.current.focus();
       socket.emit("is-typing", false);
       socket.emit("new-message", newMessage);
