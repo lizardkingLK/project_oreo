@@ -36,8 +36,10 @@ const Messages = () => {
   }, [notifs, input, group]);
   useEffect(() => {
     if (output) {
-      console.log(output);
-      const tempGroup = groups.find((group) => group.id === output.groupId);
+      const tempGroupIndex = groups.findIndex(
+          (group) => group.id === output.groupId
+        ),
+        tempGroup = groups[tempGroupIndex];
       if (tempGroup) {
         const tempGroupMessages = tempGroup.messages,
           newMessage = {
@@ -52,7 +54,7 @@ const Messages = () => {
           messages: tempGroupMessages,
           lastMessage: newMessage,
         });
-        setGroup(tempGroup);
+        groups[tempGroupIndex] = tempGroup;
         setNotifs(Math.random());
       }
     }
