@@ -82,13 +82,15 @@ const Messages = () => {
 
   const groupMessages = (messages, userId) => {
     const groups = new Map();
-    let groupId, group, tempMessages, target;
+    let groupId, group, tempMessages, target, createdOnDate;
     messages.forEach((message, _) => {
       groupId = message.groupId;
+      createdOnDate = new Date(message.createdOn);
       Object.assign(message, {
         type:
           message.fromId === userId ? messageTypes.SENT : messageTypes.RECEIVED,
-        createdOn: getTimeConverted(new Date(message.createdOn)),
+        createdOn: getTimeConverted(createdOnDate),
+        createdOnDate,
       });
       if (groups.has(groupId)) {
         group = groups.get(groupId);
@@ -111,7 +113,12 @@ const Messages = () => {
         });
       }
     });
-    setGroups(Array.from(groups.values()));
+    setGroups(
+      Array.from(groups.values()).sort(
+        (first, second) =>
+          second.lastMessage.createdOnDate - first.lastMessage.createdOnDate
+      )
+    );
   };
 
   const socketInitializer = async () => {

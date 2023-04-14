@@ -36,7 +36,7 @@ export const getUserByEmail = async (email: string) => {
   return db.collection(dbCollections.users).findOne({ email });
 };
 
-export const getMessages = async (userId: string) => {
+export const getMessagesByUserId = async (userId: string) => {
   const client = await clientPromise,
     db = client.db(process.env.DB_NAME),
     userObjectId = new ObjectId(userId);
