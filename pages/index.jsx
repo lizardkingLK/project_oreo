@@ -28,7 +28,6 @@ const Messages = () => {
   const textInputRef = useRef(null);
   const lastMessageRef = useRef(null);
 
-  useEffect(() => socketInitializer, []);
   useEffect(() => {
     if (lastMessageRef.current) {
       lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
@@ -74,6 +73,9 @@ const Messages = () => {
     };
 
     if (session && session.token) {
+      if (!socket) {
+        socketInitializer();
+      }
       const userId = session.token._id ?? (session.user && session.user._id);
       initializeFeeds(userId);
       initializeMessages(userId);
