@@ -1,13 +1,30 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Avatar from './avatar'
 import SummaryCard from './cards/summary'
-import { cardBodyTypes } from '@/utils/enums'
-import { IDashboardProps } from '@/types'
+import { apiUrls, cardBodyTypes } from '@/utils/enums'
 import Link from 'next/link'
+import Close from './svgs/close'
+import Send from './svgs/send'
 
-const Dashboard = (props: IDashboardProps) => {
+const Dashboard = (props: any) => {
+    const [email, setEmail] = useState("");
     if (props) {
-        const { name, picture } = props;
+        const { session } = props, token = session.token, userId = token._id,
+            name = token.name, picture = token.displayImage || token.image;
+
+        const handleClearInvitation = () => setEmail("");
+
+        const handleInvitation = async () => {
+            await fetch(apiUrls.group, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email, userId })
+            });
+            handleClearInvitation();
+        };
+
         return (
             <div className="p-4">
                 <h1 className="text-2xl text-white font-bold">
@@ -36,9 +53,23 @@ const Dashboard = (props: IDashboardProps) => {
                         cardStyle={"col-span-2 bg-gradient-to-r from-green-300 to-green-400 rounded-md"}
                         cardHeaderTitle={"Add Friend"}
                         cardBodyType={cardBodyTypes.ELEMENT}
-                        cardBodyContent={<input
-                            className="text-4xl font-bold w-full bg-transparent outline-none placeholder-black"
-                            placeholder="Enter email..." />} cardHeaderContent={undefined} />
+                        cardBodyContent={
+                            <input value={email} onChange={(e) => setEmail(e.target.value)}
+                                className="text-4xl font-bold w-full bg-transparent outline-none placeholder-black"
+                                placeholder="Enter email..."
+                            />}
+                        cardHeaderContent={
+                            email ? (
+                                <div className="flex">
+                                    <button onClick={handleClearInvitation} title='Clear'>
+                                        <Close size={7} />
+                                    </button>
+                                    <button className='ml-2' onClick={handleInvitation} title='Invite'>
+                                        <Send size={7} />
+                                    </button>
+                                </div>
+                            ) : null
+                        } />
                     <SummaryCard
                         cardStyle={"bg-green-200 rounded-md"}
                         cardHeaderTitle={"Latest"}

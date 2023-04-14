@@ -1,7 +1,34 @@
 import clientPromise from "@/lib/mongodb";
-import { Message } from "@/types";
 import { dbCollections } from "@/utils/enums";
 import { ObjectId } from "mongodb";
+
+export type Message = {
+  _id: ObjectId;
+  content: string;
+  createdOn: Date;
+  type: number;
+  fromId: ObjectId;
+  toId: ObjectId;
+  groupId: ObjectId;
+};
+
+export const createGroup = async (email: string, userId: string) => {
+  const client = await clientPromise,
+    db = client.db(process.env.DB_NAME),
+    user = await db.collection(dbCollections.users).findOne({ email }),
+    content = "Hello There!";
+  if (user) {
+    return await db.collection(dbCollections.messages).insertOne({
+      content,
+      groupId: new ObjectId(),
+      fromId: new ObjectId(userId),
+      toId: new ObjectId(user._id),
+      createdOn: new Date(),
+      status: true,
+    });
+  }
+  return null;
+};
 
 export const getUserByEmail = async (email: string) => {
   const client = await clientPromise,
@@ -9,7 +36,7 @@ export const getUserByEmail = async (email: string) => {
   return db.collection(dbCollections.users).findOne({ email });
 };
 
-export const getMessages = async (userId: string) => {
+export const getMessagesByUserId = async (userId: string) => {
   const client = await clientPromise,
     db = client.db(process.env.DB_NAME),
     userObjectId = new ObjectId(userId);

@@ -30,7 +30,7 @@
     "**/*.ts",
     "**/*.tsx",
     "components/layout.jsx",
-    "pages/api/socket.js",
+    "pages/api/socket.ts",
     "pages/index.jsx",
     "utils/providers/socket.provider.js",
     "pages/messages.jsx",

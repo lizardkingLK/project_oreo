@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import React from 'react'
 
 const Error = () => {
@@ -16,9 +17,9 @@ const Error = () => {
                 Page Not Found
             </h1>
             <h1 className='m-20 text-5xl text-white font-black underline'>
-                <a href='/'>
+                <Link href='/'>
                     Back to Home
-                </a>
+                </Link>
             </h1>
         </>
     )

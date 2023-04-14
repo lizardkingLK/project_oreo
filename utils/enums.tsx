@@ -14,7 +14,7 @@ export enum authStates {
 }
 
 export enum apiUrls {
-  inters = "/api/inters",
+  group = "/api/group",
   feed = "/api/feed",
   message = "/api/message",
   socket = "/api/socket",
@@ -31,5 +31,4 @@ export enum cardBodyTypes {
 export enum dbCollections {
   users = "users",
   messages = "messages",
-  inters = "interactions",
 }

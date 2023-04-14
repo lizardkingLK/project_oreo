@@ -61,34 +61,36 @@ const Messages = () => {
   }, [output, groups]);
   useEffect(() => setNavbar(false), [group, input]);
   useEffect(() => {
-    const initializeMessages = async (userId) => {
-      await fetch(`${apiUrls.message}?id=${userId}`)
-        .then((response) => response.json())
-        .then((data) => groupMessages(data, userId));
-    };
-
     const initializeFeeds = async (userId) => {
       await fetch(`${apiUrls.feed}?id=${userId}`)
         .then((response) => response.json())
         .then((data) => setFeeds(data));
     };
 
-    if (session && session.token && session.token._id) {
-      const userId = session.token._id;
-      initializeMessages(userId);
+    const initializeMessages = async (userId) => {
+      await fetch(`${apiUrls.message}?id=${userId}`)
+        .then((response) => response.json())
+        .then((data) => groupMessages(data, userId));
+    };
+
+    if (session && session.token) {
+      const userId = session.token._id ?? (session.user && session.user._id);
       initializeFeeds(userId);
+      initializeMessages(userId);
     }
   }, [session]);
 
   const groupMessages = (messages, userId) => {
     const groups = new Map();
-    let groupId, group, tempMessages, target;
+    let groupId, group, tempMessages, target, createdOnDate;
     messages.forEach((message, _) => {
       groupId = message.groupId;
+      createdOnDate = new Date(message.createdOn);
       Object.assign(message, {
         type:
           message.fromId === userId ? messageTypes.SENT : messageTypes.RECEIVED,
-        createdOn: getTimeConverted(new Date(message.createdOn)),
+        createdOn: getTimeConverted(createdOnDate),
+        createdOnDate,
       });
       if (groups.has(groupId)) {
         group = groups.get(groupId);
@@ -111,12 +113,18 @@ const Messages = () => {
         });
       }
     });
-    setGroups(Array.from(groups.values()));
+    setGroups(
+      Array.from(groups.values()).sort(
+        (first, second) =>
+          second.lastMessage.createdOnDate - first.lastMessage.createdOnDate
+      )
+    );
   };
 
   const socketInitializer = async () => {
     await fetch(apiUrls.socket);
     socket = io();
+    console.log(socket);
 
     socket.on("connect", () => {
       console.log("connected");
@@ -277,12 +285,7 @@ const Messages = () => {
                     </div>
                   </>
                 )}
-                {session && !group && (
-                  <Dashboard
-                    name={session.token.name}
-                    picture={session.token.displayImage || session.token.image}
-                  />
-                )}
+                {session && !group && <Dashboard session={session} />}
               </div>
             </>
           )}

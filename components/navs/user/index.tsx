@@ -15,9 +15,6 @@ const UserNavbar = (props: IUserNavbarProps) => {
                 </div>
                 {status === authStates.authenticated && (
                     <>
-                        <button className="text-xl p-4 hover:text-white hover:bg-orange-600 font-medium">
-                            Profile
-                        </button>
                         <button className="text-xl p-4 hover:text-white hover:bg-orange-600 font-medium"
                             onClick={() => signOut()}
                         >
