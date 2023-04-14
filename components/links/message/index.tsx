@@ -14,7 +14,8 @@ const MessageLink = (props: IMessageLinkProps) => {
             messageAuthorIsStatus,
             messageAuthorIsOnline,
             messageContent,
-            messageTime
+            messageTime,
+            messageUnread,
         } = props;
         return (
             <a href={void (0)} className="cursor-pointer" title={messageAuthorName}
@@ -33,10 +34,16 @@ const MessageLink = (props: IMessageLinkProps) => {
                     />
                     <div className="basis-2/4 ml-4 font-bold truncate">
                         <h1 className="text-xl text-white">{messageAuthorName}</h1>
-                        <p className="text-sm text-gray-500">{messageContent}</p>
+                        <p className="text-sm text-gray-500">
+                            {messageContent}
+                        </p>
                     </div>
-                    <div className="basis-1/4 flex justify-end items-center">
-                        <p className="ml-2 text-md text-white font-bold">{messageTime}</p>
+                    <div className="basis-1/4 flex flex-col justify-between items-end">
+                        {messageUnread ? (
+                            <p className="ml-2 w-6 h-6 text-xs bg-green-300 text-black font-bold flex justify-center items-center rounded-full">{messageUnread}</p>
+                        ) : (
+                            <p className="ml-2 text-md text-white font-bold">{messageTime}</p>
+                        )}
                     </div>
                 </div>
             </a>

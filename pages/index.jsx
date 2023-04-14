@@ -13,6 +13,8 @@ import { getTimeConverted } from "@/utils/helpers";
 import UserNavbar from "@/components/navs/user";
 import Spinner from "@/components/svgs/spinner";
 import Dashboard from "@/components/dashboard";
+import Image from "next/image";
+import Link from "next/link";
 let socket;
 
 const Messages = () => {
@@ -126,7 +128,6 @@ const Messages = () => {
   const socketInitializer = async () => {
     await fetch(apiUrls.socket);
     socket = io();
-    console.log(socket);
 
     socket.on("connect", () => {
       console.log("connected");
@@ -228,70 +229,92 @@ const Messages = () => {
           </div>
         </div>
         <UserNavbar navbar={navbar} setNavbar={setNavbar} status={status} />
-        <section className="flex justify-center">
-          {status === authStates.authenticated && (
-            <>
-              <div className="basis-1/4">
-                <MessageLinkList
-                  groups={groups}
-                  setGroup={onSelectGroupHandler}
-                  selectedGroup={group}
-                />
-              </div>
-              <div
-                className={`basis-3/4 absolute top-0 bg-black md:relative md:block container 
+        {status === authStates.authenticated ? (
+          <section className="flex justify-center">
+            <div className="basis-1/4">
+              <MessageLinkList
+                groups={groups}
+                setGroup={onSelectGroupHandler}
+                selectedGroup={group}
+              />
+            </div>
+            <div
+              className={`basis-3/4 absolute top-0 bg-black md:relative md:block container 
                 ${group ? "block" : "hidden"}`}
-              >
-                {group && (
-                  <>
-                    <div className="p-4 flex items-center">
-                      <button
-                        className="block md:hidden text-white hover:text-green-500 basis-1/12 mr-4"
-                        onClick={() => setGroup(null)}
-                      >
-                        <ChevronBack />
-                      </button>
-                      <div className="basis-11/12">
-                        <h1 className="flex text-2xl text-white font-bold">
-                          <span>{group.name}</span>
+            >
+              {group && (
+                <>
+                  <div className="p-4 flex items-center">
+                    <button
+                      className="block md:hidden text-white hover:text-green-500 basis-1/12 mr-4"
+                      onClick={() => setGroup(null)}
+                    >
+                      <ChevronBack />
+                    </button>
+                    <div className="basis-11/12">
+                      <h1 className="flex text-2xl text-white font-bold">
+                        <span>{group.name}</span>
+                      </h1>
+                      {group.isOnline ? (
+                        <h1 className="text-md font-bold text-green-500">
+                          Online
                         </h1>
-                        {group.isOnline ? (
-                          <h1 className="text-md font-bold text-green-500">
-                            Online
-                          </h1>
-                        ) : (
-                          <h1 className="text-md font-bold text-white">
-                            {group.lastMessage.createdOn}
-                          </h1>
-                        )}
-                      </div>
+                      ) : (
+                        <h1 className="text-md font-bold text-white">
+                          {group.lastMessage.createdOn}
+                        </h1>
+                      )}
                     </div>
-                    <div className="h-[calc(100vh_-_28vh)] md:h-[calc(100vh_-_36vh)] overflow-y-scroll">
-                      <MessageList
-                        group={group}
-                        typing={typing}
-                        notifs={notifs}
-                        lastMessageRef={lastMessageRef}
-                      />
-                    </div>
-                    <div className="bottom-0 m-4">
-                      <MessageEditor
-                        group={group}
-                        input={input}
-                        onChangeHandler={onChangeHandler}
-                        onKeyDownHandler={onKeyDownHandler}
-                        onSubmitHandler={onSubmitHandler}
-                        textInputRef={textInputRef}
-                        onMediaHandler={onMediaHandler}
-                      />
-                    </div>
-                  </>
-                )}
-                {session && !group && <Dashboard session={session} />}
+                  </div>
+                  <div className="h-[calc(100vh_-_28vh)] md:h-[calc(100vh_-_36vh)] overflow-y-scroll">
+                    <MessageList
+                      group={group}
+                      typing={typing}
+                      notifs={notifs}
+                      lastMessageRef={lastMessageRef}
+                    />
+                  </div>
+                  <div className="bottom-0 m-4">
+                    <MessageEditor
+                      group={group}
+                      input={input}
+                      onChangeHandler={onChangeHandler}
+                      onKeyDownHandler={onKeyDownHandler}
+                      onSubmitHandler={onSubmitHandler}
+                      textInputRef={textInputRef}
+                      onMediaHandler={onMediaHandler}
+                    />
+                  </div>
+                </>
+              )}
+              {session && groups && !group && (
+                <Dashboard session={session} groups={groups} feeds={feeds} />
+              )}
+            </div>
+          </section>
+        ) : (
+          status !== authStates.loading && (
+            <section className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+              <div className="text-white font-black text-center">
+                <span className="text-transparent text-8xl md:text-9xl bg-clip-text bg-gradient-to-r from-green-500 to-green-600">
+                  OREO
+                </span>
+                <br />
+                <span className="text-2xl md:text-2xl text-white">
+                  A Chat Application
+                </span>
+                <br />
+                <div className="mt-4 flex justify-evenly">
+                  <Link href={"/api/auth/signin"}>
+                    <button className="bg-green-600 px-4 py-2 rounded-lg">
+                      LOGIN
+                    </button>
+                  </Link>
+                </div>
               </div>
-            </>
-          )}
-        </section>
+            </section>
+          )
+        )}
       </main>
     </Layout>
   );

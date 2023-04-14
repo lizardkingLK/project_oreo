@@ -47,6 +47,7 @@ export interface IMessageLinkProps {
     messageTime: string,
     messageIsActive: boolean,
     messageOnClick: Function,
+    messageUnread: number,
 }
 
 export interface IMessageEditorProps {

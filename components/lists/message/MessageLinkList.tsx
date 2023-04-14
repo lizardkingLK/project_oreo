@@ -19,7 +19,8 @@ const MessageLinkList = (props: IMessageLinkListProps) => {
           messageTime={group.lastMessage.createdOn}
           messageAuthorIsStatus={group.isStatus}
           messageAuthorIsOnline={group.isOnline}
-          messageIsActive={selectedGroup && selectedGroup.id === group.id} />
+          messageIsActive={selectedGroup && selectedGroup.id === group.id}
+          messageUnread={0} />
       ))
     );
   } else return null;

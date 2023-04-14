@@ -9,7 +9,7 @@ import Send from './svgs/send'
 const Dashboard = (props: any) => {
     const [email, setEmail] = useState("");
     if (props) {
-        const { session } = props, token = session.token, userId = token._id,
+        const { session, groups, feeds } = props, token = session.token, userId = token._id,
             name = token.name, picture = token.displayImage || token.image;
 
         const handleClearInvitation = () => setEmail("");
@@ -35,17 +35,17 @@ const Dashboard = (props: any) => {
                 </h1>
                 <div className="pt-4 grid grid-flow-row-dense grid-cols-3 grid-rows-3 gap-2">
                     <SummaryCard
-                        cardStyle={"bg-orange-300 rounded-md"}
+                        cardStyle={"bg-gradient-to-r from-orange-500 to-orange-400 text-white rounded-md"}
                         cardHeaderTitle={"Groups"}
                         cardBodyType={cardBodyTypes.NUMBER}
-                        cardBodyContent={4200} cardHeaderContent={undefined} />
+                        cardBodyContent={groups.length} cardHeaderContent={undefined} />
                     <SummaryCard
-                        cardStyle={"bg-orange-300 rounded-md"}
+                        cardStyle={"bg-orange-400 text-white rounded-md"}
                         cardHeaderTitle={"Friends"}
                         cardBodyType={cardBodyTypes.NUMBER}
                         cardBodyContent={1039} cardHeaderContent={undefined} />
                     <SummaryCard
-                        cardStyle={"bg-gradient-to-r from-orange-300 to-orange-400 rounded-md"}
+                        cardStyle={"bg-orange-400 text-white rounded-md"}
                         cardHeaderTitle={"Online"}
                         cardBodyType={cardBodyTypes.NUMBER}
                         cardBodyContent={103} cardHeaderContent={undefined} />
@@ -71,7 +71,12 @@ const Dashboard = (props: any) => {
                             ) : null
                         } />
                     <SummaryCard
-                        cardStyle={"bg-green-200 rounded-md"}
+                        cardStyle={"bg-gradient-to-r from-green-500 to-green-400 text-white  rounded-md"}
+                        cardHeaderTitle={"Unread"}
+                        cardBodyType={cardBodyTypes.NUMBER}
+                        cardBodyContent={34} cardHeaderContent={undefined} />
+                    <SummaryCard
+                        cardStyle={"bg-green-600 text-white rounded-md"}
                         cardHeaderTitle={"Latest"}
                         cardHeaderContent={
                             <Avatar
@@ -83,36 +88,33 @@ const Dashboard = (props: any) => {
                         }
                         cardBodyType={cardBodyTypes.STRING}
                         cardBodyContent={
-                            "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Magni quos non cupiditate mollitia temporibus expedita nobis natus totam exercitationem alias similique optio quisquam quidem ducimus id, odio excepturi illo at."
+                            "excepturi illo at."
                         }
                     />
                     <SummaryCard
-                        cardStyle={"bg-orange-300 rounded-md"}
-                        cardHeaderTitle={"Unread"}
-                        cardBodyType={cardBodyTypes.NUMBER}
-                        cardBodyContent={34} cardHeaderContent={undefined} />
-                    <SummaryCard
-                        cardStyle={"bg-orange-300 rounded-md"}
+                        cardStyle={"bg-green-500 text-white rounded-md"}
                         cardHeaderTitle={"Feeds"}
                         cardBodyType={cardBodyTypes.NUMBER}
-                        cardBodyContent={12} cardHeaderContent={undefined} />
+                        cardBodyContent={feeds.length} cardHeaderContent={undefined} />
                     <SummaryCard
-                        cardStyle={"bg-orange-300 rounded-md"}
+                        cardStyle={"bg-gradient-to-r from-green-500 to-green-400 text-white rounded-md"}
                         cardHeaderTitle={"Profile"}
                         cardBodyType={cardBodyTypes.ELEMENT}
-                        cardBodyContent={<Link
-                            href={"/"}
-                            className="flex justify-start items-center"
-                        >
-                            <Avatar
-                                imagePath={picture}
-                                size={35}
-                                name={name}
-                                isStatus={false} />
-                            <h1 className="text-3xl w-full max-h-20 overflow-hidden ml-4">
-                                {name}
-                            </h1>
-                        </Link>} cardHeaderContent={undefined} />
+                        cardBodyContent={
+                            <Link
+                                href={"/"}
+                                className="flex justify-start items-center"
+                            >
+                                <Avatar
+                                    imagePath={picture}
+                                    size={35}
+                                    name={name}
+                                    isStatus={false} />
+                                <h1 className="text-3xl w-full max-h-20 overflow-hidden ml-4">
+                                    {name}
+                                </h1>
+                            </Link>}
+                        cardHeaderContent={undefined} />
                 </div>
             </div>
         );
