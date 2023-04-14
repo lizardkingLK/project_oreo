@@ -18,11 +18,12 @@ const MessageList = (props: IMessageListProps) => {
                             messageImagePath={group.displayImage}
                         />
                     ))}
-                <div ref={lastMessageRef}>
-                    {typing && (
-                        <p className="text-sm m-8 text-gray-500">Someone is typing...</p>
-                    )}
-                </div>
+                <div ref={lastMessageRef}></div>
+                {typing && (
+                    <div className='absolute bottom-12 m-8'>
+                        <p className="text-sm text-gray-500">Someone is typing...</p>
+                    </div>
+                )}
             </>
         );
     } else return null;
