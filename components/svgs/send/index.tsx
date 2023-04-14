@@ -1,14 +1,15 @@
 import React from 'react'
 
-const Send = () => {
+const Send = ({ size }: { size: number | undefined }) => {
+    const className = size ? `w-${size} h-${size}` : "w-7 h-7", strokeWidth = size ? 1.5 : 2;
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
-            strokeWidth={2}
+            strokeWidth={strokeWidth}
             stroke="currentColor"
-            className="w-7 h-7"
+            className={className}
         >
             <path
                 strokeLinecap="round"

@@ -116,8 +116,3 @@ export interface IMediaRendererProps {
     type: string,
     pictureProps: IPictureProps,
 }
-
-export interface IDashboardProps {
-    name: string,
-    picture: string,
-}

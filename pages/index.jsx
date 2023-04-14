@@ -61,22 +61,22 @@ const Messages = () => {
   }, [output, groups]);
   useEffect(() => setNavbar(false), [group, input]);
   useEffect(() => {
-    const initializeMessages = async (userId) => {
-      await fetch(`${apiUrls.message}?id=${userId}`)
-        .then((response) => response.json())
-        .then((data) => groupMessages(data, userId));
-    };
-
     const initializeFeeds = async (userId) => {
       await fetch(`${apiUrls.feed}?id=${userId}`)
         .then((response) => response.json())
         .then((data) => setFeeds(data));
     };
 
-    if (session && session.token && session.token._id) {
-      const userId = session.token._id;
-      initializeMessages(userId);
+    const initializeMessages = async (userId) => {
+      await fetch(`${apiUrls.message}?id=${userId}`)
+        .then((response) => response.json())
+        .then((data) => groupMessages(data, userId));
+    };
+
+    if (session && session.token) {
+      const userId = session.token._id ?? (session.user && session.user._id);
       initializeFeeds(userId);
+      initializeMessages(userId);
     }
   }, [session]);
 
@@ -277,12 +277,7 @@ const Messages = () => {
                     </div>
                   </>
                 )}
-                {session && !group && (
-                  <Dashboard
-                    name={session.token.name}
-                    picture={session.token.displayImage || session.token.image}
-                  />
-                )}
+                {session && !group && <Dashboard session={session} />}
               </div>
             </>
           )}
