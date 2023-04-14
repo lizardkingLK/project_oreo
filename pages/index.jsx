@@ -124,6 +124,7 @@ const Messages = () => {
   const socketInitializer = async () => {
     await fetch(apiUrls.socket);
     socket = io();
+    console.log(socket);
 
     socket.on("connect", () => {
       console.log("connected");

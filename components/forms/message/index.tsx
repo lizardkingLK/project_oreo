@@ -62,7 +62,7 @@ const MessageEditor = (props: IMessageEditorProps) => {
                                 <h1 className="hidden md:block text-white text-md md:text-xl font-bold">Send Attachment</h1>
                                 <h1 className="block md:hidden text-white text-md md:text-xl font-bold">Attachment</h1>
                                 <button className='text-white' title='Cancel Attachment' onClick={mediaCloseHandler}>
-                                    <Close />
+                                    <Close size={undefined} />
                                 </button>
                             </div>
                             {file && type ? (
@@ -80,7 +80,7 @@ const MessageEditor = (props: IMessageEditorProps) => {
                                             <Clear />
                                         </button>
                                         <button className='text-white hover:text-black' title='Send' onClick={mediaSubmitHandler}>
-                                            <Send />
+                                            <Send size={undefined} />
                                         </button>
                                     </div>
                                 </>
@@ -124,7 +124,7 @@ const MessageEditor = (props: IMessageEditorProps) => {
                             title="Send Message"
                             onClick={onSubmitHandler}
                         >
-                            <Send />
+                            <Send size={undefined} />
                         </button>
                     </div>
                 </>
