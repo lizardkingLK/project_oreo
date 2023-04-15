@@ -13,7 +13,6 @@ import { getTimeConverted } from "@/utils/helpers";
 import UserNavbar from "@/components/navs/user";
 import Spinner from "@/components/svgs/spinner";
 import Dashboard from "@/components/dashboard";
-import Image from "next/image";
 import Link from "next/link";
 let socket;
 
@@ -130,7 +129,7 @@ const Messages = () => {
     socket = io();
 
     socket.on("connect", () => {
-      console.log("connected");
+      console.log(socket.id);
     });
 
     socket.on("update-input", (msg) => {
@@ -144,7 +143,12 @@ const Messages = () => {
 
   const onChangeHandler = (e) => {
     setInput(e.target.value);
-    socket && socket.emit("is-typing", true);
+    socket &&
+      socket.emit("is-typing", {
+        value: true,
+        groupId: group.id,
+        name: session.token.name,
+      });
   };
 
   const sendMessage = (newMessage) => {
@@ -305,7 +309,7 @@ const Messages = () => {
                 </span>
                 <br />
                 <div className="mt-4 flex justify-evenly">
-                  <Link href={"/api/auth/signin"}>
+                  <Link href={apiUrls.signin}>
                     <button className="bg-green-600 px-4 py-2 rounded-lg">
                       LOGIN
                     </button>

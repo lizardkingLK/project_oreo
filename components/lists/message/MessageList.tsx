@@ -3,7 +3,7 @@ import { IMessageListProps } from '@/types';
 
 const MessageList = (props: IMessageListProps) => {
     if (props) {
-        const { group, typing, notifs, lastMessageRef } = props;
+        const { group, typing, lastMessageRef } = props;
         return (
             <>
                 {group &&
@@ -19,9 +19,9 @@ const MessageList = (props: IMessageListProps) => {
                         />
                     ))}
                 <div ref={lastMessageRef}></div>
-                {typing && (
+                {typing && typing.groupId === group.id && (
                     <div className='absolute bottom-12 m-8'>
-                        <p className="text-sm text-gray-500">Someone is typing...</p>
+                        <p className="text-sm text-gray-500">{`${typing.name} is typing...`}</p>
                     </div>
                 )}
             </>
