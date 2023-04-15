@@ -20,6 +20,7 @@ export enum apiUrls {
   socket = "/api/socket",
   login = "/api/login",
   file = "/api/file",
+  signin = "/api/auth/signin",
 }
 
 export enum cardBodyTypes {

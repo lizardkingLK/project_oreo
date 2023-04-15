@@ -14,7 +14,7 @@ export interface IMessageProps {
 }
 
 export interface IGroupProps {
-    id: number;
+    id: string;
     name: string;
     displayImage: string;
     isStatus: boolean;
@@ -29,9 +29,15 @@ export interface IMessageLinkListProps {
     selectedGroup: IGroupProps;
 }
 
+interface ITypingProps {
+    value: boolean,
+    groupId: string,
+    name: string,
+}
+
 export interface IMessageListProps {
     group: IGroupProps;
-    typing: boolean;
+    typing: ITypingProps;
     notifs: boolean;
     lastMessageRef: LegacyRef<HTMLInputElement>
 }
