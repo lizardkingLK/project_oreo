@@ -1,6 +1,7 @@
 import React from 'react'
 import Avatar from '@/components/avatar'
 import { IMessageLinkProps } from '@/types';
+import { getBriefContent } from '@/utils/helpers';
 
 const MessageLink = (props: IMessageLinkProps) => {
     if (props) {
@@ -35,7 +36,7 @@ const MessageLink = (props: IMessageLinkProps) => {
                     <div className="basis-2/4 ml-4 font-bold truncate">
                         <h1 className="text-xl text-white">{messageAuthorName}</h1>
                         <p className="text-sm text-gray-500">
-                            {messageContent}
+                            {getBriefContent(messageContent)}
                         </p>
                     </div>
                     <div className="basis-1/4 flex flex-col justify-between items-end">

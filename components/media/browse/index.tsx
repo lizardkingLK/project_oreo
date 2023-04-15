@@ -1,8 +1,8 @@
-import { IMediaRendererProps } from '@/types';
+import { IBrowseMediaProps } from '@/types';
 import React from 'react'
-import Picture from '../picture';
+import Picture from '../../picture';
 
-const MediaRenderer = (props: IMediaRendererProps) => {
+const BrowseMedia = (props: IBrowseMediaProps) => {
     const { type, pictureProps } = props;
     if (props) {
         switch (type) {
@@ -15,4 +15,4 @@ const MediaRenderer = (props: IMediaRendererProps) => {
     } else return null;
 }
 
-export default MediaRenderer
+export default BrowseMedia

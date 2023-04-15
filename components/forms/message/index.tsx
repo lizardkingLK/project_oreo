@@ -4,7 +4,7 @@ import Close from '@/components/svgs/close';
 import Send from '@/components/svgs/send';
 import Emoji from '@/components/svgs/emoji';
 import Attachment from '@/components/svgs/attachment';
-import MediaRenderer from '@/components/media';
+import BrowseMedia from '@/components/media/browse';
 import Upload from '@/components/svgs/upload/upload';
 import Clear from '@/components/svgs/clear';
 
@@ -68,7 +68,7 @@ const MessageEditor = (props: IMessageEditorProps) => {
                             {file && type ? (
                                 <>
                                     <div className='flex justify-center items-center p-4'>
-                                        <MediaRenderer type={type} pictureProps={{
+                                        <BrowseMedia type={type} pictureProps={{
                                             alt: 'preview',
                                             height: 150,
                                             width: 150,

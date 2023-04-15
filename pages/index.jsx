@@ -5,7 +5,7 @@ import MessageLinkList from "@/components/lists/message/MessageLinkList";
 import MessageList from "@/components/lists/message/MessageList";
 import MessageEditor from "@/components/forms/message";
 import { useSession } from "next-auth/react";
-import { apiUrls, authStates, messageTypes } from "@/utils/enums";
+import { apiUrls, authStates, mediaTypes, messageTypes } from "@/utils/enums";
 import io from "socket.io-client";
 import ChevronBack from "@/components/svgs/chevronBack";
 import Bars from "@/components/svgs/bars";
@@ -171,37 +171,18 @@ const Messages = () => {
     }
   };
 
-  const onSubmitHandler = () => {
+  const onSubmitHandler = (content = null) => {
     const userId = session.token._id ?? (session.user && session.user._id);
     sendMessage({
-      // {
-      //   "_id": {
-      //     "$oid": "6438deffe377fe2597ef0a2f"
-      //   },
-      //   "content": "Hello There!",
-      //   "createdOn": {
-      //     "$date": "2023-04-14T05:05:03.621Z"
-      //   },
-      //   "groupId": {
-      //     "$oid": "6438deffe377fe2597ef0a2e"
-      //   },
-      //   "status": true,
-      //   "fromId": {
-      //     "$oid": "6436878a3efc9880a9bd95fa"
-      //   },
-      //   "toId": {
-      //     "$oid": "6438293e991b90863959eba7"
-      //   }
-      // }
-
       type: messageTypes.SENT,
-      content: input,
+      content: input ? input : content,
       createdOn: new Date().toISOString(),
       groupId: group.id,
       status: true,
       fromId: userId,
       toId: group.targetId,
     });
+    setNotifs(Math.random());
   };
 
   const onMediaHandler = async (files) => {
@@ -215,7 +196,7 @@ const Messages = () => {
       body: formData,
     })
       .then((response) => response.json())
-      .then((data) => console.log(data));
+      .then((data) => onSubmitHandler(`[${mediaTypes.image}](${data.data})`));
   };
 
   const onSelectGroupHandler = (groupId) => {

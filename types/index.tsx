@@ -119,7 +119,7 @@ export interface IPictureProps {
     alt: string,
 }
 
-export interface IMediaRendererProps {
+export interface IBrowseMediaProps {
     type: string,
     pictureProps: IPictureProps,
 }
