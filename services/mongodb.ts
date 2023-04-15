@@ -10,6 +10,21 @@ export type Message = {
   fromId: ObjectId;
   toId: ObjectId;
   groupId: ObjectId;
+  status: boolean;
+};
+
+export const createMessage = async (message: Message) => {
+  const client = await clientPromise,
+    db = client.db(process.env.DB_NAME),
+    tempMessage = {
+      content: message.content,
+      createdOn: new Date(),
+      groupId: new ObjectId(message.groupId),
+      status: true,
+      fromId: new ObjectId(message.fromId),
+      toId: new ObjectId(message.toId),
+    };
+  return await db.collection(dbCollections.messages).insertOne(tempMessage);
 };
 
 export const createGroup = async (email: string, userId: string) => {

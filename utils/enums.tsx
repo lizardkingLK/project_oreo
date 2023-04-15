@@ -33,3 +33,7 @@ export enum dbCollections {
   users = "users",
   messages = "messages",
 }
+
+export enum mediaTypes {
+  image = "image",
+}

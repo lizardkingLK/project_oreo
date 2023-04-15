@@ -5,7 +5,7 @@ import MessageLinkList from "@/components/lists/message/MessageLinkList";
 import MessageList from "@/components/lists/message/MessageList";
 import MessageEditor from "@/components/forms/message";
 import { useSession } from "next-auth/react";
-import { apiUrls, authStates, messageTypes } from "@/utils/enums";
+import { apiUrls, authStates, mediaTypes, messageTypes } from "@/utils/enums";
 import io from "socket.io-client";
 import ChevronBack from "@/components/svgs/chevronBack";
 import Bars from "@/components/svgs/bars";
@@ -45,8 +45,8 @@ const Messages = () => {
           newMessage = {
             type: messageTypes.RECEIVED,
             content: output.content,
-            fromId: 1,
-            createdOn: output.createdOn,
+            fromId: output.fromId,
+            createdOn: getTimeConverted(),
             groupId: tempGroup.id,
           };
         tempGroupMessages[tempGroupMessages.length] = newMessage;
@@ -74,12 +74,12 @@ const Messages = () => {
     };
 
     if (session && session.token) {
-      if (!socket) {
-        socketInitializer();
-      }
       const userId = session.token._id ?? (session.user && session.user._id);
       initializeFeeds(userId);
       initializeMessages(userId);
+      if (!socket) {
+        socketInitializer();
+      }
     }
   }, [session]);
 
@@ -113,6 +113,7 @@ const Messages = () => {
           isOnline: false,
           messages: [message],
           lastMessage: message,
+          targetId: target._id,
         });
       }
     });
@@ -155,6 +156,7 @@ const Messages = () => {
     if (newMessage && newMessage.content && socket) {
       const tempGroup = group,
         tempGroupMessages = tempGroup.messages;
+      newMessage.createdOn = getTimeConverted(new Date(newMessage.createdOn));
       tempGroupMessages[tempGroupMessages.length] = newMessage;
       Object.assign(tempGroup, {
         messages: tempGroupMessages,
@@ -169,14 +171,18 @@ const Messages = () => {
     }
   };
 
-  const onSubmitHandler = () => {
+  const onSubmitHandler = (content = null) => {
+    const userId = session.token._id ?? (session.user && session.user._id);
     sendMessage({
       type: messageTypes.SENT,
-      content: input,
-      fromId: 1,
-      createdOn: getTimeConverted(),
+      content: input ? input : content,
+      createdOn: new Date().toISOString(),
       groupId: group.id,
+      status: true,
+      fromId: userId,
+      toId: group.targetId,
     });
+    setNotifs(Math.random());
   };
 
   const onMediaHandler = async (files) => {
@@ -190,7 +196,7 @@ const Messages = () => {
       body: formData,
     })
       .then((response) => response.json())
-      .then((data) => console.log(data));
+      .then((data) => onSubmitHandler(`[${mediaTypes.image}](${data.data})`));
   };
 
   const onSelectGroupHandler = (groupId) => {
