@@ -8,9 +8,9 @@ import {
 export interface IMessageProps {
     type: number;
     content: string;
-    fromId: number;
+    fromId: string;
     createdOn: string;
-    groupId: number;
+    groupId: string;
 }
 
 export interface IGroupProps {
@@ -43,7 +43,7 @@ export interface IMessageListProps {
 }
 
 export interface IMessageLinkProps {
-    messageId: number,
+    messageId: string,
     messageImagePath: string,
     messageImageSize: number,
     messageAuthorIsStatus: boolean,
