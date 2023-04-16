@@ -9,7 +9,8 @@ import Send from './svgs/send'
 const Dashboard = (props: any) => {
     const [email, setEmail] = useState("");
     if (props) {
-        const { session, groups, feeds } = props, token = session.token, userId = token._id,
+        const { session, groups, feeds } = props, token = session.token,
+            userId = session.token._id ?? (session.user && session.user._id),
             name = token.name, picture = token.displayImage || token.image;
 
         const handleClearInvitation = () => setEmail("");

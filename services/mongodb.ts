@@ -32,6 +32,7 @@ export const createGroup = async (email: string, userId: string) => {
     db = client.db(process.env.DB_NAME),
     user = await db.collection(dbCollections.users).findOne({ email }),
     content = "Hello There!";
+
   if (user) {
     return await db.collection(dbCollections.messages).insertOne({
       content,
@@ -55,7 +56,8 @@ export const getMessagesByUserId = async (userId: string) => {
   const client = await clientPromise,
     db = client.db(process.env.DB_NAME),
     userObjectId = new ObjectId(userId);
-  return db
+
+  return await db
     .collection(dbCollections.messages)
     .aggregate<Message>([
       {

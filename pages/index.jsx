@@ -26,9 +26,15 @@ const Messages = () => {
   const [output, setOutput] = useState("");
   const [typing, setTyping] = useState(false);
   const [notifs, setNotifs] = useState(null);
+  const [userId, setUserId] = useState(null);
   const textInputRef = useRef(null);
   const lastMessageRef = useRef(null);
 
+  useEffect(() => {
+    if (session && session.token) {
+      setUserId(session.token._id ?? (session.user && session.user._id));
+    }
+  }, [session]);
   useEffect(() => {
     if (lastMessageRef.current) {
       lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
@@ -73,15 +79,12 @@ const Messages = () => {
         .then((data) => groupMessages(data, userId));
     };
 
-    if (session && session.token) {
-      const userId = session.token._id ?? (session.user && session.user._id);
+    if (userId) {
       initializeFeeds(userId);
       initializeMessages(userId);
-      if (!socket) {
-        socketInitializer();
-      }
+      socketInitializer();
     }
-  }, [session]);
+  }, [userId]);
 
   const groupMessages = (messages, userId) => {
     const groups = new Map();
@@ -182,7 +185,6 @@ const Messages = () => {
       fromId: userId,
       toId: group.targetId,
     });
-    setNotifs(Math.random());
   };
 
   const onMediaHandler = async (files) => {
