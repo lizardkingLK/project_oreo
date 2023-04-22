@@ -1,6 +1,6 @@
 # project_oreo
 
- ![Tux, the Linux mascot](/project-oreo.svg)
+![project_oreo by lizardkingLK](/project-oreo.svg)
 
 ## A Chat Application
 
