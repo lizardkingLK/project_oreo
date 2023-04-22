@@ -21,7 +21,8 @@ const MessageLink = (props: IMessageLinkProps) => {
         return (
             <a href={void (0)} className="cursor-pointer" title={messageAuthorName}
                 onClick={() => messageOnClick(messageId)}>
-                <div className={`flex items-start mb-4 py-4 px-2 rounded-md max-w-sm md:max-w-xs hover:bg-gray-800
+                <div className={`flex justify-center items-start
+                mb-4 py-4 px-2 rounded-md hover:bg-gray-800
                 ${messageIsActive
                         ? "bg-gray-900"
                         : null

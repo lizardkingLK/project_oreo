@@ -268,7 +268,7 @@ const Messages = () => {
         <UserNavbar navbar={navbar} setNavbar={setNavbar} status={status} />
         {status === authStates.authenticated ? (
           <section className="flex justify-center">
-            <div className="basis-1/4">
+            <div className="basis-3/4 md:basis-1/4">
               <MessageLinkList
                 groups={groups}
                 setGroup={onSelectGroupHandler}
