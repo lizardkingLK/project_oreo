@@ -85,6 +85,17 @@ const Messages = () => {
       socketInitializer();
     }
   }, [userId]);
+  useEffect(() => {
+    if (typing && typing.userId && groups) {
+      const tempGroup = groups.find(
+        (group) => group.targetId === typing.userId
+      );
+      if (tempGroup) {
+        tempGroup.isOnline = true;
+        Object.assign(groups, tempGroup);
+      }
+    }
+  }, [typing, groups]);
 
   const groupMessages = (messages, userId) => {
     const groups = new Map();
@@ -112,11 +123,11 @@ const Messages = () => {
           id: groupId,
           name: target.name,
           displayImage: target.displayImage,
+          targetId: target._id,
           isStatus: false,
           isOnline: false,
           messages: [message],
           lastMessage: message,
-          targetId: target._id,
         });
       }
     });
@@ -152,6 +163,7 @@ const Messages = () => {
         value: true,
         groupId: group.id,
         name: session.token.name,
+        userId,
       });
   };
 
