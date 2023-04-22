@@ -246,7 +246,7 @@ const Messages = () => {
           <Spinner size={12} />
         </section>
       )}
-      <main className="bg-black min-h-screen" id="messages">
+      <main className="min-h-screen" id="divHome">
         <div className="block md:flex items-center p-4 border-gray-900">
           <div className="basis-1/4 flex justify-between md:justify-start items-center my-4 md:m-0">
             <button
@@ -276,7 +276,7 @@ const Messages = () => {
               />
             </div>
             <div
-              className={`basis-3/4 absolute top-0 bg-black md:relative md:block container 
+              className={`basis-3/4 absolute top-0 bg-black md:bg-transparent md:relative md:block container 
                 ${group ? "block" : "hidden"}`}
             >
               {group && (
@@ -303,7 +303,10 @@ const Messages = () => {
                       )}
                     </div>
                   </div>
-                  <div className="h-[calc(100vh_-_28vh)] md:h-[calc(100vh_-_36vh)] overflow-y-scroll">
+                  <div
+                    className="h-[calc(100vh_-_28vh)] md:h-[calc(100vh_-_36vh)] overflow-y-scroll"
+                    id="divMessageList"
+                  >
                     <MessageList
                       group={group}
                       typing={typing}
@@ -331,7 +334,10 @@ const Messages = () => {
           </section>
         ) : (
           status !== authStates.loading && (
-            <section className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+            <section
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+              id="divWelcome"
+            >
               <div className="text-white font-black text-center">
                 <span className="text-transparent text-8xl md:text-9xl bg-clip-text bg-gradient-to-r from-green-500 to-green-600">
                   OREO
