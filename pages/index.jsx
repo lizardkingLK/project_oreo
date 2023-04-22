@@ -37,7 +37,7 @@ const Messages = () => {
   }, [session]);
   useEffect(() => {
     if (lastMessageRef.current) {
-      lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
+      lastMessageRef.current.scrollIntoView({ behavior: "auto" });
     }
   }, [notifs, input, group]);
   useEffect(() => {
@@ -174,12 +174,12 @@ const Messages = () => {
     }
   };
 
-  const onSubmitHandler = (content = null) => {
+  const onSubmitHandler = () => {
     const userId = session.token._id ?? (session.user && session.user._id);
-    if (input || content) {
+    if (input) {
       sendMessage({
         type: messageTypes.SENT,
-        content: input ? input : content,
+        content: input,
         createdOn: new Date().toISOString(),
         groupId: group.id,
         status: true,
@@ -200,7 +200,18 @@ const Messages = () => {
       body: formData,
     })
       .then((response) => response.json())
-      .then((data) => onSubmitHandler(`[${mediaTypes.image}](${data.data})`));
+      .then((data) => {
+        sendMessage({
+          type: messageTypes.SENT,
+          content: `[${mediaTypes.image}](${data.data})`,
+          createdOn: new Date().toISOString(),
+          groupId: group.id,
+          status: true,
+          fromId: userId,
+          toId: group.targetId,
+        });
+        setNotifs(Math.random());
+      });
   };
 
   const onSelectGroupHandler = (groupId) => {
