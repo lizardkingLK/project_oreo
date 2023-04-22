@@ -37,7 +37,7 @@ const Messages = () => {
   }, [session]);
   useEffect(() => {
     if (lastMessageRef.current) {
-      lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
+      lastMessageRef.current.scrollIntoView({ behavior: "auto" });
     }
   }, [notifs, input, group]);
   useEffect(() => {
@@ -85,6 +85,17 @@ const Messages = () => {
       socketInitializer();
     }
   }, [userId]);
+  useEffect(() => {
+    if (typing && typing.userId && groups) {
+      const tempGroup = groups.find(
+        (group) => group.targetId === typing.userId
+      );
+      if (tempGroup) {
+        tempGroup.isOnline = true;
+        Object.assign(groups, tempGroup);
+      }
+    }
+  }, [typing, groups]);
 
   const groupMessages = (messages, userId) => {
     const groups = new Map();
@@ -112,11 +123,11 @@ const Messages = () => {
           id: groupId,
           name: target.name,
           displayImage: target.displayImage,
+          targetId: target._id,
           isStatus: false,
           isOnline: false,
           messages: [message],
           lastMessage: message,
-          targetId: target._id,
         });
       }
     });
@@ -152,6 +163,7 @@ const Messages = () => {
         value: true,
         groupId: group.id,
         name: session.token.name,
+        userId,
       });
   };
 
@@ -174,17 +186,19 @@ const Messages = () => {
     }
   };
 
-  const onSubmitHandler = (content = null) => {
+  const onSubmitHandler = () => {
     const userId = session.token._id ?? (session.user && session.user._id);
-    sendMessage({
-      type: messageTypes.SENT,
-      content: input ? input : content,
-      createdOn: new Date().toISOString(),
-      groupId: group.id,
-      status: true,
-      fromId: userId,
-      toId: group.targetId,
-    });
+    if (input) {
+      sendMessage({
+        type: messageTypes.SENT,
+        content: input,
+        createdOn: new Date().toISOString(),
+        groupId: group.id,
+        status: true,
+        fromId: userId,
+        toId: group.targetId,
+      });
+    }
   };
 
   const onMediaHandler = async (files) => {
@@ -198,7 +212,18 @@ const Messages = () => {
       body: formData,
     })
       .then((response) => response.json())
-      .then((data) => onSubmitHandler(`[${mediaTypes.image}](${data.data})`));
+      .then((data) => {
+        sendMessage({
+          type: messageTypes.SENT,
+          content: `[${mediaTypes.image}](${data.data})`,
+          createdOn: new Date().toISOString(),
+          groupId: group.id,
+          status: true,
+          fromId: userId,
+          toId: group.targetId,
+        });
+        setNotifs(Math.random());
+      });
   };
 
   const onSelectGroupHandler = (groupId) => {
