@@ -176,15 +176,17 @@ const Messages = () => {
 
   const onSubmitHandler = (content = null) => {
     const userId = session.token._id ?? (session.user && session.user._id);
-    sendMessage({
-      type: messageTypes.SENT,
-      content: input ? input : content,
-      createdOn: new Date().toISOString(),
-      groupId: group.id,
-      status: true,
-      fromId: userId,
-      toId: group.targetId,
-    });
+    if (input || content) {
+      sendMessage({
+        type: messageTypes.SENT,
+        content: input ? input : content,
+        createdOn: new Date().toISOString(),
+        groupId: group.id,
+        status: true,
+        fromId: userId,
+        toId: group.targetId,
+      });
+    }
   };
 
   const onMediaHandler = async (files) => {

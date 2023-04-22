@@ -7,7 +7,6 @@ export default async function handler(
 ) {
   try {
     if (req.method === "POST") {
-      console.log(req.body.userId);
       const result = await createGroup(req.body.email, req.body.userId);
       if (result && result.acknowledged) {
         res
