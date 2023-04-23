@@ -2,8 +2,13 @@ import {
     ChangeEventHandler,
     KeyboardEventHandler,
     LegacyRef,
-    MouseEventHandler
+    MouseEventHandler,
+    ReactNode
 } from 'react'
+
+export interface ILayoutProps {
+    children: ReactNode
+}
 
 export interface IMessageProps {
     type: number;
@@ -122,4 +127,12 @@ export interface IPictureProps {
 export interface IBrowseMediaProps {
     type: string,
     pictureProps: IPictureProps,
+}
+
+export interface IDialogProps {
+    dialogRef: LegacyRef<HTMLDivElement>,
+    dialogTitle: string,
+    dialogSubtitle: string,
+    dialogCloseHandler: MouseEventHandler<HTMLButtonElement>,
+    children: ReactNode,
 }

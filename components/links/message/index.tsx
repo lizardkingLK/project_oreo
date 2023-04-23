@@ -36,7 +36,7 @@ const MessageLink = (props: IMessageLinkProps) => {
                     />
                     <div className="basis-2/4 ml-4 font-bold truncate">
                         <h1 className="text-xl text-white">{messageAuthorName}</h1>
-                        <p className="text-sm text-gray-500">
+                        <p className={`text-sm text-gray-500`}>
                             {getBriefContent(messageContent)}
                         </p>
                     </div>
