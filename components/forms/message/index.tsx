@@ -7,6 +7,7 @@ import Attachment from '@/components/svgs/attachment';
 import BrowseMedia from '@/components/media/browse';
 import Upload from '@/components/svgs/upload/upload';
 import Clear from '@/components/svgs/clear';
+import Dialog from '@/components/dialog';
 
 const MessageEditor = (props: IMessageEditorProps) => {
     const [mediaModal, setMediaModal] = useState(false);
@@ -57,14 +58,9 @@ const MessageEditor = (props: IMessageEditorProps) => {
             group && (
                 <>
                     {mediaModal && (
-                        <div ref={attachmentRef} className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-md bg-gradient-to-r from-orange-400 to-orange-500 shadow-black shadow-2xl w-2/4`}>
-                            <div className='flex justify-between items-center p-4'>
-                                <h1 className="hidden md:block text-white text-md md:text-xl font-bold">Send Attachment</h1>
-                                <h1 className="block md:hidden text-white text-md md:text-xl font-bold">Attachment</h1>
-                                <button className='text-white' title='Cancel Attachment' onClick={mediaCloseHandler}>
-                                    <Close size={undefined} />
-                                </button>
-                            </div>
+                        <Dialog dialogRef={attachmentRef} dialogTitle={'Send Attachment'} dialogSubtitle={'Attachment'}
+                            dialogCloseHandler={mediaCloseHandler}
+                        >
                             {file && type ? (
                                 <>
                                     <div className='flex justify-center items-center p-4'>
@@ -94,7 +90,7 @@ const MessageEditor = (props: IMessageEditorProps) => {
                                     </div>
                                 </>
                             )}
-                        </div>
+                        </Dialog>
                     )}
                     <div className="flex items-center">
                         <button
