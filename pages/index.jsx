@@ -250,6 +250,7 @@ const Messages = () => {
           <div className="block md:flex items-center p-4 border-gray-900">
             <div className="basis-1/4 flex justify-between md:justify-start items-center my-4 md:m-0">
               <button
+                id="btnToggleNavbar"
                 className="mr-4 md:mr-2 text-white hover:text-orange-600"
                 onClick={() => setNavbar(!navbar)}
               >
@@ -345,14 +346,14 @@ const Messages = () => {
                     OREO
                   </span>
                   <br />
-                  <span className="text-2xl md:text-2xl text-white">
+                  <span className="text-2xl tracking-normal md:tracking-widest text-white">
                     A Chat Application
                   </span>
                   <br />
                   <div className="mt-4 flex justify-evenly">
-                    <Link href={apiUrls.signin}>
+                    <Link href="/register">
                       <button className="bg-green-600 px-4 py-2 rounded-lg">
-                        LOGIN
+                        JOIN
                       </button>
                     </Link>
                   </div>

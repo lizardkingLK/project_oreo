@@ -28,7 +28,7 @@ const Dashboard = (props: any) => {
 
         return (
             <div className="p-4">
-                <h1 className="text-2xl text-white font-bold">
+                <h1 className="text-2xl text-white font-bold" id="textGreeting">
                     Hello{" "}
                     <span className="text-green-400">
                         {name}
