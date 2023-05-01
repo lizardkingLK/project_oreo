@@ -5,7 +5,19 @@
 # Learn more from ready-to-use templates: https://www.gitpod.io/docs/introduction/getting-started/quickstart
 
 tasks:
-  - init: npm install && npm run build
-    command: npm run start
+  - name: setup e2e testing environment with playwright
+  - init: sudo apt-get install libatk1.0-0\
+            libatk-bridge2.0-0\
+            libcups2\
+            libdrm2\                                     
+            libatspi2.0-0\                               
+            libxcomposite1\                              
+            libxdamage1\                                 
+            libxfixes3\                                  
+            libxrandr2\                                  
+            libgbm1\                                     
+            libxkbcommon0 
 
-
+  - name: installing nodejs dependencies
+  - init: npm install
+    command: npm run dev
