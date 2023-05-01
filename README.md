@@ -2,8 +2,6 @@
 
 ## A Chat Application
 
-[![Tests: E2E](https://github.com/lizardkingLK/project_oreo/actions/workflows/e2e-ci.yml/badge.svg)](https://github.com/lizardkingLK/project_oreo/actions/workflows/e2e-ci.yml)
-
 #### Made with TypeScript, NextJS, NextAuth, TailwindCSS, MongoDB
 
 ## .env.local file to be added
