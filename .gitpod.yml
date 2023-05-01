@@ -2,45 +2,11 @@
 # Learn more from ready-to-use templates: https://www.gitpod.io/docs/introduction/getting-started/quickstart
 
 tasks:
-  - name: installing playwright dependencies - libatk1.0-0
-  - command: sudo apt-get install libatk1.0-0
-
-  - name: installing playwright dependencies - libatk-bridge2.0-0
-  - command: sudo apt-get install libatk-bridge2.0-0
-
-  - name: installing playwright dependencies - libcups2
-  - command: sudo apt-get install libcups2
-
-  - name: installing playwright dependencies - libdrm2
-  - command: sudo apt-get install libdrm2
-
-  - name: installing playwright dependencies - libatspi2.0-0
-  - command: sudo apt-get install libatspi2.0-0
-
-  - name: installing playwright dependencies - libxcomposite1
-  - command: sudo apt-get install libxcomposite1
-
-  - name: installing playwright dependencies - libxdamage1
-  - command: sudo apt-get install libxdamage1
-
-  - name: installing playwright dependencies - libxfixes3
-  - command: sudo apt-get install libxfixes3
-
-  - name: installing playwright dependencies - libxrandr2
-  - command: sudo apt-get install libxrandr2
-
-  - name: installing playwright dependencies - libgbm1
-  - command: sudo apt-get install libgbm1
-
-  - name: installing playwright dependencies - libxkbcommon0
-  - command: sudo apt-get install libxkbcommon0
-
-  - name: installing playwright nodejs plugin
-  - command: npx playwright install
-
   - name: seting up github local repo for changes
-  - command: git branch gitpod
+  - init: git branch -a
+    command: git checkout gitpod
 
   - name: installing nodejs dependencies
+  - before: npx playwright install-deps
   - init: npm install
     command: npm run dev
