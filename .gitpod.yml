@@ -3,5 +3,5 @@
 
 tasks:
   - name: installing dependencies
-  - init: npx playwright install-deps && npx playwright install && npm install
+  - init: npm ci && npm run build
     command: npm run dev
