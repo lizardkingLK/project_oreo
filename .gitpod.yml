@@ -2,6 +2,6 @@
 # Learn more from ready-to-use templates: https://www.gitpod.io/docs/introduction/getting-started/quickstart
 
 tasks:
-  - name: installing dependencies and checkout
+  - name: checkout branch and installing dependencies
   - init: git checkout gitpod && npx playwright install-deps && npx playwright install && npm install
     command: npm run dev
