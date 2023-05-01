@@ -2,11 +2,6 @@
 # Learn more from ready-to-use templates: https://www.gitpod.io/docs/introduction/getting-started/quickstart
 
 tasks:
-  - name: seting up github local repo for changes
-  - init: git branch -a
-    command: git checkout gitpod
-
-  - name: installing nodejs dependencies
-  - before: npx playwright install-deps
-  - init: npm install
+  - name: checkout branch and installing dependencies
+  - init: git checkout gitpod && npx playwright install-deps && npx playwright install && npm install
     command: npm run dev
