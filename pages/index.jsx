@@ -4,7 +4,6 @@ import FeedList from "@/components/feeds";
 import MessageLinkList from "@/components/lists/message/MessageLinkList";
 import MessageList from "@/components/lists/message/MessageList";
 import MessageEditor from "@/components/forms/message";
-import { useSession } from "next-auth/react";
 import { apiUrls, authStates, mediaTypes, messageTypes } from "@/utils/enums";
 import io from "socket.io-client";
 import ChevronBack from "@/components/svgs/chevronBack";
@@ -17,7 +16,6 @@ import Link from "next/link";
 let socket;
 
 const Messages = () => {
-  const { data: session, status } = useSession();
   const [navbar, setNavbar] = useState(false);
   const [feeds, setFeeds] = useState([]);
   const [groups, setGroups] = useState([]);
@@ -27,14 +25,18 @@ const Messages = () => {
   const [typing, setTyping] = useState(false);
   const [notifs, setNotifs] = useState(null);
   const [userId, setUserId] = useState(null);
+
+  const [status, setStatus] = useState(true)
+
   const textInputRef = useRef(null);
   const lastMessageRef = useRef(null);
 
   useEffect(() => {
-    if (session && session.token) {
-      setUserId(session.token._id ?? (session.user && session.user._id));
-    }
-  }, [session]);
+    // if (session && session.token) {
+    //   setUserId(session.token._id ?? (session.user && session.user._id));
+    // }
+    setUserId(null);
+  }, []);
   useEffect(() => {
     if (lastMessageRef.current) {
       lastMessageRef.current.scrollIntoView({ behavior: "auto" });
@@ -351,7 +353,7 @@ const Messages = () => {
                   </span>
                   <br />
                   <div className="mt-4 flex justify-evenly">
-                    <Link href="/register">
+                    <Link href="/sign-up">
                       <button className="bg-green-600 px-4 py-2 rounded-lg">
                         JOIN
                       </button>

@@ -1,12 +1,12 @@
-import '@/styles/globals.css'
-import { SessionProvider } from "next-auth/react"
-import type { AppProps } from 'next/app'
-import Head from 'next/head'
+import type { AppProps } from "next/app";
+import Head from "next/head";
+import { ClerkProvider } from "@clerk/nextjs";
+import "@/styles/globals.css";
 
 export default function App({
   Component,
-  pageProps: { session, ...pageProps } }: AppProps
-) {
+  pageProps: { session, ...pageProps },
+}: AppProps) {
   return (
     <>
       <Head>
@@ -14,9 +14,9 @@ export default function App({
         <meta name="description" content="Oreo Social" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <SessionProvider session={session}>
+      <ClerkProvider {...pageProps}>
         <Component {...pageProps} />
-      </SessionProvider>
+      </ClerkProvider>
     </>
-  )
+  );
 }
