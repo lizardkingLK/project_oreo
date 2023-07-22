@@ -13,6 +13,7 @@ import UserNavbar from "@/components/navs/user";
 import Spinner from "@/components/svgs/spinner";
 import Dashboard from "@/components/dashboard";
 import Link from "next/link";
+import { useAuth } from "@clerk/nextjs";
 let socket;
 
 const Messages = () => {
@@ -26,16 +27,19 @@ const Messages = () => {
   const [notifs, setNotifs] = useState(null);
   const [userId, setUserId] = useState(null);
 
-  const [status, setStatus] = useState(true)
+  const [status, setStatus] = useState("authenticated");
+  const [session, setSession] = useState({token: {_id: "6436878a3efc9880a9bd95fa", user: {_id: "6436878a3efc9880a9bd95fa"}}})
+
+  const authObj = useAuth();
+console.log(authObj)
 
   const textInputRef = useRef(null);
   const lastMessageRef = useRef(null);
 
   useEffect(() => {
-    // if (session && session.token) {
-    //   setUserId(session.token._id ?? (session.user && session.user._id));
-    // }
-    setUserId(null);
+    if (session && session.token) {
+      setUserId(session.token._id ?? (session.user && session.user._id));
+    }
   }, []);
   useEffect(() => {
     if (lastMessageRef.current) {

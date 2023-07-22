@@ -16,25 +16,20 @@ const UserNavbar = (props: IUserNavbarProps) => {
             } bg-gradient-to-r from-orange-500 to-orange-500`}
       >
         <div className="flex justify-center items-center p-4">
-          <Image
-            src={"/favicon.png"}
-            alt="logo"
-            width={50}
-            height={50}
-            priority
-          />
+          {status === authStates.authenticated ? (
+            <div className="p-4">
+            <UserButton afterSignOutUrl="/" />
+            </div>
+          ) : (
+            <Image
+              src={"/favicon.png"}
+              alt="logo"
+              width={50}
+              height={50}
+              priority
+            />
+          )}
         </div>
-        <UserButton afterSignOutUrl="/"/>
-        {status === authStates.authenticated && (
-          <>
-            <button
-              className="text-xl p-4 hover:text-white hover:bg-orange-600 font-medium"
-              onClick={() => console.log("sign out")}
-            >
-              Logout
-            </button>
-          </>
-        )}
         {status === authStates.unauthenticated && (
           <button
             className="text-xl p-4 hover:text-white hover:bg-orange-600 font-medium"
