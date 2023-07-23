@@ -1,13 +1,14 @@
 import React from "react";
 import { IUserNavbarProps } from "@/types";
-import { authStates } from "@/utils/enums";
 import Image from "next/image";
 import Bars from "@/components/svgs/bars";
-import { UserButton } from "@clerk/nextjs";
+import { UserButton, useAuth } from "@clerk/nextjs";
+import Link from "next/link";
 
 const UserNavbar = (props: IUserNavbarProps) => {
+  const { isSignedIn } = useAuth();
   if (props) {
-    const { navbar, setNavbar, status } = props;
+    const { navbar, setNavbar } = props;
     return (
       <nav
         className={`absolute top-0 left-0 h-screen w-3/4 md:w-1/4 shadow-orange-500 shadow-2xl z-10
@@ -16,9 +17,9 @@ const UserNavbar = (props: IUserNavbarProps) => {
             } bg-gradient-to-r from-orange-500 to-orange-500`}
       >
         <div className="flex justify-center items-center p-4">
-          {status === authStates.authenticated ? (
+          {isSignedIn ? (
             <div className="p-4">
-            <UserButton afterSignOutUrl="/" />
+              <UserButton afterSignOutUrl="/" />
             </div>
           ) : (
             <Image
@@ -30,13 +31,13 @@ const UserNavbar = (props: IUserNavbarProps) => {
             />
           )}
         </div>
-        {status === authStates.unauthenticated && (
-          <button
-            className="text-xl p-4 hover:text-white hover:bg-orange-600 font-medium"
-            onClick={() => console.log("sign in")}
+        {!isSignedIn && (
+          <Link
+            className="text-xl text-center p-4 hover:text-white hover:bg-orange-600 font-medium"
+            href="/sign-in"
           >
             Login
-          </button>
+          </Link>
         )}
         {navbar && (
           <button

@@ -1,12 +1,16 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { Message, getMessagesByUserId } from "@/services/mongodb";
+
+type Message = {
+
+}
 
 export default async function handler(
-  req: NextApiRequest,
+  // req: NextApiRequest,
+  _req: NextApiRequest,
   res: NextApiResponse<Array<Message>>
 ) {
-  const id: any = req.query.id,
-    messages = await getMessagesByUserId(id);
+  // const id: any = req.query.id, messages = await getMessagesByUserId(id);
 
-  res.status(200).json(messages);
+  // res.status(200).json(messages);
+  res.status(200).json([{}]);
 }

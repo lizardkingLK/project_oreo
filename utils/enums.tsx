@@ -7,12 +7,6 @@ export enum interTypes {
   PRIVATE = 1,
 }
 
-export enum authStates {
-  loading = "loading",
-  authenticated = "authenticated",
-  unauthenticated = "unauthenticated",
-}
-
 export enum apiUrls {
   group = "/api/group",
   feed = "/api/feed",

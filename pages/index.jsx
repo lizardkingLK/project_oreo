@@ -1,10 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import Layout from "@/components/layout";
-import FeedList from "@/components/feeds";
 import MessageLinkList from "@/components/lists/message/MessageLinkList";
 import MessageList from "@/components/lists/message/MessageList";
 import MessageEditor from "@/components/forms/message";
-import { apiUrls, authStates, mediaTypes, messageTypes } from "@/utils/enums";
+import { apiUrls, mediaTypes, messageTypes } from "@/utils/enums";
 import io from "socket.io-client";
 import ChevronBack from "@/components/svgs/chevronBack";
 import Bars from "@/components/svgs/bars";
@@ -25,27 +24,25 @@ const Messages = () => {
   const [output, setOutput] = useState("");
   const [typing, setTyping] = useState(false);
   const [notifs, setNotifs] = useState(null);
-  const [userId, setUserId] = useState(null);
 
-  const [status, setStatus] = useState("authenticated");
-  const [session, setSession] = useState({token: {_id: "6436878a3efc9880a9bd95fa", user: {_id: "6436878a3efc9880a9bd95fa"}}})
-
-  const authObj = useAuth();
-console.log(authObj)
+  const { isLoaded, userId, isSignedIn } = useAuth();
 
   const textInputRef = useRef(null);
   const lastMessageRef = useRef(null);
 
-  useEffect(() => {
-    if (session && session.token) {
-      setUserId(session.token._id ?? (session.user && session.user._id));
-    }
-  }, []);
+  const [session] = useState({
+    token: {
+      _id: "6436878a3efc9880a9bd95fa",
+      user: { _id: "6436878a3efc9880a9bd95fa" },
+    },
+  });
+
   useEffect(() => {
     if (lastMessageRef.current) {
       lastMessageRef.current.scrollIntoView({ behavior: "auto" });
     }
   }, [notifs, input, group]);
+
   useEffect(() => {
     if (output) {
       const tempGroupIndex = groups.findIndex(
@@ -71,7 +68,9 @@ console.log(authObj)
       }
     }
   }, [output, groups]);
+
   useEffect(() => setNavbar(false), [group, input]);
+
   useEffect(() => {
     const initializeFeeds = async (userId) => {
       await fetch(`${apiUrls.feed}?id=${userId}`)
@@ -91,6 +90,7 @@ console.log(authObj)
       socketInitializer();
     }
   }, [userId]);
+
   useEffect(() => {
     if (typing && typing.userId && groups) {
       const tempGroup = groups.find(
@@ -125,16 +125,17 @@ console.log(authObj)
         });
       } else {
         target = message.fromId === userId ? message.to : message.from;
-        groups.set(groupId, {
-          id: groupId,
-          name: target.name,
-          displayImage: target.displayImage,
-          targetId: target._id,
-          isStatus: false,
-          isOnline: false,
-          messages: [message],
-          lastMessage: message,
-        });
+        target &&
+          groups.set(groupId, {
+            id: groupId,
+            name: target.name,
+            displayImage: target.displayImage,
+            targetId: target._id,
+            isStatus: false,
+            isOnline: false,
+            messages: [message],
+            lastMessage: message,
+          });
       }
     });
     setGroups(
@@ -245,130 +246,136 @@ console.log(authObj)
     }
   };
 
+  if (!isLoaded) {
+    return (
+      <section className="h-screen flex justify-center items-center">
+        <Spinner size={12} />
+      </section>
+    );
+  }
+
   return (
     <Layout>
-      {status === authStates.loading ? (
-        <section className="h-screen flex justify-center items-center">
-          <Spinner size={12} />
-        </section>
-      ) : (
-        <main className="min-h-screen" id="divHome">
-          <div className="block md:flex items-center p-4 border-gray-900">
-            <div className="basis-1/4 flex justify-between md:justify-start items-center my-4 md:m-0">
-              <button
-                id="btnToggleNavbar"
-                className="mr-4 md:mr-2 text-white hover:text-orange-600"
-                onClick={() => setNavbar(!navbar)}
-              >
-                <Bars />
-              </button>
-              {!navbar && (
-                <h1 className="ml-4 md:ml-2 text-3xl text-center md:text-left text-white font-bold">
-                  OREO
-                </h1>
-              )}
-            </div>
-            <div className="basis-3/4 flex justify-center md:justify-end">
-              {status === authStates.authenticated && (
-                <FeedList feeds={feeds} />
-              )}
-            </div>
+      <main className="min-h-screen" id="divHome">
+        <div className="block md:flex items-center p-4 border-gray-900">
+          <div className="basis-1/4 flex justify-between md:justify-start items-center my-4 md:m-0">
+            <button
+              id="btnToggleNavbar"
+              className="mr-4 md:mr-2 text-white hover:text-orange-600"
+              onClick={() => setNavbar(!navbar)}
+            >
+              <Bars />
+            </button>
+            {!navbar && (
+              <h1 className="ml-4 md:ml-2 text-3xl text-center md:text-left text-white font-bold">
+                OREO
+              </h1>
+            )}
           </div>
-          <UserNavbar navbar={navbar} setNavbar={setNavbar} status={status} />
-          {status === authStates.authenticated ? (
-            <section className="flex justify-center">
-              <div className="basis-3/4 md:basis-1/4">
-                <MessageLinkList
-                  groups={groups}
-                  setGroup={onSelectGroupHandler}
-                  selectedGroup={group}
-                />
-              </div>
-              <div
-                className={`basis-3/4 absolute top-0 bg-black md:bg-transparent md:relative md:block container 
+        </div>
+        <UserNavbar navbar={navbar} setNavbar={setNavbar} status={isSignedIn} />
+        {isSignedIn ? (
+          <section className="flex justify-center">
+            <div className="basis-3/4 md:basis-1/4">
+              <MessageLinkList
+                // groups={groups}
+                groups={[
+                  {
+                    id: "123324_alpa",
+                    name: "alpa",
+                    displayImage: "/static/pfp1.jpg",
+                    isStatus: true,
+                    isOnline: true,
+                    messages: [],
+                    lastMessage: null,
+                  },
+                ]}
+                setGroup={onSelectGroupHandler}
+                selectedGroup={group}
+              />
+            </div>
+            <div
+              className={`basis-3/4 absolute top-0 bg-black md:bg-transparent md:relative md:block container 
                 ${group ? "block" : "hidden"}`}
-              >
-                {group && (
-                  <>
-                    <div className="p-4 flex items-center">
-                      <button
-                        className="block md:hidden text-white hover:text-green-500 basis-1/12 mr-4"
-                        onClick={() => setGroup(null)}
-                      >
-                        <ChevronBack />
-                      </button>
-                      <div className="basis-11/12">
-                        <h1 className="flex text-2xl text-white font-bold">
-                          <span>{group.name}</span>
-                        </h1>
-                        {group.isOnline ? (
-                          <h1 className="text-md font-bold text-green-500">
-                            Online
-                          </h1>
-                        ) : (
-                          <h1 className="text-md font-bold text-white">
-                            {group.lastMessage.createdOn}
-                          </h1>
-                        )}
-                      </div>
-                    </div>
-                    <div
-                      className="h-[calc(100vh_-_28vh)] md:h-[calc(100vh_-_36vh)] overflow-y-scroll"
-                      id="divMessageList"
+            >
+              {group && (
+                <>
+                  <div className="p-4 flex items-center">
+                    <button
+                      className="block md:hidden text-white hover:text-green-500 basis-1/12 mr-4"
+                      onClick={() => setGroup(null)}
                     >
-                      <MessageList
-                        group={group}
-                        typing={typing}
-                        notifs={notifs}
-                        lastMessageRef={lastMessageRef}
-                      />
+                      <ChevronBack />
+                    </button>
+                    <div className="basis-11/12">
+                      <h1 className="flex text-2xl text-white font-bold">
+                        <span>{group.name}</span>
+                      </h1>
+                      {group.isOnline ? (
+                        <h1 className="text-md font-bold text-green-500">
+                          Online
+                        </h1>
+                      ) : (
+                        <h1 className="text-md font-bold text-white">
+                          {group.lastMessage.createdOn}
+                        </h1>
+                      )}
                     </div>
-                    <div className="bottom-0 m-4">
-                      <MessageEditor
-                        group={group}
-                        input={input}
-                        onChangeHandler={onChangeHandler}
-                        onKeyDownHandler={onKeyDownHandler}
-                        onSubmitHandler={onSubmitHandler}
-                        textInputRef={textInputRef}
-                        onMediaHandler={onMediaHandler}
-                      />
-                    </div>
-                  </>
-                )}
-                {session && groups && !group && (
-                  <Dashboard session={session} groups={groups} feeds={feeds} />
-                )}
-              </div>
-            </section>
-          ) : (
-            status !== authStates.loading && (
-              <section
-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-                id="divWelcome"
-              >
-                <div className="text-white font-black text-center">
-                  <span className="text-transparent text-8xl md:text-9xl bg-clip-text bg-gradient-to-r from-green-500 to-green-600">
-                    OREO
-                  </span>
-                  <br />
-                  <span className="text-2xl tracking-normal md:tracking-widest text-white">
-                    A Chat Application
-                  </span>
-                  <br />
-                  <div className="mt-4 flex justify-evenly">
-                    <Link href="/sign-up">
-                      <button className="bg-green-600 px-4 py-2 rounded-lg">
-                        JOIN
-                      </button>
-                    </Link>
                   </div>
-                </div>
-              </section>
-            )
-          )}
-        </main>
-      )}
+                  <div
+                    className="h-[calc(100vh_-_28vh)] md:h-[calc(100vh_-_36vh)] overflow-y-scroll"
+                    id="divMessageList"
+                  >
+                    <MessageList
+                      group={group}
+                      typing={typing}
+                      notifs={notifs}
+                      lastMessageRef={lastMessageRef}
+                    />
+                  </div>
+                  <div className="bottom-0 m-4">
+                    <MessageEditor
+                      group={group}
+                      input={input}
+                      onChangeHandler={onChangeHandler}
+                      onKeyDownHandler={onKeyDownHandler}
+                      onSubmitHandler={onSubmitHandler}
+                      textInputRef={textInputRef}
+                      onMediaHandler={onMediaHandler}
+                    />
+                  </div>
+                </>
+              )}
+              {session && groups && !group && (
+                <Dashboard session={session} groups={groups} feeds={feeds} />
+              )}
+            </div>
+          </section>
+        ) : (
+          <section
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+            id="divWelcome"
+          >
+            <div className="text-white font-black text-center">
+              <span className="text-transparent text-8xl md:text-9xl bg-clip-text bg-gradient-to-r from-green-500 to-green-600">
+                OREO
+              </span>
+              <br />
+              <span className="text-2xl tracking-normal md:tracking-widest text-white">
+                A Chat Application
+              </span>
+              <br />
+              <div className="mt-4 flex justify-evenly">
+                <Link href="/sign-up">
+                  <button className="bg-green-600 px-4 py-2 rounded-lg">
+                    JOIN
+                  </button>
+                </Link>
+              </div>
+            </div>
+          </section>
+        )}
+      </main>
     </Layout>
   );
 };

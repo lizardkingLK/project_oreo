@@ -1,4 +1,3 @@
-import { createMessage } from "@/services/mongodb";
 import type { Server as HTTPServer } from "http";
 import type { Socket as NetSocket } from "net";
 import { NextApiResponse } from "next";
@@ -33,7 +32,7 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
 
     io.on("connection", (socket) => {
       socket.on("new-message", async (msg) => {
-        await createMessage(msg);
+        // await createMessage(msg);
         socket.broadcast.emit("update-input", msg);
       });
 

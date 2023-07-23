@@ -15,8 +15,8 @@ const MessageLinkList = (props: IMessageLinkListProps) => {
           messageImagePath={group.displayImage}
           messageImageSize={60}
           messageAuthorName={group.name}
-          messageContent={group.lastMessage.content}
-          messageTime={group.lastMessage.createdOn}
+          messageContent={group.lastMessage?.content}
+          messageTime={group.lastMessage?.createdOn}
           messageAuthorIsStatus={group.isStatus}
           messageAuthorIsOnline={group.isOnline}
           messageIsActive={selectedGroup && selectedGroup.id === group.id}
