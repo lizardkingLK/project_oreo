@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Avatar from "./avatar";
 import SummaryCard from "./cards/summary";
 import { apiUrls, cardBodyTypes } from "@/utils/enums";
-import Link from "next/link";
 import Close from "./svgs/close";
 import Send from "./svgs/send";
 import FeedList from "./feeds";
@@ -13,8 +12,7 @@ const Dashboard = (props: any) => {
     const { session, groups, feeds } = props,
       token = session.token,
       userId = session.token._id ?? (session.user && session.user._id),
-      name = token.name,
-      picture = token.displayImage || token.image;
+      name = token.name;
 
     const handleClearInvitation = () => setEmail("");
 
@@ -125,27 +123,6 @@ const Dashboard = (props: any) => {
             cardHeaderTitle={"Feeds"}
             cardBodyType={cardBodyTypes.NUMBER}
             cardBodyContent={feeds.length}
-            cardHeaderContent={undefined}
-          />
-          <SummaryCard
-            cardStyle={
-              "bg-gradient-to-r from-green-500 to-green-400 text-white rounded-md"
-            }
-            cardHeaderTitle={"Profile"}
-            cardBodyType={cardBodyTypes.ELEMENT}
-            cardBodyContent={
-              <Link href={"/"} className="flex justify-start items-center">
-                <Avatar
-                  imagePath={picture}
-                  size={35}
-                  name={name}
-                  isStatus={false}
-                />
-                <h1 className="text-3xl w-full max-h-20 overflow-hidden ml-4">
-                  {name}
-                </h1>
-              </Link>
-            }
             cardHeaderContent={undefined}
           />
         </div>

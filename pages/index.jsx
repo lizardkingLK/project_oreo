@@ -12,7 +12,7 @@ import UserNavbar from "@/components/navs/user";
 import Spinner from "@/components/svgs/spinner";
 import Dashboard from "@/components/dashboard";
 import Link from "next/link";
-import { useAuth } from "@clerk/nextjs";
+import { useAuth, useUser } from "@clerk/nextjs";
 let socket;
 
 const Messages = () => {
@@ -24,11 +24,10 @@ const Messages = () => {
   const [output, setOutput] = useState("");
   const [typing, setTyping] = useState(false);
   const [notifs, setNotifs] = useState(null);
-
-  const { isLoaded, userId, isSignedIn } = useAuth();
-
   const textInputRef = useRef(null);
   const lastMessageRef = useRef(null);
+
+  const { isLoaded, userId, isSignedIn } = useAuth();
 
   const [session] = useState({
     token: {
@@ -194,7 +193,6 @@ const Messages = () => {
   };
 
   const onSubmitHandler = () => {
-    const userId = session.token._id ?? (session.user && session.user._id);
     if (input) {
       sendMessage({
         type: messageTypes.SENT,
@@ -278,18 +276,7 @@ const Messages = () => {
           <section className="flex justify-center">
             <div className="basis-3/4 md:basis-1/4">
               <MessageLinkList
-                // groups={groups}
-                groups={[
-                  {
-                    id: "123324_alpa",
-                    name: "alpa",
-                    displayImage: "/static/pfp1.jpg",
-                    isStatus: true,
-                    isOnline: true,
-                    messages: [],
-                    lastMessage: null,
-                  },
-                ]}
+                groups={groups}
                 setGroup={onSelectGroupHandler}
                 selectedGroup={group}
               />
@@ -346,7 +333,7 @@ const Messages = () => {
                   </div>
                 </>
               )}
-              {session && groups && !group && (
+              {!group && (
                 <Dashboard session={session} groups={groups} feeds={feeds} />
               )}
             </div>
