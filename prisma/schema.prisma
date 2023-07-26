@@ -1,0 +1,32 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Group {
+  id     Int     @id @default(autoincrement())
+  name   String?
+  status Int     @default(1)
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  ownerId   String
+  createdAt DateTime @default(now())
+  content   String?
+  status    Int      @default(1)
+}
+
+model GroupUser {
+  id      Int    @id @default(autoincrement())
+  groupId Int
+  userId  String
+  status  Int    @default(1)
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("NEXT_PUBLIC_DATABASE_URL")
+}
