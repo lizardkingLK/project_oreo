@@ -11,8 +11,8 @@ import { getTimeConverted } from "@/utils/helpers";
 import UserNavbar from "@/components/navs/user";
 import Spinner from "@/components/svgs/spinner";
 import Dashboard from "@/components/dashboard";
-import Link from "next/link";
 import { useAuth } from "@clerk/nextjs";
+import Welcome from "@/components/welcome";
 let socket;
 
 const Messages = () => {
@@ -292,11 +292,10 @@ const Messages = () => {
               )}
             </div>
             <div
-              className={`basis-3/4 absolute top-0 bg-black md:bg-transparent md:relative md:block container 
-                ${group ? "block" : "hidden"}`}
+              className={`basis-3/4 absolute top-0 bg-black md:bg-transparent md:relative md:block container`}
             >
-              {group && (
-                <>
+              {group ? (
+                <div>
                   <div className="p-4 flex items-center">
                     <button
                       className="block md:hidden text-white hover:text-green-500 basis-1/12 mr-4"
@@ -341,36 +340,14 @@ const Messages = () => {
                       onMediaHandler={onMediaHandler}
                     />
                   </div>
-                </>
-              )}
-              {!group && (
+                </div>
+              ) : (
                 <Dashboard session={session} groups={groups} feeds={feeds} />
               )}
             </div>
           </section>
         ) : (
-          <section
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-            id="divWelcome"
-          >
-            <div className="text-white font-black text-center">
-              <span className="text-transparent text-8xl md:text-9xl bg-clip-text bg-gradient-to-r from-green-500 to-green-600">
-                OREO
-              </span>
-              <br />
-              <span className="text-2xl tracking-normal md:tracking-widest text-white">
-                A Chat Application
-              </span>
-              <br />
-              <div className="mt-4 flex justify-evenly">
-                <Link href="/sign-up">
-                  <button className="bg-green-600 px-4 py-2 rounded-lg">
-                    JOIN
-                  </button>
-                </Link>
-              </div>
-            </div>
-          </section>
+          <Welcome />
         )}
       </main>
     </Layout>

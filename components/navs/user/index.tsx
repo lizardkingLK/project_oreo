@@ -5,6 +5,7 @@ import Bars from "@/components/svgs/bars";
 import { UserButton, useAuth } from "@clerk/nextjs";
 import Link from "next/link";
 import Invitation from "@/components/svgs/invitation";
+import Home from "@/components/svgs/home";
 
 const UserNavbar = (props: IUserNavbarProps) => {
   const { isSignedIn } = useAuth();
@@ -33,13 +34,22 @@ const UserNavbar = (props: IUserNavbarProps) => {
           )}
         </div>
         {isSignedIn ? (
+          <>
           <Link
-            className="text-xl text-center p-4 hover:text-white hover:bg-orange-600 font-medium flex items-center justify-center"
-            href="/sign-in"
+            className="text-xl text-center p-4 hover:text-white hover:bg-orange-600 font-medium flex items-center justify-start"
+            href="/"
+          >
+            <Home />
+            &nbsp;&nbsp;&nbsp;Home
+          </Link>
+          <Link
+            className="text-xl text-center p-4 hover:text-white hover:bg-orange-600 font-medium flex items-center justify-start"
+            href="/friends/add"
           >
             <Invitation />
-            &nbsp;&nbsp;&nbsp;Invite
+            &nbsp;&nbsp;&nbsp;Add Friend
           </Link>
+          </>
         ) : (
           <Link
             className="text-xl text-center p-4 hover:text-white hover:bg-orange-600 font-medium"
