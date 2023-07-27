@@ -4,6 +4,7 @@ import Image from "next/image";
 import Bars from "@/components/svgs/bars";
 import { UserButton, useAuth } from "@clerk/nextjs";
 import Link from "next/link";
+import Invitation from "@/components/svgs/invitation";
 
 const UserNavbar = (props: IUserNavbarProps) => {
   const { isSignedIn } = useAuth();
@@ -11,10 +12,10 @@ const UserNavbar = (props: IUserNavbarProps) => {
     const { navbar, setNavbar } = props;
     return (
       <nav
-        className={`absolute top-0 left-0 h-screen w-3/4 md:w-1/4 shadow-orange-500 shadow-2xl z-10
+        className={`absolute top-0 left-0 h-screen w-3/4 md:w-1/4 shadow-green-400 shadow-2xl z-10
             ${
               navbar ? "flex flex-col" : "hidden"
-            } bg-gradient-to-r from-orange-500 to-orange-500`}
+            } bg-gradient-to-r from-green-400 to-green-700`}
       >
         <div className="flex justify-center items-center p-4">
           {isSignedIn ? (
@@ -33,10 +34,11 @@ const UserNavbar = (props: IUserNavbarProps) => {
         </div>
         {isSignedIn ? (
           <Link
-            className="text-xl text-center p-4 hover:text-white hover:bg-orange-600 font-medium"
+            className="text-xl text-center p-4 hover:text-white hover:bg-orange-600 font-medium flex items-center justify-center"
             href="/sign-in"
           >
-            Add Friend
+            <Invitation />
+            &nbsp;&nbsp;&nbsp;Invite
           </Link>
         ) : (
           <Link
