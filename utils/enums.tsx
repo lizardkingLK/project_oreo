@@ -14,7 +14,8 @@ export enum apiUrls {
   socket = "/api/socket",
   login = "/api/login",
   file = "/api/file",
-  signin = "/api/auth/signin",
+  invitation = "/api/invitation",
+  user = "/api/user",
 }
 
 export enum cardBodyTypes {

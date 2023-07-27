@@ -4,16 +4,37 @@ import Bars from "@/components/svgs/bars";
 import Spinner from "@/components/svgs/spinner";
 import { apiUrls } from "@/utils/enums";
 import { useAuth } from "@clerk/nextjs";
+import { User } from "@clerk/nextjs/dist/types/server";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const AddFriend = () => {
   const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
   const [navbar, setNavbar] = useState(false);
+  const [users, setUsers] = useState<null | User[]>(null);
+  const [user, setUser] = useState<null | User>();
+  const [userFound, setUserFound] = useState("");
 
   const { isLoaded, userId, isSignedIn } = useAuth();
 
+  useEffect(() => {
+    const getUsers = async () => {
+      setUsers(
+        await fetch(apiUrls.user)
+          .then((response) => response.json())
+          .then((data) => data)
+      );
+    };
+    getUsers();
+  }, []);
+
   const handleInvitation = async () => {
+    setError("");
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
     await fetch(apiUrls.group, {
       method: "POST",
       headers: {
@@ -22,6 +43,26 @@ const AddFriend = () => {
       body: JSON.stringify({ email, userId }),
     });
     setEmail("");
+  };
+
+  const handleChange = (e: { target: { value: string } }) => {
+    const value = e.target.value.toLowerCase();
+    const length = value.length;
+    setUserFound("");
+    if (users && value) {
+      const user = users.find(
+        (u) =>
+          u.emailAddresses &&
+          u.emailAddresses.find(
+            (e) => e.emailAddress.substring(0, length).toLowerCase() === value
+          )
+      );
+      if (user) {
+        setUser(user);
+        setUserFound("User Found");
+      }
+    }
+    setEmail(value);
   };
 
   if (!isLoaded) {
@@ -66,9 +107,7 @@ const AddFriend = () => {
                 }
               >
                 <div className="max-h-fit">
-                  <h3 className="text-white text-center py-4">
-                    {email && "0 results found"}
-                  </h3>
+                  <h3 className="text-white text-center py-4">{userFound}</h3>
                 </div>
                 <h1
                   className="text-2xl text-white font-bold py-4"
@@ -77,16 +116,22 @@ const AddFriend = () => {
                   Add Friend
                 </h1>
                 <input
+                  type="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  id="email"
+                  onChange={handleChange}
                   className="text-4xl font-bold w-full bg-transparent outline-none placeholder-gray-400 text-green-500 py-4"
                   placeholder="Enter email..."
+                  required
                 />
+                <label htmlFor="email" className="text-red-500">
+                  {error}
+                </label>
                 <div className="flex justify-end text-white py-4">
                   <Link
                     href={"/"}
                     className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-                    title="Home"
+                    title="Back to Home"
                   >
                     Cancel
                   </Link>
@@ -94,9 +139,9 @@ const AddFriend = () => {
                     type="button"
                     className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
                     onClick={handleInvitation}
-                    title="Invite"
+                    title="Invite Friend"
                   >
-                    Send
+                    Invite
                   </button>
                 </div>
               </div>
