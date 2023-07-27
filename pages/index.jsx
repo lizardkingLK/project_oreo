@@ -52,7 +52,7 @@ const Messages = () => {
     };
 
     if (userId) {
-      console.log(userId);//user_2Sqj6ho1NeX2sOqq0O87xAi8i0N
+      console.log(userId); //user_2Sqj6ho1NeX2sOqq0O87xAi8i0N
       initializeFeeds(userId);
       initializeMessages(userId);
       socketInitializer();
@@ -258,13 +258,15 @@ const Messages = () => {
       <main className="min-h-screen" id="divHome">
         <div className="block md:flex items-center p-4 border-gray-900">
           <div className="basis-1/4 flex justify-between md:justify-start items-center my-4 md:m-0">
-            <button
-              id="btnToggleNavbar"
-              className="mr-4 md:mr-2 text-white hover:text-orange-600"
-              onClick={() => setNavbar(!navbar)}
-            >
-              <Bars />
-            </button>
+            {isSignedIn && (
+              <button
+                id="btnToggleNavbar"
+                className="mr-4 md:mr-2 text-white hover:text-orange-600"
+                onClick={() => setNavbar(!navbar)}
+              >
+                <Bars />
+              </button>
+            )}
             {!navbar && (
               <h1 className="ml-4 md:ml-2 text-3xl text-center md:text-left text-white font-bold">
                 OREO
@@ -272,15 +274,22 @@ const Messages = () => {
             )}
           </div>
         </div>
-        <UserNavbar navbar={navbar} setNavbar={setNavbar} status={isSignedIn} />
         {isSignedIn ? (
           <section className="flex justify-center">
             <div className="basis-3/4 md:basis-1/4">
-              <MessageLinkList
-                groups={groups}
-                setGroup={onSelectGroupHandler}
-                selectedGroup={group}
-              />
+              {navbar ? (
+                <UserNavbar
+                  navbar={navbar}
+                  setNavbar={setNavbar}
+                  status={isSignedIn}
+                />
+              ) : (
+                <MessageLinkList
+                  groups={groups}
+                  setGroup={onSelectGroupHandler}
+                  selectedGroup={group}
+                />
+              )}
             </div>
             <div
               className={`basis-3/4 absolute top-0 bg-black md:bg-transparent md:relative md:block container 

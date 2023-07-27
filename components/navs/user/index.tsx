@@ -31,7 +31,14 @@ const UserNavbar = (props: IUserNavbarProps) => {
             />
           )}
         </div>
-        {!isSignedIn && (
+        {isSignedIn ? (
+          <Link
+            className="text-xl text-center p-4 hover:text-white hover:bg-orange-600 font-medium"
+            href="/sign-in"
+          >
+            Add Friend
+          </Link>
+        ) : (
           <Link
             className="text-xl text-center p-4 hover:text-white hover:bg-orange-600 font-medium"
             href="/sign-in"
