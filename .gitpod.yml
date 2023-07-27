@@ -2,6 +2,6 @@
 # Learn more from ready-to-use templates: https://www.gitpod.io/docs/introduction/getting-started/quickstart
 
 tasks:
-  - name: installing dependencies
-  - init: npm ci && npm run build
+  - name: setup dev env
+  - init: npm ci && npm install -g dotenv-cli && npm run build
     command: npm run dev
