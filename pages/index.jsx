@@ -12,7 +12,7 @@ import UserNavbar from "@/components/navs/user";
 import Spinner from "@/components/svgs/spinner";
 import Dashboard from "@/components/dashboard";
 import Link from "next/link";
-import { useAuth, useUser } from "@clerk/nextjs";
+import { useAuth } from "@clerk/nextjs";
 let socket;
 
 const Messages = () => {
@@ -24,17 +24,52 @@ const Messages = () => {
   const [output, setOutput] = useState("");
   const [typing, setTyping] = useState(false);
   const [notifs, setNotifs] = useState(null);
-  const textInputRef = useRef(null);
-  const lastMessageRef = useRef(null);
-
-  const { isLoaded, userId, isSignedIn } = useAuth();
-
   const [session] = useState({
     token: {
       _id: "6436878a3efc9880a9bd95fa",
       user: { _id: "6436878a3efc9880a9bd95fa" },
     },
   });
+
+  const textInputRef = useRef(null);
+  const lastMessageRef = useRef(null);
+
+  const { isLoaded, userId, isSignedIn } = useAuth();
+
+  useEffect(() => setNavbar(false), [group, input]);
+
+  useEffect(() => {
+    const initializeFeeds = async (userId) => {
+      await fetch(`${apiUrls.feed}?id=${userId}`)
+        .then((response) => response.json())
+        .then((data) => setFeeds(data));
+    };
+
+    const initializeMessages = async (userId) => {
+      await fetch(`${apiUrls.message}?id=${userId}`)
+        .then((response) => response.json())
+        .then((data) => groupMessages(data, userId));
+    };
+
+    if (userId) {
+      console.log(userId);//user_2Sqj6ho1NeX2sOqq0O87xAi8i0N
+      initializeFeeds(userId);
+      initializeMessages(userId);
+      socketInitializer();
+    }
+  }, [userId]);
+
+  useEffect(() => {
+    if (typing && typing.userId && groups) {
+      const tempGroup = groups.find(
+        (group) => group.targetId === typing.userId
+      );
+      if (tempGroup) {
+        tempGroup.isOnline = true;
+        Object.assign(groups, tempGroup);
+      }
+    }
+  }, [typing, groups]);
 
   useEffect(() => {
     if (lastMessageRef.current) {
@@ -67,40 +102,6 @@ const Messages = () => {
       }
     }
   }, [output, groups]);
-
-  useEffect(() => setNavbar(false), [group, input]);
-
-  useEffect(() => {
-    const initializeFeeds = async (userId) => {
-      await fetch(`${apiUrls.feed}?id=${userId}`)
-        .then((response) => response.json())
-        .then((data) => setFeeds(data));
-    };
-
-    const initializeMessages = async (userId) => {
-      await fetch(`${apiUrls.message}?id=${userId}`)
-        .then((response) => response.json())
-        .then((data) => groupMessages(data, userId));
-    };
-
-    if (userId) {
-      initializeFeeds(userId);
-      initializeMessages(userId);
-      socketInitializer();
-    }
-  }, [userId]);
-
-  useEffect(() => {
-    if (typing && typing.userId && groups) {
-      const tempGroup = groups.find(
-        (group) => group.targetId === typing.userId
-      );
-      if (tempGroup) {
-        tempGroup.isOnline = true;
-        Object.assign(groups, tempGroup);
-      }
-    }
-  }, [typing, groups]);
 
   const groupMessages = (messages, userId) => {
     const groups = new Map();
