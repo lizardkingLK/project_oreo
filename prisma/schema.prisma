@@ -26,6 +26,14 @@ model GroupUser {
   status  Int    @default(1)
 }
 
+model Invitation {
+  id      Int    @id @default(autoincrement())
+  groupId Int
+  userId  String
+  ownerId String
+  status  Int    @default(1)
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("NEXT_PUBLIC_DATABASE_URL")
