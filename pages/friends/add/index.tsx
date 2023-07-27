@@ -65,6 +65,11 @@ const AddFriend = () => {
                   "bg-black md:bg-transparent md:relative md:block container p-4"
                 }
               >
+                <div className="max-h-fit">
+                  <h3 className="text-white text-center py-4">
+                    {email && "0 results found"}
+                  </h3>
+                </div>
                 <h1
                   className="text-2xl text-white font-bold py-4"
                   id="textTitle"
