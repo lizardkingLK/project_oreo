@@ -1,3 +1,4 @@
+import { supabaseClient } from "@/lib/supabase";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
@@ -6,17 +7,47 @@ export default async function handler(
 ) {
   try {
     if (req.method === "POST") {
-      // const result = await createGroup(req.body.email, req.body.userId);
-      // if (result && result.acknowledged) {
-      //   res
-      //     .status(201)
-      //     .json({ message: result.acknowledged, data: result.insertedId });
-      // }
-      return;
+      const { ownerId, userId } = req.body;
+
+      // create group
+      const { data: dataGroupCreate, error: errorGroupCreate } =
+        await supabaseClient
+          .from("Group")
+          .insert([{ name: `${ownerId}_${userId}` }])
+          .select();
+
+      if (errorGroupCreate) {
+        return res.status(500).send({ message: errorGroupCreate.message });
+      }
+
+      const [groupRecord] = dataGroupCreate;
+
+      // create group user
+      const { error: errorGroupUserCreate } = await supabaseClient
+        .from("GroupUser")
+        .insert([{ groupId: groupRecord.id, userId: ownerId }]);
+
+      if (errorGroupUserCreate) {
+        return res.status(500).send({ message: errorGroupUserCreate.message });
+      }
+
+      // create invitation
+      const { data: dataInvitationCreate, error: errorInvitationCreate } =
+        await supabaseClient
+          .from("Invitation")
+          .insert([{ groupId: groupRecord.id, ownerId, userId }])
+          .select();
+
+      if (errorInvitationCreate) {
+        return res.status(500).send({ message: errorInvitationCreate.message });
+      }
+
+      const [invitationRecord] = dataInvitationCreate;
+
+      return res.status(201).json(invitationRecord);
     }
     res.status(405).json({ message: "Only POST requests allowed" });
   } catch (error) {
-    res.status(500).send({ message: `{error.message}` });
-    return;
+    return res.status(500).send({ message: error });
   }
 }

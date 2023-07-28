@@ -2,13 +2,12 @@ import UserCard from "@/components/cards/user";
 import Layout from "@/components/layout";
 import UserNavbar from "@/components/navs/user";
 import Bars from "@/components/svgs/bars";
-import Close from "@/components/svgs/close";
 import Spinner from "@/components/svgs/spinner";
 import { apiUrls, userSearchMessageTypes } from "@/utils/enums";
 import { useAuth } from "@clerk/nextjs";
 import { User } from "@clerk/nextjs/dist/types/server";
-import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
+import { useRouter } from 'next/navigation';
 
 const AddFriend = () => {
   const [search, setSearch] = useState("");
@@ -16,8 +15,11 @@ const AddFriend = () => {
   const [users, setUsers] = useState<null | User[]>(null);
   const [user, setUser] = useState<null | User>();
   const [userFound, setUserFound] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const searchRef = useRef<HTMLInputElement>(null);
+
+  const { push } = useRouter();
 
   const { isLoaded, userId, isSignedIn } = useAuth();
 
@@ -33,13 +35,19 @@ const AddFriend = () => {
   }, []);
 
   const handleInvitation = async () => {
+    setLoading(true);
     await fetch(apiUrls.group, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ search, userId }),
-    });
+      body: JSON.stringify({ ownerId: userId, userId: user?.id }),
+    })
+      .then((response) => response.json())
+      .then(() => {
+        setLoading(false);
+        push("/");
+      });
   };
 
   const handleSearch = (event: { preventDefault: () => void }) => {
@@ -143,7 +151,11 @@ const AddFriend = () => {
                 </form>
                 <div className="h-max">
                   <h3 className="text-white py-4">{userFound}</h3>
-                  <UserCard user={user} handleInvitation={handleInvitation} />
+                  <UserCard
+                    user={user}
+                    handleInvitation={handleInvitation}
+                    loading={loading}
+                  />
                 </div>
               </div>
             )}
