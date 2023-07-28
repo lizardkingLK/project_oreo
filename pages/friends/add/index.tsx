@@ -50,11 +50,13 @@ const AddFriend = () => {
     if (users && value) {
       const user = users.find(
         (u) =>
-          u.username?.substring(0, length) === value ||
-          (u.emailAddresses &&
-            u.emailAddresses.find(
-              (e) => e.emailAddress.substring(0, length).toLowerCase() === value
-            ))
+          u.id !== userId &&
+          (u.username?.substring(0, length) === value ||
+            (u.emailAddresses &&
+              u.emailAddresses.find(
+                (e) =>
+                  e.emailAddress.substring(0, length).toLowerCase() === value
+              )))
       );
       if (user) {
         setUser(user);
@@ -62,7 +64,7 @@ const AddFriend = () => {
       }
     }
   };
-  
+
   const handleChange = (event: {
     target: { value: React.SetStateAction<string> };
   }) => {
@@ -120,7 +122,7 @@ const AddFriend = () => {
                 </h1>
                 <form
                   onSubmit={handleSearch}
-                  className="flex justify-between items-center"
+                  className="md:flex md:justify-between md:items-center"
                 >
                   <input
                     value={search}

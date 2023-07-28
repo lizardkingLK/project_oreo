@@ -21,7 +21,8 @@ const UserNavbar = (props: IUserNavbarProps) => {
         <div className="flex justify-center items-center p-4">
           {isSignedIn ? (
             <div className="p-4">
-              <UserButton afterSignOutUrl="/" />
+              <UserButton afterSignOutUrl="/" appearance={{elements: {avatarImage: "w-12 h-12", avatarBox: "w-12 h-12"}
+              }} />
             </div>
           ) : (
             <Image
