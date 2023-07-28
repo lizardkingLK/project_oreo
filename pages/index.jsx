@@ -45,16 +45,19 @@ const Messages = () => {
         .then((data) => setFeeds(data));
     };
 
-    const initializeMessages = async (userId) => {
-      await fetch(`${apiUrls.message}?id=${userId}`)
+    const initializeGroups = async (userId) => {
+      await fetch(`${apiUrls.group}?id=${userId}`)
         .then((response) => response.json())
-        .then((data) => groupMessages(data, userId));
+        .then((data) => 
+        console.log(data)
+        // groupMessages(data, userId)
+        );
     };
 
     if (userId) {
       console.log(userId); //user_2Sqj6ho1NeX2sOqq0O87xAi8i0N
+      initializeGroups(userId);
       initializeFeeds(userId);
-      initializeMessages(userId);
       socketInitializer();
     }
   }, [userId]);

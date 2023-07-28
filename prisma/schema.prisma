@@ -6,9 +6,10 @@ generator client {
 }
 
 model Group {
-  id     Int     @id @default(autoincrement())
-  name   String?
-  status Int     @default(1)
+  id        Int         @id @default(autoincrement())
+  name      String?
+  status    Int         @default(1)
+  GroupUser GroupUser[]
 }
 
 model Message {
@@ -22,6 +23,7 @@ model Message {
 model GroupUser {
   id      Int    @id @default(autoincrement())
   groupId Int
+  group   Group  @relation(fields: [groupId], references: [id])
   userId  String
   status  Int    @default(1)
 }

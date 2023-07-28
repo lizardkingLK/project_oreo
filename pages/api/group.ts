@@ -45,8 +45,22 @@ export default async function handler(
       const [invitationRecord] = dataInvitationCreate;
 
       return res.status(201).json(invitationRecord);
+    } else if (req.method === "GET") {
+      const { id } = req.query;
+
+      let { data: Groups, error } = await supabaseClient.from("Group").select(`
+    id,
+    GroupUser (
+      groupId
+    )
+  `);
+
+      console.log(Groups);
+
+      if (error) {
+        return res.status(500).send({ message: error.message });
+      }
     }
-    res.status(405).json({ message: "Only POST requests allowed" });
   } catch (error) {
     return res.status(500).send({ message: error });
   }
