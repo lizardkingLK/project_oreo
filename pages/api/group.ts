@@ -48,18 +48,17 @@ export default async function handler(
     } else if (req.method === "GET") {
       const { id } = req.query;
 
-      let { data: Groups, error } = await supabaseClient.from("Group").select(`
-    id,
-    GroupUser (
-      groupId
-    )
-  `);
-
-      console.log(Groups);
+      const { data, error } = await supabaseClient
+        .from("GroupUser")
+        .select()
+        .eq("userId", id)
+        .select(`Group (*)`);
 
       if (error) {
         return res.status(500).send({ message: error.message });
       }
+
+      return res.status(200).json(data);
     }
   } catch (error) {
     return res.status(500).send({ message: error });
