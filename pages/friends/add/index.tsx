@@ -1,20 +1,23 @@
+import UserCard from "@/components/cards/user";
 import Layout from "@/components/layout";
 import UserNavbar from "@/components/navs/user";
 import Bars from "@/components/svgs/bars";
+import Close from "@/components/svgs/close";
 import Spinner from "@/components/svgs/spinner";
-import { apiUrls } from "@/utils/enums";
+import { apiUrls, userSearchMessageTypes } from "@/utils/enums";
 import { useAuth } from "@clerk/nextjs";
 import { User } from "@clerk/nextjs/dist/types/server";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const AddFriend = () => {
-  const [email, setEmail] = useState("");
-  const [error, setError] = useState("");
+  const [search, setSearch] = useState("");
   const [navbar, setNavbar] = useState(false);
   const [users, setUsers] = useState<null | User[]>(null);
   const [user, setUser] = useState<null | User>();
   const [userFound, setUserFound] = useState("");
+
+  const searchRef = useRef<HTMLInputElement>(null);
 
   const { isLoaded, userId, isSignedIn } = useAuth();
 
@@ -30,39 +33,42 @@ const AddFriend = () => {
   }, []);
 
   const handleInvitation = async () => {
-    setError("");
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setError("Please enter a valid email address.");
-      return;
-    }
     await fetch(apiUrls.group, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email, userId }),
+      body: JSON.stringify({ search, userId }),
     });
-    setEmail("");
   };
 
-  const handleChange = (e: { target: { value: string } }) => {
-    const value = e.target.value.toLowerCase();
+  const handleSearch = (event: { preventDefault: () => void }) => {
+    event.preventDefault();
+    const value = searchRef?.current?.value ?? "";
     const length = value.length;
-    setUserFound("");
+    setUserFound(userSearchMessageTypes.notFound);
     if (users && value) {
       const user = users.find(
         (u) =>
-          u.emailAddresses &&
-          u.emailAddresses.find(
-            (e) => e.emailAddress.substring(0, length).toLowerCase() === value
-          )
+          u.username?.substring(0, length) === value ||
+          (u.emailAddresses &&
+            u.emailAddresses.find(
+              (e) => e.emailAddress.substring(0, length).toLowerCase() === value
+            ))
       );
       if (user) {
         setUser(user);
-        setUserFound("User Found");
+        setUserFound(userSearchMessageTypes.found);
       }
     }
-    setEmail(value);
+  };
+  
+  const handleChange = (event: {
+    target: { value: React.SetStateAction<string> };
+  }) => {
+    setSearch(event.target.value);
+    setUserFound("");
+    setUser(null);
   };
 
   if (!isLoaded) {
@@ -106,43 +112,36 @@ const AddFriend = () => {
                   "bg-black md:bg-transparent md:relative md:block container p-4"
                 }
               >
-                <div className="max-h-fit">
-                  <h3 className="text-white text-center py-4">{userFound}</h3>
-                </div>
                 <h1
                   className="text-2xl text-white font-bold py-4"
                   id="textTitle"
                 >
                   Add Friend
                 </h1>
-                <input
-                  type="email"
-                  value={email}
-                  id="email"
-                  onChange={handleChange}
-                  className="text-4xl font-bold w-full bg-transparent outline-none placeholder-gray-400 text-green-500 py-4"
-                  placeholder="Enter email..."
-                  required
-                />
-                <label htmlFor="email" className="text-red-500">
-                  {error}
-                </label>
-                <div className="flex justify-end text-white py-4">
-                  <Link
-                    href={"/"}
-                    className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-                    title="Back to Home"
-                  >
-                    Cancel
-                  </Link>
+                <form
+                  onSubmit={handleSearch}
+                  className="flex justify-between items-center"
+                >
+                  <input
+                    value={search}
+                    id="search"
+                    onChange={handleChange}
+                    className="text-xl md:text-5xl font-bold w-full bg-transparent outline-none placeholder-gray-400 text-green-500 py-4"
+                    placeholder="Enter email or username..."
+                    ref={searchRef}
+                    required
+                  />
                   <button
-                    type="button"
-                    className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
-                    onClick={handleInvitation}
-                    title="Invite Friend"
+                    type="submit"
+                    className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+                    title="Search"
                   >
-                    Invite
+                    Search
                   </button>
+                </form>
+                <div className="h-max">
+                  <h3 className="text-white py-4">{userFound}</h3>
+                  <UserCard user={user} handleInvitation={handleInvitation} />
                 </div>
               </div>
             )}

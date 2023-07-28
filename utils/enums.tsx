@@ -24,11 +24,11 @@ export enum cardBodyTypes {
   ELEMENT = 3,
 }
 
-export enum dbCollections {
-  users = "users",
-  messages = "messages",
-}
-
 export enum mediaTypes {
   image = "image",
+}
+
+export enum userSearchMessageTypes {
+  found = "User Found",
+  notFound = "No User Found",
 }
