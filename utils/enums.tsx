@@ -7,6 +7,11 @@ export enum interTypes {
   PRIVATE = 1,
 }
 
+export enum groupTypes {
+  PRIVATE = 1,
+  PUBLIC = 2,
+}
+
 export enum apiUrls {
   group = "/api/group",
   feed = "/api/feed",
@@ -31,4 +36,8 @@ export enum mediaTypes {
 export enum userSearchMessageTypes {
   found = "User Found",
   notFound = "No User Found",
+}
+
+export enum staticValues {
+  hi = "Hi!",
 }

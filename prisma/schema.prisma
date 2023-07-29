@@ -5,35 +5,18 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Group {
-  id        Int         @id @default(autoincrement())
-  name      String?
-  status    Int         @default(1)
-  GroupUser GroupUser[]
-}
-
 model Message {
-  id        Int      @id @default(autoincrement())
-  ownerId   String
-  createdAt DateTime @default(now())
-  content   String?
-  status    Int      @default(1)
-}
-
-model GroupUser {
-  id      Int    @id @default(autoincrement())
-  groupId Int
-  group   Group  @relation(fields: [groupId], references: [id])
-  userId  String
-  status  Int    @default(1)
-}
-
-model Invitation {
-  id      Int    @id @default(autoincrement())
-  groupId Int
-  userId  String
-  ownerId String
-  status  Int    @default(1)
+  id            Int      @id @default(autoincrement())
+  userId        String
+  groupId       String
+  groupType     Int      @default(1)
+  groupName     String?
+  groupImageUrl String?
+  messageType   Int      @default(1)
+  createdFor    String[]
+  content       String?
+  createdAt     DateTime @default(now())
+  status        Int      @default(1)
 }
 
 datasource db {

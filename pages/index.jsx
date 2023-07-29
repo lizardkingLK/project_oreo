@@ -3,7 +3,7 @@ import Layout from "@/components/layout";
 import MessageLinkList from "@/components/lists/message/MessageLinkList";
 import MessageList from "@/components/lists/message/MessageList";
 import MessageEditor from "@/components/forms/message";
-import { apiUrls, mediaTypes, messageTypes } from "@/utils/enums";
+import { apiUrls, groupTypes, mediaTypes, messageTypes } from "@/utils/enums";
 import io from "socket.io-client";
 import ChevronBack from "@/components/svgs/chevronBack";
 import Bars from "@/components/svgs/bars";
@@ -24,12 +24,6 @@ const Messages = () => {
   const [output, setOutput] = useState("");
   const [typing, setTyping] = useState(false);
   const [notifs, setNotifs] = useState(null);
-  const [session] = useState({
-    token: {
-      _id: "6436878a3efc9880a9bd95fa",
-      user: { _id: "6436878a3efc9880a9bd95fa" },
-    },
-  });
 
   const textInputRef = useRef(null);
   const lastMessageRef = useRef(null);
@@ -46,16 +40,12 @@ const Messages = () => {
     };
 
     const initializeGroups = async (userId) => {
-      await fetch(`${apiUrls.group}?id=${userId}`)
+      await fetch(`${apiUrls.group}?userId=${userId}`)
         .then((response) => response.json())
-        .then((data) => 
-        console.log(data)
-        // groupMessages(data, userId)
-        );
+        .then((data) => groupMessages(data, userId));
     };
 
     if (userId) {
-      console.log(userId); //user_2Sqj6ho1NeX2sOqq0O87xAi8i0N
       initializeGroups(userId);
       initializeFeeds(userId);
       socketInitializer();
@@ -111,29 +101,39 @@ const Messages = () => {
     let groupId, group, tempMessages, target, createdOnDate;
     messages.forEach((message, _) => {
       groupId = message.groupId;
-      createdOnDate = new Date(message.createdOn);
+      createdOnDate = new Date(message.createdAt);
       Object.assign(message, {
         type:
-          message.fromId === userId ? messageTypes.SENT : messageTypes.RECEIVED,
+          message.userId === userId ? messageTypes.SENT : messageTypes.RECEIVED,
         createdOn: getTimeConverted(createdOnDate),
         createdOnDate,
       });
       if (groups.has(groupId)) {
         group = groups.get(groupId);
-        tempMessages = group.messages;
+        tempMessages = group.messages ?? [];
         tempMessages[tempMessages.length] = message;
         Object.assign(group, {
           lastMessage: message,
           messages: tempMessages,
         });
       } else {
-        target = message.fromId === userId ? message.to : message.from;
+        if (message.groupType === groupTypes.PRIVATE) {
+          if (message.userId === userId) {
+            target = message.createdFor[0];
+          } else {
+            target = message.createdFor[1];
+          }
+        } else if (message.groupType === groupTypes.PUBLIC) {
+          // TODO: set group meta details
+        }
         target &&
           groups.set(groupId, {
             id: groupId,
-            name: target.name,
+            name: target.firstName
+              ? `${target.firstName} ${target.lastName}`
+              : target.username,
             displayImage: target.displayImage,
-            targetId: target._id,
+            targetId: target.id,
             isStatus: false,
             isOnline: false,
             messages: [message],
@@ -265,7 +265,7 @@ const Messages = () => {
               <button
                 id="btnToggleNavbar"
                 className="mr-4 md:mr-2 text-white hover:text-orange-600"
-                onClick={() => setNavbar(!navbar)}
+                onClick={() => setNavbar((prevState) => !prevState)}
               >
                 <Bars />
               </button>
@@ -345,7 +345,9 @@ const Messages = () => {
                   </div>
                 </div>
               ) : (
-                <Dashboard session={session} groups={groups} feeds={feeds} />
+                <div className="hidden md:block">
+                  <Dashboard groups={groups} feeds={feeds} />
+                </div>
               )}
             </div>
           </section>

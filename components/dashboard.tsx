@@ -3,19 +3,20 @@ import Avatar from "./avatar";
 import SummaryCard from "./cards/summary";
 import { cardBodyTypes } from "@/utils/enums";
 import FeedList from "./feeds";
+import { useUser } from "@clerk/nextjs";
 
 const Dashboard = (props: any) => {
-  if (props) {
-    const { session, groups, feeds } = props,
-      token = session.token,
-      name = token.name;
+  const {user, isLoaded} = useUser();
+
+  if (props && isLoaded) {
+    const { groups, feeds } = props;
 
     return (
       <div className="p-4">
         <div className="flex justify-between items-center">
           <div className="basis-2/4 md:basis-2/4">
             <h1 className="text-2xl text-white font-bold" id="textGreeting">
-              Hello <span className="text-green-400">{name}</span>
+              Hello <span className="text-green-400">{user?.firstName ?? user?.username}</span>
             </h1>
           </div>
           <div className="basis-2/4 md:basis-2/4 flex justify-end">

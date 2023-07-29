@@ -26,9 +26,9 @@ const MessageLink = (props: IMessageLinkProps) => {
         onClick={() => messageOnClick(messageId)}
       >
         <div
-          className={`flex justify-center items-start
-                mb-4 py-4 px-2 rounded-md hover:bg-gray-800
-                ${messageIsActive ? "bg-gray-900" : null}`}
+          className={`flex justify-center items-start mb-4 py-4 px-2 hover:bg-gray-800 ${
+            messageIsActive ? "bg-gray-900" : null
+          }`}
         >
           <Avatar
             name={messageAuthorName}
@@ -38,7 +38,9 @@ const MessageLink = (props: IMessageLinkProps) => {
             isOnline={messageAuthorIsOnline}
           />
           <div className="basis-2/4 ml-4 font-bold truncate">
-            <h1 className="text-xl text-white">{messageAuthorName}</h1>
+            <h1 className="text-xl text-white truncate max-w-xs">
+              {messageAuthorName}
+            </h1>
             <p className={`text-sm text-gray-500`}>
               {getBriefContent(messageContent)}
             </p>

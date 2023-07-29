@@ -1,4 +1,7 @@
 import { supabaseClient } from "@/lib/supabase";
+import { staticValues } from "@/utils/enums";
+import { clerkClient } from "@clerk/nextjs";
+import { randomUUID } from "crypto";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
@@ -9,56 +12,54 @@ export default async function handler(
     if (req.method === "POST") {
       const { ownerId, userId } = req.body;
 
-      // create group
-      const { data: dataGroupCreate, error: errorGroupCreate } =
+      const { data: dataRecordCreate, error: errorRecordCreate } =
         await supabaseClient
-          .from("Group")
-          .insert([{ name: `${ownerId}_${userId}` }])
+          .from("Message")
+          .insert([
+            {
+              userId: ownerId,
+              groupId: randomUUID(),
+              createdFor: [userId, ownerId],
+              content: staticValues.hi,
+            },
+          ])
           .select();
 
-      if (errorGroupCreate) {
-        return res.status(500).send({ message: errorGroupCreate.message });
+      if (errorRecordCreate) {
+        return res.status(500).send({ message: errorRecordCreate.message });
       }
 
-      const [groupRecord] = dataGroupCreate;
-
-      // create group user
-      const { error: errorGroupUserCreate } = await supabaseClient
-        .from("GroupUser")
-        .insert([{ groupId: groupRecord.id, userId: ownerId }]);
-
-      if (errorGroupUserCreate) {
-        return res.status(500).send({ message: errorGroupUserCreate.message });
-      }
-
-      // create invitation
-      const { data: dataInvitationCreate, error: errorInvitationCreate } =
-        await supabaseClient
-          .from("Invitation")
-          .insert([{ groupId: groupRecord.id, ownerId, userId }])
-          .select();
-
-      if (errorInvitationCreate) {
-        return res.status(500).send({ message: errorInvitationCreate.message });
-      }
-
-      const [invitationRecord] = dataInvitationCreate;
-
-      return res.status(201).json(invitationRecord);
+      return res.status(201).json(dataRecordCreate);
     } else if (req.method === "GET") {
-      const { id } = req.query;
+      const { userId } = req.query;
 
-      const { data, error } = await supabaseClient
-        .from("GroupUser")
+      const { data: dataMessages, error: errorMessages } = await supabaseClient
+        .from("Message")
         .select()
-        .eq("userId", id)
-        .select(`Group (*)`);
+        .contains("createdFor", [userId]);
 
-      if (error) {
-        return res.status(500).send({ message: error.message });
+      if (errorMessages) {
+        return res.status(500).send({ message: errorMessages.message });
       }
 
-      return res.status(200).json(data);
+      const users = await clerkClient.users.getUserList();
+
+      let user, userDetails: any[];
+      const messages = dataMessages.map((m) => {
+        userDetails = m.createdFor.map((mu: string) => {
+          user = users.find((u) => u.id === mu);
+          return {
+            id: user?.id,
+            displayImage: user?.imageUrl,
+            firstName: user?.firstName,
+            lastName: user?.lastName,
+            username: user?.username,
+          };
+        });
+        return Object.assign(m, { createdFor: userDetails });
+      });
+
+      return res.status(200).json(messages);
     }
   } catch (error) {
     return res.status(500).send({ message: error });

@@ -8,6 +8,9 @@ module.exports = {
     container: {
       center: true,
     },
+    fontFamily: {
+      'body': ['"Open Sans"'],
+    },
     extend: {},
   },
   plugins: [],
