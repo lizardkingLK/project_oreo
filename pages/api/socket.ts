@@ -21,6 +21,8 @@ interface NextApiResponseWithSocket extends NextApiResponse {
   socket: SocketWithIO;
 }
 
+const socketArray: any[] = [];
+
 const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
   if (res.socket.server.io) {
     console.log("Socket is already running");
@@ -38,6 +40,22 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
 
       socket.on("is-typing", (typing) => {
         socket.broadcast.emit("is-typing", typing);
+      });
+
+      socket.on("new-window", (identity) => {
+        if (socketArray.find((s) => s.userId === identity.userId)) {
+          socket.emit("new-window", true);
+        } else {
+          socketArray.push({ id: socket.id, userId: identity.userId });
+          socket.emit("new-window", false);
+        }
+      });
+
+      socket.on("disconnect", () => {
+        const index = socketArray.findIndex((s) => s.id === socket.id);
+        if (index !== -1) {
+          socketArray.splice(index, 1);
+        }
       });
     });
   }

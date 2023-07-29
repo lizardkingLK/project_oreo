@@ -3,7 +3,13 @@ import Layout from "@/components/layout";
 import MessageLinkList from "@/components/lists/message/MessageLinkList";
 import MessageList from "@/components/lists/message/MessageList";
 import MessageEditor from "@/components/forms/message";
-import { apiUrls, groupTypes, mediaTypes, messageTypes } from "@/utils/enums";
+import {
+  apiUrls,
+  cardBodyTypes,
+  groupTypes,
+  mediaTypes,
+  messageTypes,
+} from "@/utils/enums";
 import io from "socket.io-client";
 import ChevronBack from "@/components/svgs/chevronBack";
 import Bars from "@/components/svgs/bars";
@@ -13,6 +19,7 @@ import Spinner from "@/components/svgs/spinner";
 import Dashboard from "@/components/dashboard";
 import { useAuth } from "@clerk/nextjs";
 import Welcome from "@/components/welcome";
+import SummaryCard from "@/components/cards/summary";
 let socket;
 
 const Messages = () => {
@@ -24,6 +31,7 @@ const Messages = () => {
   const [output, setOutput] = useState("");
   const [typing, setTyping] = useState(false);
   const [notifs, setNotifs] = useState(null);
+  const [disabled, setDisabled] = useState(false);
 
   const textInputRef = useRef(null);
   const lastMessageRef = useRef(null);
@@ -154,7 +162,11 @@ const Messages = () => {
     socket = io();
 
     socket.on("connect", () => {
-      console.log(socket.id);
+      socket.emit("new-window", { userId });
+    });
+
+    socket.on("new-window", (isExist) => {
+      setDisabled(isExist);
     });
 
     socket.on("update-input", (msg) => {
@@ -247,6 +259,19 @@ const Messages = () => {
       onSubmitHandler();
     }
   };
+
+  if (disabled) {
+    return (
+      <section className="h-screen flex justify-center items-center">
+        <SummaryCard
+          cardStyle={"bg-green-600 text-white rounded-md"}
+          cardHeaderTitle={"Warning"}
+          cardBodyType={cardBodyTypes.STRING}
+          cardBodyContent={"App is opened in another window. Close it first."}
+        />
+      </section>
+    );
+  }
 
   if (!isLoaded) {
     return (
