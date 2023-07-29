@@ -56,7 +56,7 @@ const Messages = () => {
     if (userId) {
       initializeGroups(userId);
       initializeFeeds(userId);
-      socketInitializer();
+      socketInitializer((sock) => sock.emit("new-window", { userId }));
     }
   }, [userId]);
 
@@ -157,12 +157,12 @@ const Messages = () => {
     );
   };
 
-  const socketInitializer = async () => {
+  const socketInitializer = async (proceed) => {
     await fetch(apiUrls.socket);
     socket = io();
 
     socket.on("connect", () => {
-      socket.emit("new-window", { userId });
+      console.log("connected");
     });
 
     socket.on("new-window", (isExist) => {
@@ -176,6 +176,8 @@ const Messages = () => {
     socket.on("is-typing", (typing) => {
       setTyping(typing);
     });
+
+    proceed(socket);
   };
 
   const onChangeHandler = (e) => {
