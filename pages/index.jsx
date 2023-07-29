@@ -172,7 +172,7 @@ const Messages = () => {
       socket.emit("is-typing", {
         value: true,
         groupId: group.id,
-        name: session.token.name,
+        name: "Someone",
         userId,
       });
   };

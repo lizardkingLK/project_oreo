@@ -24,6 +24,7 @@ export interface IGroupProps {
     displayImage: string;
     isStatus: boolean;
     isOnline: boolean;
+    messages: IMessageProps[];
     lastMessage: IMessageProps;
 }
 
