@@ -20,7 +20,6 @@ import Dashboard from "@/components/dashboard";
 import { useAuth } from "@clerk/nextjs";
 import Welcome from "@/components/welcome";
 import SummaryCard from "@/components/cards/summary";
-import Ably from "ably";
 let socket;
 
 const Messages = () => {
@@ -54,27 +53,10 @@ const Messages = () => {
         .then((data) => groupMessages(data, userId));
     };
 
-    const initializeSocket = async () => {
-      const ably = new Ably.Realtime.Promise({
-        authUrl: apiUrls.ably,
-      });
-      await ably.connection.once("connected");
-      console.log("Connected to Ably!");
-
-      const channel = ably.channels.get("po_channel_messaging");
-
-      await channel.subscribe("greeting", (message) => {
-        console.log("Received a greeting message in realtime: " + message.data);
-      });
-
-      await channel.publish("greeting", "hello!");
-    };
-
     if (userId) {
       initializeGroups(userId);
       initializeFeeds(userId);
-      // initializeSocket();
-      // socketInitializer((sock) => sock.emit("new-window", { userId }));
+      socketInitializer((sock) => sock.emit("new-window", { userId }));
     }
   }, [userId]);
 
@@ -125,7 +107,6 @@ const Messages = () => {
   const groupMessages = (messages, userId) => {
     const groups = new Map();
     let groupId, group, tempMessages, target, createdOnDate;
-    console.log(messages);
     messages &&
       messages.length > 0 &&
       messages.forEach((message, _) => {
@@ -272,7 +253,7 @@ const Messages = () => {
       });
   };
 
-  const onSelectGroupHandler = (groupId) => {
+  const onSelectGroupHandler = async (groupId) => {
     setGroup(groups && groups.find((g) => g.id === groupId));
     if (group) {
       textInputRef.current.focus();

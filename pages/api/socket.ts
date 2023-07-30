@@ -1,3 +1,5 @@
+import { supabaseClient } from "@/lib/supabase";
+import { randomUUID } from "crypto";
 import type { Server as HTTPServer } from "http";
 import type { Socket as NetSocket } from "net";
 import { NextApiResponse } from "next";
@@ -34,7 +36,17 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
 
     io.on("connection", (socket) => {
       socket.on("new-message", async (msg) => {
-        // await createMessage(msg);
+        await supabaseClient
+          .from("Message")
+          .insert([
+            {
+              userId: msg.fromId,
+              groupId: msg.groupId,
+              createdFor: [msg.toId, msg.fromId],
+              content: msg.content,
+            },
+          ])
+          .select();
         socket.broadcast.emit("update-input", msg);
       });
 

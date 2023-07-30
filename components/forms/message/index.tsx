@@ -1,6 +1,5 @@
 import React, { useRef, useState } from "react";
 import { IMessageEditorProps } from "@/types";
-import Close from "@/components/svgs/close";
 import Send from "@/components/svgs/send";
 import Emoji from "@/components/svgs/emoji";
 import Attachment from "@/components/svgs/attachment";
