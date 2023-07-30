@@ -10,58 +10,56 @@ export default async function handler(
 ) {
   try {
     if (req.method === "POST") {
-      return res.status(200).json([]);
+      const { ownerId, userId } = req.body;
 
-    //   const { ownerId, userId } = req.body;
+      const { data: dataRecordCreate, error: errorRecordCreate } =
+        await supabaseClient
+          .from("Message")
+          .insert([
+            {
+              userId: ownerId,
+              groupId: randomUUID(),
+              createdFor: [userId, ownerId],
+              content: staticValues.hi,
+            },
+          ])
+          .select();
 
-    //   const { data: dataRecordCreate, error: errorRecordCreate } =
-    //     await supabaseClient
-    //       .from("Message")
-    //       .insert([
-    //         {
-    //           userId: ownerId,
-    //           groupId: randomUUID(),
-    //           createdFor: [userId, ownerId],
-    //           content: staticValues.hi,
-    //         },
-    //       ])
-    //       .select();
+      if (errorRecordCreate) {
+        return res.status(500).send({ message: errorRecordCreate.message });
+      }
 
-    //   if (errorRecordCreate) {
-    //     return res.status(500).send({ message: errorRecordCreate.message });
-    //   }
+      return res.status(201).json(dataRecordCreate);
+    } else if (req.method === "GET") {
+      const { userId } = req.query;
 
-    //   return res.status(201).json(dataRecordCreate);
-    // } else if (req.method === "GET") {
-    //   const { userId } = req.query;
+      const { data: dataMessages, error: errorMessages } = await supabaseClient
+        .from("Message")
+        .select()
+        .contains("createdFor", [userId]);
 
-    //   const { data: dataMessages, error: errorMessages } = await supabaseClient
-    //     .from("Message")
-    //     .select()
-    //     .contains("createdFor", [userId]);
+      if (errorMessages) {
+        return res.status(500).send({ message: errorMessages.message });
+      }
 
-    //   if (errorMessages) {
-    //     return res.status(500).send({ message: errorMessages.message });
-    //   }
+      const users = await clerkClient.users.getUserList();
 
-    //   const users = await clerkClient.users.getUserList();
+      let user, userDetails: any[];
+      const messages = dataMessages.map((m) => {
+        userDetails = m?.createdFor?.map((mu: string) => {
+          user = users.find((u) => u.id === mu);
+          return {
+            id: user?.id,
+            displayImage: user?.imageUrl,
+            firstName: user?.firstName,
+            lastName: user?.lastName,
+            username: user?.username,
+          };
+        });
+        return Object.assign(m, { createdFor: userDetails ?? [] });
+      });
 
-    //   let user, userDetails: any[];
-    //   const messages = dataMessages.map((m) => {
-    //     userDetails = m.createdFor.map((mu: string) => {
-    //       user = users.find((u) => u.id === mu);
-    //       return {
-    //         id: user?.id,
-    //         displayImage: user?.imageUrl,
-    //         firstName: user?.firstName,
-    //         lastName: user?.lastName,
-    //         username: user?.username,
-    //       };
-    //     });
-    //     return Object.assign(m, { createdFor: userDetails });
-    //   });
-
-    //   return res.status(200).json(messages);
+      return res.status(200).json(messages ?? []);
     }
   } catch (error) {
     return res.status(500).send({ message: error });
