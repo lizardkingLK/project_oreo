@@ -59,7 +59,9 @@ export default async function handler(
         return Object.assign(m, { createdFor: userDetails });
       });
 
-      return res.status(200).json(messages);
+      // return res.status(200).json(messages);
+      return res.status(200).json([]);
+
     }
   } catch (error) {
     return res.status(500).send({ message: error });
