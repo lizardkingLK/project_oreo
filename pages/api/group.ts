@@ -10,6 +10,8 @@ export default async function handler(
 ) {
   try {
     if (req.method === "POST") {
+      return res.status(200).json([]);
+
       const { ownerId, userId } = req.body;
 
       const { data: dataRecordCreate, error: errorRecordCreate } =
@@ -59,9 +61,7 @@ export default async function handler(
         return Object.assign(m, { createdFor: userDetails });
       });
 
-      // return res.status(200).json(messages);
-      return res.status(200).json([]);
-
+      return res.status(200).json(messages);
     }
   } catch (error) {
     return res.status(500).send({ message: error });
