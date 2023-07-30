@@ -125,48 +125,53 @@ const Messages = () => {
   const groupMessages = (messages, userId) => {
     const groups = new Map();
     let groupId, group, tempMessages, target, createdOnDate;
-    messages.forEach((message, _) => {
-      groupId = message.groupId;
-      createdOnDate = new Date(message.createdAt);
-      Object.assign(message, {
-        type:
-          message.userId === userId ? messageTypes.SENT : messageTypes.RECEIVED,
-        createdOn: getTimeConverted(createdOnDate),
-        createdOnDate,
-      });
-      if (groups.has(groupId)) {
-        group = groups.get(groupId);
-        tempMessages = group.messages ?? [];
-        tempMessages[tempMessages.length] = message;
-        Object.assign(group, {
-          lastMessage: message,
-          messages: tempMessages,
+    console.log(messages);
+    messages &&
+      messages.length > 0 &&
+      messages.forEach((message, _) => {
+        groupId = message.groupId;
+        createdOnDate = new Date(message.createdAt);
+        Object.assign(message, {
+          type:
+            message.userId === userId
+              ? messageTypes.SENT
+              : messageTypes.RECEIVED,
+          createdOn: getTimeConverted(createdOnDate),
+          createdOnDate,
         });
-      } else {
-        if (message.groupType === groupTypes.PRIVATE) {
-          if (message.userId === userId) {
-            target = message.createdFor[0];
-          } else {
-            target = message.createdFor[1];
-          }
-        } else if (message.groupType === groupTypes.PUBLIC) {
-          // TODO: set group meta details
-        }
-        target &&
-          groups.set(groupId, {
-            id: groupId,
-            name: target.firstName
-              ? `${target.firstName} ${target.lastName}`
-              : target.username,
-            displayImage: target.displayImage,
-            targetId: target.id,
-            isStatus: false,
-            isOnline: false,
-            messages: [message],
+        if (groups.has(groupId)) {
+          group = groups.get(groupId);
+          tempMessages = group.messages ?? [];
+          tempMessages[tempMessages.length] = message;
+          Object.assign(group, {
             lastMessage: message,
+            messages: tempMessages,
           });
-      }
-    });
+        } else {
+          if (message.groupType === groupTypes.PRIVATE) {
+            if (message.userId === userId) {
+              target = message.createdFor[0];
+            } else {
+              target = message.createdFor[1];
+            }
+          } else if (message.groupType === groupTypes.PUBLIC) {
+            // TODO: set group meta details
+          }
+          target &&
+            groups.set(groupId, {
+              id: groupId,
+              name: target.firstName
+                ? `${target.firstName} ${target.lastName}`
+                : target.username,
+              displayImage: target.displayImage,
+              targetId: target.id,
+              isStatus: false,
+              isOnline: false,
+              messages: [message],
+              lastMessage: message,
+            });
+        }
+      });
     setGroups(
       Array.from(groups.values()).sort(
         (first, second) =>
