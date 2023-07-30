@@ -20,6 +20,7 @@ import Dashboard from "@/components/dashboard";
 import { useAuth } from "@clerk/nextjs";
 import Welcome from "@/components/welcome";
 import SummaryCard from "@/components/cards/summary";
+import Ably from "ably";
 let socket;
 
 const Messages = () => {
@@ -53,10 +54,27 @@ const Messages = () => {
         .then((data) => groupMessages(data, userId));
     };
 
+    const initializeSocket = async () => {
+      const ably = new Ably.Realtime.Promise({
+        authUrl: apiUrls.ably,
+      });
+      await ably.connection.once("connected");
+      console.log("Connected to Ably!");
+
+      const channel = ably.channels.get("po_channel_messaging");
+
+      await channel.subscribe("greeting", (message) => {
+        console.log("Received a greeting message in realtime: " + message.data);
+      });
+
+      await channel.publish("greeting", "hello!");
+    };
+
     if (userId) {
       initializeGroups(userId);
       initializeFeeds(userId);
-      socketInitializer((sock) => sock.emit("new-window", { userId }));
+      initializeSocket();
+      // socketInitializer((sock) => sock.emit("new-window", { userId }));
     }
   }, [userId]);
 

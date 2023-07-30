@@ -14,7 +14,7 @@ export default function App({
         <meta name="description" content="Oreo Social" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <ClerkProvider {...pageProps} publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
+      <ClerkProvider {...pageProps}>
         <Component {...pageProps} />
       </ClerkProvider>
     </>
