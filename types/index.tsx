@@ -44,7 +44,7 @@ export interface IMessageListProps {
     group: IGroupProps;
     typing: ITypingProps;
     notifs: boolean;
-    lastMessageRef: LegacyRef<HTMLInputElement>
+    lastMessageRef: LegacyRef<HTMLDivElement>
 }
 
 export interface IMessageLinkProps {
