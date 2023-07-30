@@ -73,7 +73,7 @@ const Messages = () => {
     if (userId) {
       initializeGroups(userId);
       initializeFeeds(userId);
-      initializeSocket();
+      // initializeSocket();
       // socketInitializer((sock) => sock.emit("new-window", { userId }));
     }
   }, [userId]);
