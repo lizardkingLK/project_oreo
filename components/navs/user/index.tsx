@@ -6,6 +6,7 @@ import { UserButton, useAuth } from "@clerk/nextjs";
 import Link from "next/link";
 import Invitation from "@/components/svgs/invitation";
 import Home from "@/components/svgs/home";
+import Feeds from "@/components/svgs/feeds";
 
 const UserNavbar = (props: IUserNavbarProps) => {
   const { isSignedIn } = useAuth();
@@ -21,8 +22,15 @@ const UserNavbar = (props: IUserNavbarProps) => {
         <div className="flex justify-center items-center p-4">
           {isSignedIn ? (
             <div className="p-4">
-              <UserButton afterSignOutUrl="/" appearance={{elements: {avatarImage: "w-12 h-12", avatarBox: "w-12 h-12"}
-              }} />
+              <UserButton
+                afterSignOutUrl="/"
+                appearance={{
+                  elements: {
+                    avatarImage: "w-12 h-12",
+                    avatarBox: "w-12 h-12",
+                  },
+                }}
+              />
             </div>
           ) : (
             <Image
@@ -36,24 +44,31 @@ const UserNavbar = (props: IUserNavbarProps) => {
         </div>
         {isSignedIn ? (
           <>
-          <Link
-            className="text-xl text-center p-4 hover:text-white hover:bg-orange-600 font-medium flex items-center justify-start"
-            href="/"
-          >
-            <Home />
-            &nbsp;&nbsp;&nbsp;Home
-          </Link>
-          <Link
-            className="text-xl text-center p-4 hover:text-white hover:bg-orange-600 font-medium flex items-center justify-start"
-            href="/friends/add"
-          >
-            <Invitation />
-            &nbsp;&nbsp;&nbsp;Add Friend
-          </Link>
+            <Link
+              className="text-xl text-center p-4 hover:text-white hover:bg-stone-600 font-medium flex items-center justify-start"
+              href="/"
+            >
+              <Home />
+              &nbsp;&nbsp;&nbsp;Home
+            </Link>
+            <Link
+              className="text-xl text-center p-4 hover:text-white hover:bg-stone-600 font-medium flex items-center justify-start"
+              href="/friends/add"
+            >
+              <Invitation />
+              &nbsp;&nbsp;&nbsp;Add Friend
+            </Link>
+            <Link
+              className="text-xl text-center p-4 hover:text-white hover:bg-stone-600 font-medium flex items-center justify-start"
+              href="/friends/add"
+            >
+              <Feeds />
+              &nbsp;&nbsp;&nbsp;Feeds
+            </Link>
           </>
         ) : (
           <Link
-            className="text-xl text-center p-4 hover:text-white hover:bg-orange-600 font-medium"
+            className="text-xl text-center p-4 hover:text-white hover:bg-stone-600 font-medium"
             href="/sign-in"
           >
             Login
@@ -61,8 +76,8 @@ const UserNavbar = (props: IUserNavbarProps) => {
         )}
         {navbar && (
           <button
-            className={`absolute left-full mt-8 ml-4 hover:text-orange-600
-                        ${navbar ? "text-orange-800" : "text-white"}`}
+            className={`absolute left-full mt-8 ml-4 hover:text-stone-600
+                        ${navbar ? "text-stone-800" : "text-white"}`}
             onClick={() => setNavbar(!navbar)}
           >
             <Bars />

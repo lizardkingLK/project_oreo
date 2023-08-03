@@ -3,8 +3,8 @@ import React from "react";
 
 const Register = () => {
   return (
-    <div className="h-screen flex justify-center items-center text-white bg-gray-800">
-      <div className="w-96 bg-gray-900 rounded-3xl">
+    <div className="h-screen flex justify-center items-center text-white bg-stone-800">
+      <div className="w-96 bg-stone-900 rounded-3xl">
         <div className="p-8 flex justify-center">
           <Image
             src={"/favicon.png"}
@@ -18,7 +18,7 @@ const Register = () => {
             Username
           </label>
           <input
-            className="px-4 py-2 text-md text-black w-full rounded-lg bg-gray-200"
+            className="px-4 py-2 text-md text-black w-full rounded-lg bg-stone-200"
             type="text"
             id="username"
             name="Username"
@@ -29,7 +29,7 @@ const Register = () => {
             Email
           </label>
           <input
-            className="px-4 py-2 text-md text-black w-full rounded-lg bg-gray-200"
+            className="px-4 py-2 text-md text-black w-full rounded-lg bg-stone-200"
             type="email"
             id="email"
             name="Email"
@@ -40,7 +40,7 @@ const Register = () => {
             Password
           </label>
           <input
-            className="px-4 py-2 text-md text-black w-full rounded-lg bg-gray-200"
+            className="px-4 py-2 text-md text-black w-full rounded-lg bg-stone-200"
             type="password"
             id="password"
             name="Password"
@@ -51,7 +51,7 @@ const Register = () => {
             Repeat Password
           </label>
           <input
-            className="px-4 py-2 text-md text-black w-full rounded-lg bg-gray-200"
+            className="px-4 py-2 text-md text-black w-full rounded-lg bg-stone-200"
             type="password"
             id="repeatPassword"
             name="RepeatPassword"
@@ -59,7 +59,7 @@ const Register = () => {
         </div>
         <div className="pt-6 pb-12 px-12 flex justify-center">
           <button
-            className="bg-gray-800 hover:bg-gray-900 text-white p-4 w-full rounded-md"
+            className="bg-stone-800 hover:bg-stone-900 text-white p-4 w-full rounded-md"
             type="submit"
           >
             Sign Up Now

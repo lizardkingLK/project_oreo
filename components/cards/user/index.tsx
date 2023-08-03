@@ -28,12 +28,12 @@ const UserCard = ({
             />
           </div>
           <div>
-            <h5 className="text-xl font-medium text-gray-900 dark:text-white">
+            <h5 className="text-xl font-medium text-stone-900 dark:text-white">
               {user.firstName
                 ? `${user.firstName} ${user.lastName}`
                 : user.username}
             </h5>
-            <span className="text-sm text-gray-500 dark:text-gray-400">
+            <span className="text-sm text-stone-500 dark:text-stone-400">
               {user.emailAddresses && user.emailAddresses[0].emailAddress}
             </span>
           </div>

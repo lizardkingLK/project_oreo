@@ -2,6 +2,7 @@ import React from "react";
 import Avatar from "@/components/avatar";
 import { IMessageLinkProps } from "@/types";
 import { getBriefContent } from "@/utils/helpers";
+import Link from "next/link";
 
 const MessageLink = (props: IMessageLinkProps) => {
   if (props) {
@@ -19,15 +20,15 @@ const MessageLink = (props: IMessageLinkProps) => {
       messageUnread,
     } = props;
     return (
-      <a
-        href={void 0}
+      <Link
+        href={`/#`}
         className="cursor-pointer"
         title={messageAuthorName}
         onClick={() => messageOnClick(messageId)}
       >
         <div
-          className={`flex justify-center items-start mb-4 py-4 px-2 hover:bg-gray-800 ${
-            messageIsActive ? "bg-gray-900" : null
+          className={`flex justify-center items-start mb-4 py-4 rounded-2xl hover:bg-stone-800 ${
+            messageIsActive ? "bg-stone-900" : null
           }`}
         >
           <Avatar
@@ -41,7 +42,7 @@ const MessageLink = (props: IMessageLinkProps) => {
             <h1 className="text-xl text-white truncate max-w-xs">
               {messageAuthorName}
             </h1>
-            <p className={`text-sm text-gray-500`}>
+            <p className={"text-sm text-stone-500 truncate max-w-xs"}>
               {getBriefContent(messageContent)}
             </p>
           </div>
@@ -55,7 +56,7 @@ const MessageLink = (props: IMessageLinkProps) => {
             )}
           </div>
         </div>
-      </a>
+      </Link>
     );
   } else return null;
 };

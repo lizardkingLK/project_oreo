@@ -266,18 +266,18 @@ const Messages = () => {
     }
   };
 
-  if (disabled) {
-    return (
-      <section className="h-screen flex justify-center items-center">
-        <SummaryCard
-          cardStyle={"bg-green-600 text-white rounded-md"}
-          cardHeaderTitle={"Warning"}
-          cardBodyType={cardBodyTypes.STRING}
-          cardBodyContent={"App is opened in another window. Close it first."}
-        />
-      </section>
-    );
-  }
+  // if (disabled) {
+  //   return (
+  //     <section className="h-screen flex justify-center items-center">
+  //       <SummaryCard
+  //         cardStyle={"bg-green-600 text-white rounded-md"}
+  //         cardHeaderTitle={"Warning"}
+  //         cardBodyType={cardBodyTypes.STRING}
+  //         cardBodyContent={"App is opened in another window. Close it first."}
+  //       />
+  //     </section>
+  //   );
+  // }
 
   if (!isLoaded) {
     return (
@@ -290,12 +290,12 @@ const Messages = () => {
   return (
     <Layout>
       <main className="min-h-screen" id="divHome">
-        <div className="block md:flex items-center p-4 border-gray-900">
+        <div className="block md:flex items-center p-4 border-stone-900">
           <div className="basis-1/4 flex justify-between md:justify-start items-center my-4 md:m-0">
             {isSignedIn && (
               <button
                 id="btnToggleNavbar"
-                className="mr-4 md:mr-2 text-white hover:text-orange-600"
+                className="mr-4 md:mr-2 text-white hover:text-stone-600"
                 onClick={() => setNavbar((prevState) => !prevState)}
               >
                 <Bars />
@@ -330,7 +330,7 @@ const Messages = () => {
             >
               {group ? (
                 <div>
-                  <div className="p-4 flex items-center">
+                  <div className="p-4 flex items-center sticky top-0 bg-black z-10">
                     <button
                       className="block md:hidden text-white hover:text-green-500 basis-1/12 mr-4"
                       onClick={() => setGroup(null)}
@@ -353,7 +353,7 @@ const Messages = () => {
                     </div>
                   </div>
                   <div
-                    className="h-[calc(100vh_-_28vh)] md:h-[calc(100vh_-_36vh)] overflow-y-scroll"
+                    className="overflow-hidden"
                     id="divMessageList"
                   >
                     <MessageList
@@ -363,7 +363,7 @@ const Messages = () => {
                       lastMessageRef={lastMessageRef}
                     />
                   </div>
-                  <div className="bottom-0 m-4">
+                  <div className="sticky bottom-0 p-4 bg-black">
                     <MessageEditor
                       group={group}
                       input={input}

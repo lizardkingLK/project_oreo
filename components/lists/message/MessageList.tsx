@@ -20,8 +20,8 @@ const MessageList = (props: IMessageListProps) => {
           ))}
         <div ref={lastMessageRef}></div>
         {typing && typing.groupId === group.id && (
-          <div className="absolute bottom-12 m-8">
-            <p className="text-sm text-gray-500">{`${typing.name} is typing...`}</p>
+          <div className="absolute bottom-12 m-8 z-10">
+            <p className="text-sm text-stone-500">{`${typing.name} is typing...`}</p>
           </div>
         )}
       </>

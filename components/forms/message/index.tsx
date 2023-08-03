@@ -70,7 +70,7 @@ const MessageEditor = (props: IMessageEditorProps) => {
                     <BrowseMedia
                       type={type}
                       pictureProps={{
-                        alt: 'preview',
+                        alt: "preview",
                         height: 150,
                         width: 150,
                         src: URL.createObjectURL(file),
@@ -99,7 +99,7 @@ const MessageEditor = (props: IMessageEditorProps) => {
                   <div className="flex justify-center items-center pb-8">
                     <label
                       htmlFor="inputFiles"
-                      className="rounded-full p-2 md:p-4 bg-gradient-to-r from-orange-300 to-orange-400 text-white cursor-pointer flex flex-col justify-center items-center text-xl"
+                      className="rounded-full p-2 md:p-4 bg-gradient-to-r from-stone-300 to-stone-400 text-white cursor-pointer flex flex-col justify-center items-center text-xl"
                       title="Upload Files"
                     >
                       <Upload />
@@ -118,14 +118,14 @@ const MessageEditor = (props: IMessageEditorProps) => {
           )}
           <div className="flex items-center">
             <button
-              className="py-4 pl-4 rounded-l-full bg-gray-900 text-white hover:text-green-500 flex items-center justify-center"
+              className="py-4 pl-4 rounded-l-full bg-stone-900 text-white hover:text-green-500 flex items-center justify-center"
               title="Insert Emoji"
             >
               <Emoji />
             </button>
             <input
               ref={textInputRef}
-              className="basis-0 w-44 md:basis-11/12 p-4 outline-none text-xl font-semibold bg-gray-900 text-white"
+              className="basis-0 w-44 md:basis-11/12 p-4 outline-none text-xl font-semibold bg-stone-900 text-white"
               placeholder="Type a message"
               value={input}
               onChange={onChangeHandler}
@@ -133,7 +133,7 @@ const MessageEditor = (props: IMessageEditorProps) => {
               title="Type Message Here"
             />
             <button
-              className="p-4 rounded-r-full bg-gray-900 text-white hover:text-green-500"
+              className="p-4 rounded-r-full bg-stone-900 text-white hover:text-green-500"
               title="Send Media"
               onClick={() => setMediaModal(true)}
             >

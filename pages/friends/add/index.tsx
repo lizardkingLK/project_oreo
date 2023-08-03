@@ -7,7 +7,7 @@ import { apiUrls, userSearchMessageTypes } from "@/utils/enums";
 import { useAuth } from "@clerk/nextjs";
 import { User } from "@clerk/nextjs/dist/types/server";
 import React, { useEffect, useRef, useState } from "react";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 
 const AddFriend = () => {
   const [search, setSearch] = useState("");
@@ -92,12 +92,12 @@ const AddFriend = () => {
   return (
     <Layout>
       <main className="min-h-screen" id="divAddFriend">
-        <div className="block md:flex items-center p-4 border-gray-900">
+        <div className="block md:flex items-center p-4 border-stone-900">
           <div className="basis-1/4 flex justify-between md:justify-start items-center my-4 md:m-0">
             {isSignedIn && (
               <button
                 id="btnToggleNavbar"
-                className="mr-4 md:mr-2 text-white hover:text-orange-600"
+                className="mr-4 md:mr-2 text-white hover:text-stone-600"
                 onClick={() => setNavbar(!navbar)}
               >
                 <Bars />
@@ -136,14 +136,14 @@ const AddFriend = () => {
                     value={search}
                     id="search"
                     onChange={handleChange}
-                    className="text-xl md:text-5xl font-bold w-full bg-transparent outline-none placeholder-gray-400 text-green-500 py-4"
+                    className="text-xl md:text-5xl font-bold w-full bg-transparent outline-none placeholder-stone-400 text-green-500 py-4"
                     placeholder="Enter email or username..."
                     ref={searchRef}
                     required
                   />
                   <button
                     type="submit"
-                    className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+                    className="text-white bg-stone-800 hover:bg-stone-900 focus:outline-none focus:ring-4 focus:ring-stone-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-stone-800 dark:hover:bg-stone-700 dark:focus:ring-stone-700 dark:border-stone-700"
                     title="Search"
                   >
                     Search
