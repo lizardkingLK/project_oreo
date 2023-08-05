@@ -36,8 +36,6 @@ const Messages = () => {
   const textInputRef = useRef(null);
   const lastMessageRef = useRef(null);
 
-  const scrollToBottom = useScrollToBottom();
-
   const { isLoaded, userId, isSignedIn } = useAuth();
 
   useEffect(() => setNavbar(false), [group, input]);
@@ -76,9 +74,7 @@ const Messages = () => {
 
   useEffect(() => {
     if (lastMessageRef.current) {
-      // console.log(lastMessageRef.current);
-      // lastMessageRef.current.scrollIntoView({ behavior: "auto" });
-      scrollToBottom();
+      lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [notifs, input, group]);
 
@@ -362,7 +358,7 @@ const Messages = () => {
                       )}
                     </div>
                   </div>
-                  <div className="" id="divMessageList">
+                  <div className="overflow-hidden" id="divMessageList">
                       <MessageList
                         group={group}
                         typing={typing}
