@@ -4,7 +4,7 @@ import React from "react";
 const Welcome = () => {
   return (
     <section
-      className="absolute top-1/2 left-1/2 -trangreen-x-1/2 -trangreen-y-1/2"
+      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
       id="divWelcome"
     >
       <div className="text-white font-black text-center">

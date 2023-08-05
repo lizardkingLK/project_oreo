@@ -36,6 +36,8 @@ const Messages = () => {
   const textInputRef = useRef(null);
   const lastMessageRef = useRef(null);
 
+  const scrollToBottom = useScrollToBottom();
+
   const { isLoaded, userId, isSignedIn } = useAuth();
 
   useEffect(() => setNavbar(false), [group, input]);
@@ -74,7 +76,9 @@ const Messages = () => {
 
   useEffect(() => {
     if (lastMessageRef.current) {
-      lastMessageRef.current.scrollIntoView({ behavior: "auto" });
+      // console.log(lastMessageRef.current);
+      // lastMessageRef.current.scrollIntoView({ behavior: "auto" });
+      scrollToBottom();
     }
   }, [notifs, input, group]);
 
@@ -153,6 +157,12 @@ const Messages = () => {
             });
         }
       });
+    console.log(
+      Array.from(groups.values()).sort(
+        (first, second) =>
+          second.lastMessage.createdOnDate - first.lastMessage.createdOnDate
+      )
+    );
     setGroups(
       Array.from(groups.values()).sort(
         (first, second) =>
@@ -352,16 +362,13 @@ const Messages = () => {
                       )}
                     </div>
                   </div>
-                  <div
-                    className="overflow-hidden"
-                    id="divMessageList"
-                  >
-                    <MessageList
-                      group={group}
-                      typing={typing}
-                      notifs={notifs}
-                      lastMessageRef={lastMessageRef}
-                    />
+                  <div className="" id="divMessageList">
+                      <MessageList
+                        group={group}
+                        typing={typing}
+                        notifs={notifs}
+                        lastMessageRef={lastMessageRef}
+                      />
                   </div>
                   <div className="sticky bottom-0 p-4 bg-black">
                     <MessageEditor

@@ -1,11 +1,12 @@
 import MessageCard from "@/components/cards/message";
 import { IMessageListProps } from "@/types";
+import { Fragment } from "react";
 
 const MessageList = (props: IMessageListProps) => {
   if (props) {
     const { group, typing, lastMessageRef } = props;
     return (
-      <>
+      <Fragment>
         {group &&
           group.messages &&
           group.messages.map((message, index) => (
@@ -24,7 +25,7 @@ const MessageList = (props: IMessageListProps) => {
             <p className="text-sm text-stone-500">{`${typing.name} is typing...`}</p>
           </div>
         )}
-      </>
+      </Fragment>
     );
   } else return null;
 };

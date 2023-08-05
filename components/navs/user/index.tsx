@@ -14,7 +14,7 @@ const UserNavbar = (props: IUserNavbarProps) => {
     const { navbar, setNavbar } = props;
     return (
       <nav
-        className={`absolute top-0 left-0 h-screen w-3/4 md:w-1/4 shadow-green-400 shadow-2xl z-10
+        className={`fixed top-0 left-0 h-screen w-3/4 md:w-1/4 shadow-green-400 shadow-2xl z-10
             ${
               navbar ? "flex flex-col" : "hidden"
             } bg-gradient-to-r from-green-400 to-green-700`}
