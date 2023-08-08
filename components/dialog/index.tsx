@@ -14,7 +14,7 @@ const Dialog = (props: IDialogProps) => {
     return (
       <div
         ref={dialogRef}
-        className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-md bg-gradient-to-r from-stone-400 to-stone-500 shadow-black shadow-2xl w-2/4`}
+        className={`rounded-2xl bg-gradient-to-r from-stone-400 to-stone-500 shadow-black shadow-2xl w-full mb-4`}
       >
         <div className="flex justify-between items-center p-4">
           <h1 className="hidden md:block text-white text-md md:text-xl font-bold">

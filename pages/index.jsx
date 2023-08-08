@@ -359,12 +359,12 @@ const Messages = () => {
                     </div>
                   </div>
                   <div className="overflow-hidden" id="divMessageList">
-                      <MessageList
-                        group={group}
-                        typing={typing}
-                        notifs={notifs}
-                        lastMessageRef={lastMessageRef}
-                      />
+                    <MessageList
+                      group={group}
+                      typing={typing}
+                      notifs={notifs}
+                      lastMessageRef={lastMessageRef}
+                    />
                   </div>
                   <div className="sticky bottom-0 p-4 bg-black">
                     <MessageEditor

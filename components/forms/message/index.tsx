@@ -66,7 +66,7 @@ const MessageEditor = (props: IMessageEditorProps) => {
             >
               {file && type ? (
                 <>
-                  <div className="flex justify-center items-center p-4">
+                  <div className="flex justify-center items-center m-4">
                     <BrowseMedia
                       type={type}
                       pictureProps={{
@@ -99,7 +99,7 @@ const MessageEditor = (props: IMessageEditorProps) => {
                   <div className="flex justify-center items-center pb-8">
                     <label
                       htmlFor="inputFiles"
-                      className="rounded-full p-2 md:p-4 bg-gradient-to-r from-stone-300 to-stone-400 text-white cursor-pointer flex flex-col justify-center items-center text-xl"
+                      className="w-40 h-40 m-8 rounded-full p-2 md:p-4 bg-gradient-to-r from-stone-300 to-stone-400 hover:bg-gradient-to-r hover:from-green-300 hover:to-green-400 text-white cursor-pointer flex flex-col justify-center items-center text-xl"
                       title="Upload Files"
                     >
                       <Upload />

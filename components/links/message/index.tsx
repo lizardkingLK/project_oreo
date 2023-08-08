@@ -2,7 +2,6 @@ import React from "react";
 import Avatar from "@/components/avatar";
 import { IMessageLinkProps } from "@/types";
 import { getBriefContent } from "@/utils/helpers";
-import Link from "next/link";
 
 const MessageLink = (props: IMessageLinkProps) => {
   if (props) {
@@ -20,8 +19,8 @@ const MessageLink = (props: IMessageLinkProps) => {
       messageUnread,
     } = props;
     return (
-      <Link
-        href={`/#`}
+      <a
+        href={void(0)}
         className="cursor-pointer"
         title={messageAuthorName}
         onClick={() => messageOnClick(messageId)}
@@ -56,7 +55,7 @@ const MessageLink = (props: IMessageLinkProps) => {
             )}
           </div>
         </div>
-      </Link>
+      </a>
     );
   } else return null;
 };
