@@ -272,18 +272,18 @@ const Messages = () => {
     }
   };
 
-  // if (disabled) {
-  //   return (
-  //     <section className="h-screen flex justify-center items-center">
-  //       <SummaryCard
-  //         cardStyle={"bg-green-600 text-white rounded-md"}
-  //         cardHeaderTitle={"Warning"}
-  //         cardBodyType={cardBodyTypes.STRING}
-  //         cardBodyContent={"App is opened in another window. Close it first."}
-  //       />
-  //     </section>
-  //   );
-  // }
+  if (disabled) {
+    return (
+      <section className="h-screen flex justify-center items-center">
+        <SummaryCard
+          cardStyle={"bg-green-600 text-white rounded-md"}
+          cardHeaderTitle={"Warning"}
+          cardBodyType={cardBodyTypes.STRING}
+          cardBodyContent={"App is opened in another window. Close it first."}
+        />
+      </section>
+    );
+  }
 
   if (!isLoaded) {
     return (
@@ -379,7 +379,7 @@ const Messages = () => {
                   </div>
                 </div>
               ) : (
-                <div className="hidden md:block">
+                <div className="hidden md:flex md:h-screen md:items-center md:justify-center w-full">
                   <Dashboard groups={groups} feeds={feeds} />
                 </div>
               )}
