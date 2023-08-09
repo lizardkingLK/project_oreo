@@ -41,3 +41,8 @@ export enum userSearchMessageTypes {
 export enum staticValues {
   hi = "Hi!",
 }
+
+export enum sections {
+  home = 0,
+  addFriend = 1,
+}

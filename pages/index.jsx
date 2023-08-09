@@ -9,6 +9,7 @@ import {
   groupTypes,
   mediaTypes,
   messageTypes,
+  sections,
 } from "@/utils/enums";
 import io from "socket.io-client";
 import ChevronBack from "@/components/svgs/chevronBack";
@@ -20,6 +21,7 @@ import Dashboard from "@/components/dashboard";
 import { useAuth } from "@clerk/nextjs";
 import Welcome from "@/components/welcome";
 import SummaryCard from "@/components/cards/summary";
+import AddFriend from "@/components/sections/friends/add";
 let socket;
 
 const Messages = () => {
@@ -27,6 +29,7 @@ const Messages = () => {
   const [feeds, setFeeds] = useState([]);
   const [groups, setGroups] = useState([]);
   const [group, setGroup] = useState(null);
+  const [section, setSection] = useState(null);
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [typing, setTyping] = useState(false);
@@ -153,12 +156,6 @@ const Messages = () => {
             });
         }
       });
-    console.log(
-      Array.from(groups.values()).sort(
-        (first, second) =>
-          second.lastMessage.createdOnDate - first.lastMessage.createdOnDate
-      )
-    );
     setGroups(
       Array.from(groups.values()).sort(
         (first, second) =>
@@ -296,7 +293,7 @@ const Messages = () => {
   return (
     <Layout>
       <main className="min-h-screen" id="divHome">
-        <div className="block md:flex items-center p-4 border-stone-900">
+        <div className="absolute z-10 block md:flex items-center p-4 border-stone-900 w-full">
           <div className="basis-1/4 flex justify-between md:justify-start items-center my-4 md:m-0">
             {isSignedIn && (
               <button
@@ -322,13 +319,16 @@ const Messages = () => {
                   navbar={navbar}
                   setNavbar={setNavbar}
                   status={isSignedIn}
+                  setSection={setSection}
                 />
               ) : (
-                <MessageLinkList
-                  groups={groups}
-                  setGroup={onSelectGroupHandler}
-                  selectedGroup={group}
-                />
+                <div className="mt-24">
+                  <MessageLinkList
+                    groups={groups}
+                    setGroup={onSelectGroupHandler}
+                    selectedGroup={group}
+                  />
+                </div>
               )}
             </div>
             <div
@@ -378,8 +378,12 @@ const Messages = () => {
                     />
                   </div>
                 </div>
+              ) : section === sections.addFriend ? (
+                <div className="flex h-screen items-center justify-center w-full">
+                  <AddFriend />
+                </div>
               ) : (
-                <div className="hidden md:flex md:h-screen md:items-center md:justify-center w-full">
+                <div className="hidden md:flex h-screen items-center justify-center w-full">
                   <Dashboard groups={groups} feeds={feeds} />
                 </div>
               )}

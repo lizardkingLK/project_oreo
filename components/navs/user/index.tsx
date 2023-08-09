@@ -7,11 +7,20 @@ import Link from "next/link";
 import Invitation from "@/components/svgs/invitation";
 import Home from "@/components/svgs/home";
 import Feeds from "@/components/svgs/feeds";
+import { sections } from "@/utils/enums";
 
 const UserNavbar = (props: IUserNavbarProps) => {
   const { isSignedIn } = useAuth();
+
+  
   if (props) {
-    const { navbar, setNavbar } = props;
+    const { navbar, setNavbar, setSection } = props;
+    
+    const handleSelection = (selection:number | null) => {
+      setSection(selection);
+      setNavbar(false);
+    }
+
     return (
       <nav
         className={`fixed top-0 left-0 h-screen w-3/4 md:w-1/4 shadow-green-400 shadow-2xl z-10
@@ -44,27 +53,24 @@ const UserNavbar = (props: IUserNavbarProps) => {
         </div>
         {isSignedIn ? (
           <>
-            <Link
+            <button
               className="text-xl text-center p-4 hover:text-white hover:bg-stone-600 font-medium flex items-center justify-start"
-              href="/"
+              onClick={() => handleSelection(null)}
             >
               <Home />
               &nbsp;&nbsp;&nbsp;Home
-            </Link>
-            <Link
+            </button>
+            <button
               className="text-xl text-center p-4 hover:text-white hover:bg-stone-600 font-medium flex items-center justify-start"
-              href="/friends/add"
+              onClick={() => handleSelection(sections.addFriend)}
             >
               <Invitation />
               &nbsp;&nbsp;&nbsp;Add Friend
-            </Link>
-            <Link
-              className="text-xl text-center p-4 hover:text-white hover:bg-stone-600 font-medium flex items-center justify-start"
-              href="/friends/add"
-            >
+            </button>
+            <button className="text-xl text-center p-4 hover:text-white hover:bg-stone-600 font-medium flex items-center justify-start">
               <Feeds />
               &nbsp;&nbsp;&nbsp;Feeds
-            </Link>
+            </button>
           </>
         ) : (
           <Link

@@ -1,137 +1,138 @@
 import {
-    ChangeEventHandler,
-    KeyboardEventHandler,
-    LegacyRef,
-    MouseEventHandler,
-    ReactNode
-} from 'react'
+  ChangeEventHandler,
+  KeyboardEventHandler,
+  LegacyRef,
+  MouseEventHandler,
+  ReactNode,
+} from "react";
 
 export interface ILayoutProps {
-    children: ReactNode
+  children: ReactNode;
 }
 
 export interface IMessageProps {
-    type: number;
-    content: string;
-    fromId: string;
-    createdOn: string;
-    groupId: string;
+  type: number;
+  content: string;
+  fromId: string;
+  createdOn: string;
+  groupId: string;
 }
 
 export interface IGroupProps {
-    id: string;
-    name: string;
-    displayImage: string;
-    isStatus: boolean;
-    isOnline: boolean;
-    messages: IMessageProps[];
-    lastMessage: IMessageProps;
+  id: string;
+  name: string;
+  displayImage: string;
+  isStatus: boolean;
+  isOnline: boolean;
+  messages: IMessageProps[];
+  lastMessage: IMessageProps;
 }
 
 export interface IMessageLinkListProps {
-    groups: Array<IGroupProps>;
-    setGroup: Function;
-    selectedGroup: IGroupProps;
+  groups: Array<IGroupProps>;
+  setGroup: Function;
+  selectedGroup: IGroupProps;
 }
 
 interface ITypingProps {
-    value: boolean,
-    groupId: string,
-    name: string,
+  value: boolean;
+  groupId: string;
+  name: string;
 }
 
 export interface IMessageListProps {
-    group: IGroupProps;
-    typing: ITypingProps;
-    notifs: boolean;
-    lastMessageRef: LegacyRef<HTMLDivElement>
+  group: IGroupProps;
+  typing: ITypingProps;
+  notifs: boolean;
+  lastMessageRef: LegacyRef<HTMLDivElement>;
 }
 
 export interface IMessageLinkProps {
-    messageId: string,
-    messageImagePath: string,
-    messageImageSize: number,
-    messageAuthorIsStatus: boolean,
-    messageAuthorIsOnline: boolean,
-    messageAuthorName: string,
-    messageContent: string,
-    messageTime: string,
-    messageIsActive: boolean,
-    messageOnClick: Function,
-    messageUnread: number,
+  messageId: string;
+  messageImagePath: string;
+  messageImageSize: number;
+  messageAuthorIsStatus: boolean;
+  messageAuthorIsOnline: boolean;
+  messageAuthorName: string;
+  messageContent: string;
+  messageTime: string;
+  messageIsActive: boolean;
+  messageOnClick: Function;
+  messageUnread: number;
 }
 
 export interface IMessageEditorProps {
-    group: IGroupProps;
-    input: string;
-    onChangeHandler: ChangeEventHandler<HTMLInputElement>;
-    onKeyDownHandler: KeyboardEventHandler<HTMLInputElement>;
-    onSubmitHandler: MouseEventHandler<HTMLButtonElement>;
-    onMediaHandler: Function;
-    textInputRef: LegacyRef<HTMLInputElement>;
+  group: IGroupProps;
+  input: string;
+  onChangeHandler: ChangeEventHandler<HTMLInputElement>;
+  onKeyDownHandler: KeyboardEventHandler<HTMLInputElement>;
+  onSubmitHandler: MouseEventHandler<HTMLButtonElement>;
+  onMediaHandler: Function;
+  textInputRef: LegacyRef<HTMLInputElement>;
 }
 
 export interface IFeedProps {
-    name: string;
-    imagePath: string;
-    size: number;
-    isStatus: boolean;
+  name: string;
+  imagePath: string;
+  size: number;
+  isStatus: boolean;
 }
 
 export interface IFeedListProps {
-    feeds: Array<IFeedProps>
+  feeds: Array<IFeedProps>;
 }
 
 export interface IMessageCardProps {
-    content: string,
-    type: number,
-    messageImagePath: string,
-    messageTime: string,
-    messageAuthorName: string,
+  content: string;
+  type: number;
+  messageImagePath: string;
+  messageTime: string;
+  messageAuthorName: string;
 }
 
 export interface ISummaryCardProps {
-    cardStyle: string,
-    cardHeaderTitle: string,
-    cardHeaderContent: any,
-    cardBodyType: number,
-    cardBodyContent: any,
+  cardStyle: string;
+  cardHeaderTitle: string;
+  cardHeaderContent: any;
+  cardBodyType: number;
+  cardBodyContent: any;
 }
 
 export interface IAvatarProps {
-    name: string,
-    imagePath: string,
-    size: number,
-    isStatus?: boolean,
-    isOnline?: boolean,
-    displayActive?: boolean,
-};
+  name: string;
+  imagePath: string;
+  size: number;
+  isStatus?: boolean;
+  isOnline?: boolean;
+  displayActive?: boolean;
+}
 
 export interface IUserNavbarProps {
-    navbar: boolean,
-    setNavbar: Function,
-};
+  navbar: boolean;
+  setNavbar: Function;
+  setSection: Function;
+}
 
 export interface ISpinnerProps {
-    size: number,
+  size: number;
 }
 
 export interface IPictureProps {
-    src: string,
-    width: number,
-    height: number,
-    alt: string,
+  src: string;
+  width: number;
+  height: number;
+  alt: string;
 }
 
 export interface IBrowseMediaProps {
-    type: string,
-    pictureProps: IPictureProps,
+  type: string;
+  pictureProps: IPictureProps;
 }
 
 export interface IDialogProps {
-    dialogRef: LegacyRef<HTMLDivElement>,
-    dialogTitle: string,
-    dialogSubtitle: string,
-    dialogCloseHandler: MouseEventHandler<HTMLButtonElement>,
-    children: ReactNode,
+  dialogRef: LegacyRef<HTMLDivElement>;
+  dialogTitle: string;
+  dialogSubtitle: string;
+  dialogCloseHandler: MouseEventHandler<HTMLButtonElement>;
+  children: ReactNode;
 }
