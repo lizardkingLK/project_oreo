@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import Image from "next/image";
 import { IAvatarProps } from "@/types";
 
@@ -7,7 +7,7 @@ const Avatar = (props: IAvatarProps) => {
   if (props) {
     const { isStatus, isOnline, size, imagePath, name } = props;
     return (
-      <>
+      <Fragment>
         <div
           className={`flex justify-center items-center flex-wrap rounded-full ml-2
         ${loading ? "blur-xl" : "blur-0"}
@@ -29,7 +29,7 @@ const Avatar = (props: IAvatarProps) => {
             <span className="top-0 left-9 absolute w-3.5 h-3.5 bg-green-500 border-2 border-white dark:border-stone-800 rounded-full"></span>
           ) : null}
         </div>
-      </>
+      </Fragment>
     );
   } else return null;
 };

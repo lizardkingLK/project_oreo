@@ -40,6 +40,7 @@ export enum userSearchMessageTypes {
 
 export enum staticValues {
   hi = "Hi!",
+  attachments = "attachments",
 }
 
 export enum sections {
