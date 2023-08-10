@@ -45,4 +45,5 @@ export enum staticValues {
 export enum sections {
   home = 0,
   addFriend = 1,
+  group = 2,
 }

@@ -20,7 +20,6 @@ import Spinner from "@/components/svgs/spinner";
 import Dashboard from "@/components/dashboard";
 import { useAuth } from "@clerk/nextjs";
 import Welcome from "@/components/welcome";
-import SummaryCard from "@/components/cards/summary";
 import AddFriend from "@/components/sections/friends/add";
 let socket;
 
@@ -29,12 +28,11 @@ const Messages = () => {
   const [feeds, setFeeds] = useState([]);
   const [groups, setGroups] = useState([]);
   const [group, setGroup] = useState(null);
-  const [section, setSection] = useState(null);
+  const [section, setSection] = useState(sections.home);
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [typing, setTyping] = useState(false);
   const [notifs, setNotifs] = useState(null);
-  const [disabled, setDisabled] = useState(false);
 
   const textInputRef = useRef(null);
   const lastMessageRef = useRef(null);
@@ -172,10 +170,6 @@ const Messages = () => {
       console.log("connected");
     });
 
-    socket.on("new-window", (isExist) => {
-      setDisabled(isExist);
-    });
-
     socket.on("update-input", (msg) => {
       setOutput(msg);
     });
@@ -258,9 +252,10 @@ const Messages = () => {
 
   const onSelectGroupHandler = async (groupId) => {
     setGroup(groups && groups.find((g) => g.id === groupId));
-    if (group) {
+    if (group && textInputRef.current) {
       textInputRef.current.focus();
     }
+    setSection(sections.group);
   };
 
   const onKeyDownHandler = (e) => {
@@ -268,19 +263,6 @@ const Messages = () => {
       onSubmitHandler();
     }
   };
-
-  if (disabled) {
-    return (
-      <section className="h-screen flex justify-center items-center">
-        <SummaryCard
-          cardStyle={"bg-green-600 text-white rounded-md"}
-          cardHeaderTitle={"Warning"}
-          cardBodyType={cardBodyTypes.STRING}
-          cardBodyContent={"App is opened in another window. Close it first."}
-        />
-      </section>
-    );
-  }
 
   if (!isLoaded) {
     return (
@@ -322,7 +304,7 @@ const Messages = () => {
                   setSection={setSection}
                 />
               ) : (
-                <div className="mt-24">
+                <div className="mt-20">
                   <MessageLinkList
                     groups={groups}
                     setGroup={onSelectGroupHandler}
@@ -334,7 +316,12 @@ const Messages = () => {
             <div
               className={`basis-3/4 absolute top-0 bg-black md:bg-transparent md:relative md:block container`}
             >
-              {group ? (
+              {console.log(section)}
+              {section === sections.addFriend ? (
+                <div className="flex h-screen items-center justify-center w-full">
+                  <AddFriend />
+                </div>
+              ) : section === sections.group ? (
                 <div>
                   <div className="p-4 flex items-center sticky top-0 bg-black z-10">
                     <button
@@ -358,7 +345,10 @@ const Messages = () => {
                       )}
                     </div>
                   </div>
-                  <div className="overflow-hidden" id="divMessageList">
+                  <div
+                    className="overflow-scroll h-[calc(100vh-12rem)]"
+                    id="divMessageList"
+                  >
                     <MessageList
                       group={group}
                       typing={typing}
@@ -378,15 +368,11 @@ const Messages = () => {
                     />
                   </div>
                 </div>
-              ) : section === sections.addFriend ? (
-                <div className="flex h-screen items-center justify-center w-full">
-                  <AddFriend />
-                </div>
-              ) : (
+              ) : section === sections.home ? (
                 <div className="hidden md:flex h-screen items-center justify-center w-full">
                   <Dashboard groups={groups} feeds={feeds} />
                 </div>
-              )}
+              ) : null}
             </div>
           </section>
         ) : (

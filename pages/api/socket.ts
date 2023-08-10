@@ -1,5 +1,4 @@
 import { supabaseClient } from "@/lib/supabase";
-import { randomUUID } from "crypto";
 import type { Server as HTTPServer } from "http";
 import type { Socket as NetSocket } from "net";
 import { NextApiResponse } from "next";
@@ -55,12 +54,11 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
       });
 
       socket.on("new-window", (identity) => {
-        if (socketArray.find((s) => s.userId === identity.userId)) {
-          socket.emit("new-window", true);
-        } else {
-          socketArray.push({ id: socket.id, userId: identity.userId });
-          socket.emit("new-window", false);
-        }
+        const index = socketArray.findIndex(
+          (s) => s.userId === identity.userId
+        );
+        const record = { id: socket.id, userId: identity.userId };
+        index === -1 ? socketArray.push(record) : (socketArray[index] = record);
       });
 
       socket.on("disconnect", () => {
