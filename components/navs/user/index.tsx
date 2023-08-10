@@ -12,11 +12,11 @@ import { sections } from "@/utils/enums";
 const UserNavbar = (props: IUserNavbarProps) => {
   const { isSignedIn } = useAuth();
 
-  
+
   if (props) {
     const { navbar, setNavbar, setSection } = props;
-    
-    const handleSelection = (selection:number | null) => {
+
+    const handleSelection = (selection: number) => {
       setSection(selection);
       setNavbar(false);
     }
@@ -24,9 +24,8 @@ const UserNavbar = (props: IUserNavbarProps) => {
     return (
       <nav
         className={`fixed top-0 left-0 h-screen w-3/4 md:w-1/4 shadow-green-400 shadow-2xl z-10
-            ${
-              navbar ? "flex flex-col" : "hidden"
-            } bg-gradient-to-r from-green-400 to-green-700`}
+            ${navbar ? "flex flex-col" : "hidden"
+          } bg-gradient-to-r from-green-400 to-green-700`}
       >
         <div className="flex justify-center items-center p-4">
           {isSignedIn ? (
@@ -55,7 +54,7 @@ const UserNavbar = (props: IUserNavbarProps) => {
           <>
             <button
               className="text-xl text-center p-4 hover:text-white hover:bg-stone-600 font-medium flex items-center justify-start"
-              onClick={() => handleSelection(null)}
+              onClick={() => handleSelection(sections.home)}
             >
               <Home />
               &nbsp;&nbsp;&nbsp;Home
