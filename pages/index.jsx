@@ -9,17 +9,19 @@ import {
   mediaTypes,
   messageTypes,
   sections,
+  staticValues,
 } from "@/utils/enums";
 import io from "socket.io-client";
 import ChevronBack from "@/components/svgs/chevronBack";
 import Bars from "@/components/svgs/bars";
-import { getTimeConverted } from "@/utils/helpers";
+import { getRandomNumber, getTimeConverted, isDevEnv } from "@/utils/helpers";
 import UserNavbar from "@/components/navs/user";
 import Spinner from "@/components/svgs/spinner";
 import Dashboard from "@/components/dashboard";
 import { useAuth } from "@clerk/nextjs";
 import Welcome from "@/components/welcome";
 import AddFriend from "@/components/sections/friends/add";
+import { getPublicUrl, uploadFile } from "@/lib/supabase";
 let socket;
 
 const Messages = () => {
@@ -225,28 +227,48 @@ const Messages = () => {
   };
 
   const onMediaHandler = async (files) => {
-    const formData = new FormData();
-    Object.values(files).forEach((file) => {
-      formData.append("file", file);
-    });
-
-    await fetch(apiUrls.file, {
-      method: "POST",
-      body: formData,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        sendMessage({
-          type: messageTypes.SENT,
-          content: `[${mediaTypes.image}](${data.data})`,
-          createdOn: new Date().toISOString(),
-          groupId: group.id,
-          status: true,
-          fromId: userId,
-          toId: group.targetId,
-        });
-        setNotifs(Math.random());
+    if (isDevEnv()) {
+      const formData = new FormData();
+      Object.values(files).forEach(async (file) => {
+        formData.append("file", file);
       });
+
+      await fetch(apiUrls.file, {
+        method: "POST",
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          sendMessage({
+            type: messageTypes.SENT,
+            content: `[${mediaTypes.image}](${data.data})`,
+            createdOn: new Date().toISOString(),
+            groupId: group.id,
+            status: true,
+            fromId: userId,
+            toId: group.targetId,
+          });
+          setNotifs(Math.random());
+        });
+    } else {
+      Object.values(files).forEach(async (file) => {
+        const path = `${group.id}/${getRandomNumber()}`;
+        const response = await uploadFile(file, staticValues.attachments, path);
+        if (response && response.data) {
+          const { data } = getPublicUrl(staticValues.attachments, path);
+          sendMessage({
+            type: messageTypes.SENT,
+            content: `[${mediaTypes.image}](${data.publicUrl})`,
+            createdOn: new Date().toISOString(),
+            groupId: group.id,
+            status: true,
+            fromId: userId,
+            toId: group.targetId,
+          });
+          setNotifs(Math.random());
+        }
+      });
+    }
   };
 
   const onSelectGroupHandler = async (groupId) => {

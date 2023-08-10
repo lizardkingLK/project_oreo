@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { Fragment, useRef, useState } from "react";
 import { IMessageEditorProps } from "@/types";
 import Send from "@/components/svgs/send";
 import Emoji from "@/components/svgs/emoji";
@@ -56,7 +56,7 @@ const MessageEditor = (props: IMessageEditorProps) => {
 
     return (
       group && (
-        <>
+        <Fragment>
           {mediaModal && (
             <Dialog
               dialogRef={attachmentRef}
@@ -65,7 +65,7 @@ const MessageEditor = (props: IMessageEditorProps) => {
               dialogCloseHandler={mediaCloseHandler}
             >
               {file && type ? (
-                <>
+                <Fragment>
                   <div className="flex justify-center items-center m-4">
                     <BrowseMedia
                       type={type}
@@ -93,9 +93,9 @@ const MessageEditor = (props: IMessageEditorProps) => {
                       <Send size={undefined} />
                     </button>
                   </div>
-                </>
+                </Fragment>
               ) : (
-                <>
+                <Fragment>
                   <div className="flex justify-center items-center pb-8">
                     <label
                       htmlFor="inputFiles"
@@ -112,7 +112,7 @@ const MessageEditor = (props: IMessageEditorProps) => {
                       hidden={true}
                     />
                   </div>
-                </>
+                </Fragment>
               )}
             </Dialog>
           )}
@@ -148,7 +148,7 @@ const MessageEditor = (props: IMessageEditorProps) => {
               <Send size={undefined} />
             </button>
           </div>
-        </>
+        </Fragment>
       )
     );
   } else return null;

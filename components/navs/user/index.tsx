@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { IUserNavbarProps } from "@/types";
 import Image from "next/image";
 import Bars from "@/components/svgs/bars";
@@ -12,20 +12,20 @@ import { sections } from "@/utils/enums";
 const UserNavbar = (props: IUserNavbarProps) => {
   const { isSignedIn } = useAuth();
 
-
   if (props) {
     const { navbar, setNavbar, setSection } = props;
 
     const handleSelection = (selection: number) => {
       setSection(selection);
       setNavbar(false);
-    }
+    };
 
     return (
       <nav
         className={`fixed top-0 left-0 h-screen w-3/4 md:w-1/4 shadow-green-400 shadow-2xl z-10
-            ${navbar ? "flex flex-col" : "hidden"
-          } bg-gradient-to-r from-green-400 to-green-700`}
+            ${
+              navbar ? "flex flex-col" : "hidden"
+            } bg-gradient-to-r from-green-400 to-green-700`}
       >
         <div className="flex justify-center items-center p-4">
           {isSignedIn ? (
@@ -51,7 +51,7 @@ const UserNavbar = (props: IUserNavbarProps) => {
           )}
         </div>
         {isSignedIn ? (
-          <>
+          <Fragment>
             <button
               className="text-xl text-center p-4 hover:text-white hover:bg-stone-600 font-medium flex items-center justify-start"
               onClick={() => handleSelection(sections.home)}
@@ -70,7 +70,7 @@ const UserNavbar = (props: IUserNavbarProps) => {
               <Feeds />
               &nbsp;&nbsp;&nbsp;Feeds
             </button>
-          </>
+          </Fragment>
         ) : (
           <Link
             className="text-xl text-center p-4 hover:text-white hover:bg-stone-600 font-medium"
