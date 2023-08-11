@@ -392,7 +392,7 @@ const Messages = () => {
                   </Fragment>
                 )
               ) : section === sections.home ? (
-                <div className="hidden md:flex h-screen items-center justify-center w-full">
+                <div className="hidden md:flex h-screen items-center justify-center md:md:w-full">
                   <Dashboard groups={groups} feeds={feeds} />
                 </div>
               ) : null}
