@@ -40,6 +40,12 @@ const Messages = () => {
 
   const { isLoaded, userId, isSignedIn } = useAuth();
 
+  useEffect(() => {
+    if (section !== sections.group) {
+      setGroup(null);
+    }
+  }, [section]);
+
   useEffect(() => setNavbar(false), [group, input]);
 
   useEffect(() => {
@@ -227,6 +233,14 @@ const Messages = () => {
   };
 
   const onMediaHandler = async (files) => {
+    const newMessage = {
+      type: messageTypes.SENT,
+      createdOn: new Date().toISOString(),
+      groupId: group.id,
+      status: true,
+      fromId: userId,
+      toId: group.targetId,
+    };
     if (isDevEnv()) {
       const formData = new FormData();
       Object.values(files).forEach(async (file) => {
@@ -239,40 +253,27 @@ const Messages = () => {
       })
         .then((response) => response.json())
         .then((data) => {
-          sendMessage({
-            type: messageTypes.SENT,
-            content: `[${mediaTypes.image}](${data.data})`,
-            createdOn: new Date().toISOString(),
-            groupId: group.id,
-            status: true,
-            fromId: userId,
-            toId: group.targetId,
-          });
+          newMessage.content = `[${mediaTypes.image}](${data.data})`;
+          sendMessage(newMessage);
           setNotifs(Math.random());
         });
     } else {
       Object.values(files).forEach(async (file) => {
         const path = `${group.id}/${getRandomNumber()}`;
         const response = await uploadFile(file, staticValues.attachments, path);
-        if (response && response.data) {
-          const { data } = getPublicUrl(staticValues.attachments, path);
-          sendMessage({
-            type: messageTypes.SENT,
-            content: `[${mediaTypes.image}](${data.publicUrl})`,
-            createdOn: new Date().toISOString(),
-            groupId: group.id,
-            status: true,
-            fromId: userId,
-            toId: group.targetId,
-          });
-          setNotifs(Math.random());
+        if (response == null || response.error) {
+          throw response.error;
         }
+        const { data } = getPublicUrl(staticValues.attachments, path);
+        newMessage.content = `[${mediaTypes.image}](${data.publicUrl})`;
+        sendMessage(newMessage);
+        setNotifs(Math.random());
       });
     }
   };
 
   const onSelectGroupHandler = async (groupId) => {
-    setGroup(groups && groups.find((g) => g.id === groupId));
+    setGroup(groups.find((g) => g.id === groupId));
     if (group && textInputRef.current) {
       textInputRef.current.focus();
     }
@@ -391,7 +392,7 @@ const Messages = () => {
                   </Fragment>
                 )
               ) : section === sections.home ? (
-                <div className="hidden md:flex h-screen items-center justify-center w-full">
+                <div className="hidden md:flex h-screen items-center justify-center md:md:w-full">
                   <Dashboard groups={groups} feeds={feeds} />
                 </div>
               ) : null}

@@ -18,18 +18,11 @@ export async function uploadFile(
     | ReadableStream<Uint8Array>
     | URLSearchParams,
   bucketName: string,
-  pathName: string
+  filePath: string
 ) {
-  const { data, error } = await supabaseClient.storage
-    .from(bucketName)
-    .upload(pathName, file);
-  if (error) {
-    return { error };
-  } else {
-    return { data };
-  }
+  return await supabaseClient.storage.from(bucketName).upload(filePath, file);
 }
 
-export function getPublicUrl(bucket: string, path: string) {
-  return supabaseClient.storage.from(bucket).getPublicUrl(path);
+export function getPublicUrl(bucketName: string, filePath: string) {
+  return supabaseClient.storage.from(bucketName).getPublicUrl(filePath);
 }

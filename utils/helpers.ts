@@ -39,6 +39,8 @@ const getRandomNumber = () => {
   return Math.round(Math.random() * 100000000000);
 };
 
+const httpClient = {};
+
 export {
   getTimeConverted,
   formatCompactNumber,
@@ -47,4 +49,5 @@ export {
   getBriefContent,
   isDevEnv,
   getRandomNumber,
+  httpClient,
 };
