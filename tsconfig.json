@@ -34,7 +34,7 @@
     "pages/index.jsx",
     "utils/providers/socket.provider.js",
     "pages/messages.jsx",
-    "utils/enums.tsx",
+    "utils/enums.ts",
     "pages/api/auth/[...nextauth].js"
   ],
   "exclude": [

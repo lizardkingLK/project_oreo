@@ -18,7 +18,7 @@ const UserCard = ({
 
   return (
     <div className="w-full bg-black rounded-lg shadow">
-      <div className="flex justify-between items-center py-4">
+      <div className="block md:flex justify-between items-center py-4">
         <div className="flex items-center">
           <div className="mr-4">
             <Avatar

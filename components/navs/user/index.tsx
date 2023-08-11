@@ -23,9 +23,8 @@ const UserNavbar = (props: IUserNavbarProps) => {
     return (
       <nav
         className={`fixed top-0 left-0 h-screen w-3/4 md:w-1/4 shadow-green-400 shadow-2xl z-10
-            ${
-              navbar ? "flex flex-col" : "hidden"
-            } bg-gradient-to-r from-green-400 to-green-700`}
+            ${navbar ? "flex flex-col" : "hidden"
+          } bg-gradient-to-r from-green-400 to-green-700`}
       >
         <div className="flex justify-center items-center p-4">
           {isSignedIn ? (
@@ -83,7 +82,7 @@ const UserNavbar = (props: IUserNavbarProps) => {
           <button
             className={`absolute left-full mt-8 ml-4 hover:text-stone-600
                         ${navbar ? "text-stone-800" : "text-white"}`}
-            onClick={() => setNavbar(!navbar)}
+            onClick={(prevState) => setNavbar(!prevState)}
           >
             <Bars />
           </button>

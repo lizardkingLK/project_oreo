@@ -40,6 +40,12 @@ const Messages = () => {
 
   const { isLoaded, userId, isSignedIn } = useAuth();
 
+  useEffect(() => {
+    if (section !== sections.group) {
+      setGroup(null);
+    }
+  }, [section]);
+
   useEffect(() => setNavbar(false), [group, input]);
 
   useEffect(() => {
@@ -229,7 +235,6 @@ const Messages = () => {
   const onMediaHandler = async (files) => {
     const newMessage = {
       type: messageTypes.SENT,
-      content: `[${mediaTypes.image}](${data.data})`,
       createdOn: new Date().toISOString(),
       groupId: group.id,
       status: true,
@@ -256,18 +261,19 @@ const Messages = () => {
       Object.values(files).forEach(async (file) => {
         const path = `${group.id}/${getRandomNumber()}`;
         const response = await uploadFile(file, staticValues.attachments, path);
-        if (response && response.data) {
-          const { data } = getPublicUrl(staticValues.attachments, path);
-          newMessage.content = `[${mediaTypes.image}](${data.publicUrl})`;
-          sendMessage(newMessage);
-          setNotifs(Math.random());
+        if (response == null || response.error) {
+          throw response.error;
         }
+        const { data } = getPublicUrl(staticValues.attachments, path);
+        newMessage.content = `[${mediaTypes.image}](${data.publicUrl})`;
+        sendMessage(newMessage);
+        setNotifs(Math.random());
       });
     }
   };
 
   const onSelectGroupHandler = async (groupId) => {
-    setGroup(groups && groups.find((g) => g.id === groupId));
+    setGroup(groups.find((g) => g.id === groupId));
     if (group && textInputRef.current) {
       textInputRef.current.focus();
     }
