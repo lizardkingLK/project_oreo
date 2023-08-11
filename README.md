@@ -2,7 +2,7 @@
 
 ## A Chat Application
 
-#### Made with TypeScript, NextJS, NextAuth, TailwindCSS, MongoDB
+#### Made with TypeScript, NextJS, ClerkJS, TailwindCSS, MongoDB
 
 ## .env.local file to be added
 
