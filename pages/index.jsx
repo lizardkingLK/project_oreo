@@ -227,6 +227,15 @@ const Messages = () => {
   };
 
   const onMediaHandler = async (files) => {
+    const newMessage = {
+      type: messageTypes.SENT,
+      content: `[${mediaTypes.image}](${data.data})`,
+      createdOn: new Date().toISOString(),
+      groupId: group.id,
+      status: true,
+      fromId: userId,
+      toId: group.targetId,
+    };
     if (isDevEnv()) {
       const formData = new FormData();
       Object.values(files).forEach(async (file) => {
@@ -239,15 +248,8 @@ const Messages = () => {
       })
         .then((response) => response.json())
         .then((data) => {
-          sendMessage({
-            type: messageTypes.SENT,
-            content: `[${mediaTypes.image}](${data.data})`,
-            createdOn: new Date().toISOString(),
-            groupId: group.id,
-            status: true,
-            fromId: userId,
-            toId: group.targetId,
-          });
+          newMessage.content = `[${mediaTypes.image}](${data.data})`;
+          sendMessage(newMessage);
           setNotifs(Math.random());
         });
     } else {
@@ -256,15 +258,8 @@ const Messages = () => {
         const response = await uploadFile(file, staticValues.attachments, path);
         if (response && response.data) {
           const { data } = getPublicUrl(staticValues.attachments, path);
-          sendMessage({
-            type: messageTypes.SENT,
-            content: `[${mediaTypes.image}](${data.publicUrl})`,
-            createdOn: new Date().toISOString(),
-            groupId: group.id,
-            status: true,
-            fromId: userId,
-            toId: group.targetId,
-          });
+          newMessage.content = `[${mediaTypes.image}](${data.publicUrl})`;
+          sendMessage(newMessage);
           setNotifs(Math.random());
         }
       });
