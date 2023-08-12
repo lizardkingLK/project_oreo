@@ -1,16 +1,13 @@
 import React from "react";
 import SectionLayout from "../layout";
-import { useUser } from "@clerk/nextjs";
 import SummaryCard from "@/components/cards/summary";
 import { cardBodyTypes } from "@/utils/enums";
 import Avatar from "@/components/avatar";
 import { IDashboardProps } from "@/types";
 
 const Dashboard = (props: IDashboardProps) => {
-  const { user, isLoaded } = useUser();
-
-  if (props && isLoaded) {
-    const { groups } = props;
+  if (props) {
+    const { groups, user } = props;
 
     return (
       <SectionLayout title={null}>
@@ -59,7 +56,7 @@ const Dashboard = (props: IDashboardProps) => {
               cardHeaderContent={undefined}
             />
             <SummaryCard
-              cardStyle={"bg-green-600 text-white rounded-md"}
+              cardStyle={"bg-green-600 text-white rounded-md col-span-2"}
               cardHeaderTitle={"Latest"}
               cardHeaderContent={
                 <Avatar

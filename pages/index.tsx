@@ -35,7 +35,7 @@ const Messages = () => {
   const [group, setGroup] = useState<any>(null);
   const [section, setSection] = useState(sections.home);
   const [input, setInput] = useState("");
-  const [output, setOutput] = useState<any>("");
+  const [output, setOutput] = useState<any>(null);
   const [typing, setTyping] = useState<any>(false);
   const [notifs, setNotifs] = useState<null | boolean | number>(null);
 
@@ -431,7 +431,7 @@ const Messages = () => {
                 )
               ) : section === sections.home ? (
                 <div className="hidden md:flex h-screen items-center justify-center md:md:w-full">
-                  <Dashboard groups={groups} />
+                  <Dashboard groups={groups} user={user} />
                 </div>
               ) : null}
             </div>

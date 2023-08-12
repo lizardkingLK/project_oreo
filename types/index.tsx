@@ -171,4 +171,5 @@ export interface ISectionLayoutProps {
 
 export interface IDashboardProps {
   groups: IGroupProps[];
+  user: any;
 }
