@@ -165,6 +165,10 @@ export interface IDialogProps {
 }
 
 export interface ISectionLayoutProps {
-  title: string;
+  title: string | null;
   children: ReactNode;
+}
+
+export interface IDashboardProps {
+  groups: IGroupProps[];
 }

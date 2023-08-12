@@ -10,6 +10,7 @@ import {
   mediaTypes,
   messageTypes,
   sections,
+  strings,
 } from "@/utils/enums";
 import io, { Socket } from "socket.io-client";
 import ChevronBack from "@/components/svgs/chevronBack";
@@ -17,23 +18,21 @@ import Bars from "@/components/svgs/bars";
 import { getRandomNumber, getTimeConverted, isDevEnv } from "@/utils/helpers";
 import UserNavbar from "@/components/navs/user";
 import Spinner from "@/components/svgs/spinner";
-import Dashboard from "@/components/dashboard";
-import { useAuth } from "@clerk/nextjs";
+import { useAuth, useUser } from "@clerk/nextjs";
 import Welcome from "@/components/welcome";
 import AddFriend from "@/components/sections/friends/add";
 import { getPublicUrl, uploadFile } from "@/lib/supabase";
 import { DefaultEventsMap } from "@socket.io/component-emitter";
 import { ICreatedForDataProps, IGroupProps, IMessageDataProps } from "@/types";
 import Feeds from "@/components/sections/feeds";
+import Dashboard from "@/components/sections/dashboard";
 let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 
 const Messages = () => {
   const [navbar, setNavbar] = useState(false);
   const [feeds, setFeeds] = useState([]);
   const [groups, setGroups] = useState<IGroupProps[]>([]);
-  const [group, setGroup] = useState<IGroupProps | null | undefined | any>(
-    null
-  );
+  const [group, setGroup] = useState<any>(null);
   const [section, setSection] = useState(sections.home);
   const [input, setInput] = useState("");
   const [output, setOutput] = useState<any>("");
@@ -44,6 +43,7 @@ const Messages = () => {
   const lastMessageRef = useRef<null | HTMLDivElement>(null);
 
   const { isLoaded, userId, isSignedIn } = useAuth();
+  const { user } = useUser();
 
   useEffect(() => {
     if (section !== sections.group) {
@@ -69,10 +69,7 @@ const Messages = () => {
     if (userId) {
       initializeGroups(userId);
       initializeFeeds(userId);
-      socketInitializer(
-        (sock: { emit: (arg0: string, arg1: { userId: string }) => any }) =>
-          sock.emit("new-window", { userId })
-      );
+      initizalizeSocket();
     }
   }, [userId]);
 
@@ -183,10 +180,7 @@ const Messages = () => {
     );
   };
 
-  const socketInitializer = async (proceed: {
-    (sock: { emit: (arg0: string, arg1: { userId: string }) => any }): any;
-    (arg0: Socket<DefaultEventsMap, DefaultEventsMap>): void;
-  }) => {
+  const initizalizeSocket = async () => {
     await fetch(apiUrls.socket);
     socket = io();
 
@@ -201,19 +195,18 @@ const Messages = () => {
     socket.on("is-typing", (typing) => {
       setTyping(typing);
     });
-
-    proceed(socket);
   };
 
   const onChangeHandler = (e: {
     target: { value: React.SetStateAction<string> };
   }) => {
     setInput(e.target.value);
+
     socket &&
       socket.emit("is-typing", {
         value: true,
         groupId: group!.id,
-        name: "Someone",
+        name: user?.firstName ?? strings.someone,
         userId,
       });
   };
@@ -315,8 +308,9 @@ const Messages = () => {
 
   const onSelectGroupHandler = async (groupId: string) => {
     setGroup(groups.find((g) => g.id === groupId));
-    if (group && textInputRef.current) {
+    if (group && textInputRef.current && socket) {
       textInputRef.current.focus();
+      socket.emit("new-window", userId);
     }
     setSection(sections.group);
   };
@@ -384,7 +378,7 @@ const Messages = () => {
                 </div>
               ) : section === sections.feeds ? (
                 <div className="flex h-screen items-center justify-center w-full">
-                  <Feeds />
+                  <Feeds feeds={feeds} />
                 </div>
               ) : section === sections.group ? (
                 group && (
@@ -437,7 +431,7 @@ const Messages = () => {
                 )
               ) : section === sections.home ? (
                 <div className="hidden md:flex h-screen items-center justify-center md:md:w-full">
-                  <Dashboard groups={groups} feeds={feeds} />
+                  <Dashboard groups={groups} />
                 </div>
               ) : null}
             </div>

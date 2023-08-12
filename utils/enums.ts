@@ -60,3 +60,7 @@ export enum sections {
   group = 2,
   feeds = 3,
 }
+
+export enum strings {
+  someone = "Someone",
+}
