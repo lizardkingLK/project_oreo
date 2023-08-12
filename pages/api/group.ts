@@ -1,5 +1,5 @@
 import { supabaseClient } from "@/lib/supabase";
-import { staticValues } from "@/utils/enums";
+import { quickMessages } from "@/utils/enums";
 import { clerkClient } from "@clerk/nextjs";
 import { randomUUID } from "crypto";
 import type { NextApiRequest, NextApiResponse } from "next";
@@ -20,7 +20,7 @@ export default async function handler(
               userId: ownerId,
               groupId: randomUUID(),
               createdFor: [userId, ownerId],
-              content: staticValues.hi,
+              content: quickMessages.hi,
             },
           ])
           .select();

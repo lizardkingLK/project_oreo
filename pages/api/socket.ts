@@ -1,4 +1,5 @@
 import { supabaseClient } from "@/lib/supabase";
+import { tableNames } from "@/utils/enums";
 import type { Server as HTTPServer } from "http";
 import type { Socket as NetSocket } from "net";
 import { NextApiResponse } from "next";
@@ -22,8 +23,6 @@ interface NextApiResponseWithSocket extends NextApiResponse {
   socket: SocketWithIO;
 }
 
-const socketArray: any[] = [];
-
 const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
   if (res.socket.server.io) {
     console.log("Socket is already running");
@@ -36,7 +35,7 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
     io.on("connection", (socket) => {
       socket.on("new-message", async (msg) => {
         await supabaseClient
-          .from("Message")
+          .from(tableNames.message)
           .insert([
             {
               userId: msg.fromId,
@@ -53,19 +52,8 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
         socket.broadcast.emit("is-typing", typing);
       });
 
-      socket.on("new-window", (identity) => {
-        const index = socketArray.findIndex(
-          (s) => s.userId === identity.userId
-        );
-        const record = { id: socket.id, userId: identity.userId };
-        index === -1 ? socketArray.push(record) : (socketArray[index] = record);
-      });
-
       socket.on("disconnect", () => {
-        const index = socketArray.findIndex((s) => s.id === socket.id);
-        if (index !== -1) {
-          socketArray.splice(index, 1);
-        }
+        console.log(`1 disconnected. id = %s`, socket.id);
       });
     });
   }

@@ -1,4 +1,4 @@
-import { messageTypes } from "@/utils/enums";
+import { groupTypes, messageTypes } from "@/utils/enums";
 import {
   ChangeEventHandler,
   KeyboardEventHandler,
@@ -6,9 +6,26 @@ import {
   MouseEventHandler,
   ReactNode,
 } from "react";
+import { User } from "@clerk/nextjs/dist/types/server";
 
 export interface ILayoutProps {
   children: ReactNode;
+}
+
+export interface ICreatedForDataProps {
+  firstName: any;
+  lastName: any;
+  username: any;
+  displayImage: any;
+  id: any;
+}
+
+export interface IMessageDataProps {
+  groupId: any;
+  createdAt: string | number | Date;
+  userId: any;
+  groupType: groupTypes;
+  createdFor: ICreatedForDataProps[];
 }
 
 export interface IMessageProps {
@@ -133,10 +150,26 @@ export interface IBrowseMediaProps {
   pictureProps: IPictureProps;
 }
 
+export interface IUserCardProps {
+  user: undefined | null | User;
+  handleInvitation: MouseEventHandler;
+  loading: boolean;
+}
+
 export interface IDialogProps {
   dialogRef: LegacyRef<HTMLDivElement>;
   dialogTitle: string;
   dialogSubtitle: string;
   dialogCloseHandler: MouseEventHandler<HTMLButtonElement>;
   children: ReactNode;
+}
+
+export interface ISectionLayoutProps {
+  title: string | null;
+  children: ReactNode;
+}
+
+export interface IDashboardProps {
+  groups: IGroupProps[];
+  user: any;
 }

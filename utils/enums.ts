@@ -38,13 +38,29 @@ export enum userSearchMessageTypes {
   notFound = "No User Found",
 }
 
-export enum staticValues {
+export enum tableNames {
+  message = "Message",
+}
+
+export enum quickMessages {
   hi = "Hi!",
+}
+
+export enum bucketNames {
   attachments = "attachments",
+}
+
+export enum resourcePaths {
+  imageFavicon = "/favicon.png",
 }
 
 export enum sections {
   home = 0,
   addFriend = 1,
   group = 2,
+  feeds = 3,
+}
+
+export enum strings {
+  someone = "Someone",
 }

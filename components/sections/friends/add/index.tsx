@@ -5,6 +5,7 @@ import { useAuth } from "@clerk/nextjs";
 import { User } from "@clerk/nextjs/dist/types/server";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
+import SectionLayout from "../../layout";
 
 const AddFriend = () => {
   const [search, setSearch] = useState("");
@@ -17,7 +18,7 @@ const AddFriend = () => {
 
   const { isLoaded, userId } = useAuth();
 
-const router = useRouter();
+  const router = useRouter();
 
   useEffect(() => {
     const getUsers = async () => {
@@ -32,6 +33,7 @@ const router = useRouter();
 
   const handleInvitation = async () => {
     setLoading(true);
+
     await fetch(apiUrls.group, {
       method: "POST",
       headers: {
@@ -86,46 +88,37 @@ const router = useRouter();
   }
 
   return (
-    <section className="flex justify-center">
-      <div
-        className={
-          "bg-black md:bg-transparent md:relative md:block container p-4"
-        }
+    <SectionLayout title="Add Friend">
+      <form
+        onSubmit={handleSearch}
+        className="md:flex md:justify-between md:items-center"
       >
-        <h1 className="text-2xl text-white font-bold py-4" id="textTitle">
-          Add Friend
-        </h1>
-        <form
-          onSubmit={handleSearch}
-          className="md:flex md:justify-between md:items-center"
+        <input
+          value={search}
+          id="search"
+          onChange={handleChange}
+          className="text-xl md:text-5xl font-bold w-full bg-transparent outline-none placeholder-stone-400 text-green-500 py-4"
+          placeholder="Enter email or username..."
+          ref={searchRef}
+          required
+        />
+        <button
+          type="submit"
+          className="text-white bg-stone-800 hover:bg-stone-900 focus:outline-none focus:ring-4 focus:ring-stone-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-stone-800 dark:hover:bg-stone-700 dark:focus:ring-stone-700 dark:border-stone-700 w-full md:w-auto"
+          title="Search"
         >
-          <input
-            value={search}
-            id="search"
-            onChange={handleChange}
-            className="text-xl md:text-5xl font-bold w-full bg-transparent outline-none placeholder-stone-400 text-green-500 py-4"
-            placeholder="Enter email or username..."
-            ref={searchRef}
-            required
-          />
-          <button
-            type="submit"
-            className="text-white bg-stone-800 hover:bg-stone-900 focus:outline-none focus:ring-4 focus:ring-stone-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-stone-800 dark:hover:bg-stone-700 dark:focus:ring-stone-700 dark:border-stone-700"
-            title="Search"
-          >
-            Search
-          </button>
-        </form>
-        <div className="h-max">
-          <h3 className="text-white py-4">{userFound}</h3>
-          <UserCard
-            user={user}
-            handleInvitation={handleInvitation}
-            loading={loading}
-          />
-        </div>
+          Search
+        </button>
+      </form>
+      <div className="h-max">
+        <h3 className="text-white py-4">{userFound}</h3>
+        <UserCard
+          user={user}
+          handleInvitation={handleInvitation}
+          loading={loading}
+        />
       </div>
-    </section>
+    </SectionLayout>
   );
 };
 
