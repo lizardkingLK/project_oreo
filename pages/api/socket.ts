@@ -1,4 +1,5 @@
 import { supabaseClient } from "@/lib/supabase";
+import { tableNames } from "@/utils/enums";
 import type { Server as HTTPServer } from "http";
 import type { Socket as NetSocket } from "net";
 import { NextApiResponse } from "next";
@@ -36,7 +37,7 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
     io.on("connection", (socket) => {
       socket.on("new-message", async (msg) => {
         await supabaseClient
-          .from("Message")
+          .from(tableNames.message)
           .insert([
             {
               userId: msg.fromId,

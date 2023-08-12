@@ -5,11 +5,11 @@ import MessageList from "@/components/lists/message/MessageList";
 import MessageEditor from "@/components/forms/message";
 import {
   apiUrls,
+  bucketNames,
   groupTypes,
   mediaTypes,
   messageTypes,
   sections,
-  staticValues,
 } from "@/utils/enums";
 import io, { Socket } from "socket.io-client";
 import ChevronBack from "@/components/svgs/chevronBack";
@@ -23,14 +23,17 @@ import Welcome from "@/components/welcome";
 import AddFriend from "@/components/sections/friends/add";
 import { getPublicUrl, uploadFile } from "@/lib/supabase";
 import { DefaultEventsMap } from "@socket.io/component-emitter";
-import { IGroupProps } from "@/types";
+import { ICreatedForDataProps, IGroupProps, IMessageDataProps } from "@/types";
+import Feeds from "@/components/sections/feeds";
 let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 
 const Messages = () => {
   const [navbar, setNavbar] = useState(false);
   const [feeds, setFeeds] = useState([]);
   const [groups, setGroups] = useState<IGroupProps[]>([]);
-  const [group, setGroup] = useState<IGroupProps | null | undefined | any>(null);
+  const [group, setGroup] = useState<IGroupProps | null | undefined | any>(
+    null
+  );
   const [section, setSection] = useState(sections.home);
   const [input, setInput] = useState("");
   const [output, setOutput] = useState<any>("");
@@ -66,7 +69,10 @@ const Messages = () => {
     if (userId) {
       initializeGroups(userId);
       initializeFeeds(userId);
-      socketInitializer((sock: { emit: (arg0: string, arg1: { userId: string; }) => any; }) => sock.emit("new-window", { userId }));
+      socketInitializer(
+        (sock: { emit: (arg0: string, arg1: { userId: string }) => any }) =>
+          sock.emit("new-window", { userId })
+      );
     }
   }, [userId]);
 
@@ -103,7 +109,7 @@ const Messages = () => {
             createdOn: getTimeConverted(),
             groupId: tempGroup.id,
             status: true,
-            toId: output.toId
+            toId: output.toId,
           };
         tempGroupMessages[tempGroupMessages.length] = newMessage;
         Object.assign(tempGroup, {
@@ -118,10 +124,14 @@ const Messages = () => {
 
   const groupMessages = (messages: any[], userId: string) => {
     const groups = new Map();
-    let groupId, group, tempMessages, target: { firstName: any; lastName: any; username: any; displayImage: any; id: any; }, createdOnDate;
+    let groupId,
+      group,
+      tempMessages,
+      target: ICreatedForDataProps,
+      createdOnDate;
     messages &&
       messages.length > 0 &&
-      messages.forEach((message: { groupId: any; createdAt: string | number | Date; userId: any; groupType: groupTypes; createdFor: { firstName: any; lastName: any; username: any; displayImage: any; id: any; }[]; }, _: any) => {
+      messages.forEach((message: IMessageDataProps, _: any) => {
         groupId = message.groupId;
         createdOnDate = new Date(message.createdAt);
         Object.assign(message, {
@@ -173,7 +183,10 @@ const Messages = () => {
     );
   };
 
-  const socketInitializer = async (proceed: { (sock: { emit: (arg0: string, arg1: { userId: string; }) => any; }): any; (arg0: Socket<DefaultEventsMap, DefaultEventsMap>): void; }) => {
+  const socketInitializer = async (proceed: {
+    (sock: { emit: (arg0: string, arg1: { userId: string }) => any }): any;
+    (arg0: Socket<DefaultEventsMap, DefaultEventsMap>): void;
+  }) => {
     await fetch(apiUrls.socket);
     socket = io();
 
@@ -192,7 +205,9 @@ const Messages = () => {
     proceed(socket);
   };
 
-  const onChangeHandler = (e: { target: { value: React.SetStateAction<string>; }; }) => {
+  const onChangeHandler = (e: {
+    target: { value: React.SetStateAction<string> };
+  }) => {
     setInput(e.target.value);
     socket &&
       socket.emit("is-typing", {
@@ -203,7 +218,15 @@ const Messages = () => {
       });
   };
 
-  const sendMessage = (newMessage: { type: messageTypes | undefined; content: any; createdOn: any; groupId: any; status: boolean; fromId: string | null | undefined; toId: any; }) => {
+  const sendMessage = (newMessage: {
+    type: messageTypes | undefined;
+    content: any;
+    createdOn: any;
+    groupId: any;
+    status: boolean;
+    fromId: string | null | undefined;
+    toId: any;
+  }) => {
     if (newMessage && newMessage.content && socket) {
       const tempGroup = group;
 
@@ -241,7 +264,9 @@ const Messages = () => {
     }
   };
 
-  const onMediaHandler = async (files: { [s: string]: any; } | ArrayLike<any>) => {
+  const onMediaHandler = async (
+    files: { [s: string]: any } | ArrayLike<any>
+  ) => {
     if (group) {
       const newMessage = {
         type: messageTypes.SENT,
@@ -257,7 +282,7 @@ const Messages = () => {
         Object.values(files).forEach(async (file) => {
           formData.append("file", file);
         });
-  
+
         await fetch(apiUrls.file, {
           method: "POST",
           body: formData,
@@ -271,11 +296,15 @@ const Messages = () => {
       } else {
         Object.values(files).forEach(async (file) => {
           const path = `${group.id}/${getRandomNumber()}`;
-          const response = await uploadFile(file, staticValues.attachments, path);
+          const response = await uploadFile(
+            file,
+            bucketNames.attachments,
+            path
+          );
           if (response == null || response.error) {
             throw response.error;
           }
-          const { data } = getPublicUrl(staticValues.attachments, path);
+          const { data } = getPublicUrl(bucketNames.attachments, path);
           newMessage.content = `[${mediaTypes.image}](${data.publicUrl})`;
           sendMessage(newMessage);
           setNotifs(Math.random());
@@ -292,7 +321,7 @@ const Messages = () => {
     setSection(sections.group);
   };
 
-  const onKeyDownHandler = (e: { key: string; }) => {
+  const onKeyDownHandler = (e: { key: string }) => {
     if (e.key === "Enter") {
       onSubmitHandler();
     }
@@ -352,6 +381,10 @@ const Messages = () => {
               {section === sections.addFriend ? (
                 <div className="flex h-screen items-center justify-center w-full">
                   <AddFriend />
+                </div>
+              ) : section === sections.feeds ? (
+                <div className="flex h-screen items-center justify-center w-full">
+                  <Feeds />
                 </div>
               ) : section === sections.group ? (
                 group && (

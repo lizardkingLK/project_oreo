@@ -9,7 +9,7 @@ module.exports = {
       center: true,
     },
     fontFamily: {
-      'body': ['"Open Sans"'],
+      'body': ["Poppins", "sans-serif"],
     },
     extend: {},
   },
