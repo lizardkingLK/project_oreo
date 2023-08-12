@@ -1,3 +1,4 @@
+import { messageTypes } from "@/utils/enums";
 import {
   ChangeEventHandler,
   KeyboardEventHandler,
@@ -11,11 +12,13 @@ export interface ILayoutProps {
 }
 
 export interface IMessageProps {
-  type: number;
-  content: string;
-  fromId: string;
-  createdOn: string;
-  groupId: string;
+  type: messageTypes | number | undefined;
+  content: any;
+  createdOn: any;
+  groupId: any;
+  status: boolean | undefined;
+  fromId: any;
+  toId: any;
 }
 
 export interface IGroupProps {
@@ -26,12 +29,13 @@ export interface IGroupProps {
   isOnline: boolean;
   messages: IMessageProps[];
   lastMessage: IMessageProps;
+  targetId: string;
 }
 
 export interface IMessageLinkListProps {
-  groups: Array<IGroupProps>;
+  groups: IGroupProps[] | null | undefined;
   setGroup: Function;
-  selectedGroup: IGroupProps;
+  selectedGroup: IGroupProps | null | undefined;
 }
 
 interface ITypingProps {
@@ -41,9 +45,9 @@ interface ITypingProps {
 }
 
 export interface IMessageListProps {
-  group: IGroupProps;
+  group: IGroupProps | null | undefined;
   typing: ITypingProps;
-  notifs: boolean;
+  notifs: number | boolean | null;
   lastMessageRef: LegacyRef<HTMLDivElement>;
 }
 
@@ -56,7 +60,7 @@ export interface IMessageLinkProps {
   messageAuthorName: string;
   messageContent: string;
   messageTime: string;
-  messageIsActive: boolean;
+  messageIsActive: boolean | null | undefined;
   messageOnClick: Function;
   messageUnread: number;
 }
@@ -68,7 +72,7 @@ export interface IMessageEditorProps {
   onKeyDownHandler: KeyboardEventHandler<HTMLInputElement>;
   onSubmitHandler: MouseEventHandler<HTMLButtonElement>;
   onMediaHandler: Function;
-  textInputRef: LegacyRef<HTMLInputElement>;
+  textInputRef: LegacyRef<HTMLInputElement> | null;
 }
 
 export interface IFeedProps {
@@ -84,7 +88,7 @@ export interface IFeedListProps {
 
 export interface IMessageCardProps {
   content: string;
-  type: number;
+  type: number | undefined;
   messageImagePath: string;
   messageTime: string;
   messageAuthorName: string;
