@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -20,9 +16,7 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "@/*": ["./*"]
     }
   },
   "include": [
@@ -31,13 +25,11 @@
     "**/*.tsx",
     "components/layout.tsx",
     "pages/api/socket.ts",
-    "pages/index.jsx",
+    "pages/previndex.jsx",
     "utils/providers/socket.provider.js",
     "pages/messages.jsx",
     "utils/enums.ts",
     "pages/api/auth/[...nextauth].js"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }
