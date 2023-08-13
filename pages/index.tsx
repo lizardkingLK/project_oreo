@@ -26,6 +26,7 @@ import { DefaultEventsMap } from "@socket.io/component-emitter";
 import { ICreatedForDataProps, IGroupProps, IMessageDataProps } from "@/types";
 import Feeds from "@/components/sections/feeds";
 import Dashboard from "@/components/sections/dashboard";
+import MessageMenu from "@/components/menus/message";
 let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 
 const Messages = () => {
@@ -94,8 +95,8 @@ const Messages = () => {
   useEffect(() => {
     if (output) {
       const tempGroupIndex = groups.findIndex(
-          (group) => group.id === output.groupId
-        ),
+        (group) => group.id === output.groupId
+      ),
         tempGroup = groups[tempGroupIndex];
       if (tempGroup) {
         const tempGroupMessages = tempGroup.messages,
@@ -390,7 +391,7 @@ const Messages = () => {
                       >
                         <ChevronBack />
                       </button>
-                      <div className="basis-11/12">
+                      <div className="basis-8/12">
                         <h1 className="flex text-2xl text-white font-bold">
                           <span>{group.name}</span>
                         </h1>

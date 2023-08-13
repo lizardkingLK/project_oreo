@@ -17,7 +17,6 @@ const Close = ({ size }: { size: number | undefined }) => {
                 d="M6 18L18 6M6 6l12 12"
             />
         </svg>
-
     )
 }
 
