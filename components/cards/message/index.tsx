@@ -4,20 +4,21 @@ import { messageTypes } from "@/utils/enums";
 import { IMessageCardProps } from "@/types";
 import MessageMedia from "@/components/media/message";
 import VerticalEllipsis from "@/components/svgs/ellipsis/vertical";
+import MessageMenu from "@/components/menus/message";
 
 export default function MessageCard(props: IMessageCardProps) {
+  const [options, setOptions] = useState(false);
+
   if (props) {
     const { type, messageAuthorName, messageTime, messageImagePath, content } =
       props;
 
-    const [options, setOptions] = useState(false);
-
     return (
       <div className={`flex ${type === messageTypes.SENT && "justify-end"}`}>
         {messageAuthorName &&
-        messageTime &&
-        messageImagePath &&
-        type === messageTypes.RECEIVED ? (
+          messageTime &&
+          messageImagePath &&
+          type === messageTypes.RECEIVED ? (
           <div className="hidden md:flex flex-col justify-start items-center mt-4">
             <Avatar
               name={messageAuthorName}
@@ -26,19 +27,16 @@ export default function MessageCard(props: IMessageCardProps) {
             />
           </div>
         ) : null}
-        <div>
-          <div
-            title={messageTime}
-            className={`p-4 my-4 min-w-max rounded-xl bg-gradient-to-r 
-        ${
-          type === messageTypes.RECEIVED
-            ? "from-green-400 ml-2 to-green-500 rounded-tl-none cursor-pointer"
-            : "from-stone-400 to-stone-500 rounded-tr-none cursor-pointer text-right"
-        }`}
-          >
-            <MessageMedia content={content} />
-          </div>
-          {options && <h1 className="text-white">Options</h1>}
+        <div
+          title={messageTime}
+          className={`p-4 my-4 min-w-max rounded-xl bg-gradient-to-r 
+        ${type === messageTypes.RECEIVED
+              ? "from-green-400 ml-2 to-green-500 rounded-tl-none cursor-pointer"
+              : "from-stone-400 to-stone-500 rounded-tr-none cursor-pointer text-right"
+            }`}
+        >
+          <MessageMedia content={content} />
+          <MessageMenu options={options} />
         </div>
         {type === messageTypes.SENT && (
           <button
