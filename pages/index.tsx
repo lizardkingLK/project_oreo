@@ -1,8 +1,11 @@
 import React, { useState, useRef, useEffect, Fragment } from "react";
-import Layout from "@/components/layout";
-import MessageLinkList from "@/components/lists/message/MessageLinkList";
-import MessageList from "@/components/lists/message/MessageList";
-import MessageEditor from "@/components/forms/message";
+import { useAuth, useUser } from "@clerk/nextjs";
+import io, { Socket } from "socket.io-client";
+import { DefaultEventsMap } from "@socket.io/component-emitter";
+import { getPublicUrl, uploadFile } from "@/lib/supabase";
+
+import { ICreatedForDataProps, IGroupProps, IMessageDataProps } from "@/types";
+
 import {
   apiUrls,
   bucketNames,
@@ -12,26 +15,27 @@ import {
   sections,
   strings,
 } from "@/utils/enums";
-import io, { Socket } from "socket.io-client";
+
+import { getRandomNumber, getTimeConverted, isDevEnv } from "@/utils/helpers";
+
+import Layout from "@/components/layout";
+import MessageLinkList from "@/components/lists/message/MessageLinkList";
+import MessageList from "@/components/lists/message/MessageList";
+import MessageEditor from "@/components/forms/message";
 import ChevronBack from "@/components/svgs/chevronBack";
 import Bars from "@/components/svgs/bars";
-import { getRandomNumber, getTimeConverted, isDevEnv } from "@/utils/helpers";
 import UserNavbar from "@/components/navs/user";
 import Spinner from "@/components/svgs/spinner";
-import { useAuth, useUser } from "@clerk/nextjs";
 import Welcome from "@/components/welcome";
 import AddFriend from "@/components/sections/friends/add";
-import { getPublicUrl, uploadFile } from "@/lib/supabase";
-import { DefaultEventsMap } from "@socket.io/component-emitter";
-import { ICreatedForDataProps, IGroupProps, IMessageDataProps } from "@/types";
 import Feeds from "@/components/sections/feeds";
 import Dashboard from "@/components/sections/dashboard";
-import MessageMenu from "@/components/menus/message";
+
 let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 
 const Messages = () => {
+  const [isDev, _] = useState(isDevEnv())
   const [navbar, setNavbar] = useState(false);
-  const [feeds, setFeeds] = useState([]);
   const [groups, setGroups] = useState<IGroupProps[]>([]);
   const [group, setGroup] = useState<any>(null);
   const [section, setSection] = useState(sections.home);
@@ -55,12 +59,6 @@ const Messages = () => {
   useEffect(() => setNavbar(false), [group, input]);
 
   useEffect(() => {
-    const initializeFeeds = async (userId: string) => {
-      await fetch(`${apiUrls.feed}?id=${userId}`)
-        .then((response) => response.json())
-        .then((data) => setFeeds(data));
-    };
-
     const initializeGroups = async (userId: string) => {
       await fetch(`${apiUrls.group}?userId=${userId}`)
         .then((response) => response.json())
@@ -69,10 +67,9 @@ const Messages = () => {
 
     if (userId) {
       initializeGroups(userId);
-      initializeFeeds(userId);
-      initizalizeSocket();
+      !isDev && initizalizeSocket();
     }
-  }, [userId]);
+  }, [userId, isDev]);
 
   useEffect(() => {
     if (typing && typing.userId && groups) {
@@ -271,7 +268,7 @@ const Messages = () => {
         toId: group.targetId,
         content: "",
       };
-      if (isDevEnv()) {
+      if (isDev) {
         const formData = new FormData();
         Object.values(files).forEach(async (file) => {
           formData.append("file", file);
@@ -379,7 +376,7 @@ const Messages = () => {
                 </div>
               ) : section === sections.feeds ? (
                 <div className="flex h-screen items-center justify-center w-full">
-                  <Feeds feeds={feeds} />
+                  <Feeds />
                 </div>
               ) : section === sections.group ? (
                 group && (
