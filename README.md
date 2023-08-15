@@ -2,7 +2,7 @@
 
 ## A Chat Application
 
-#### Made with TypeScript, NextJS, ClerkJS, TailwindCSS, Supabase
+An open-source chat application to learn real-time messaging maintains by the community.
 
 ## .env.local file to be added
 
