@@ -2,7 +2,7 @@
 
 ## A Chat Application
 
-An open-source chat application to learn real-time messaging maintains by the community.
+An open-source chat application to learn real-time messaging.
 
 ## .env.local file to be added
 
