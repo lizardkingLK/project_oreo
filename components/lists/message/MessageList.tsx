@@ -4,7 +4,7 @@ import { Fragment } from "react";
 
 const MessageList = (props: IMessageListProps) => {
   if (props) {
-    const { group, typing, lastMessageRef } = props;
+    const { group, active, lastMessageRef } = props;
     return (
       <Fragment>
         {group?.messages?.map((message, index) => (
@@ -19,9 +19,9 @@ const MessageList = (props: IMessageListProps) => {
           </Fragment>
         ))}
         <div ref={lastMessageRef}></div>
-        {group && typing && typing.groupId === group.id && (
+        {active?.groupId === group?.id && (
           <div className="absolute bottom-12 m-8 z-10">
-            <p className="text-sm text-stone-500">{`${typing.name} is typing...`}</p>
+            <p className="text-sm text-stone-500">{`${active.name} is typing...`}</p>
           </div>
         )}
       </Fragment>
