@@ -27,7 +27,7 @@ const MessageEditor = (props: IMessageEditorProps) => {
     } = props;
 
     const mediaHandler = (event: any) => {
-      if (event && event.target && event.target.files) {
+      if (event?.target?.files) {
         const files = event.target.files,
           file = files[0];
         setFiles(files);
