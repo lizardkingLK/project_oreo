@@ -1,6 +1,6 @@
 import React from "react";
 import Picture from "../../picture";
-import { isDevEnv, isImage, isMedia } from "@/utils/helpers";
+import { isLocalStorage, isImage, isMedia } from "@/utils/helpers";
 
 const MessageMedia = (props: { content: string }) => {
   const { content } = props;
@@ -11,7 +11,7 @@ const MessageMedia = (props: { content: string }) => {
           content.indexOf("(") + 1,
           content.indexOf(")")
         );
-        const src = isDevEnv() ? `/uploads/${path}` : path;
+        const src = isLocalStorage() ? `/uploads/${path}` : path;
         return <Picture alt="preview" height={120} width={120} src={src} />;
       }
     }

@@ -31,8 +31,8 @@ const getBriefContent = (content: string) => {
   } else return content;
 };
 
-const isDevEnv = () => {
-  return process.env.NEXT_PUBLIC_NODE_ENV === "development";
+const isLocalStorage = () => {
+  return process.env.NEXT_PUBLIC_LOCAL_STORAGE === "local";
 };
 
 const getRandomNumber = () => {
@@ -44,6 +44,6 @@ export {
   isMedia,
   isImage,
   getBriefContent,
-  isDevEnv,
+  isLocalStorage,
   getRandomNumber,
 };

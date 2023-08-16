@@ -16,7 +16,7 @@ import {
   strings,
 } from "@/utils/enums";
 
-import { getRandomNumber, getTimeConverted, isDevEnv } from "@/utils/helpers";
+import { getRandomNumber, getTimeConverted, isLocalStorage } from "@/utils/helpers";
 
 import Layout from "@/components/layout";
 import MessageLinkList from "@/components/lists/message/MessageLinkList";
@@ -29,7 +29,7 @@ import SectionSwitch from "@/components/sections";
 let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 
 const Messages = () => {
-  const [isDev, _] = useState(isDevEnv())
+  const [storeLocally, _] = useState(isLocalStorage())
   const [navbar, setNavbar] = useState(false);
   const [groups, setGroups] = useState<IGroupProps[]>([]);
   const [group, setGroup] = useState<any>(null);
@@ -62,9 +62,9 @@ const Messages = () => {
 
     if (userId) {
       initializeGroups(userId);
-      !isDev && initizalizeSocket();
+      initizalizeSocket();
     }
-  }, [userId, isDev]);
+  }, [userId]);
 
   useEffect(() => {
     if (typing?.userId && groups) {
@@ -253,7 +253,7 @@ const Messages = () => {
         toId: group.targetId,
         content: "",
       };
-      if (isDev) {
+      if (storeLocally) {
         const formData = new FormData();
         Object.values(files).forEach((file) => {
           formData.append("file", file);
