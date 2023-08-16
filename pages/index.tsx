@@ -16,7 +16,7 @@ import {
   strings,
 } from "@/utils/enums";
 
-import { getRandomNumber, getTimeConverted, isLocalStorage } from "@/utils/helpers";
+import { getMessageType, getNameOfUser, getRandomNumber, getTimeConverted, isLocalStorage } from "@/utils/helpers";
 
 import Layout from "@/components/layout";
 import MessageLinkList from "@/components/lists/message/MessageLinkList";
@@ -119,51 +119,45 @@ const Messages = () => {
       tempMessages,
       target: ICreatedForDataProps,
       createdOnDate;
-    messages?.length > 0 &&
-      messages.forEach((message: IMessageDataProps, _: any) => {
-        groupId = message.groupId;
-        createdOnDate = new Date(message.createdAt);
-        Object.assign(message, {
-          type:
-            message.userId === userId
-              ? messageTypes.SENT
-              : messageTypes.RECEIVED,
-          createdOn: getTimeConverted(createdOnDate),
-          createdOnDate,
-        });
-        if (groups.has(groupId)) {
-          group = groups.get(groupId);
-          tempMessages = group.messages ?? [];
-          tempMessages[tempMessages.length] = message;
-          Object.assign(group, {
-            lastMessage: message,
-            messages: tempMessages,
-          });
-        } else {
-          if (message.groupType === groupTypes.PRIVATE) {
-            if (message.userId === userId) {
-              target = message.createdFor[0];
-            } else {
-              target = message.createdFor[1];
-            }
-          } else if (message.groupType === groupTypes.PUBLIC) {
-            // TODO: set group meta details
-          }
-          target &&
-            groups.set(groupId, {
-              id: groupId,
-              name: target.firstName
-                ? `${target.firstName} ${target.lastName}`
-                : target.username,
-              displayImage: target.displayImage,
-              targetId: target.id,
-              isStatus: false,
-              isOnline: false,
-              messages: [message],
-              lastMessage: message,
-            });
-        }
+    messages?.forEach((message: IMessageDataProps, _: any) => {
+      groupId = message.groupId;
+      createdOnDate = new Date(message.createdAt);
+      Object.assign(message, {
+        type: getMessageType(message.userId, userId),
+        createdOnDate,
+        createdOn: getTimeConverted(createdOnDate),
       });
+      if (groups.has(groupId)) {
+        group = groups.get(groupId);
+        tempMessages = group.messages;
+        tempMessages[tempMessages.length] = message;
+        Object.assign(group, {
+          lastMessage: message,
+          messages: tempMessages,
+        });
+      } else {
+        if (message.groupType === groupTypes.PRIVATE) {
+          if (message.userId === userId) {
+            target = message.createdFor[0];
+          } else {
+            target = message.createdFor[1];
+          }
+        } else if (message.groupType === groupTypes.PUBLIC) {
+          // TODO: set group meta details
+        }
+        target &&
+          groups.set(groupId, {
+            id: groupId,
+            name: getNameOfUser(target),
+            displayImage: target.displayImage,
+            targetId: target.id,
+            isStatus: false,
+            isOnline: false,
+            messages: [message],
+            lastMessage: message,
+          });
+      }
+    });
     setGroups(
       Array.from(groups.values()).sort(
         (first, second) =>
@@ -270,20 +264,22 @@ const Messages = () => {
             setNotifs(Math.random());
           });
       } else {
-        Object.values(files).forEach(async (file) => {
-          const path = `${group.id}/${getRandomNumber()}`;
-          const response = await uploadFile(
-            file,
-            bucketNames.attachments,
-            path
-          );
-          if (response == null || response.error) {
-            throw response.error;
-          }
-          const { data } = getPublicUrl(bucketNames.attachments, path);
-          newMessage.content = `[${mediaTypes.image}](${data.publicUrl})`;
-          sendMessage(newMessage);
-          setNotifs(Math.random());
+        Object.values(files).forEach((file) => {
+          (async () => {
+            const path = `${group.id}/${getRandomNumber()}`;
+            const response = await uploadFile(
+              file,
+              bucketNames.attachments,
+              path
+            );
+            if (response == null || response.error) {
+              throw response.error;
+            }
+            const { data } = getPublicUrl(bucketNames.attachments, path);
+            newMessage.content = `[${mediaTypes.image}](${data.publicUrl})`;
+            sendMessage(newMessage);
+            setNotifs(Math.random());
+          })();
         });
       }
     }

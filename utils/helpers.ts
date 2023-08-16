@@ -1,4 +1,6 @@
-import { mediaTypes } from "./enums";
+import { mediaTypes, messageTypes } from "./enums";
+
+type NameType = string | null | undefined;
 
 const getTimeConverted = (tempDate: Date = new Date()) => {
   const tempHours = tempDate.getHours().toString().padStart(2, "0"),
@@ -16,7 +18,7 @@ const formatCompactNumber = (input: string) => {
 };
 
 const isMedia = (content: string) => {
-  return content && content.match(/(\[)+[^\n]+(])+(\()+[^\n]+(\))/);
+  return RegExp(/(\[)+[^\n]+(])+(\()+[^\n]+(\))/).exec(content);
 };
 
 const isImage = (content: string) => {
@@ -38,6 +40,21 @@ const isLocalStorage = () => {
 const getRandomNumber = () => {
   return Math.round(Math.random() * 100000000000);
 };
+
+const getMessageType = (messageUserId: string, userId: string) => {
+  return messageUserId === userId ? messageTypes.SENT : messageTypes.RECEIVED;
+};
+
+const getNameOfUser = (target: {
+  firstName: NameType;
+  lastName: NameType;
+  username: NameType;
+}) => {
+  return target.firstName
+    ? `${target.firstName} ${target.lastName}`
+    : target.username;
+};
+
 export {
   getTimeConverted,
   formatCompactNumber,
@@ -46,4 +63,6 @@ export {
   getBriefContent,
   isLocalStorage,
   getRandomNumber,
+  getMessageType,
+  getNameOfUser,
 };
