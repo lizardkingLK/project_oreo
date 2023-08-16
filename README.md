@@ -28,19 +28,16 @@ NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=YOUR_NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL
 npx prisma generate
 ```
 
-### Install dotenv package
+### DB Migrate
 
 ```
 npm install -g dotenv-cli
 ```
-
-### DB Migrate
-
 ```
 dotenv -e .env.local -- npx prisma migrate dev --name init
 ```
 
-### Start server
+### Start Application
 
 ```
 npm run dev
