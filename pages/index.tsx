@@ -1,8 +1,11 @@
-import React, { useState, useRef, useEffect, Fragment } from "react";
-import Layout from "@/components/layout";
-import MessageLinkList from "@/components/lists/message/MessageLinkList";
-import MessageList from "@/components/lists/message/MessageList";
-import MessageEditor from "@/components/forms/message";
+import React, { useState, useRef, useEffect } from "react";
+import { useAuth, useUser } from "@clerk/nextjs";
+import io, { Socket } from "socket.io-client";
+import { DefaultEventsMap } from "@socket.io/component-emitter";
+import { getPublicUrl, uploadFile } from "@/lib/supabase";
+
+import { ICreatedForDataProps, IGroupProps, IMessageDataProps, IMessageProps } from "@/types";
+
 import {
   apiUrls,
   bucketNames,
@@ -12,26 +15,22 @@ import {
   sections,
   strings,
 } from "@/utils/enums";
-import io, { Socket } from "socket.io-client";
-import ChevronBack from "@/components/svgs/chevronBack";
-import Bars from "@/components/svgs/bars";
+
 import { getRandomNumber, getTimeConverted, isDevEnv } from "@/utils/helpers";
+
+import Layout from "@/components/layout";
+import MessageLinkList from "@/components/lists/message/MessageLinkList";
+import Bars from "@/components/svgs/bars";
 import UserNavbar from "@/components/navs/user";
 import Spinner from "@/components/svgs/spinner";
-import { useAuth, useUser } from "@clerk/nextjs";
 import Welcome from "@/components/welcome";
-import AddFriend from "@/components/sections/friends/add";
-import { getPublicUrl, uploadFile } from "@/lib/supabase";
-import { DefaultEventsMap } from "@socket.io/component-emitter";
-import { ICreatedForDataProps, IGroupProps, IMessageDataProps } from "@/types";
-import Feeds from "@/components/sections/feeds";
-import Dashboard from "@/components/sections/dashboard";
-import MessageMenu from "@/components/menus/message";
+import SectionSwitch from "@/components/sections";
+
 let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 
 const Messages = () => {
+  const [isDev, _] = useState(isDevEnv())
   const [navbar, setNavbar] = useState(false);
-  const [feeds, setFeeds] = useState([]);
   const [groups, setGroups] = useState<IGroupProps[]>([]);
   const [group, setGroup] = useState<any>(null);
   const [section, setSection] = useState(sections.home);
@@ -55,12 +54,6 @@ const Messages = () => {
   useEffect(() => setNavbar(false), [group, input]);
 
   useEffect(() => {
-    const initializeFeeds = async (userId: string) => {
-      await fetch(`${apiUrls.feed}?id=${userId}`)
-        .then((response) => response.json())
-        .then((data) => setFeeds(data));
-    };
-
     const initializeGroups = async (userId: string) => {
       await fetch(`${apiUrls.group}?userId=${userId}`)
         .then((response) => response.json())
@@ -69,13 +62,12 @@ const Messages = () => {
 
     if (userId) {
       initializeGroups(userId);
-      initializeFeeds(userId);
-      initizalizeSocket();
+      !isDev && initizalizeSocket();
     }
-  }, [userId]);
+  }, [userId, isDev]);
 
   useEffect(() => {
-    if (typing && typing.userId && groups) {
+    if (typing?.userId && groups) {
       const tempGroup = groups.find(
         (group) => group.targetId === typing.userId
       );
@@ -127,8 +119,7 @@ const Messages = () => {
       tempMessages,
       target: ICreatedForDataProps,
       createdOnDate;
-    messages &&
-      messages.length > 0 &&
+    messages?.length > 0 &&
       messages.forEach((message: IMessageDataProps, _: any) => {
         groupId = message.groupId;
         createdOnDate = new Date(message.createdAt);
@@ -203,28 +194,19 @@ const Messages = () => {
   }) => {
     setInput(e.target.value);
 
-    socket &&
-      socket.emit("is-typing", {
-        value: true,
-        groupId: group!.id,
-        name: user?.firstName ?? strings.someone,
-        userId,
-      });
+    socket?.emit("is-typing", {
+      value: true,
+      groupId: group.id,
+      name: user?.firstName ?? strings.someone,
+      userId,
+    });
   };
 
-  const sendMessage = (newMessage: {
-    type: messageTypes | undefined;
-    content: any;
-    createdOn: any;
-    groupId: any;
-    status: boolean;
-    fromId: string | null | undefined;
-    toId: any;
-  }) => {
-    if (newMessage && newMessage.content && socket) {
+  const sendMessage = (newMessage: IMessageProps) => {
+    if (newMessage?.content && socket) {
       const tempGroup = group;
 
-      const tempGroupMessages = tempGroup && tempGroup.messages;
+      const tempGroupMessages = tempGroup?.messages;
       newMessage.createdOn = getTimeConverted(new Date(newMessage.createdOn));
       if (tempGroupMessages) {
         tempGroupMessages[tempGroupMessages.length] = newMessage;
@@ -236,7 +218,7 @@ const Messages = () => {
       setInput("");
       setGroup(tempGroup);
       setNotifs(null);
-      if (textInputRef && textInputRef.current) {
+      if (textInputRef?.current) {
         textInputRef.current.focus();
       }
       socket.emit("is-typing", false);
@@ -271,9 +253,9 @@ const Messages = () => {
         toId: group.targetId,
         content: "",
       };
-      if (isDevEnv()) {
+      if (isDev) {
         const formData = new FormData();
-        Object.values(files).forEach(async (file) => {
+        Object.values(files).forEach((file) => {
           formData.append("file", file);
         });
 
@@ -373,68 +355,21 @@ const Messages = () => {
             <div
               className={`basis-3/4 absolute top-0 bg-black md:bg-transparent md:relative md:block container`}
             >
-              {section === sections.addFriend ? (
-                <div className="flex h-screen items-center justify-center w-full">
-                  <AddFriend />
-                </div>
-              ) : section === sections.feeds ? (
-                <div className="flex h-screen items-center justify-center w-full">
-                  <Feeds feeds={feeds} />
-                </div>
-              ) : section === sections.group ? (
-                group && (
-                  <Fragment>
-                    <div className="p-4 flex items-center sticky top-0 bg-black z-10">
-                      <button
-                        className="block md:hidden text-white hover:text-green-500 basis-1/12 mr-4"
-                        onClick={() => setGroup(null)}
-                      >
-                        <ChevronBack />
-                      </button>
-                      <div className="basis-8/12">
-                        <h1 className="flex text-2xl text-white font-bold">
-                          <span>{group.name}</span>
-                        </h1>
-                        {group.isOnline ? (
-                          <h1 className="text-md font-bold text-green-500">
-                            Online
-                          </h1>
-                        ) : (
-                          <h1 className="text-md font-bold text-white">
-                            {group.lastMessage.createdOn}
-                          </h1>
-                        )}
-                      </div>
-                    </div>
-                    <div
-                      className="overflow-scroll h-[calc(100vh-12rem)]"
-                      id="divMessageList"
-                    >
-                      <MessageList
-                        group={group}
-                        typing={typing}
-                        notifs={notifs}
-                        lastMessageRef={lastMessageRef}
-                      />
-                    </div>
-                    <div className="sticky bottom-0 p-4 bg-black">
-                      <MessageEditor
-                        group={group}
-                        input={input}
-                        onChangeHandler={onChangeHandler}
-                        onKeyDownHandler={onKeyDownHandler}
-                        onSubmitHandler={onSubmitHandler}
-                        textInputRef={textInputRef}
-                        onMediaHandler={onMediaHandler}
-                      />
-                    </div>
-                  </Fragment>
-                )
-              ) : section === sections.home ? (
-                <div className="hidden md:flex h-screen items-center justify-center md:md:w-full">
-                  <Dashboard groups={groups} user={user} />
-                </div>
-              ) : null}
+              <SectionSwitch
+                section={section}
+                lastMessageRef={lastMessageRef}
+                onChangeHandler={onChangeHandler}
+                onKeyDownHandler={onKeyDownHandler}
+                onSubmitHandler={onSubmitHandler}
+                onMediaHandler={onMediaHandler}
+                groups={groups} user={user}
+                group={group}
+                setGroup={setGroup}
+                textInputRef={textInputRef}
+                input={input}
+                typing={typing}
+                notifs={notifs}
+              />
             </div>
           </section>
         ) : (
