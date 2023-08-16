@@ -48,8 +48,8 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
         socket.broadcast.emit("update-input", msg);
       });
 
-      socket.on("is-typing", (typing) => {
-        socket.broadcast.emit("is-typing", typing);
+      socket.on("is-active", (active) => {
+        socket.broadcast.emit("is-active", active);
       });
 
       socket.on("disconnect", () => {

@@ -1,10 +1,16 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useAuth, useUser } from "@clerk/nextjs";
+
 import io, { Socket } from "socket.io-client";
 import { DefaultEventsMap } from "@socket.io/component-emitter";
 import { getPublicUrl, uploadFile } from "@/lib/supabase";
 
-import { ICreatedForDataProps, IGroupProps, IMessageDataProps, IMessageProps } from "@/types";
+import {
+  ICreatedForDataProps,
+  IGroupProps,
+  IMessageDataProps,
+  IMessageProps,
+} from "@/types";
 
 import {
   apiUrls,
@@ -16,7 +22,13 @@ import {
   strings,
 } from "@/utils/enums";
 
-import { getMessageType, getNameOfUser, getRandomNumber, getTimeConverted, isLocalStorage } from "@/utils/helpers";
+import {
+  getMessageType,
+  getNameOfUser,
+  getRandomNumber,
+  getTimeConverted,
+  isLocalStorage,
+} from "@/utils/helpers";
 
 import Layout from "@/components/layout";
 import MessageLinkList from "@/components/lists/message/MessageLinkList";
@@ -29,14 +41,14 @@ import SectionSwitch from "@/components/sections";
 let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 
 const Messages = () => {
-  const [storeLocally, _] = useState(isLocalStorage())
+  const [storeLocally, _] = useState(isLocalStorage());
   const [navbar, setNavbar] = useState(false);
   const [groups, setGroups] = useState<IGroupProps[]>([]);
   const [group, setGroup] = useState<any>(null);
   const [section, setSection] = useState(sections.home);
   const [input, setInput] = useState("");
   const [output, setOutput] = useState<any>(null);
-  const [typing, setTyping] = useState<any>(false);
+  const [active, setActive] = useState<any>(false);
   const [notifs, setNotifs] = useState<null | boolean | number>(null);
 
   const textInputRef = useRef<null | HTMLInputElement>(null);
@@ -67,16 +79,14 @@ const Messages = () => {
   }, [userId]);
 
   useEffect(() => {
-    if (typing?.userId && groups) {
-      const tempGroup = groups.find(
-        (group) => group.targetId === typing.userId
-      );
-      if (tempGroup) {
-        tempGroup.isOnline = true;
-        Object.assign(groups, tempGroup);
-      }
+    const tempGroup = groups?.find(
+      (group) => group.targetId === active?.userId
+    );
+    if (tempGroup) {
+      tempGroup.isOnline = true;
+      Object.assign(groups, tempGroup);
     }
-  }, [typing, groups]);
+  }, [active, groups]);
 
   useEffect(() => {
     if (lastMessageRef.current) {
@@ -87,8 +97,8 @@ const Messages = () => {
   useEffect(() => {
     if (output) {
       const tempGroupIndex = groups.findIndex(
-        (group) => group.id === output.groupId
-      ),
+          (group) => group.id === output.groupId
+        ),
         tempGroup = groups[tempGroupIndex];
       if (tempGroup) {
         const tempGroupMessages = tempGroup.messages,
@@ -178,8 +188,8 @@ const Messages = () => {
       setOutput(msg);
     });
 
-    socket.on("is-typing", (typing) => {
-      setTyping(typing);
+    socket.on("is-active", (active) => {
+      setActive(active);
     });
   };
 
@@ -188,7 +198,7 @@ const Messages = () => {
   }) => {
     setInput(e.target.value);
 
-    socket?.emit("is-typing", {
+    socket?.emit("is-active", {
       value: true,
       groupId: group.id,
       name: user?.firstName ?? strings.someone,
@@ -215,7 +225,7 @@ const Messages = () => {
       if (textInputRef?.current) {
         textInputRef.current.focus();
       }
-      socket.emit("is-typing", false);
+      socket.emit("is-active", false);
       socket.emit("new-message", newMessage);
     }
   };
@@ -287,10 +297,7 @@ const Messages = () => {
 
   const onSelectGroupHandler = async (groupId: string) => {
     setGroup(groups.find((g) => g.id === groupId));
-    if (group && textInputRef.current && socket) {
-      textInputRef.current.focus();
-      socket.emit("new-window", userId);
-    }
+    textInputRef?.current?.focus();
     setSection(sections.group);
   };
 
@@ -358,12 +365,13 @@ const Messages = () => {
                 onKeyDownHandler={onKeyDownHandler}
                 onSubmitHandler={onSubmitHandler}
                 onMediaHandler={onMediaHandler}
-                groups={groups} user={user}
+                groups={groups}
+                user={user}
                 group={group}
                 setGroup={setGroup}
                 textInputRef={textInputRef}
                 input={input}
-                typing={typing}
+                active={active}
                 notifs={notifs}
               />
             </div>

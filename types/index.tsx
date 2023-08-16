@@ -55,7 +55,7 @@ export interface IMessageLinkListProps {
   selectedGroup: IGroupProps | null | undefined;
 }
 
-interface ITypingProps {
+interface IactiveProps {
   value: boolean;
   groupId: string;
   name: string;
@@ -63,7 +63,7 @@ interface ITypingProps {
 
 export interface IMessageListProps {
   group: IGroupProps | null | undefined;
-  typing: ITypingProps;
+  active: IactiveProps;
   notifs: number | boolean | null;
   lastMessageRef: LegacyRef<HTMLDivElement>;
 }
