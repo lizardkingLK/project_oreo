@@ -1,5 +1,6 @@
 import { supabaseClient } from "@/lib/supabase";
-import { quickMessages } from "@/utils/enums";
+import { quickMessages, tableNames } from "@/utils/enums";
+import { getRandomNumber } from "@/utils/helpers";
 import { clerkClient } from "@clerk/nextjs";
 import { randomUUID } from "crypto";
 import type { NextApiRequest, NextApiResponse } from "next";
@@ -14,11 +15,12 @@ export default async function handler(
 
       const { data: dataRecordCreate, error: errorRecordCreate } =
         await supabaseClient
-          .from("Message")
+          .from(tableNames.message)
           .insert([
             {
               userId: ownerId,
               groupId: randomUUID(),
+              referenceId: getRandomNumber(),
               createdFor: [userId, ownerId],
               content: quickMessages.hi,
             },

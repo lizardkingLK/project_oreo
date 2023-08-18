@@ -4,17 +4,19 @@ import { Fragment } from "react";
 
 const MessageList = (props: IMessageListProps) => {
   if (props) {
-    const { group, active, lastMessageRef } = props;
+    const { group, active, lastMessageRef, onDeleteHandler } = props;
     return (
       <Fragment>
-        {group?.messages?.map((message, index) => (
-          <Fragment key={index}>
+        {group?.messages?.map((message, _) => (
+          <Fragment key={message.referenceId}>
             <MessageCard
+              referenceId={message.referenceId}
               type={message.type}
               content={message.content}
               messageAuthorName={group.name}
               messageTime={message.createdOn}
               messageImagePath={group.displayImage}
+              onDeleteHandler={onDeleteHandler}
             />
           </Fragment>
         ))}

@@ -34,17 +34,21 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
 
     io.on("connection", (socket) => {
       socket.on("new-message", async (msg) => {
-        await supabaseClient
+        const { error } = await supabaseClient
           .from(tableNames.message)
           .insert([
             {
+              referenceId: msg.referenceId,
               userId: msg.fromId,
               groupId: msg.groupId,
               createdFor: [msg.toId, msg.fromId],
               content: msg.content,
             },
           ])
-          .select();
+          .select("id");
+        if (error) {
+          return;
+        }
         socket.broadcast.emit("update-input", msg);
       });
 

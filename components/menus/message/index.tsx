@@ -1,31 +1,35 @@
-import React from 'react'
+import { IMessageMenuProps } from "@/types";
+import React from "react";
 
-const MessageMenuButton = (props: { name: string, color: string }) => {
-    const { name, color } = props;
-    return (
-        <button type="button" className={`text-white bg-gradient-to-r from-${color}-400 via-${color}-500 to-${color}-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-${color}-300 dark:focus:ring-${color}-800 shadow-lg shadow-${color}-500/50 dark:shadow-lg dark:shadow-${color}-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center`}>
-            {name}
-        </button>
-    );
-}
+const MessageMenu = (props: IMessageMenuProps) => {
+  if (props) {
+    const { referenceId, options, onDeleteHandler } = props;
 
-const MessageMenu = (props: { options: boolean }) => {
-    if (props) {
-        const { options } = props;
-
-        if (options) {
-            return (
-                <ul className='flex rounded-xl'>
-                    <li className='ml-2 mt-2'>
-                        <MessageMenuButton name={"Edit"} color={"green"} />
-                    </li>
-                    <li className='ml-2 mt-2'>
-                        <MessageMenuButton name={"Delete"} color={"red"} />
-                    </li>
-                </ul>
-            )
-        } else return null;
+    if (options) {
+      return (
+        <ul className="rounded-xl">
+          <li className="ml-2 mt-2">
+            <button
+              type="button"
+              className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg dark:shadow-lg font-medium rounded-lg text-sm px-5 py-2.5 text-center w-full"
+            >
+              Edit
+            </button>
+          </li>
+          <li className="ml-2 mt-2">
+            <button
+              id={`${referenceId}`}
+              type="button"
+              className="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg dark:shadow-lg font-medium rounded-lg text-sm px-5 py-2.5 text-center w-full"
+              onClick={onDeleteHandler}
+            >
+              Delete
+            </button>
+          </li>
+        </ul>
+      );
     } else return null;
-}
+  } else return null;
+};
 
-export default MessageMenu
+export default MessageMenu;
