@@ -4,22 +4,23 @@ import { Fragment } from "react";
 
 const MessageList = (props: IMessageListProps) => {
   if (props) {
-    const { group, active, lastMessageRef, onDeleteHandler } = props;
+    const { messages, group, active, lastMessageRef, onDeleteHandler } = props;
     return (
       <Fragment>
-        {group?.messages?.map((message, _) => (
-          <Fragment key={message.referenceId}>
-            <MessageCard
-              referenceId={message.referenceId}
-              type={message.type}
-              content={message.content}
-              messageAuthorName={group.name}
-              messageTime={message.createdOn}
-              messageImagePath={group.displayImage}
-              onDeleteHandler={onDeleteHandler}
-            />
-          </Fragment>
-        ))}
+        {group &&
+          messages?.map((message, _) => (
+            <Fragment key={message.referenceId}>
+              <MessageCard
+                referenceId={message.referenceId}
+                type={message.type}
+                content={message.content}
+                messageAuthorName={group.name}
+                messageTime={message.createdOn}
+                messageImagePath={group.displayImage}
+                onDeleteHandler={onDeleteHandler}
+              />
+            </Fragment>
+          ))}
         <div ref={lastMessageRef}></div>
         {active?.groupId === group?.id && (
           <div className="absolute bottom-12 m-8 z-10">

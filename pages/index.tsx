@@ -50,6 +50,7 @@ const Messages = () => {
   const [output, setOutput] = useState<any>(null);
   const [active, setActive] = useState<any>(false);
   const [notifs, setNotifs] = useState<null | boolean | string>(null);
+  const [messages, setMessages] = useState<IMessageProps[] | undefined>([]);
 
   const textInputRef = useRef<null | HTMLInputElement>(null);
   const lastMessageRef = useRef<null | HTMLDivElement>(null);
@@ -136,21 +137,18 @@ const Messages = () => {
       )
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
-          const tempGroupIndex = groups.findIndex(
-              (group) => group.id === data.groupId
-            ),
-            tempGroup = groups[tempGroupIndex];
-          if (tempGroup) {
-            let tempGroupMessages = tempGroup.messages;
-            tempGroupMessages = tempGroupMessages.filter(
-              (g) => g.referenceId !== referenceId
-            );
-            Object.assign(tempGroup, {
-              messages: tempGroupMessages,
-            });
-            groups[tempGroupIndex] = tempGroup;
-          }
+          let tempMessages;
+          const tempGroups = groups;
+          tempGroups.forEach((group) => {
+            if (group?.id === data?.groupId) {
+              tempMessages = group?.messages?.filter(
+                (g) => g.referenceId !== referenceId
+              );
+              group.messages = tempMessages;
+            }
+          });
+          setGroups(tempGroups);
+          setMessages(tempMessages);
         });
     })();
   };
@@ -333,7 +331,9 @@ const Messages = () => {
   };
 
   const onSelectGroupHandler = async (groupId: string) => {
-    setGroup(groups.find((g) => g.id === groupId));
+    const group = groups.find((g) => g.id === groupId);
+    setGroup(group);
+    setMessages(group?.messages);
     textInputRef?.current?.focus();
     setSection(sections.group);
   };
@@ -407,6 +407,7 @@ const Messages = () => {
                 user={user}
                 group={group}
                 setGroup={setGroup}
+                messages={messages}
                 textInputRef={textInputRef}
                 input={input}
                 active={active}

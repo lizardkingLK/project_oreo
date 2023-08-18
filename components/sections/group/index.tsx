@@ -7,6 +7,7 @@ import React, { Fragment } from "react";
 const Group = (props: IGroupSectionProps) => {
   if (props) {
     const {
+      messages,
       group,
       setGroup,
       active,
@@ -47,6 +48,7 @@ const Group = (props: IGroupSectionProps) => {
           id="divMessageList"
         >
           <MessageList
+          messages={messages}
             group={group}
             active={active}
             notifs={notifs}

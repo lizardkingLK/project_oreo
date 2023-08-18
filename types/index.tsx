@@ -64,6 +64,7 @@ interface IactiveProps {
 }
 
 export interface IMessageListProps {
+  messages: IMessageProps[] | undefined;
   group: IGroupProps | null | undefined;
   active: IactiveProps;
   notifs: string | boolean | null;
@@ -195,9 +196,11 @@ export interface ISecitonSwitchProps {
   onDeleteHandler: MouseEventHandler<HTMLButtonElement>;
   onMediaHandler: Function;
   textInputRef: LegacyRef<HTMLInputElement> | null;
+  messages: IMessageProps[] | undefined;
 }
 
 export interface IGroupSectionProps {
+  messages: IMessageProps[] | undefined;
   group: IGroupProps;
   setGroup: Function;
   active: any;

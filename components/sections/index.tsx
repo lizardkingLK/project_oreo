@@ -15,6 +15,7 @@ const SectionSwitch = (props: ISecitonSwitchProps) => {
       section,
       groups,
       user,
+      messages,
       group,
       setGroup,
       active,
@@ -44,6 +45,7 @@ const SectionSwitch = (props: ISecitonSwitchProps) => {
     } else if (section === sections.group && group) {
       return (
         <Group
+          messages={messages}
           group={group}
           setGroup={setGroup}
           active={active}
