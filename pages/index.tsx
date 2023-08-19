@@ -51,6 +51,7 @@ const Messages = () => {
   const [active, setActive] = useState<any>(false);
   const [notifs, setNotifs] = useState<null | boolean | string>(null);
   const [messages, setMessages] = useState<IMessageProps[] | undefined>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const textInputRef = useRef<null | HTMLInputElement>(null);
   const lastMessageRef = useRef<null | HTMLDivElement>(null);
@@ -125,32 +126,30 @@ const Messages = () => {
     }
   }, [output, groups]);
 
-  const onDeleteHandler = (e: React.MouseEvent) => {
-    const target = e.target as HTMLButtonElement;
-    const referenceId = target.id;
-    (async () => {
-      await fetch(
-        `${apiUrls.message}?referenceId=${referenceId}&groupId=${group.id}`,
-        {
-          method: "DELETE",
-        }
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          let tempMessages;
-          const tempGroups = groups;
-          tempGroups.forEach((group) => {
-            if (group?.id === data?.groupId) {
-              tempMessages = group?.messages?.filter(
-                (g) => g.referenceId !== referenceId
-              );
-              group.messages = tempMessages;
-            }
-          });
-          setGroups(tempGroups);
-          setMessages(tempMessages);
+  const onDeleteHandler = async (referenceId: string) => {
+    setLoading(true);
+    await fetch(
+      `${apiUrls.message}?referenceId=${referenceId}&groupId=${group.id}`,
+      {
+        method: "DELETE",
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        let tempMessages;
+        const tempGroups = groups;
+        tempGroups.forEach((group) => {
+          if (group?.id === data?.groupId) {
+            tempMessages = group?.messages?.filter(
+              (g) => g.referenceId !== referenceId
+            );
+            group.messages = tempMessages;
+          }
         });
-    })();
+        setLoading(false);
+        setGroups(tempGroups);
+        setMessages(tempMessages);
+      });
   };
 
   const groupMessages = (messages: any[], userId: string) => {
@@ -403,6 +402,7 @@ const Messages = () => {
                 onSubmitHandler={onSubmitHandler}
                 onMediaHandler={onMediaHandler}
                 onDeleteHandler={onDeleteHandler}
+                loading={loading}
                 groups={groups}
                 user={user}
                 group={group}

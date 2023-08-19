@@ -9,6 +9,8 @@ export default async function handler(
   if (req.method === "DELETE") {
     const { referenceId, groupId } = req.query;
 
+    console.log(referenceId);
+
     const { error } = await supabaseClient
       .from(tableNames.message)
       .delete()
@@ -19,6 +21,7 @@ export default async function handler(
       return;
     }
 
+    console.log("deleted");
     res.status(200).json({ referenceId, groupId });
     return;
   }

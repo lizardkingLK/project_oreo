@@ -1,9 +1,10 @@
+import Spinner from "@/components/svgs/spinner";
 import { IMessageMenuProps } from "@/types";
 import React from "react";
 
 const MessageMenu = (props: IMessageMenuProps) => {
   if (props) {
-    const { referenceId, options, onDeleteHandler } = props;
+    const { referenceId, options, onDeleteHandler, loading } = props;
 
     if (options) {
       return (
@@ -21,8 +22,13 @@ const MessageMenu = (props: IMessageMenuProps) => {
               id={`${referenceId}`}
               type="button"
               className="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg dark:shadow-lg font-medium rounded-lg text-sm px-5 py-2.5 text-center flex items-center w-full"
-              onClick={onDeleteHandler}
+              onClick={() => onDeleteHandler(referenceId)}
             >
+              {loading && (
+                <div className="mr-2">
+                  <Spinner size={6} />
+                </div>
+              )}
               <span>Delete</span>
             </button>
           </li>

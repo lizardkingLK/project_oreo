@@ -28,6 +28,7 @@ const SectionSwitch = (props: ISecitonSwitchProps) => {
       onDeleteHandler,
       onMediaHandler,
       textInputRef,
+      loading,
     } = props;
 
     if (section === sections.addFriend) {
@@ -58,6 +59,7 @@ const SectionSwitch = (props: ISecitonSwitchProps) => {
           onMediaHandler={onMediaHandler}
           onDeleteHandler={onDeleteHandler}
           textInputRef={textInputRef}
+          loading={loading}
         />
       );
     } else if (section === sections.home) {

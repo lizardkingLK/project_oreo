@@ -69,7 +69,8 @@ export interface IMessageListProps {
   active: IactiveProps;
   notifs: string | boolean | null;
   lastMessageRef: LegacyRef<HTMLDivElement>;
-  onDeleteHandler: MouseEventHandler<HTMLButtonElement>;
+  onDeleteHandler: Function;
+  loading: boolean;
 }
 
 export interface IMessageLinkProps {
@@ -114,7 +115,8 @@ export interface IMessageCardProps {
   messageImagePath: string;
   messageTime: string;
   messageAuthorName: string;
-  onDeleteHandler: MouseEventHandler<HTMLButtonElement>;
+  onDeleteHandler: Function;
+  loading: boolean;
 }
 
 export interface ISummaryCardProps {
@@ -182,41 +184,44 @@ export interface IDashboardProps {
 
 export interface ISecitonSwitchProps {
   section: sections;
-  groups: IGroupProps[];
   user: any;
-  group: IGroupProps;
-  setGroup: Function;
   active: any;
   notifs: null | boolean | string;
-  lastMessageRef: null | LegacyRef<HTMLDivElement>;
   input: string;
+  loading: boolean;
+  group: IGroupProps;
+  groups: IGroupProps[];
+  messages: IMessageProps[] | undefined;
   onChangeHandler: ChangeEventHandler<HTMLInputElement>;
   onKeyDownHandler: KeyboardEventHandler<HTMLInputElement>;
   onSubmitHandler: MouseEventHandler<HTMLButtonElement>;
-  onDeleteHandler: MouseEventHandler<HTMLButtonElement>;
+  onDeleteHandler: Function;
   onMediaHandler: Function;
+  setGroup: Function;
+  lastMessageRef: null | LegacyRef<HTMLDivElement>;
   textInputRef: LegacyRef<HTMLInputElement> | null;
-  messages: IMessageProps[] | undefined;
 }
 
 export interface IGroupSectionProps {
-  messages: IMessageProps[] | undefined;
   group: IGroupProps;
-  setGroup: Function;
   active: any;
   notifs: null | boolean | string;
-  lastMessageRef: null | LegacyRef<HTMLDivElement>;
   input: string;
+  loading: boolean;
+  messages: IMessageProps[] | undefined;
   onChangeHandler: ChangeEventHandler<HTMLInputElement>;
   onKeyDownHandler: KeyboardEventHandler<HTMLInputElement>;
   onSubmitHandler: MouseEventHandler<HTMLButtonElement>;
-  onDeleteHandler: MouseEventHandler<HTMLButtonElement>;
+  onDeleteHandler: Function;
   onMediaHandler: Function;
+  setGroup: Function;
+  lastMessageRef: null | LegacyRef<HTMLDivElement>;
   textInputRef: LegacyRef<HTMLInputElement> | null;
 }
 
 export interface IMessageMenuProps {
   referenceId: string | null;
   options: boolean;
-  onDeleteHandler: MouseEventHandler<HTMLButtonElement>;
+  onDeleteHandler: Function;
+  loading: boolean;
 }

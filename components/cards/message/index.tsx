@@ -18,6 +18,7 @@ export default function MessageCard(props: IMessageCardProps) {
       messageImagePath,
       content,
       onDeleteHandler,
+      loading,
     } = props;
 
     return (
@@ -48,6 +49,7 @@ export default function MessageCard(props: IMessageCardProps) {
             referenceId={referenceId}
             options={options}
             onDeleteHandler={onDeleteHandler}
+            loading={loading}
           />
         </div>
         {type === messageTypes.SENT && (

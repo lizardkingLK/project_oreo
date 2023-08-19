@@ -20,6 +20,7 @@ const Group = (props: IGroupSectionProps) => {
       onDeleteHandler,
       onMediaHandler,
       textInputRef,
+      loading,
     } = props;
     return (
       <Fragment>
@@ -48,12 +49,13 @@ const Group = (props: IGroupSectionProps) => {
           id="divMessageList"
         >
           <MessageList
-          messages={messages}
+            messages={messages}
             group={group}
             active={active}
             notifs={notifs}
             lastMessageRef={lastMessageRef}
             onDeleteHandler={onDeleteHandler}
+            loading={loading}
           />
         </div>
         <div className="sticky bottom-0 p-4 bg-black">
