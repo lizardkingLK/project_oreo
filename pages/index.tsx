@@ -49,7 +49,9 @@ const Messages = () => {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState<any>(null);
   const [active, setActive] = useState<any>(false);
-  const [notifs, setNotifs] = useState<null | boolean | number>(null);
+  const [notifs, setNotifs] = useState<null | boolean | string>(null);
+  const [messages, setMessages] = useState<IMessageProps[] | undefined>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const textInputRef = useRef<null | HTMLInputElement>(null);
   const lastMessageRef = useRef<null | HTMLDivElement>(null);
@@ -103,6 +105,8 @@ const Messages = () => {
       if (tempGroup) {
         const tempGroupMessages = tempGroup.messages,
           newMessage = {
+            id: output.id,
+            referenceId: null,
             type: messageTypes.RECEIVED,
             content: output.content,
             fromId: output.fromId,
@@ -117,10 +121,36 @@ const Messages = () => {
           lastMessage: newMessage,
         });
         groups[tempGroupIndex] = tempGroup;
-        setNotifs(Math.random());
+        setNotifs(getRandomNumber());
       }
     }
   }, [output, groups]);
+
+  const onDeleteHandler = async (referenceId: string) => {
+    setLoading(true);
+    await fetch(
+      `${apiUrls.message}?referenceId=${referenceId}&groupId=${group.id}`,
+      {
+        method: "DELETE",
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        let tempMessages;
+        const tempGroups = groups;
+        tempGroups.forEach((group) => {
+          if (group?.id === data?.groupId) {
+            tempMessages = group?.messages?.filter(
+              (g) => g.referenceId !== referenceId
+            );
+            group.messages = tempMessages;
+          }
+        });
+        setLoading(false);
+        setGroups(tempGroups);
+        setMessages(tempMessages);
+      });
+  };
 
   const groupMessages = (messages: any[], userId: string) => {
     const groups = new Map();
@@ -233,6 +263,8 @@ const Messages = () => {
   const onSubmitHandler = () => {
     if (input && group) {
       sendMessage({
+        id: "NEW_MESSAGE",
+        referenceId: getRandomNumber(),
         type: messageTypes.SENT,
         content: input,
         createdOn: new Date().toISOString(),
@@ -249,13 +281,15 @@ const Messages = () => {
   ) => {
     if (group) {
       const newMessage = {
+        id: "NEW_MESSAGE",
+        referenceId: getRandomNumber(),
         type: messageTypes.SENT,
         createdOn: new Date().toISOString(),
         groupId: group.id,
         status: true,
         fromId: userId,
         toId: group.targetId,
-        content: "",
+        content: "MESSAGE_CONTENT",
       };
       if (storeLocally) {
         const formData = new FormData();
@@ -271,7 +305,7 @@ const Messages = () => {
           .then((data) => {
             newMessage.content = `[${mediaTypes.image}](${data.data})`;
             sendMessage(newMessage);
-            setNotifs(Math.random());
+            setNotifs(getRandomNumber());
           });
       } else {
         Object.values(files).forEach((file) => {
@@ -288,7 +322,7 @@ const Messages = () => {
             const { data } = getPublicUrl(bucketNames.attachments, path);
             newMessage.content = `[${mediaTypes.image}](${data.publicUrl})`;
             sendMessage(newMessage);
-            setNotifs(Math.random());
+            setNotifs(getRandomNumber());
           })();
         });
       }
@@ -296,7 +330,9 @@ const Messages = () => {
   };
 
   const onSelectGroupHandler = async (groupId: string) => {
-    setGroup(groups.find((g) => g.id === groupId));
+    const group = groups.find((g) => g.id === groupId);
+    setGroup(group);
+    setMessages(group?.messages);
     textInputRef?.current?.focus();
     setSection(sections.group);
   };
@@ -365,10 +401,13 @@ const Messages = () => {
                 onKeyDownHandler={onKeyDownHandler}
                 onSubmitHandler={onSubmitHandler}
                 onMediaHandler={onMediaHandler}
+                onDeleteHandler={onDeleteHandler}
+                loading={loading}
                 groups={groups}
                 user={user}
                 group={group}
                 setGroup={setGroup}
+                messages={messages}
                 textInputRef={textInputRef}
                 input={input}
                 active={active}

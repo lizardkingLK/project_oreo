@@ -38,7 +38,7 @@ const isLocalStorage = () => {
 };
 
 const getRandomNumber = () => {
-  return Math.round(Math.random() * 100000000000);
+  return `${Math.round(Math.random() * 1_000_000_000_000_000)}`;
 };
 
 const getMessageType = (messageUserId: string, userId: string) => {

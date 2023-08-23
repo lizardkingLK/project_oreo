@@ -1,41 +1,29 @@
+import { supabaseClient } from "@/lib/supabase";
+import { tableNames } from "@/utils/enums";
 import type { NextApiRequest, NextApiResponse } from "next";
-
-type Message = {};
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Array<Message>>
+  res: NextApiResponse<object>
 ) {
-  console.log(req.body);
+  if (req.method === "DELETE") {
+    const { referenceId, groupId } = req.query;
 
-  const messages = [
-    {
-      type: 1,
-      content: "hello",
-      fromId: "user_2Sqj6ho1NeX2sOqq0O87xAi8i0N",
-      createdOn: "2023-07-23",
-      groupId: "123324_alpa",
-      to: {
-        _id: "user_2Sqj6ho1NeX2sOqq0O87xAi8i0N",
-        name: "John Doe",
-        displayImage: "/static/pfp1.jpg",
-      },
-      from: { _id: "user_2Sqj6ho1NeX2sOqq0O87xAi8i0L" },
-    },
-    {
-      type: 2,
-      content: "john does is my name",
-      fromId: "user_2Sqj6ho1NeX2sOqq0O87xAi8i0O",
-      createdOn: "2023-07-24",
-      groupId: "123324_alpa",
-      to: {
-        _id: "user_2Sqj6ho1NeX2sOqq0O87xAi8i0N",
-        name: "John Doe",
-        displayImage: "/static/pfp1.jpg",
-      },
-      from: { _id: "user_2Sqj6ho1NeX2sOqq0O87xAi8i0L" },
-    },
-  ];
+    console.log(referenceId);
 
-  res.status(200).json(messages);
+    const { error } = await supabaseClient
+      .from(tableNames.message)
+      .delete()
+      .eq("referenceId", referenceId);
+
+    if (error) {
+      res.status(500).json({ error: "Bad parameters" });
+      return;
+    }
+
+    console.log("deleted");
+    res.status(200).json({ referenceId, groupId });
+    return;
+  }
+  res.status(500).json({ error: "Invalid request" });
 }

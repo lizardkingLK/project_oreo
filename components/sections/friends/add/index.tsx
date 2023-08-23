@@ -44,7 +44,7 @@ const AddFriend = () => {
       .then((response) => response.json())
       .then(() => {
         setLoading(false);
-        router.reload();
+        // router.reload();
       });
   };
 
@@ -98,7 +98,7 @@ const AddFriend = () => {
           id="search"
           onChange={handleChange}
           className="text-xl md:text-5xl font-bold w-full bg-transparent outline-none placeholder-stone-400 text-green-500 py-4"
-          placeholder="Enter email or username..."
+          placeholder="Enter email..."
           ref={searchRef}
           required
         />

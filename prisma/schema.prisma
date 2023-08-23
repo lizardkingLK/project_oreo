@@ -7,6 +7,7 @@ generator client {
 
 model Message {
   id            Int      @id @default(autoincrement())
+  referenceId   String
   userId        String
   groupId       String
   groupType     Int      @default(1)
