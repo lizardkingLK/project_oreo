@@ -56,6 +56,10 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
         socket.broadcast.emit("is-active", active);
       });
 
+      socket.on("delete-message", (msg) => {
+        socket.broadcast.emit("delete-message", msg);
+      });
+
       socket.on("disconnect", () => {
         console.log(`1 disconnected. id = %s`, socket.id);
       });

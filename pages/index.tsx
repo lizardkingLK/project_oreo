@@ -52,6 +52,10 @@ const Messages = () => {
   const [notifs, setNotifs] = useState<null | boolean | string>(null);
   const [messages, setMessages] = useState<IMessageProps[] | undefined>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [deleted, setDeleted] = useState<null | {
+    referenceId: string;
+    groupId: string;
+  }>(null);
 
   const textInputRef = useRef<null | HTMLInputElement>(null);
   const lastMessageRef = useRef<null | HTMLDivElement>(null);
@@ -106,7 +110,7 @@ const Messages = () => {
         const tempGroupMessages = tempGroup.messages,
           newMessage = {
             id: output.id,
-            referenceId: null,
+            referenceId: output.referenceId,
             type: messageTypes.RECEIVED,
             content: output.content,
             fromId: output.fromId,
@@ -125,6 +129,26 @@ const Messages = () => {
       }
     }
   }, [output, groups]);
+
+  useEffect(() => {
+    if (deleted) {
+      console.log(true);
+      const { referenceId, groupId } = deleted;
+      let tempMessages;
+      const tempGroups = groups;
+      tempGroups.forEach((group) => {
+        if (group?.id === groupId) {
+          tempMessages = group?.messages?.filter(
+            (g) => g.referenceId !== referenceId
+          );
+          group.messages = tempMessages;
+          console.log(tempMessages);
+        }
+      });
+      setGroups(tempGroups);
+      setMessages(tempMessages);
+    }
+  }, [deleted, groups]);
 
   const onDeleteHandler = async (referenceId: string) => {
     setLoading(true);
@@ -149,6 +173,7 @@ const Messages = () => {
         setLoading(false);
         setGroups(tempGroups);
         setMessages(tempMessages);
+        socket?.emit("delete-message", { referenceId, groupId: group.id });
       });
   };
 
@@ -220,6 +245,10 @@ const Messages = () => {
 
     socket.on("is-active", (active) => {
       setActive(active);
+    });
+
+    socket.on("delete-message", (msg) => {
+      setDeleted(msg);
     });
   };
 
