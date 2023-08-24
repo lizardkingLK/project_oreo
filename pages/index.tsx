@@ -464,7 +464,7 @@ const Messages = () => {
   return (
     <Layout>
       <main className="min-h-screen" id="divHome">
-        <div className="absolute z-10 block md:flex items-center p-4 border-stone-900 w-full">
+        <div className="absolute z-10 block md:flex items-center p-4 border-stone-900">
           <div className="basis-1/4 flex justify-between md:justify-start items-center my-4 md:m-0">
             {isSignedIn && (
               <button
@@ -497,6 +497,7 @@ const Messages = () => {
                     groups={groups}
                     setGroup={onSelectGroupHandler}
                     selectedGroup={group}
+                    active={active}
                   />
                 </div>
               )}
@@ -523,6 +524,7 @@ const Messages = () => {
                 input={input}
                 active={active}
                 notifs={notifs}
+                navbar={navbar}
               />
             </div>
           </section>

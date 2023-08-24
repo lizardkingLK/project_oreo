@@ -17,12 +17,13 @@ const MessageLink = (props: IMessageLinkProps) => {
       messageContent,
       messageTime,
       messageUnread,
+      active,
     } = props;
     return (
       <a
-        href={void(0)}
+        href={void 0}
         className="cursor-pointer"
-        title={messageAuthorName}
+        title={messageAuthorName || undefined}
         onClick={() => messageOnClick(messageId)}
       >
         <div
@@ -31,7 +32,7 @@ const MessageLink = (props: IMessageLinkProps) => {
           }`}
         >
           <Avatar
-            name={messageAuthorName}
+            name={messageAuthorName!}
             imagePath={messageImagePath}
             size={messageImageSize}
             isStatus={messageAuthorIsStatus}
@@ -42,7 +43,11 @@ const MessageLink = (props: IMessageLinkProps) => {
               {messageAuthorName}
             </h1>
             <p className={"text-sm text-stone-500 truncate max-w-xs"}>
-              {getBriefContent(messageContent)}
+              {active?.groupId === messageId && active?.value ? (
+                <span className="text-green-500">typing...</span>
+              ) : (
+                getBriefContent(messageContent)
+              )}
             </p>
           </div>
           <div className="basis-1/4 flex flex-col justify-between items-end">

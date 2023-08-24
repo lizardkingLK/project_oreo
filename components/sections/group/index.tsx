@@ -21,6 +21,7 @@ const Group = (props: IGroupSectionProps) => {
       onMediaHandler,
       textInputRef,
       loading,
+      navbar,
     } = props;
     return (
       <Fragment>
@@ -31,18 +32,20 @@ const Group = (props: IGroupSectionProps) => {
           >
             <ChevronBack />
           </button>
-          <div className="basis-8/12">
-            <h1 className="flex text-2xl text-white font-bold">
-              <span>{group.name}</span>
-            </h1>
-            {group.isOnline ? (
-              <h1 className="text-md font-bold text-green-500">Online</h1>
-            ) : (
-              <h1 className="text-md font-bold text-white">
-                {group.lastMessage?.createdOn}
+          {!navbar && (
+            <div className="basis-8/12">
+              <h1 className="flex text-2xl text-white font-bold">
+                <span>{group.name}</span>
               </h1>
-            )}
-          </div>
+              {group.isOnline ? (
+                <h1 className="text-md font-bold text-green-500">Online</h1>
+              ) : (
+                <h1 className="text-md font-bold text-white">
+                  {group.lastMessage?.createdOn}
+                </h1>
+              )}
+            </div>
+          )}
         </div>
         <div
           className="overflow-scroll h-[calc(100vh-12rem)]"

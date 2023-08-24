@@ -30,6 +30,7 @@ const SectionSwitch = (props: ISecitonSwitchProps) => {
       onAddFriendHandler,
       textInputRef,
       loading,
+      navbar,
     } = props;
 
     if (section === sections.addFriend) {
@@ -61,6 +62,7 @@ const SectionSwitch = (props: ISecitonSwitchProps) => {
           onDeleteHandler={onDeleteHandler}
           textInputRef={textInputRef}
           loading={loading}
+          navbar={navbar}
         />
       );
     } else if (section === sections.home) {

@@ -56,6 +56,7 @@ export interface IMessageLinkListProps {
   groups: IGroupProps[] | null | undefined;
   setGroup: Function;
   selectedGroup: IGroupProps | null | undefined;
+  active: any;
 }
 
 interface IactiveProps {
@@ -80,12 +81,13 @@ export interface IMessageLinkProps {
   messageImageSize: number;
   messageAuthorIsStatus: boolean;
   messageAuthorIsOnline: boolean;
-  messageAuthorName: string;
+  messageAuthorName: NameType;
   messageContent: string;
   messageTime: string;
   messageIsActive: boolean | null | undefined;
   messageOnClick: Function;
   messageUnread: number;
+  active: any;
 }
 
 export interface IMessageEditorProps {
@@ -202,6 +204,7 @@ export interface ISecitonSwitchProps {
   setGroup: Function;
   lastMessageRef: null | LegacyRef<HTMLDivElement>;
   textInputRef: LegacyRef<HTMLInputElement> | null;
+  navbar: boolean;
 }
 
 export interface IGroupSectionProps {
@@ -219,6 +222,7 @@ export interface IGroupSectionProps {
   setGroup: Function;
   lastMessageRef: null | LegacyRef<HTMLDivElement>;
   textInputRef: LegacyRef<HTMLInputElement> | null;
+  navbar: boolean;
 }
 
 export interface IMessageMenuProps {
