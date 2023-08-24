@@ -378,6 +378,14 @@ const Messages = () => {
     }
   };
 
+  const onAddFriendHandler = (data: IMessageProps) => {
+    console.log(data);
+    const tempGroups = groups;
+    // tempGroups[tempGroups.length] = null;
+
+    setSection(sections.group);
+  };
+
   if (!isLoaded) {
     return (
       <section className="h-screen flex justify-center items-center">
@@ -437,6 +445,7 @@ const Messages = () => {
                 onSubmitHandler={onSubmitHandler}
                 onMediaHandler={onMediaHandler}
                 onDeleteHandler={onDeleteHandler}
+                onAddFriendHandler={onAddFriendHandler}
                 loading={loading}
                 groups={groups}
                 user={user}

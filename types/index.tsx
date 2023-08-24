@@ -197,6 +197,7 @@ export interface ISecitonSwitchProps {
   onSubmitHandler: MouseEventHandler<HTMLButtonElement>;
   onDeleteHandler: Function;
   onMediaHandler: Function;
+  onAddFriendHandler: Function;
   setGroup: Function;
   lastMessageRef: null | LegacyRef<HTMLDivElement>;
   textInputRef: LegacyRef<HTMLInputElement> | null;
@@ -224,4 +225,8 @@ export interface IMessageMenuProps {
   options: boolean;
   onDeleteHandler: Function;
   loading: boolean;
+}
+
+export interface IAddFriendProps {
+  onAddFriendHandler: Function;
 }

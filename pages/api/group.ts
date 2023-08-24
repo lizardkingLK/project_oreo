@@ -5,6 +5,28 @@ import { clerkClient } from "@clerk/nextjs";
 import { randomUUID } from "crypto";
 import type { NextApiRequest, NextApiResponse } from "next";
 
+const getUsersCombined = async (dataMessages: any[]) => {
+  const users = await clerkClient.users.getUserList();
+
+  let user, userDetails: any[];
+
+  const messages = dataMessages.map((m) => {
+    userDetails = m?.createdFor?.map((mu: string) => {
+      user = users.find((u) => u.id === mu);
+      return {
+        id: user?.id,
+        displayImage: user?.imageUrl,
+        firstName: user?.firstName,
+        lastName: user?.lastName,
+        username: user?.username,
+      };
+    });
+    return Object.assign(m, { createdFor: userDetails ?? [] });
+  });
+
+  return messages;
+};
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<object>
@@ -31,7 +53,9 @@ export default async function handler(
         return res.status(500).send({ message: errorRecordCreate.message });
       }
 
-      return res.status(201).json(dataRecordCreate);
+      const messages = await getUsersCombined(dataRecordCreate);
+
+      return res.status(201).json(messages);
     } else if (req.method === "GET") {
       const { userId } = req.query;
 
@@ -44,22 +68,7 @@ export default async function handler(
         return res.status(500).send({ message: errorMessages.message });
       }
 
-      const users = await clerkClient.users.getUserList();
-
-      let user, userDetails: any[];
-      const messages = dataMessages.map((m) => {
-        userDetails = m?.createdFor?.map((mu: string) => {
-          user = users.find((u) => u.id === mu);
-          return {
-            id: user?.id,
-            displayImage: user?.imageUrl,
-            firstName: user?.firstName,
-            lastName: user?.lastName,
-            username: user?.username,
-          };
-        });
-        return Object.assign(m, { createdFor: userDetails ?? [] });
-      });
+      const messages = await getUsersCombined(dataMessages);
 
       return res.status(200).json(messages ?? []);
     }
