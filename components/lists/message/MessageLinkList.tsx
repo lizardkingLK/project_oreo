@@ -4,7 +4,7 @@ import { IMessageLinkListProps } from "@/types";
 
 const MessageLinkList = (props: IMessageLinkListProps) => {
   if (props) {
-    const { groups, setGroup, selectedGroup } = props;
+    const { groups, setGroup, selectedGroup, active } = props;
     return (
       <Fragment>
         {groups &&
@@ -23,6 +23,7 @@ const MessageLinkList = (props: IMessageLinkListProps) => {
                 messageAuthorIsOnline={group.isOnline}
                 messageIsActive={selectedGroup && selectedGroup.id === group.id}
                 messageUnread={0}
+                active={active}
               />
             );
           })}

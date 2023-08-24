@@ -60,6 +60,10 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
         socket.broadcast.emit("delete-message", msg);
       });
 
+      socket.on("new-friend", (msg) => {
+        socket.broadcast.emit("new-friend", msg);
+      })
+
       socket.on("disconnect", () => {
         console.log(`1 disconnected. id = %s`, socket.id);
       });

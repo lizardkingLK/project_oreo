@@ -35,6 +35,15 @@ export default function MessageCard(props: IMessageCardProps) {
             />
           </div>
         ) : null}
+        {options ? (
+          <MessageMenu
+            messageTime={messageTime}
+            referenceId={referenceId}
+            options={options}
+            onDeleteHandler={onDeleteHandler}
+            loading={loading}
+          />
+        ) : (
         <div
           title={messageTime}
           className={`p-4 my-4 min-w-max rounded-xl bg-gradient-to-r 
@@ -45,13 +54,8 @@ export default function MessageCard(props: IMessageCardProps) {
         }`}
         >
           <MessageMedia content={content} />
-          <MessageMenu
-            referenceId={referenceId}
-            options={options}
-            onDeleteHandler={onDeleteHandler}
-            loading={loading}
-          />
         </div>
+        )}
         {type === messageTypes.SENT && (
           <button
             className="flex h-min mt-4 text-stone-900 hover:text-stone-100"
