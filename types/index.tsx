@@ -226,6 +226,7 @@ export interface IMessageMenuProps {
   options: boolean;
   onDeleteHandler: Function;
   loading: boolean;
+  messageTime: string;
 }
 
 export interface IAddFriendProps {

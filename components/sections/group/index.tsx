@@ -65,8 +65,8 @@ const Group = (props: IGroupSectionProps) => {
             onChangeHandler={onChangeHandler}
             onKeyDownHandler={onKeyDownHandler}
             onSubmitHandler={onSubmitHandler}
-            textInputRef={textInputRef}
             onMediaHandler={onMediaHandler}
+            textInputRef={textInputRef}
           />
         </div>
       </Fragment>

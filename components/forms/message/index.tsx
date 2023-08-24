@@ -135,7 +135,7 @@ const MessageEditor = (props: IMessageEditorProps) => {
             <button
               className="p-4 rounded-r-full bg-stone-900 text-white hover:text-green-500"
               title="Send Media"
-              onClick={() => setMediaModal(true)}
+              onClick={() => setMediaModal(!mediaModal)}
             >
               <Attachment />
             </button>

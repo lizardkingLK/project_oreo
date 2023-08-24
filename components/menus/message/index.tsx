@@ -1,38 +1,43 @@
+import Close from "@/components/svgs/close";
+import Pencil from "@/components/svgs/pencil";
 import Spinner from "@/components/svgs/spinner";
 import { IMessageMenuProps } from "@/types";
 import React from "react";
 
 const MessageMenu = (props: IMessageMenuProps) => {
   if (props) {
-    const { referenceId, options, onDeleteHandler, loading } = props;
+    const { referenceId, options, onDeleteHandler, loading, messageTime } =
+      props;
 
     if (options) {
       return (
-        <ul className="rounded-xl">
-          <li className="ml-2 mt-2">
-            <button
-              type="button"
-              className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg dark:shadow-lg font-medium rounded-lg text-sm px-5 py-2.5 text-center w-full"
-            >
-              Edit
-            </button>
-          </li>
-          <li className="ml-2 mt-2">
-            <button
-              id={`${referenceId}`}
-              type="button"
-              className="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg dark:shadow-lg font-medium rounded-lg text-sm px-5 py-2.5 text-center flex items-center w-full"
-              onClick={() => onDeleteHandler(referenceId)}
-            >
-              {loading && (
-                <div className="mr-2">
-                  <Spinner size={6} />
-                </div>
-              )}
-              <span>Delete</span>
-            </button>
-          </li>
-        </ul>
+        <div className="flex justify-between items-center pt-2">
+          <h1 className="text-sm font-medium rounded-lg px-2 mr-2 bg-black text-white">
+            You at {messageTime}
+          </h1>
+          <ul className="rounded-xl flex justify-end items-center">
+            <li className="pr-2">
+              <button
+                type="button"
+                title="Edit Message?"
+                className="text-black bg-gradient-to-r from-stone-300 to-stone-400 hover:bg-gradient-to-r font-black rounded-full text-sm text-center w-full p-2"
+              >
+                <Pencil />
+              </button>
+            </li>
+            <li>
+              <button
+                id={`${referenceId}`}
+                type="button"
+                title="Delete Message?"
+                className="text-black bg-gradient-to-r from-stone-300 to-stone-400 hover:bg-gradient-to-r font-black rounded-full text-sm text-center w-full p-2"
+                onClick={() => onDeleteHandler(referenceId)}
+              >
+                {loading ? <Spinner size={8} /> : <Close size={8} />}
+              </button>
+            </li>
+          </ul>
+        </div>
       );
     } else return null;
   } else return null;
