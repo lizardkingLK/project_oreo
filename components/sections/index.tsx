@@ -27,6 +27,7 @@ const SectionSwitch = (props: ISecitonSwitchProps) => {
       onSubmitHandler,
       onDeleteHandler,
       onMediaHandler,
+      onAddFriendHandler,
       textInputRef,
       loading,
     } = props;
@@ -34,7 +35,7 @@ const SectionSwitch = (props: ISecitonSwitchProps) => {
     if (section === sections.addFriend) {
       return (
         <div className="flex h-screen items-center justify-center w-full">
-          <AddFriend />
+          <AddFriend onAddFriendHandler={onAddFriendHandler} />
         </div>
       );
     } else if (section === sections.feeds) {

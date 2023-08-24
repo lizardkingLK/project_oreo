@@ -39,7 +39,7 @@ const Group = (props: IGroupSectionProps) => {
               <h1 className="text-md font-bold text-green-500">Online</h1>
             ) : (
               <h1 className="text-md font-bold text-white">
-                {group.lastMessage.createdOn}
+                {group.lastMessage?.createdOn}
               </h1>
             )}
           </div>
