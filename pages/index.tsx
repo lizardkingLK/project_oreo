@@ -95,11 +95,10 @@ const Messages = () => {
     }
   }, [active, groups]);
 
-  useEffect(() => {
-    if (lastMessageRef.current) {
-      lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [notifs, input, group]);
+  useEffect(
+    () => lastMessageRef?.current?.scrollIntoView({ behavior: "smooth" }),
+    [notifs, input, group]
+  );
 
   useEffect(() => {
     if (output) {
@@ -156,37 +155,37 @@ const Messages = () => {
 
   useEffect(() => {
     if (friend) {
-      const targeted = friend.createdFor.find(u => u.id === userId);
+      const targeted = friend.createdFor.find((u) => u.id === userId);
       if (targeted) {
         let target: ICreatedForDataProps =
-        friend.userId === userId
-          ? friend.createdFor[0]
-          : friend.createdFor[1];
-      const message: IMessageProps = {
-        id: friend.id,
-        referenceId: friend.referenceId,
-        type: getMessageType(friend.userId, userId!),
-        content: friend.content,
-        createdOn: getTimeConverted(new Date(friend.createdAt)),
-        groupId: friend.groupId,
-        status: friend.status,
-        fromId: friend.createdFor[0].id,
-        toId: friend.createdFor[1].id,
-      };
-      const tempGroup = {
-        id: friend.groupId,
-        name: getNameOfUser(target),
-        displayImage: target.displayImage,
-        targetId: target.id,
-        isStatus: false,
-        isOnline: false,
-        messages: [message],
-        lastMessage: message,
-      };
-      const tempGroups = groups;
-      tempGroups[tempGroups.length] = tempGroup;
-      setGroups(tempGroups);
-      setFriend(null);
+          friend.userId === userId
+            ? friend.createdFor[0]
+            : friend.createdFor[1];
+        const message: IMessageProps = {
+          id: friend.id,
+          referenceId: friend.referenceId,
+          type: getMessageType(friend.userId, userId!),
+          content: friend.content,
+          createdOn: getTimeConverted(new Date(friend.createdAt)),
+          groupId: friend.groupId,
+          status: friend.status,
+          fromId: friend.createdFor[0].id,
+          toId: friend.createdFor[1].id,
+        };
+        const tempGroup = {
+          id: friend.groupId,
+          name: getNameOfUser(target),
+          displayImage: target.displayImage,
+          targetId: target.id,
+          isStatus: false,
+          isOnline: false,
+          messages: [message],
+          lastMessage: message,
+        };
+        const tempGroups = groups;
+        tempGroups[tempGroups.length] = tempGroup;
+        setGroups(tempGroups);
+        setFriend(null);
       }
     }
   }, [friend]);
@@ -222,7 +221,7 @@ const Messages = () => {
       });
   };
 
-  const groupMessages = (messages: any[], userId: string) => {
+  const groupMessages = (messages: IMessageDataProps[], userId: string) => {
     const groups = new Map();
     let groupId,
       group,
@@ -416,11 +415,8 @@ const Messages = () => {
     setSection(sections.group);
   };
 
-  const onKeyDownHandler = (e: { key: string }) => {
-    if (e.key === "Enter") {
-      onSubmitHandler();
-    }
-  };
+  const onKeyDownHandler = (e: { key: string }) =>
+    e.key === "Enter" && onSubmitHandler();
 
   const onAddFriendHandler = (messageData: IMessageDataProps) => {
     let target: ICreatedForDataProps =
