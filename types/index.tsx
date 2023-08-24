@@ -20,14 +20,6 @@ export interface ICreatedForDataProps {
   id: any;
 }
 
-export interface IMessageDataProps {
-  groupId: any;
-  createdAt: string | number | Date;
-  userId: any;
-  groupType: groupTypes;
-  createdFor: ICreatedForDataProps[];
-}
-
 export interface IMessageProps {
   id: string;
   referenceId: string | null;
@@ -40,9 +32,18 @@ export interface IMessageProps {
   toId: any;
 }
 
+export interface IMessageDataProps extends IMessageProps {
+  createdAt: string | number | Date;
+  userId: any;
+  groupType: groupTypes;
+  createdFor: ICreatedForDataProps[];
+}
+
+export type NameType = string | null | undefined;
+
 export interface IGroupProps {
   id: string;
-  name: string;
+  name: NameType;
   displayImage: string;
   isStatus: boolean;
   isOnline: boolean;

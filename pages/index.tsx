@@ -286,6 +286,7 @@ const Messages = () => {
       });
       setInput("");
       setGroup(tempGroup);
+      setMessages(tempGroupMessages)
       setNotifs(null);
       if (textInputRef?.current) {
         textInputRef.current.focus();
@@ -378,11 +379,42 @@ const Messages = () => {
     }
   };
 
-  const onAddFriendHandler = (data: IMessageProps) => {
-    console.log(data);
-    const tempGroups = groups;
-    // tempGroups[tempGroups.length] = null;
+  const onAddFriendHandler = (messageData: IMessageDataProps) => {
+    let target: ICreatedForDataProps =
+      messageData.userId === userId
+        ? messageData.createdFor[0]
+        : messageData.createdFor[1];
 
+    const message: IMessageProps = {
+      id: messageData.id,
+      referenceId: messageData.referenceId,
+      type: getMessageType(messageData.userId, userId!),
+      content: messageData.content,
+      createdOn: getTimeConverted(new Date(messageData.createdAt)),
+      groupId: messageData.groupId,
+      status: messageData.status,
+      fromId: messageData.createdFor[0].id,
+      toId: messageData.createdFor[1].id,
+    };
+
+    const tempGroup = {
+      id: messageData.groupId,
+      name: getNameOfUser(target),
+      displayImage: target.displayImage,
+      targetId: target.id,
+      isStatus: false,
+      isOnline: false,
+      messages: [message],
+      lastMessage: message,
+    };
+
+    const tempGroups = groups;
+    tempGroups[tempGroups.length] = tempGroup;
+
+    setGroups(tempGroups);
+    setGroup(tempGroup);
+    setMessages([message]);
+    socket?.emit("new-friend", messageData);
     setSection(sections.group);
   };
 

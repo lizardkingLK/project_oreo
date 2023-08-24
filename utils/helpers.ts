@@ -1,6 +1,5 @@
+import { NameType } from "@/types";
 import { mediaTypes, messageTypes } from "./enums";
-
-type NameType = string | null | undefined;
 
 const getTimeConverted = (tempDate: Date = new Date()) => {
   const tempHours = tempDate.getHours().toString().padStart(2, "0"),
