@@ -56,6 +56,7 @@ const Messages = () => {
     referenceId: string;
     groupId: string;
   }>(null);
+  const [friend, setFriend] = useState<null | IMessageDataProps>(null);
 
   const textInputRef = useRef<null | HTMLInputElement>(null);
   const lastMessageRef = useRef<null | HTMLDivElement>(null);
@@ -125,6 +126,7 @@ const Messages = () => {
           lastMessage: newMessage,
         });
         groups[tempGroupIndex] = tempGroup;
+        setMessages(tempGroupMessages);
         setNotifs(getRandomNumber());
       }
     }
@@ -151,6 +153,43 @@ const Messages = () => {
       setMessages(tempMessages);
     }
   }, [deleted, groups]);
+
+  useEffect(() => {
+    if (friend) {
+      const targeted = friend.createdFor.find(u => u.id === userId);
+      if (targeted) {
+        let target: ICreatedForDataProps =
+        friend.userId === userId
+          ? friend.createdFor[0]
+          : friend.createdFor[1];
+      const message: IMessageProps = {
+        id: friend.id,
+        referenceId: friend.referenceId,
+        type: getMessageType(friend.userId, userId!),
+        content: friend.content,
+        createdOn: getTimeConverted(new Date(friend.createdAt)),
+        groupId: friend.groupId,
+        status: friend.status,
+        fromId: friend.createdFor[0].id,
+        toId: friend.createdFor[1].id,
+      };
+      const tempGroup = {
+        id: friend.groupId,
+        name: getNameOfUser(target),
+        displayImage: target.displayImage,
+        targetId: target.id,
+        isStatus: false,
+        isOnline: false,
+        messages: [message],
+        lastMessage: message,
+      };
+      const tempGroups = groups;
+      tempGroups[tempGroups.length] = tempGroup;
+      setGroups(tempGroups);
+      setFriend(null);
+      }
+    }
+  }, [friend]);
 
   const onDeleteHandler = async (referenceId: string) => {
     setLoading(true);
@@ -256,6 +295,10 @@ const Messages = () => {
     socket.on("delete-message", (msg) => {
       setDeleted(msg);
     });
+
+    socket.on("new-friend", (msg) => {
+      setFriend(msg);
+    });
   };
 
   const onChangeHandler = (e: {
@@ -286,7 +329,7 @@ const Messages = () => {
       });
       setInput("");
       setGroup(tempGroup);
-      setMessages(tempGroupMessages)
+      setMessages(tempGroupMessages);
       setNotifs(null);
       if (textInputRef?.current) {
         textInputRef.current.focus();
@@ -384,7 +427,6 @@ const Messages = () => {
       messageData.userId === userId
         ? messageData.createdFor[0]
         : messageData.createdFor[1];
-
     const message: IMessageProps = {
       id: messageData.id,
       referenceId: messageData.referenceId,
@@ -396,7 +438,6 @@ const Messages = () => {
       fromId: messageData.createdFor[0].id,
       toId: messageData.createdFor[1].id,
     };
-
     const tempGroup = {
       id: messageData.groupId,
       name: getNameOfUser(target),
@@ -407,10 +448,8 @@ const Messages = () => {
       messages: [message],
       lastMessage: message,
     };
-
     const tempGroups = groups;
     tempGroups[tempGroups.length] = tempGroup;
-
     setGroups(tempGroups);
     setGroup(tempGroup);
     setMessages([message]);
