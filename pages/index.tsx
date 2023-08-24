@@ -132,7 +132,6 @@ const Messages = () => {
 
   useEffect(() => {
     if (deleted) {
-      console.log(true);
       const { referenceId, groupId } = deleted;
       let tempMessages;
       const tempGroups = groups;
@@ -142,7 +141,10 @@ const Messages = () => {
             (g) => g.referenceId !== referenceId
           );
           group.messages = tempMessages;
-          console.log(tempMessages);
+          group.lastMessage =
+            tempMessages.length === 0
+              ? null
+              : tempMessages[tempMessages.length - 1];
         }
       });
       setGroups(tempGroups);
@@ -168,6 +170,10 @@ const Messages = () => {
               (g) => g.referenceId !== referenceId
             );
             group.messages = tempMessages;
+            group.lastMessage =
+              tempMessages.length === 0
+                ? null
+                : tempMessages[tempMessages.length - 1];
           }
         });
         setLoading(false);

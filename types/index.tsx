@@ -47,7 +47,7 @@ export interface IGroupProps {
   isStatus: boolean;
   isOnline: boolean;
   messages: IMessageProps[];
-  lastMessage: IMessageProps;
+  lastMessage: IMessageProps | null;
   targetId: string;
 }
 
