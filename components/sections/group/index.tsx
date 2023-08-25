@@ -33,13 +33,13 @@ const Group = (props: IGroupSectionProps) => {
             <ChevronBack />
           </button>
           <div className={`basis-8/12 ${navbar ? "collapse" : "visible"}`}>
-            <h1 className="flex text-2xl text-white font-bold">
+            <h1 className="flex text-md md:text-2xl text-white font-bold">
               <span>{group.name}</span>
             </h1>
             {group.isOnline ? (
-              <h1 className="text-md font-bold text-green-500">Online</h1>
+              <h1 className="text-sm md:text-md font-bold text-green-500">Online</h1>
             ) : (
-              <h1 className="text-md font-bold text-white">
+              <h1 className="text-sm md:text-md font-bold text-white">
                 {group.lastMessage?.createdOn}
               </h1>
             )}

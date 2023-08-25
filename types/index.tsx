@@ -117,7 +117,7 @@ export interface IMessageCardProps {
   type: number | undefined;
   messageImagePath: string;
   messageTime: string;
-  messageAuthorName: string;
+  messageAuthorName: NameType | string;
   onDeleteHandler: Function;
   loading: boolean;
 }
