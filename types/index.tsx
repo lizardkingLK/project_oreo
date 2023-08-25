@@ -50,6 +50,7 @@ export interface IGroupProps {
   messages: IMessageProps[];
   lastMessage: IMessageProps | null;
   targetId: string;
+  unreadCount: number;
 }
 
 export interface IMessageLinkListProps {

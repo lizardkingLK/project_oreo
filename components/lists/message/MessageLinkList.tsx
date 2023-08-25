@@ -22,7 +22,7 @@ const MessageLinkList = (props: IMessageLinkListProps) => {
                 messageAuthorIsStatus={group.isStatus}
                 messageAuthorIsOnline={group.isOnline}
                 messageIsActive={selectedGroup && selectedGroup.id === group.id}
-                messageUnread={0}
+                messageUnread={group.unreadCount}
                 active={active}
               />
             );

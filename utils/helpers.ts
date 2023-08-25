@@ -29,6 +29,8 @@ const getBriefContent = (content: string) => {
     if (isImage(content)) {
       return mediaTypes.image;
     }
+  } else if (content.length > 30) {
+    return content.substring(0, 30).concat("...");
   } else return content;
 };
 
