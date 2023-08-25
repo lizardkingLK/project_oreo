@@ -1,7 +1,7 @@
 import React from "react";
 import Avatar from "@/components/avatar";
 import { IMessageLinkProps } from "@/types";
-import { getBriefContent } from "@/utils/helpers";
+import { getBriefContent, isImage } from "@/utils/helpers";
 
 const MessageLink = (props: IMessageLinkProps) => {
   if (props) {
@@ -39,24 +39,32 @@ const MessageLink = (props: IMessageLinkProps) => {
             isOnline={messageAuthorIsOnline}
           />
           <div className="basis-2/4 ml-4 font-bold truncate">
-            <h1 className="text-sm md:text-xl text-white truncate max-w-xs">
+            <h1 className="text-md md:text-xl text-white truncate max-w-xs">
               {messageAuthorName}
             </h1>
-            <p className={"text-sm md:text-md text-stone-500 truncate max-w-xs"}>
+            <p
+              className={"text-sm md:text-md text-stone-500 truncate max-w-xs"}
+            >
               {active?.groupId === messageId && active?.value ? (
                 <span className="text-green-500">typing...</span>
               ) : (
-                getBriefContent(messageContent)
+                <span
+                  title={isImage(messageContent) ? "Image" : messageContent}
+                >
+                  {getBriefContent(messageContent)}
+                </span>
               )}
             </p>
           </div>
           <div className="basis-1/4 flex flex-col justify-between items-end">
             {messageUnread ? (
-              <p className="ml-2 w-6 h-6 text-xs bg-green-300 text-black font-bold flex justify-center items-center rounded-full">
+              <p className="mx-2 w-6 h-6 text-xs bg-green-300 text-black font-bold flex justify-center items-center rounded-full">
                 {messageUnread}
               </p>
             ) : (
-              <p className="ml-2 text-sm md:text-md text-white font-bold">{messageTime}</p>
+              <p className="mx-2 text-xs md:text-md text-white font-bold">
+                {messageTime}
+              </p>
             )}
           </div>
         </div>

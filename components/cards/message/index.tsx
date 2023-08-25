@@ -23,10 +23,7 @@ export default function MessageCard(props: IMessageCardProps) {
 
     return (
       <div className={`flex ${type === messageTypes.SENT && "justify-end"}`}>
-        {messageAuthorName &&
-        messageTime &&
-        messageImagePath &&
-        type === messageTypes.RECEIVED ? (
+        {messageAuthorName && type === messageTypes.RECEIVED ? (
           <div className="hidden md:flex flex-col justify-start items-center mt-4">
             <Avatar
               name={messageAuthorName}
@@ -44,17 +41,17 @@ export default function MessageCard(props: IMessageCardProps) {
             loading={loading}
           />
         ) : (
-        <div
-          title={messageTime}
-          className={`p-4 my-4 min-w-max rounded-xl bg-gradient-to-r 
+          <div
+            title={messageTime}
+            className={`p-4 my-4 min-w-max rounded-xl bg-gradient-to-r 
         ${
           type === messageTypes.RECEIVED
             ? "from-green-400 ml-2 to-green-500 rounded-tl-none cursor-pointer"
             : "from-stone-400 to-stone-500 rounded-tr-none cursor-pointer text-right"
         }`}
-        >
-          <MessageMedia content={content} />
-        </div>
+          >
+            <MessageMedia content={content} />
+          </div>
         )}
         {type === messageTypes.SENT && (
           <button

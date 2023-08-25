@@ -181,6 +181,7 @@ const Messages = () => {
           isOnline: false,
           messages: [message],
           lastMessage: message,
+          unreadCount: 1,
         };
         const tempGroups = groups;
         tempGroups[tempGroups.length] = tempGroup;
@@ -443,6 +444,7 @@ const Messages = () => {
       isOnline: false,
       messages: [message],
       lastMessage: message,
+      unreadCount: 0,
     };
     const tempGroups = groups;
     tempGroups[tempGroups.length] = tempGroup;
