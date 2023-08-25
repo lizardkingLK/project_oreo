@@ -39,10 +39,10 @@ const MessageLink = (props: IMessageLinkProps) => {
             isOnline={messageAuthorIsOnline}
           />
           <div className="basis-2/4 ml-4 font-bold truncate">
-            <h1 className="text-xl text-white truncate max-w-xs">
+            <h1 className="text-sm md:text-xl text-white truncate max-w-xs">
               {messageAuthorName}
             </h1>
-            <p className={"text-sm text-stone-500 truncate max-w-xs"}>
+            <p className={"text-sm md:text-md text-stone-500 truncate max-w-xs"}>
               {active?.groupId === messageId && active?.value ? (
                 <span className="text-green-500">typing...</span>
               ) : (
@@ -56,7 +56,7 @@ const MessageLink = (props: IMessageLinkProps) => {
                 {messageUnread}
               </p>
             ) : (
-              <p className="ml-2 text-md text-white font-bold">{messageTime}</p>
+              <p className="ml-2 text-sm md:text-md text-white font-bold">{messageTime}</p>
             )}
           </div>
         </div>

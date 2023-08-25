@@ -1,6 +1,11 @@
 import React from "react";
 import Picture from "../../picture";
-import { isLocalStorage, isImage, isMedia } from "@/utils/helpers";
+import {
+  isLocalStorage,
+  isImage,
+  isMedia,
+  getBriefContent,
+} from "@/utils/helpers";
 
 const MessageMedia = (props: { content: string }) => {
   const { content } = props;
@@ -15,7 +20,11 @@ const MessageMedia = (props: { content: string }) => {
         return <Picture alt="preview" height={120} width={120} src={src} />;
       }
     }
-    return <h1 className="max-w-xs text-md text-black font-bold">{content}</h1>;
+    return (
+      <h1 className="max-w-xs text-md text-black font-bold">
+        {getBriefContent(content)}
+      </h1>
+    );
   } else return null;
 };
 
