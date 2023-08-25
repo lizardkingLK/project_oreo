@@ -103,8 +103,8 @@ const Messages = () => {
   useEffect(() => {
     if (output) {
       const tempGroupIndex = groups.findIndex(
-          (group) => group.id === output.groupId
-        ),
+        (group) => group.id === output.groupId
+      ),
         tempGroup = groups[tempGroupIndex];
       if (tempGroup) {
         const tempGroupMessages = tempGroup.messages,
@@ -188,7 +188,7 @@ const Messages = () => {
         setFriend(null);
       }
     }
-  }, [friend]);
+  }, [friend, groups, userId]);
 
   const onDeleteHandler = async (referenceId: string) => {
     setLoading(true);
