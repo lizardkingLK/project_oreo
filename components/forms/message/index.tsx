@@ -133,7 +133,9 @@ const MessageEditor = (props: IMessageEditorProps) => {
               title="Type Message Here"
             />
             <button
-              className="p-4 rounded-r-full bg-stone-900 text-white hover:text-green-500"
+              className={`p-4 rounded-r-full bg-stone-900 ${
+                mediaModal ? "text-green-500" : "text-white"
+              } hover:text-green-500`}
               title="Send Media"
               onClick={() => setMediaModal(!mediaModal)}
             >
