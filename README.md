@@ -1,4 +1,10 @@
-![project_oreo by lizardkingLK](/project-oreo.svg)
+<p align="center">
+  <img src="/public/favicon.png" alt="logo" />
+</p>
+
+<p align="center">
+  <img src="/project-oreo.svg" alt="badge" />
+</p>
 
 ## A Chat Application
 
