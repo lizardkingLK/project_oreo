@@ -15,6 +15,7 @@ const SectionSwitch = (props: ISecitonSwitchProps) => {
   if (props) {
     const {
       section,
+      setSection,
       groups,
       user,
       messages,
@@ -44,7 +45,7 @@ const SectionSwitch = (props: ISecitonSwitchProps) => {
     } else if (section === sections.introduction) {
       return (
         <div className="flex h-screen items-center justify-center w-full">
-          <Introduction user={user} />
+          <Introduction user={user} setSection={setSection} />
         </div>
       );
     } else if (section === sections.home) {

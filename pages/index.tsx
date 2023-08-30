@@ -485,7 +485,7 @@ const Messages = () => {
               newUser={groups.length > 0}
             />
           ) : (
-            <div className="mt-20">
+            <div className="mt-24 md:mt-20">
               <MessageLinkList
                 groups={groups}
                 setGroup={onSelectGroupHandler}
@@ -500,6 +500,7 @@ const Messages = () => {
         >
           <SectionSwitch
             section={section}
+            setSection={setSection}
             lastMessageRef={lastMessageRef}
             onChangeHandler={onChangeHandler}
             onKeyDownHandler={onKeyDownHandler}
