@@ -10,6 +10,10 @@ import { User } from "@clerk/nextjs/dist/types/server";
 
 export interface ILayoutProps {
   children: ReactNode;
+  rootElementId: string;
+  isSignedIn: boolean;
+  navbar: boolean;
+  setNavbar: Function;
 }
 
 export interface ICreatedForDataProps {
@@ -37,6 +41,11 @@ export interface IMessageDataProps extends IMessageProps {
   userId: any;
   groupType: groupTypes;
   createdFor: ICreatedForDataProps[];
+}
+
+export interface IDeletedMessageProps {
+  referenceId: string;
+  groupId: string;
 }
 
 export type NameType = string | null | undefined;
@@ -144,6 +153,7 @@ export interface IUserNavbarProps {
   navbar: boolean;
   setNavbar: Function;
   setSection: Function;
+  newUser: boolean;
 }
 
 export interface ISpinnerProps {
@@ -183,6 +193,10 @@ export interface ISectionLayoutProps {
 
 export interface IDashboardProps {
   groups: IGroupProps[];
+  user: any;
+}
+
+export interface IIntroductionProps {
   user: any;
 }
 

@@ -7,6 +7,7 @@ import { getPublicUrl, uploadFile } from "@/lib/supabase";
 
 import {
   ICreatedForDataProps,
+  IDeletedMessageProps,
   IGroupProps,
   IMessageDataProps,
   IMessageProps,
@@ -30,12 +31,10 @@ import {
   isLocalStorage,
 } from "@/utils/helpers";
 
-import Layout from "@/components/layout";
+import LayoutSwitch from "@/components/layout";
 import MessageLinkList from "@/components/lists/message/MessageLinkList";
-import Bars from "@/components/svgs/bars";
 import UserNavbar from "@/components/navs/user";
 import Spinner from "@/components/svgs/spinner";
-import Welcome from "@/components/welcome";
 import SectionSwitch from "@/components/sections";
 
 let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
@@ -45,17 +44,14 @@ const Messages = () => {
   const [navbar, setNavbar] = useState(false);
   const [groups, setGroups] = useState<IGroupProps[]>([]);
   const [group, setGroup] = useState<any>(null);
-  const [section, setSection] = useState(sections.home);
+  const [section, setSection] = useState(sections.loading);
   const [input, setInput] = useState("");
   const [output, setOutput] = useState<any>(null);
   const [active, setActive] = useState<any>(false);
   const [notifs, setNotifs] = useState<null | boolean | string>(null);
   const [messages, setMessages] = useState<IMessageProps[] | undefined>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [deleted, setDeleted] = useState<null | {
-    referenceId: string;
-    groupId: string;
-  }>(null);
+  const [deleted, setDeleted] = useState<null | IDeletedMessageProps>(null);
   const [friend, setFriend] = useState<null | IMessageDataProps>(null);
 
   const textInputRef = useRef<null | HTMLInputElement>(null);
@@ -76,7 +72,15 @@ const Messages = () => {
     const initializeGroups = async (userId: string) => {
       await fetch(`${apiUrls.group}?userId=${userId}`)
         .then((response) => response.json())
-        .then((data) => groupMessages(data, userId));
+        .then((data) => {
+          const messages = data as IMessageDataProps[];
+          if (messages.length > 0) {
+            groupMessages(messages, userId);
+            setSection(sections.home);
+          } else {
+            setSection(sections.introduction);
+          }
+        });
     };
 
     if (userId) {
@@ -103,8 +107,8 @@ const Messages = () => {
   useEffect(() => {
     if (output) {
       const tempGroupIndex = groups.findIndex(
-        (group) => group.id === output.groupId
-      ),
+          (group) => group.id === output.groupId
+        ),
         tempGroup = groups[tempGroupIndex];
       if (tempGroup) {
         const tempGroupMessages = tempGroup.messages,
@@ -229,6 +233,7 @@ const Messages = () => {
       tempMessages,
       target: ICreatedForDataProps,
       createdOnDate;
+
     messages?.forEach((message: IMessageDataProps, _: any) => {
       groupId = message.groupId;
       createdOnDate = new Date(message.createdAt);
@@ -464,77 +469,59 @@ const Messages = () => {
   }
 
   return (
-    <Layout>
-      <main className="min-h-screen" id="divHome">
-        <div className="absolute z-10 block md:flex items-center p-4 border-stone-900">
-          <div className="basis-1/4 flex justify-between md:justify-start items-center my-4 md:m-0">
-            {isSignedIn && (
-              <button
-                id="btnToggleNavbar"
-                className="mr-4 md:mr-2 text-white hover:text-stone-600"
-                onClick={() => setNavbar((prevState) => !prevState)}
-              >
-                <Bars />
-              </button>
-            )}
-            {!navbar && (
-              <h1 className="ml-4 md:ml-2 text-3xl text-center md:text-left text-white font-bold">
-                OREO
-              </h1>
-            )}
-          </div>
-        </div>
-        {isSignedIn ? (
-          <section className="flex justify-center">
-            <div className="basis-3/4 md:basis-1/4">
-              {navbar ? (
-                <UserNavbar
-                  navbar={navbar}
-                  setNavbar={setNavbar}
-                  setSection={setSection}
-                />
-              ) : (
-                <div className="mt-20">
-                  <MessageLinkList
-                    groups={groups}
-                    setGroup={onSelectGroupHandler}
-                    selectedGroup={group}
-                    active={active}
-                  />
-                </div>
-              )}
-            </div>
-            <div
-              className={`basis-3/4 absolute top-0 bg-black md:bg-transparent md:relative md:block container`}
-            >
-              <SectionSwitch
-                section={section}
-                lastMessageRef={lastMessageRef}
-                onChangeHandler={onChangeHandler}
-                onKeyDownHandler={onKeyDownHandler}
-                onSubmitHandler={onSubmitHandler}
-                onMediaHandler={onMediaHandler}
-                onDeleteHandler={onDeleteHandler}
-                onAddFriendHandler={onAddFriendHandler}
-                loading={loading}
+    <LayoutSwitch
+      rootElementId="divHome"
+      isSignedIn={isSignedIn}
+      navbar={navbar}
+      setNavbar={setNavbar}
+    >
+      <section className="flex justify-center">
+        <div className={groups.length > 0 ? "basis-3/4 md:basis-1/4" : ""}>
+          {navbar ? (
+            <UserNavbar
+              navbar={navbar}
+              setNavbar={setNavbar}
+              setSection={setSection}
+              newUser={groups.length > 0}
+            />
+          ) : (
+            <div className="mt-20">
+              <MessageLinkList
                 groups={groups}
-                user={user}
-                group={group}
-                setGroup={setGroup}
-                messages={messages}
-                textInputRef={textInputRef}
-                input={input}
+                setGroup={onSelectGroupHandler}
+                selectedGroup={group}
                 active={active}
-                notifs={notifs}
-                navbar={navbar}
               />
             </div>
-          </section>
-        ) : (
-          <Welcome />
-        )}
-      </main>
-    </Layout>
+          )}
+        </div>
+        <div
+          className={`basis-3/4 absolute top-0 bg-black md:bg-transparent md:relative md:block container`}
+        >
+          <SectionSwitch
+            section={section}
+            lastMessageRef={lastMessageRef}
+            onChangeHandler={onChangeHandler}
+            onKeyDownHandler={onKeyDownHandler}
+            onSubmitHandler={onSubmitHandler}
+            onMediaHandler={onMediaHandler}
+            onDeleteHandler={onDeleteHandler}
+            onAddFriendHandler={onAddFriendHandler}
+            loading={loading}
+            groups={groups}
+            user={user}
+            group={group}
+            setGroup={setGroup}
+            messages={messages}
+            textInputRef={textInputRef}
+            input={input}
+            active={active}
+            notifs={notifs}
+            navbar={navbar}
+          />
+        </div>
+      </section>
+    </LayoutSwitch>
   );
 };
 

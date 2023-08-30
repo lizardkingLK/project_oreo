@@ -65,6 +65,7 @@ export default async function handler(
         .contains("createdFor", [userId]);
 
       if (errorMessages) {
+        console.log(errorMessages.message);
         return res.status(500).send({ message: errorMessages.message });
       }
 

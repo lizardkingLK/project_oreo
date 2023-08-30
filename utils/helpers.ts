@@ -21,15 +21,15 @@ const isMedia = (content: string) => {
 };
 
 const isImage = (content: string) => {
-  return content.includes(mediaTypes.image);
+  return content?.includes(mediaTypes.image);
 };
 
 const getBriefContent = (content: string) => {
-  if (content && isMedia(content)) {
+  if (isMedia(content)) {
     if (isImage(content)) {
       return mediaTypes.image;
     }
-  } else if (content.length > 30) {
+  } else if (content?.length > 30) {
     return content.substring(0, 30).concat("...");
   } else return content;
 };

@@ -13,7 +13,7 @@ const UserNavbar = (props: IUserNavbarProps) => {
   const { isSignedIn } = useAuth();
 
   if (props) {
-    const { navbar, setNavbar, setSection } = props;
+    const { navbar, setNavbar, setSection, newUser } = props;
 
     const handleSelection = (selection: number) => {
       setSection(selection);
@@ -54,7 +54,11 @@ const UserNavbar = (props: IUserNavbarProps) => {
           <Fragment>
             <button
               className="text-xl text-center p-4 hover:text-white hover:bg-stone-600 font-medium flex items-center justify-start"
-              onClick={() => handleSelection(sections.home)}
+              onClick={() =>
+                handleSelection(
+                  newUser ? sections.home : sections.introduction
+                )
+              }
             >
               <Home />
               &nbsp;&nbsp;&nbsp;Home

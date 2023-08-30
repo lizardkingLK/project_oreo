@@ -11,9 +11,11 @@ const SectionLayout = (props: ISectionLayoutProps) => {
             "bg-black md:bg-transparent md:relative md:block container p-4"
           }
         >
-          <h1 className="text-2xl text-white font-bold py-4" id="textTitle">
-            {title}
-          </h1>
+          {title && (
+            <h1 className="text-2xl text-white font-bold py-4" id="textTitle">
+              {title}
+            </h1>
+          )}
           {children}
         </div>
       </section>
