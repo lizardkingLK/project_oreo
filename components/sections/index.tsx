@@ -8,6 +8,8 @@ import AddFriend from "@/components/sections/friends/add";
 import Feeds from "@/components/sections/feeds";
 import Dashboard from "@/components/sections/dashboard";
 import Group from "./group";
+import Spinner from "../svgs/spinner";
+import Introduction from "./introduction";
 
 const SectionSwitch = (props: ISecitonSwitchProps) => {
   if (props) {
@@ -33,7 +35,25 @@ const SectionSwitch = (props: ISecitonSwitchProps) => {
       navbar,
     } = props;
 
-    if (section === sections.addFriend) {
+    if (section === sections.loading) {
+      return (
+        <div className="flex h-screen items-center justify-center w-full">
+          <Spinner size={12} />
+        </div>
+      );
+    } else if (section === sections.introduction) {
+      return (
+        <div className="flex h-screen items-center justify-center w-full">
+          <Introduction user={user} />
+        </div>
+      );
+    } else if (section === sections.home) {
+      return (
+        <div className="hidden md:flex h-screen items-center justify-center md:md:w-full">
+          <Dashboard groups={groups} user={user} />
+        </div>
+      );
+    } else if (section === sections.addFriend) {
       return (
         <div className="flex h-screen items-center justify-center w-full">
           <AddFriend onAddFriendHandler={onAddFriendHandler} />
@@ -65,13 +85,7 @@ const SectionSwitch = (props: ISecitonSwitchProps) => {
           navbar={navbar}
         />
       );
-    } else if (section === sections.home) {
-      return (
-        <div className="hidden md:flex h-screen items-center justify-center md:md:w-full">
-          <Dashboard groups={groups} user={user} />
-        </div>
-      );
-    } else return null;
+    }  else return null;
   } else return null;
 };
 

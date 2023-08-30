@@ -55,10 +55,12 @@ export enum resourcePaths {
 }
 
 export enum sections {
-  home = 0,
-  addFriend = 1,
-  group = 2,
-  feeds = 3,
+  loading = 0,
+  introduction = 1,
+  home = 2,
+  addFriend = 3,
+  group = 4,
+  feeds = 5,
 }
 
 export enum strings {
