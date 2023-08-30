@@ -140,6 +140,13 @@ export interface ISummaryCardProps {
   cardBodyContent: any;
 }
 
+export interface IButtonCardProps {
+  cardStyle: string;
+  cardHeaderTitle: string;
+  cardTooltip: string;
+  cardOnClick: MouseEventHandler<HTMLButtonElement>;
+}
+
 export interface IAvatarProps {
   name: string;
   imagePath: string;
@@ -198,10 +205,12 @@ export interface IDashboardProps {
 
 export interface IIntroductionProps {
   user: any;
+  setSection: Function;
 }
 
 export interface ISecitonSwitchProps {
   section: sections;
+  setSection: Function;
   user: any;
   active: any;
   notifs: null | boolean | string;
