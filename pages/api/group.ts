@@ -44,6 +44,10 @@ export default async function handler(
               groupId: randomUUID(),
               referenceId: getRandomNumber(),
               createdFor: [userId, ownerId],
+              readBy: [
+                { id: userId, value: false },
+                { id: ownerId, value: true },
+              ],
               content: quickMessages.hi,
             },
           ])

@@ -11,6 +11,7 @@ import {
   IGroupProps,
   IMessageDataProps,
   IMessageProps,
+  IReadByDataProps,
 } from "@/types";
 
 import {
@@ -232,7 +233,9 @@ const Messages = () => {
       group,
       tempMessages,
       target: ICreatedForDataProps,
-      createdOnDate;
+      createdOnDate,
+      unreadCount: number,
+      hasRead;
 
     messages?.forEach((message: IMessageDataProps, _: any) => {
       groupId = message.groupId;
@@ -242,8 +245,26 @@ const Messages = () => {
         createdOnDate,
         createdOn: getTimeConverted(createdOnDate),
       });
+      if (message.groupType === groupTypes.PRIVATE) {
+        if (message.userId === userId) {
+          target = message.createdFor[0];
+          hasRead = message.readBy[1].value;
+        } else {
+          target = message.createdFor[1];
+          hasRead = message.readBy[0].value;
+        }
+        if (groups.has(groupId)) {
+          group = groups.get(groupId);
+          unreadCount = hasRead ? group.unreadCount : group.unreadCount + 1;
+        } else {
+          unreadCount = hasRead ? 0 : 1;
+        }
+      } else if (message.groupType === groupTypes.PUBLIC) {
+        // TODO: set group details
+      }
       if (groups.has(groupId)) {
         group = groups.get(groupId);
+        group.unreadCount = unreadCount;
         tempMessages = group.messages;
         tempMessages[tempMessages.length] = message;
         Object.assign(group, {
@@ -251,26 +272,18 @@ const Messages = () => {
           messages: tempMessages,
         });
       } else {
-        if (message.groupType === groupTypes.PRIVATE) {
-          if (message.userId === userId) {
-            target = message.createdFor[0];
-          } else {
-            target = message.createdFor[1];
-          }
-        } else if (message.groupType === groupTypes.PUBLIC) {
-          // TODO: set group meta details
-        }
-        target &&
-          groups.set(groupId, {
-            id: groupId,
-            name: getNameOfUser(target),
-            displayImage: target.displayImage,
-            targetId: target.id,
-            isStatus: false,
-            isOnline: false,
-            messages: [message],
-            lastMessage: message,
-          });
+        group = {
+          id: groupId,
+          name: getNameOfUser(target),
+          displayImage: target?.displayImage,
+          targetId: target?.id,
+          isStatus: false,
+          isOnline: false,
+          messages: [message],
+          lastMessage: message,
+          unreadCount,
+        };
+        groups.set(groupId, group);
       }
     });
     setGroups(
