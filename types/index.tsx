@@ -24,6 +24,11 @@ export interface ICreatedForDataProps {
   id: any;
 }
 
+export interface IReadByDataProps {
+  id: string;
+  value: boolean;
+}
+
 export interface IMessageProps {
   id: string;
   referenceId: string | null;
@@ -41,6 +46,7 @@ export interface IMessageDataProps extends IMessageProps {
   userId: any;
   groupType: groupTypes;
   createdFor: ICreatedForDataProps[];
+  readBy: IReadByDataProps[];
 }
 
 export interface IDeletedMessageProps {

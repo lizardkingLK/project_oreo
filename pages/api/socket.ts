@@ -43,6 +43,10 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
               groupId: msg.groupId,
               createdFor: [msg.toId, msg.fromId],
               content: msg.content,
+              readBy: [
+                { id: msg.toId, value: false },
+                { id: msg.fromId, value: true },
+              ],
             },
           ])
           .select("id");
@@ -62,7 +66,7 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
 
       socket.on("new-friend", (msg) => {
         socket.broadcast.emit("new-friend", msg);
-      })
+      });
 
       socket.on("disconnect", () => {
         console.log(`1 disconnected. id = %s`, socket.id);
