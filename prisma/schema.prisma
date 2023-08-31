@@ -15,6 +15,7 @@ model Message {
   groupImageUrl String?
   messageType   Int      @default(1)
   createdFor    String[]
+  readBy        Json[]
   content       String?
   createdAt     DateTime @default(now())
   status        Int      @default(1)
