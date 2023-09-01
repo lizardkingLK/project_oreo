@@ -3,22 +3,17 @@ import SectionLayout from "../layout";
 import FeedList from "@/components/feeds";
 import { useAuth } from "@clerk/nextjs";
 import Spinner from "@/components/svgs/spinner";
-import { apiUrls } from "@/utils/enums";
+import { getFeeds } from "@/utils/http";
+import { IFeedProps } from "@/types";
 
 const Feeds = () => {
   const { isLoaded, userId } = useAuth();
 
-  const [feeds, setFeeds] = useState([]);
+  const [feeds, setFeeds] = useState<IFeedProps[]>([]);
 
   useEffect(() => {
-    const initializeFeeds = async (userId: string) => {
-      await fetch(`${apiUrls.feed}?id=${userId}`)
-        .then((response) => response.json())
-        .then((data) => setFeeds(data));
-    };
-
     if (userId) {
-      initializeFeeds(userId);
+      getFeeds(userId).then((data) => setFeeds(data));
     }
   }, [userId]);
 

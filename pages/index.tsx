@@ -36,6 +36,7 @@ import MessageLinkList from "@/components/lists/message/MessageLinkList";
 import UserNavbar from "@/components/navs/user";
 import Spinner from "@/components/svgs/spinner";
 import SectionSwitch from "@/components/sections";
+import { createSocket, deleteMessage, getGroups, saveFile } from "@/utils/http";
 
 let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 
@@ -69,22 +70,15 @@ const Messages = () => {
   useEffect(() => setNavbar(false), [group, input]);
 
   useEffect(() => {
-    const initializeGroups = async (userId: string) => {
-      await fetch(`${apiUrls.group}?userId=${userId}`)
-        .then((response) => response.json())
-        .then((data) => {
-          const messages = data as IMessageDataProps[];
-          if (messages.length > 0) {
-            groupMessages(messages, userId);
-            setSection(sections.home);
-          } else {
-            setSection(sections.introduction);
-          }
-        });
-    };
-
     if (userId) {
-      initializeGroups(userId);
+      getGroups(userId).then((data) => {
+        if (data.length > 0) {
+          groupMessages(data, userId);
+          setSection(sections.home);
+        } else {
+          setSection(sections.introduction);
+        }
+      });
       initializeSocket().then(() => socket.emit("identity", userId));
     }
   }, [userId]);
@@ -196,12 +190,11 @@ const Messages = () => {
   }, [friend, groups, userId]);
 
   const initializeSocket = async () => {
-    await fetch(apiUrls.socket);
+    createSocket();
+
     socket = io();
 
-    socket.on("connect", () => {
-      console.log("connected");
-    });
+    socket.on("connect", () => console.log("connected"));
 
     socket.on("new-message", (msg) => {
       setOutput(msg);
@@ -222,33 +215,26 @@ const Messages = () => {
 
   const onDeleteHandler = async (referenceId: string) => {
     setLoading(true);
-    await fetch(
-      `${apiUrls.message}?referenceId=${referenceId}&groupId=${group.id}`,
-      {
-        method: "DELETE",
-      }
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        let tempMessages;
-        const tempGroups = groups;
-        tempGroups.forEach((group) => {
-          if (group?.id === data?.groupId) {
-            tempMessages = group?.messages?.filter(
-              (g) => g.referenceId !== referenceId
-            );
-            group.messages = tempMessages;
-            group.lastMessage =
-              tempMessages.length === 0
-                ? null
-                : tempMessages[tempMessages.length - 1];
-          }
-        });
-        setLoading(false);
-        setGroups(tempGroups);
-        setMessages(tempMessages);
-        socket?.emit("delete-message", { referenceId, groupId: group.id });
+    deleteMessage(referenceId, group.id).then((data) => {
+      let tempMessages;
+      const tempGroups = groups;
+      tempGroups.forEach((group) => {
+        if (group?.id === data?.groupId) {
+          tempMessages = group?.messages?.filter(
+            (g) => g.referenceId !== referenceId
+          );
+          group.messages = tempMessages;
+          group.lastMessage =
+            tempMessages.length === 0
+              ? null
+              : tempMessages[tempMessages.length - 1];
+        }
       });
+      setLoading(false);
+      setGroups(tempGroups);
+      setMessages(tempMessages);
+      socket?.emit("delete-message", { referenceId, groupId: group.id });
+    });
   };
 
   const groupMessages = (messages: IMessageDataProps[], userId: string) => {
@@ -393,16 +379,11 @@ const Messages = () => {
           formData.append("file", file);
         });
 
-        await fetch(apiUrls.file, {
-          method: "POST",
-          body: formData,
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            newMessage.content = `[${mediaTypes.image}](${data.data})`;
-            sendMessage(newMessage);
-            setNotifs(getRandomNumber());
-          });
+        saveFile(formData).then((data) => {
+          newMessage.content = `[${mediaTypes.image}](${data.data})`;
+          sendMessage(newMessage);
+          setNotifs(getRandomNumber());
+        });
       } else {
         Object.values(files).forEach((file) => {
           (async () => {

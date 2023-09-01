@@ -1,11 +1,12 @@
 import UserCard from "@/components/cards/user";
 import Spinner from "@/components/svgs/spinner";
-import { apiUrls, userSearchMessageTypes } from "@/utils/enums";
+import { userSearchMessageTypes } from "@/utils/enums";
 import { useAuth } from "@clerk/nextjs";
 import { User } from "@clerk/nextjs/dist/types/server";
 import React, { useEffect, useRef, useState } from "react";
 import SectionLayout from "../../layout";
 import { IAddFriendProps } from "@/types";
+import { getUsers, inviteFriend } from "@/utils/http";
 
 const AddFriend = (props: IAddFriendProps) => {
   const [search, setSearch] = useState("");
@@ -19,14 +20,7 @@ const AddFriend = (props: IAddFriendProps) => {
   const { isLoaded, userId } = useAuth();
 
   useEffect(() => {
-    const getUsers = async () => {
-      setUsers(
-        await fetch(apiUrls.user)
-          .then((response) => response.json())
-          .then((data) => data)
-      );
-    };
-    getUsers();
+    getUsers().then((data) => setUsers(data));
   }, []);
 
   if (!isLoaded) {
@@ -42,20 +36,12 @@ const AddFriend = (props: IAddFriendProps) => {
 
     const handleInvitation = async () => {
       setLoading(true);
-      await fetch(apiUrls.group, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ ownerId: userId, userId: user?.id }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data) {
-            setLoading(false);
-            onAddFriendHandler(data[0]);
-          }
-        });
+      inviteFriend(userId, user?.id).then((data) => {
+        if (data) {
+          setLoading(false);
+          onAddFriendHandler(data[0]);
+        }
+      });
     };
 
     const handleSearch = (event: { preventDefault: () => void }) => {
