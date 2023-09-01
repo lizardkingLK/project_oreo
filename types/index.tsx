@@ -8,6 +8,14 @@ import {
 } from "react";
 import { User } from "@clerk/nextjs/dist/types/server";
 
+export type NameType = string | null | undefined;
+
+export type PersistedSocket = {
+  id: string;
+  orderNo: number;
+  userId: string | null;
+};
+
 export interface ILayoutProps {
   children: ReactNode;
   rootElementId: string;
@@ -54,8 +62,6 @@ export interface IDeletedMessageProps {
   groupId: string;
 }
 
-export type NameType = string | null | undefined;
-
 export interface IGroupProps {
   id: string;
   name: NameType;
@@ -75,7 +81,7 @@ export interface IMessageLinkListProps {
   active: any;
 }
 
-interface IactiveProps {
+interface IActiveProps {
   value: boolean;
   groupId: string;
   name: string;
@@ -84,7 +90,7 @@ interface IactiveProps {
 export interface IMessageListProps {
   messages: IMessageProps[] | undefined;
   group: IGroupProps | null | undefined;
-  active: IactiveProps;
+  active: IActiveProps;
   notifs: string | boolean | null;
   lastMessageRef: LegacyRef<HTMLDivElement>;
   onDeleteHandler: Function;

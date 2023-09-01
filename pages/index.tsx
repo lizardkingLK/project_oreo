@@ -11,7 +11,6 @@ import {
   IGroupProps,
   IMessageDataProps,
   IMessageProps,
-  IReadByDataProps,
 } from "@/types";
 
 import {
@@ -86,7 +85,7 @@ const Messages = () => {
 
     if (userId) {
       initializeGroups(userId);
-      initizalizeSocket();
+      initializeSocket().then(() => socket.emit("identity", userId));
     }
   }, [userId]);
 
@@ -196,6 +195,31 @@ const Messages = () => {
     }
   }, [friend, groups, userId]);
 
+  const initializeSocket = async () => {
+    await fetch(apiUrls.socket);
+    socket = io();
+
+    socket.on("connect", () => {
+      console.log("connected");
+    });
+
+    socket.on("new-message", (msg) => {
+      setOutput(msg);
+    });
+
+    socket.on("is-active", (active) => {
+      setActive(active);
+    });
+
+    socket.on("delete-message", (msg) => {
+      setDeleted(msg);
+    });
+
+    socket.on("new-friend", (msg) => {
+      setFriend(msg);
+    });
+  };
+
   const onDeleteHandler = async (referenceId: string) => {
     setLoading(true);
     await fetch(
@@ -292,31 +316,6 @@ const Messages = () => {
           second.lastMessage.createdOnDate - first.lastMessage.createdOnDate
       )
     );
-  };
-
-  const initizalizeSocket = async () => {
-    await fetch(apiUrls.socket);
-    socket = io();
-
-    socket.on("connect", () => {
-      console.log("connected");
-    });
-
-    socket.on("update-input", (msg) => {
-      setOutput(msg);
-    });
-
-    socket.on("is-active", (active) => {
-      setActive(active);
-    });
-
-    socket.on("delete-message", (msg) => {
-      setDeleted(msg);
-    });
-
-    socket.on("new-friend", (msg) => {
-      setFriend(msg);
-    });
   };
 
   const onChangeHandler = (e: {
@@ -428,6 +427,9 @@ const Messages = () => {
 
   const onSelectGroupHandler = async (groupId: string) => {
     const group = groups.find((g) => g.id === groupId);
+    if (group) {
+      group.unreadCount = 0;
+    }
     setGroup(group);
     setMessages(group?.messages);
     textInputRef?.current?.focus();
@@ -465,6 +467,7 @@ const Messages = () => {
       unreadCount: 0,
     };
     const tempGroups = groups;
+
     tempGroups[tempGroups.length] = tempGroup;
     setGroups(tempGroups);
     setGroup(tempGroup);
