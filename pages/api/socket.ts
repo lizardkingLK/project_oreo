@@ -1,4 +1,5 @@
 import { supabaseClient } from "@/lib/supabase";
+import { PersistedSocket } from "@/types";
 import { tableNames } from "@/utils/enums";
 import type { Server as HTTPServer } from "http";
 import type { Socket as NetSocket } from "net";
@@ -23,6 +24,8 @@ interface NextApiResponseWithSocket extends NextApiResponse {
   socket: SocketWithIO;
 }
 
+const sockets: PersistedSocket[] = [];
+
 const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
   if (res.socket.server.io) {
     console.log("Socket is already running");
@@ -33,6 +36,12 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
     res.socket.server.io = io;
 
     io.on("connection", (socket) => {
+      sockets.push({
+        id: socket.id,
+        orderNo: sockets.length + 1,
+        userId: null,
+      });
+
       socket.on("new-message", async (msg) => {
         const { error } = await supabaseClient
           .from(tableNames.message)
@@ -53,7 +62,7 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
         if (error) {
           return;
         }
-        socket.broadcast.emit("update-input", msg);
+        socket.broadcast.emit("new-message", msg);
       });
 
       socket.on("is-active", (active) => {
@@ -68,8 +77,22 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
         socket.broadcast.emit("new-friend", msg);
       });
 
+      socket.on("identity", (userId) => {
+        const index = sockets.findIndex((s) => s.id === socket.id);
+        sockets[index] = Object.assign(sockets[index], { userId });
+
+        console.log(sockets);
+      });
+
       socket.on("disconnect", () => {
         console.log(`1 disconnected. id = %s`, socket.id);
+        
+        const index = sockets.findIndex((s) => s.id === socket.id);
+        if (index !== -1) {
+          sockets.splice(index, 1);
+        }
+
+        console.log(sockets);
       });
     });
   }

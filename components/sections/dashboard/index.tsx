@@ -12,15 +12,13 @@ const Dashboard = (props: IDashboardProps) => {
     return (
       <SectionLayout title={null}>
         <div className="p-4">
-          <div className="flex justify-between items-center">
-            <div className="basis-2/4 md:basis-2/4">
-              <h1 className="text-2xl text-white font-bold" id="textGreeting">
-                Hello{" "}
-                <span className="text-green-400">
-                  {user?.firstName ?? user?.username}
-                </span>
-              </h1>
-            </div>
+          <div className="flex justify-between items-center w-full">
+            <h1 className="text-2xl text-white font-bold" id="textGreeting">
+              Hello{" "}
+              <span className="text-green-400">
+                {user?.firstName ?? user?.username}
+              </span>
+            </h1>
           </div>
           <div className="pt-4 grid grid-flow-row-dense grid-cols-3 grid-rows-3 gap-2">
             <SummaryCard
