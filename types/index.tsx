@@ -1,4 +1,5 @@
 import { groupTypes, messageTypes, sections } from "@/utils/enums";
+
 import {
   ChangeEventHandler,
   KeyboardEventHandler,
@@ -6,6 +7,7 @@ import {
   MouseEventHandler,
   ReactNode,
 } from "react";
+
 import { User } from "@clerk/nextjs/dist/types/server";
 
 export type NameType = string | null | undefined;
@@ -14,6 +16,8 @@ export type PersistedSocket = {
   id: string;
   orderNo: number;
   userId: string | null;
+  groupIds: string[];
+  socket: any;
 };
 
 export interface ILayoutProps {
@@ -47,6 +51,13 @@ export interface IMessageProps {
   status: boolean | undefined;
   fromId: any;
   toId: any;
+  userId: any;
+  readBy: IReadByDataProps[];
+}
+
+export interface ILatestMessageProps extends IMessageProps {
+  groupName: string;
+  displayImage: string;
 }
 
 export interface IMessageDataProps extends IMessageProps {
@@ -79,6 +90,7 @@ export interface IMessageLinkListProps {
   setGroup: Function;
   selectedGroup: IGroupProps | null | undefined;
   active: any;
+  userId: string | null;
 }
 
 interface IActiveProps {
@@ -105,6 +117,7 @@ export interface IMessageLinkProps {
   messageAuthorIsOnline: boolean;
   messageAuthorName: NameType;
   messageContent: string;
+  messageContentIsActive: boolean;
   messageTime: string;
   messageIsActive: boolean | null | undefined;
   messageOnClick: Function;
@@ -213,6 +226,7 @@ export interface ISectionLayoutProps {
 export interface IDashboardProps {
   groups: IGroupProps[];
   user: any;
+  notifs: null | boolean | string;
 }
 
 export interface IIntroductionProps {

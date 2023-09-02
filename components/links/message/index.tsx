@@ -15,10 +15,12 @@ const MessageLink = (props: IMessageLinkProps) => {
       messageAuthorIsStatus,
       messageAuthorIsOnline,
       messageContent,
+      messageContentIsActive,
       messageTime,
       messageUnread,
       active,
     } = props;
+
     return (
       <a
         href={void 0}
@@ -49,6 +51,7 @@ const MessageLink = (props: IMessageLinkProps) => {
                 <span className="text-green-500">typing...</span>
               ) : (
                 <span
+                  className={messageContentIsActive ? "text-green-500" : ""}
                   title={isImage(messageContent) ? "Image" : messageContent}
                 >
                   {getBriefContent(messageContent)}
