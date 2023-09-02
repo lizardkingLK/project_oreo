@@ -4,11 +4,17 @@ import { IMessageLinkListProps } from "@/types";
 
 const MessageLinkList = (props: IMessageLinkListProps) => {
   if (props) {
-    const { groups, setGroup, selectedGroup, active } = props;
+    const { groups, setGroup, selectedGroup, active, userId } = props;
+
     return (
       <Fragment>
         {groups &&
           groups.map((group, index) => {
+            console.log({
+              unread: group.unreadCount,
+              userId,
+              lastAuthor: group.lastMessage?.userId,
+            });
             return (
               <MessageLink
                 key={index}
@@ -18,6 +24,9 @@ const MessageLinkList = (props: IMessageLinkListProps) => {
                 messageImageSize={60}
                 messageAuthorName={group.name}
                 messageContent={group.lastMessage?.content}
+                messageContentIsActive={
+                  group.unreadCount > 0 && group.lastMessage?.userId !== userId
+                }
                 messageTime={group.lastMessage?.createdOn}
                 messageAuthorIsStatus={group.isStatus}
                 messageAuthorIsOnline={group.isOnline}

@@ -14,7 +14,6 @@ import {
 } from "@/types";
 
 import {
-  apiUrls,
   bucketNames,
   groupTypes,
   mediaTypes,
@@ -60,6 +59,7 @@ const Messages = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [deleted, setDeleted] = useState<null | IDeletedMessageProps>(null);
   const [friend, setFriend] = useState<null | IMessageDataProps>(null);
+  const [rooms, setRooms] = useState<boolean>(false);
 
   const textInputRef = useRef<null | HTMLInputElement>(null);
   const lastMessageRef = useRef<null | HTMLDivElement>(null);
@@ -106,9 +106,7 @@ const Messages = () => {
 
   useEffect(() => {
     if (output) {
-      const tempGroupIndex = groups.findIndex(
-          (group) => group.id === output.groupId
-        ),
+      const tempGroupIndex = groups.findIndex((g) => g.id === output.groupId),
         tempGroup = groups[tempGroupIndex];
       if (tempGroup) {
         const tempGroupMessages = tempGroup.messages,
@@ -122,19 +120,24 @@ const Messages = () => {
             groupId: tempGroup.id,
             status: true,
             toId: output.toId,
+            userId: null,
           };
         tempGroupMessages[tempGroupMessages.length] = newMessage;
         Object.assign(tempGroup, {
           messages: tempGroupMessages,
           lastMessage: newMessage,
-          unreadCount: tempGroup.unreadCount + 1,
+          unreadCount:
+            group?.id === output.groupId ? 0 : tempGroup.unreadCount + 1,
         });
         groups[tempGroupIndex] = tempGroup;
-        setMessages(tempGroupMessages);
+        if (group?.id === output.groupId) {
+          setMessages(tempGroupMessages);
+        }
         setNotifs(getRandomNumber());
       }
+      setOutput(null);
     }
-  }, [output, groups]);
+  }, [output, groups, group]);
 
   useEffect(() => {
     if (deleted) {
@@ -144,7 +147,7 @@ const Messages = () => {
       tempGroups.forEach((group) => {
         if (group?.id === groupId) {
           tempMessages = group?.messages?.filter(
-            (g) => g.referenceId !== referenceId
+            (m) => m.referenceId !== referenceId
           );
           group.messages = tempMessages;
           group.lastMessage =
@@ -154,9 +157,12 @@ const Messages = () => {
         }
       });
       setGroups(tempGroups);
-      setMessages(tempMessages);
+      if (group?.id === groupId) {
+        setMessages(tempMessages);
+      }
+      setDeleted(null);
     }
-  }, [deleted, groups]);
+  }, [deleted, groups, group]);
 
   useEffect(() => {
     if (friend) {
@@ -176,6 +182,7 @@ const Messages = () => {
           status: friend.status,
           fromId: friend.createdFor[0].id,
           toId: friend.createdFor[1].id,
+          userId: null,
         };
         const tempGroup = {
           id: friend.groupId,
@@ -195,6 +202,12 @@ const Messages = () => {
       }
     }
   }, [friend, groups, userId]);
+
+  useEffect(() => {
+    if (userId && socket) {
+      socket.emit("set-rooms", { userId, groupIds: groups.map((g) => g.id) });
+    }
+  }, [rooms, groups, userId]);
 
   const initializeSocket = async () => {
     createSocket();
@@ -217,6 +230,10 @@ const Messages = () => {
 
     socket.on("new-friend", (msg) => {
       setFriend(msg);
+    });
+
+    socket.on("set-rooms", () => {
+      setRooms(true);
     });
   };
 
@@ -326,7 +343,7 @@ const Messages = () => {
 
   const sendMessage = (newMessage: IMessageProps) => {
     if (newMessage?.content && socket) {
-      const tempGroup = group;
+      const tempGroup: IGroupProps = group;
 
       const tempGroupMessages = tempGroup?.messages;
       newMessage.createdOn = getTimeConverted(new Date(newMessage.createdOn));
@@ -344,7 +361,7 @@ const Messages = () => {
       if (textInputRef?.current) {
         textInputRef.current.focus();
       }
-      socket.emit("is-active", false);
+      socket.emit("is-active", { groupId: tempGroup.id });
       socket.emit("new-message", newMessage);
     }
   };
@@ -361,6 +378,7 @@ const Messages = () => {
         status: true,
         fromId: userId,
         toId: group.targetId,
+        userId: null,
       });
     }
   };
@@ -379,6 +397,7 @@ const Messages = () => {
         fromId: userId,
         toId: group.targetId,
         content: "MESSAGE_CONTENT",
+        userId: null,
       };
       if (storeLocally) {
         const formData = new FormData();
@@ -443,6 +462,7 @@ const Messages = () => {
       status: messageData.status,
       fromId: messageData.createdFor[0].id,
       toId: messageData.createdFor[1].id,
+      userId: null,
     };
     const tempGroup = {
       id: messageData.groupId,
@@ -496,6 +516,7 @@ const Messages = () => {
                 setGroup={onSelectGroupHandler}
                 selectedGroup={group}
                 active={active}
+                userId={userId}
               />
             </div>
           )}
