@@ -372,7 +372,7 @@ const Messages = () => {
       if (textInputRef?.current) {
         textInputRef.current.focus();
       }
-      socket.emit("is-active", { groupId: tempGroup.id });
+      socket.emit("is-active", { groupId: tempGroup.id, value: false });
       socket.emit("new-message", newMessage);
     }
   };
