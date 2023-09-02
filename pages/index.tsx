@@ -36,7 +36,13 @@ import MessageLinkList from "@/components/lists/message/MessageLinkList";
 import UserNavbar from "@/components/navs/user";
 import Spinner from "@/components/svgs/spinner";
 import SectionSwitch from "@/components/sections";
-import { createSocket, deleteMessage, getGroups, saveFile } from "@/utils/http";
+import {
+  createSocket,
+  deleteMessage,
+  getGroups,
+  saveFile,
+  updateUnread,
+} from "@/utils/http";
 
 let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 
@@ -407,12 +413,13 @@ const Messages = () => {
   };
 
   const onSelectGroupHandler = async (groupId: string) => {
-    const group = groups.find((g) => g.id === groupId);
-    if (group) {
-      group.unreadCount = 0;
+    const tempGroup = groups.find((g) => g.id === groupId);
+    if (tempGroup?.id && userId && tempGroup.unreadCount) {
+      tempGroup.unreadCount = 0;
+      updateUnread(tempGroup?.id, userId);
     }
-    setGroup(group);
-    setMessages(group?.messages);
+    setGroup(tempGroup);
+    setMessages(tempGroup?.messages);
     textInputRef?.current?.focus();
     setSection(sections.group);
   };

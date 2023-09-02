@@ -1,5 +1,6 @@
 import { supabaseClient } from "@/lib/supabase";
 import { tableNames } from "@/utils/enums";
+import { IMessageDataProps, IReadByDataProps } from "@/types";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
@@ -18,9 +19,48 @@ export default async function handler(
       res.status(500).json({ error: "Bad parameters" });
       return;
     }
-    
+
     res.status(200).json({ referenceId, groupId });
     return;
+  } else if (req.method === "PUT") {
+    const { groupId, userId } = req.body;
+
+    const { data: groupMessages, error: errorGroupMessages } =
+      await supabaseClient
+        .from(tableNames.message)
+        .select()
+        .eq("groupId", groupId);
+
+    if (errorGroupMessages) {
+      res.status(500).json({ error: "Bad parameters" });
+      return;
+    }
+
+    if (groupMessages) {
+      let updated;
+      groupMessages.forEach((gm: IMessageDataProps) => {
+        updated = false;
+        gm.readBy.forEach(async (rb: IReadByDataProps) => {
+          if (rb.id === userId && !rb.value) {
+            rb.value = true;
+            updated = true;
+          }
+
+          const { error: errorUpdateMessages } = await supabaseClient
+            .from(tableNames.message)
+            .update({ readBy: gm.readBy })
+            .eq("id", gm.id);
+
+          if (errorUpdateMessages) {
+            res.status(500).json({ error: "Internal error" });
+            return;
+          }
+        });
+      });
+
+      res.status(200).json({ success: true });
+      return;
+    }
   }
   res.status(500).json({ error: "Invalid request" });
 }
