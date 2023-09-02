@@ -80,8 +80,7 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
               content: msg.content,
               readBy,
             },
-          ])
-          .select("*");
+          ]);
         if (error) {
           return;
         }
