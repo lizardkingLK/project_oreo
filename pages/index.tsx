@@ -151,6 +151,7 @@ const Messages = () => {
             (m) => m.referenceId === referenceId
           );
           if (
+            group.unreadCount > 0 &&
             deletedMessage?.readBy.find((rb) => rb.id === userId && !rb.value)
           ) {
             group.unreadCount = group.unreadCount - 1;

@@ -1,13 +1,40 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import SectionLayout from "../layout";
 import SummaryCard from "@/components/cards/summary";
 import { cardBodyTypes } from "@/utils/enums";
 import Avatar from "@/components/avatar";
-import { IDashboardProps } from "@/types";
+import { IDashboardProps, ILatestMessageProps } from "@/types";
+import { getBriefContent, isImage } from "@/utils/helpers";
 
 const Dashboard = (props: IDashboardProps) => {
   if (props) {
-    const { groups, user } = props;
+    const { groups, user, notifs } = props;
+
+    const [unread, setUnread] = useState<number>(0);
+    const [latest, setLatest] = useState<ILatestMessageProps | null>(null);
+
+    useEffect(() => {
+      setUnread(
+        groups?.map((g) => g.unreadCount).reduce((ucA, ucB) => ucA + ucB, 0)
+      );
+      setLatest(() => {
+        const message = groups
+          ?.map((g) => g.lastMessage)
+          .sort(
+            (mA, mB) => Date.parse(mB?.createdOn) - Date.parse(mA?.createdOn)
+          )
+          .at(0);
+        if (message) {
+          const group = groups.find((g) => g.id === message.groupId);
+          return Object.assign(message, {
+            displayImage: group?.displayImage!,
+            groupName: group?.name!,
+          });
+        } else {
+          return null;
+        }
+      });
+    }, [groups, notifs]);
 
     return (
       <SectionLayout title={null}>
@@ -44,29 +71,37 @@ const Dashboard = (props: IDashboardProps) => {
               cardBodyContent={103}
               cardHeaderContent={undefined}
             />
-            <SummaryCard
-              cardStyle={
-                "bg-gradient-to-r from-green-500 to-green-400 text-white rounded-md"
-              }
-              cardHeaderTitle={"Unread"}
-              cardBodyType={cardBodyTypes.NUMBER}
-              cardBodyContent={34}
-              cardHeaderContent={undefined}
-            />
-            <SummaryCard
-              cardStyle={"bg-green-600 text-white rounded-md col-span-2"}
-              cardHeaderTitle={"Latest"}
-              cardHeaderContent={
-                <Avatar
-                  imagePath="/static/pfp1.jpg"
-                  size={30}
-                  name="Amelia Nelson"
-                  isStatus={false}
-                />
-              }
-              cardBodyType={cardBodyTypes.STRING}
-              cardBodyContent={"excepturi illo at."}
-            />
+            {latest && (
+              <SummaryCard
+                cardStyle={"bg-green-600 text-white rounded-md col-span-2"}
+                cardHeaderTitle={"Latest"}
+                cardHeaderContent={
+                  <Avatar
+                    imagePath={latest.displayImage}
+                    size={30}
+                    name={latest.groupName}
+                    isStatus={false}
+                  />
+                }
+                cardBodyType={cardBodyTypes.STRING}
+                cardBodyContent={
+                  isImage(latest.content)
+                    ? "Image"
+                    : getBriefContent(latest.content)
+                }
+              />
+            )}
+            {unread && (
+              <SummaryCard
+                cardStyle={
+                  "bg-gradient-to-r from-green-500 to-green-400 text-white rounded-md"
+                }
+                cardHeaderTitle={"Unread"}
+                cardBodyType={cardBodyTypes.NUMBER}
+                cardBodyContent={unread}
+                cardHeaderContent={undefined}
+              />
+            )}
           </div>
         </div>
       </SectionLayout>

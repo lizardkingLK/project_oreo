@@ -55,6 +55,11 @@ export interface IMessageProps {
   readBy: IReadByDataProps[];
 }
 
+export interface ILatestMessageProps extends IMessageProps {
+  groupName: string;
+  displayImage: string;
+}
+
 export interface IMessageDataProps extends IMessageProps {
   createdAt: string | number | Date;
   userId: any;
@@ -221,6 +226,7 @@ export interface ISectionLayoutProps {
 export interface IDashboardProps {
   groups: IGroupProps[];
   user: any;
+  notifs: null | boolean | string;
 }
 
 export interface IIntroductionProps {
