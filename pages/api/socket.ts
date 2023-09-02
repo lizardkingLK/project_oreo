@@ -65,6 +65,10 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
       });
 
       socket.on("new-message", async (msg) => {
+        const readBy = [
+          { id: msg.toId, value: false },
+          { id: msg.fromId, value: true },
+        ];
         const { error } = await supabaseClient
           .from(tableNames.message)
           .insert([
@@ -74,17 +78,16 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
               groupId: msg.groupId,
               createdFor: [msg.toId, msg.fromId],
               content: msg.content,
-              readBy: [
-                { id: msg.toId, value: false },
-                { id: msg.fromId, value: true },
-              ],
+              readBy,
             },
           ])
-          .select("id");
+          .select("*");
         if (error) {
           return;
         }
-        socket.to(msg.groupId).emit("new-message", msg);
+        socket
+          .to(msg.groupId)
+          .emit("new-message", Object.assign(msg, { readBy }));
       });
 
       socket.on("is-active", (active) => {

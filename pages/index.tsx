@@ -121,6 +121,7 @@ const Messages = () => {
             status: true,
             toId: output.toId,
             userId: null,
+            readBy: output.readBy,
           };
         tempGroupMessages[tempGroupMessages.length] = newMessage;
         Object.assign(tempGroup, {
@@ -142,10 +143,18 @@ const Messages = () => {
   useEffect(() => {
     if (deleted) {
       const { referenceId, groupId } = deleted;
-      let tempMessages;
+      let tempMessages, deletedMessage: IMessageProps | undefined;
       const tempGroups = groups;
       tempGroups.forEach((group) => {
         if (group?.id === groupId) {
+          deletedMessage = group?.messages?.find(
+            (m) => m.referenceId === referenceId
+          );
+          if (
+            deletedMessage?.readBy.find((rb) => rb.id === userId && !rb.value)
+          ) {
+            group.unreadCount = group.unreadCount - 1;
+          }
           tempMessages = group?.messages?.filter(
             (m) => m.referenceId !== referenceId
           );
@@ -162,7 +171,7 @@ const Messages = () => {
       }
       setDeleted(null);
     }
-  }, [deleted, groups, group]);
+  }, [deleted, groups, group, userId]);
 
   useEffect(() => {
     if (friend) {
@@ -183,6 +192,7 @@ const Messages = () => {
           fromId: friend.createdFor[0].id,
           toId: friend.createdFor[1].id,
           userId: null,
+          readBy: [],
         };
         const tempGroup = {
           id: friend.groupId,
@@ -379,6 +389,7 @@ const Messages = () => {
         fromId: userId,
         toId: group.targetId,
         userId: null,
+        readBy: [],
       });
     }
   };
@@ -398,6 +409,7 @@ const Messages = () => {
         toId: group.targetId,
         content: "MESSAGE_CONTENT",
         userId: null,
+        readBy: [],
       };
       if (storeLocally) {
         const formData = new FormData();
@@ -463,6 +475,7 @@ const Messages = () => {
       fromId: messageData.createdFor[0].id,
       toId: messageData.createdFor[1].id,
       userId: null,
+      readBy: [],
     };
     const tempGroup = {
       id: messageData.groupId,

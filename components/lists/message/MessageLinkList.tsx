@@ -10,11 +10,6 @@ const MessageLinkList = (props: IMessageLinkListProps) => {
       <Fragment>
         {groups &&
           groups.map((group, index) => {
-            console.log({
-              unread: group.unreadCount,
-              userId,
-              lastAuthor: group.lastMessage?.userId,
-            });
             return (
               <MessageLink
                 key={index}

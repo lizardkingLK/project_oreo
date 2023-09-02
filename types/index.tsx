@@ -52,6 +52,7 @@ export interface IMessageProps {
   fromId: any;
   toId: any;
   userId: any;
+  readBy: IReadByDataProps[];
 }
 
 export interface IMessageDataProps extends IMessageProps {
