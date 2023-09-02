@@ -127,6 +127,7 @@ const Messages = () => {
         Object.assign(tempGroup, {
           messages: tempGroupMessages,
           lastMessage: newMessage,
+          unreadCount: tempGroup.unreadCount + 1,
         });
         groups[tempGroupIndex] = tempGroup;
         setMessages(tempGroupMessages);

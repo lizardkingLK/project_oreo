@@ -38,8 +38,16 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
     io.on("connection", (socket) => {
       sockets.push({
         id: socket.id,
-        orderNo: sockets.length + 1,
+        orderNo:
+          sockets.length > 0 ? sockets[sockets.length - 1].orderNo + 1 : 1,
         userId: null,
+      });
+
+      socket.on("identity", (userId) => {
+        const index = sockets.findIndex((s) => s.id === socket.id);
+        sockets[index] = Object.assign(sockets[index], { userId });
+
+        console.log(sockets);
       });
 
       socket.on("new-message", async (msg) => {
@@ -77,16 +85,9 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
         socket.broadcast.emit("new-friend", msg);
       });
 
-      socket.on("identity", (userId) => {
-        const index = sockets.findIndex((s) => s.id === socket.id);
-        sockets[index] = Object.assign(sockets[index], { userId });
-
-        console.log(sockets);
-      });
-
       socket.on("disconnect", () => {
         console.log(`1 disconnected. id = %s`, socket.id);
-        
+
         const index = sockets.findIndex((s) => s.id === socket.id);
         if (index !== -1) {
           sockets.splice(index, 1);
