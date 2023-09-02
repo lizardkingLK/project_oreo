@@ -41,7 +41,7 @@ export default async function handler(
       groupMessages.forEach((gm: IMessageDataProps) => {
         matched = false;
         gm.readBy.forEach(async (rb: IReadByDataProps) => {
-          updated = rb.id === userId && !rb.value;
+          matched = rb.id === userId && !rb.value;
           
           if (matched) {
             rb.value = true;
