@@ -64,9 +64,10 @@ export default async function handler(
       const { userId } = req.query;
 
       const { data: dataMessages, error: errorMessages } = await supabaseClient
-        .from("Message")
+        .from(tableNames.message)
         .select()
-        .contains("createdFor", [userId]);
+        .contains("createdFor", [userId])
+        .order("createdAt", { ascending: true });
 
       if (errorMessages) {
         console.log(errorMessages.message);
