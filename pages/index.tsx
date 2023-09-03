@@ -223,6 +223,7 @@ const Messages = () => {
         const tempGroups = groups;
         tempGroups[tempGroups.length] = tempGroup;
         setGroups(tempGroups);
+        setGroup(tempGroup);
         setFriend(null);
       }
     }
@@ -469,7 +470,7 @@ const Messages = () => {
       tempGroup.unreadCount = 0;
       updateUnread(tempGroup?.id, userId);
     }
-    socket?.emit("focus-group", {groupId, userId})
+    socket?.emit("focus-group", { groupId, userId });
     setGroup(tempGroup);
     setMessages(tempGroup?.messages);
     textInputRef?.current?.focus();

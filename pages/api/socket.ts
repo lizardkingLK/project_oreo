@@ -122,12 +122,22 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
           .emit("is-active", active.value ? active : false);
       });
 
-      socket.on("delete-message", (msg) => {
-        socket.to(msg.groupId).emit("delete-message", msg);
+      socket.on("delete-message", (message) => {
+        socket.to(message.groupId).emit("delete-message", message);
       });
 
-      socket.on("new-friend", (msg) => {
-        socket.broadcast.emit("new-friend", msg);
+      socket.on("new-friend", (message) => {
+        const { groupId } = message;
+        const { 0: toUser, 1: fromUser } = message?.createdFor;
+        const indexTo = sockets.findIndex((s) => s.userId === toUser?.id);
+        if (indexTo !== -1) {
+          sockets[indexTo].socket.join(groupId);
+        }
+        const indexFrom = sockets.findIndex((s) => s.userId === fromUser?.id);
+        if (indexFrom !== -1) {
+          sockets[indexFrom].socket.join(groupId);
+        }
+        socket.broadcast.emit("new-friend", message);
       });
 
       socket.on("disconnect", () => {
