@@ -76,6 +76,7 @@ export interface IDeletedMessageProps {
 export interface IUserOnlineProps {
   userId: string;
   groupId: string;
+  value: boolean;
 }
 
 export interface IGroupProps {

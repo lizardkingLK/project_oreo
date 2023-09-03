@@ -144,17 +144,16 @@ const Messages = () => {
 
   useEffect(() => {
     if (online) {
-      const { userId, groupId } = online,
-        tempGroup = groups.find(
-          (g) => g.id === groupId && g.targetId === userId
-        );
+      const { userId: uId, groupId, value } = online,
+        tempGroup = groups.find((g) => g.id === groupId && g.targetId === uId);
       if (tempGroup) {
-        tempGroup.isOnline = true;
+        tempGroup.isOnline = value;
         Object.assign(groups, tempGroup);
+        console.log("message received");
       }
-      setOnline(null);
+      socket.emit("set-online", { fromId: userId, toId: uId, groupId });
     }
-  }, [online]);
+  }, [online, groups, userId]);
 
   useEffect(() => {
     if (deleted) {

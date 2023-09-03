@@ -47,24 +47,40 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
 
       socket.on("identity", (userId) => {
         const index = sockets.findIndex((s) => s.id === socket.id);
-        sockets[index] = Object.assign(sockets[index], { userId });
-        socket.emit("set-rooms");
+        if (index !== -1) {
+          sockets[index] = Object.assign(sockets[index], { userId });
+          socket.emit("set-rooms");
+        }
       });
 
       socket.on("set-rooms", (rooms) => {
-        const { userId, groupIds } = rooms;
-        const index = sockets.findIndex((s) => s.userId === userId);
+        const { userId, groupIds } = rooms,
+          index = sockets.findIndex((s) => s.userId === userId);
         if (index !== -1) {
           sockets[index] = Object.assign(sockets[index], { groupIds });
+          const { socket: sock } = sockets[index];
           groupIds.forEach((id: string) => {
-            sockets[index].socket.join(id);
-            sockets[index].socket
+            sock.join(id);
+            sock
               .to(id)
-              .emit("set-online", { userId, groupId: id });
+              .emit("set-online", { userId, groupId: id, value: true });
           });
         }
 
         console.log(socket.rooms);
+      });
+
+      socket.on("set-online", (notice) => {
+        const { fromId, toId, groupId } = notice,
+          index = sockets.findIndex((s) => s.userId === toId);
+        if (index !== -1) {
+          const { socket: sock } = sockets[index];
+          setTimeout(() => {
+            sock
+              .to(groupId)
+              .emit("set-online", { userId: fromId, groupId, value: true });
+          }, 10000);
+        }
       });
 
       socket.on("new-message", async (msg) => {
@@ -91,8 +107,9 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
       });
 
       socket.on("is-active", (active) => {
-        const value = active.value ? active : false;
-        socket.to(active.groupId).emit("is-active", value);
+        socket
+          .to(active.groupId)
+          .emit("is-active", active.value ? active : false);
       });
 
       socket.on("delete-message", (msg) => {
@@ -108,6 +125,12 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
 
         const index = sockets.findIndex((s) => s.id === socket.id);
         if (index !== -1) {
+          const { socket: sock, groupIds, userId } = sockets[index];
+          groupIds.forEach((id: string) => {
+            sock
+              .to(id)
+              .emit("set-online", { userId, groupId: id, value: false });
+          });
           sockets.splice(index, 1);
         }
       });
