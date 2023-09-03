@@ -58,6 +58,9 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
           sockets[index] = Object.assign(sockets[index], { groupIds });
           groupIds.forEach((id: string) => {
             sockets[index].socket.join(id);
+            sockets[index].socket
+              .to(id)
+              .emit("set-online", { userId, groupId: id });
           });
         }
 
@@ -69,18 +72,16 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
           { id: msg.toId, value: false },
           { id: msg.fromId, value: true },
         ];
-        const { error } = await supabaseClient
-          .from(tableNames.message)
-          .insert([
-            {
-              referenceId: msg.referenceId,
-              userId: msg.fromId,
-              groupId: msg.groupId,
-              createdFor: [msg.toId, msg.fromId],
-              content: msg.content,
-              readBy,
-            },
-          ]);
+        const { error } = await supabaseClient.from(tableNames.message).insert([
+          {
+            referenceId: msg.referenceId,
+            userId: msg.fromId,
+            groupId: msg.groupId,
+            createdFor: [msg.toId, msg.fromId],
+            content: msg.content,
+            readBy,
+          },
+        ]);
         if (error) {
           return;
         }
