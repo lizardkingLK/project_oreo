@@ -59,26 +59,23 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
         if (index !== -1) {
           sockets[index] = Object.assign(sockets[index], { groupIds });
           const { socket: sock } = sockets[index];
+          let userSockets;
           groupIds.forEach((id: string) => {
             sock.join(id);
             sock
               .to(id)
               .emit("set-online", { userId, groupId: id, value: true });
-
-            const userSockets = sockets.filter(
+            userSockets = sockets.filter(
               (s) =>
                 s.userId !== userId && s.groupIds?.find((gId) => gId === id)
             );
-
             userSockets?.forEach((us) => {
               const { userId: usUserId, socket: usSocket } = us;
-              usSocket
-                .to(id)
-                .emit("set-online", {
-                  userId: usUserId,
-                  groupId: id,
-                  value: true,
-                });
+              usSocket.to(id).emit("set-online", {
+                userId: usUserId,
+                groupId: id,
+                value: true,
+              });
             });
           });
         }
