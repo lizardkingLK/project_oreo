@@ -42,6 +42,7 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
           sockets.length > 0 ? sockets[sockets.length - 1].orderNo + 1 : 1,
         userId: null,
         groupIds: [],
+        activeGroupId: null,
         socket,
       });
 
@@ -81,27 +82,38 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
         }
       });
 
-      socket.on("new-message", async (msg) => {
+      socket.on("focus-group", (group) => {
+        const { groupId, userId } = group,
+          index = sockets.findIndex((s) => s.userId === userId);
+        if (index !== -1) {
+          sockets[index].activeGroupId = groupId;
+        }
+      });
+
+      socket.on("new-message", async (message) => {
+        const { toId, fromId, groupId, referenceId, content } = message,
+          isActive = sockets.findIndex(
+            (s) => s.userId === toId && s.activeGroupId === groupId
+          );
         const readBy = [
-          { id: msg.toId, value: false },
-          { id: msg.fromId, value: true },
+          { id: toId, value: isActive },
+          { id: fromId, value: true },
         ];
+        message = Object.assign(message, { readBy });
         const { error } = await supabaseClient.from(tableNames.message).insert([
           {
-            referenceId: msg.referenceId,
-            userId: msg.fromId,
-            groupId: msg.groupId,
-            createdFor: [msg.toId, msg.fromId],
-            content: msg.content,
+            referenceId: referenceId,
+            userId: fromId,
+            groupId: groupId,
+            createdFor: [toId, fromId],
+            content: content,
             readBy,
           },
         ]);
         if (error) {
           return;
         }
-        socket
-          .to(msg.groupId)
-          .emit("new-message", Object.assign(msg, { readBy }));
+        socket.to(groupId).emit("new-message", message);
       });
 
       socket.on("is-active", (active) => {
@@ -110,12 +122,22 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
           .emit("is-active", active.value ? active : false);
       });
 
-      socket.on("delete-message", (msg) => {
-        socket.to(msg.groupId).emit("delete-message", msg);
+      socket.on("delete-message", (message) => {
+        socket.to(message.groupId).emit("delete-message", message);
       });
 
-      socket.on("new-friend", (msg) => {
-        socket.broadcast.emit("new-friend", msg);
+      socket.on("new-friend", (message) => {
+        const { groupId } = message;
+        const { 0: toUser, 1: fromUser } = message?.createdFor;
+        const indexTo = sockets.findIndex((s) => s.userId === toUser?.id);
+        if (indexTo !== -1) {
+          sockets[indexTo].socket.join(groupId);
+        }
+        const indexFrom = sockets.findIndex((s) => s.userId === fromUser?.id);
+        if (indexFrom !== -1) {
+          sockets[indexFrom].socket.join(groupId);
+        }
+        socket.broadcast.emit("new-friend", message);
       });
 
       socket.on("disconnect", () => {

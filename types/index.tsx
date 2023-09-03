@@ -17,6 +17,7 @@ export type PersistedSocket = {
   orderNo: number;
   userId: string | null;
   groupIds: string[];
+  activeGroupId: string | null;
   socket: any;
 };
 
