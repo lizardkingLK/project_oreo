@@ -469,6 +469,7 @@ const Messages = () => {
       tempGroup.unreadCount = 0;
       updateUnread(tempGroup?.id, userId);
     }
+    socket?.emit("focus-group", {groupId, userId})
     setGroup(tempGroup);
     setMessages(tempGroup?.messages);
     textInputRef?.current?.focus();

@@ -42,6 +42,7 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
           sockets.length > 0 ? sockets[sockets.length - 1].orderNo + 1 : 1,
         userId: null,
         groupIds: [],
+        activeGroupId: null,
         socket,
       });
 
@@ -81,27 +82,38 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
         }
       });
 
-      socket.on("new-message", async (msg) => {
+      socket.on("focus-group", (group) => {
+        const { groupId, userId } = group,
+          index = sockets.findIndex((s) => s.userId === userId);
+        if (index !== -1) {
+          sockets[index].activeGroupId = groupId;
+        }
+      });
+
+      socket.on("new-message", async (message) => {
+        const { toId, fromId, groupId, referenceId, content } = message,
+          isActive = sockets.findIndex(
+            (s) => s.userId === toId && s.activeGroupId === groupId
+          );
         const readBy = [
-          { id: msg.toId, value: false },
-          { id: msg.fromId, value: true },
+          { id: toId, value: isActive },
+          { id: fromId, value: true },
         ];
+        message = Object.assign(message, { readBy });
         const { error } = await supabaseClient.from(tableNames.message).insert([
           {
-            referenceId: msg.referenceId,
-            userId: msg.fromId,
-            groupId: msg.groupId,
-            createdFor: [msg.toId, msg.fromId],
-            content: msg.content,
+            referenceId: referenceId,
+            userId: fromId,
+            groupId: groupId,
+            createdFor: [toId, fromId],
+            content: content,
             readBy,
           },
         ]);
         if (error) {
           return;
         }
-        socket
-          .to(msg.groupId)
-          .emit("new-message", Object.assign(msg, { readBy }));
+        socket.to(groupId).emit("new-message", message);
       });
 
       socket.on("is-active", (active) => {
