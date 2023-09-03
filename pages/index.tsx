@@ -11,6 +11,7 @@ import {
   IGroupProps,
   IMessageDataProps,
   IMessageProps,
+  IUserOnlineProps,
 } from "@/types";
 
 import {
@@ -60,6 +61,7 @@ const Messages = () => {
   const [deleted, setDeleted] = useState<null | IDeletedMessageProps>(null);
   const [friend, setFriend] = useState<null | IMessageDataProps>(null);
   const [rooms, setRooms] = useState<boolean>(false);
+  const [online, setOnline] = useState<null | IUserOnlineProps>(null);
 
   const textInputRef = useRef<null | HTMLInputElement>(null);
   const lastMessageRef = useRef<null | HTMLDivElement>(null);
@@ -139,6 +141,18 @@ const Messages = () => {
       setOutput(null);
     }
   }, [output, groups, group]);
+
+  useEffect(() => {
+    if (online) {
+      const { userId: uId, groupId, value } = online,
+        tempGroup = groups.find((g) => g.id === groupId && g.targetId === uId);
+      if (tempGroup) {
+        tempGroup.isOnline = value;
+        Object.assign(groups, tempGroup);
+      }
+      setOnline(null);
+    }
+  }, [online, groups, userId]);
 
   useEffect(() => {
     if (deleted) {
@@ -245,6 +259,10 @@ const Messages = () => {
 
     socket.on("set-rooms", () => {
       setRooms(true);
+    });
+
+    socket.on("set-online", (user) => {
+      setOnline(user);
     });
   };
 

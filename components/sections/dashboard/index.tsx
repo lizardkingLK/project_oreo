@@ -3,39 +3,39 @@ import SectionLayout from "../layout";
 import SummaryCard from "@/components/cards/summary";
 import { cardBodyTypes } from "@/utils/enums";
 import Avatar from "@/components/avatar";
-import { IDashboardProps, ILatestMessageProps } from "@/types";
+import { IDashboardProps, IGroupProps, ILatestMessageProps } from "@/types";
 import { getBriefContent, isImage } from "@/utils/helpers";
 
 const Dashboard = (props: IDashboardProps) => {
+  const [groups] = useState<IGroupProps[] | null>(props.groups);
+  const [user] = useState<any>(props.user);
+  const [unread, setUnread] = useState<number | undefined>(0);
+  const [latest, setLatest] = useState<ILatestMessageProps | null>(null);
+
+  useEffect(() => {
+    setUnread(
+      props?.groups
+        ?.map((g) => g.unreadCount)
+        .reduce((ucA, ucB) => ucA + ucB, 0)
+    );
+    setLatest(() => {
+      const message = props?.groups
+        ?.map((g) => g.lastMessage)
+        .sort((mA, mB) => Date.parse(mB?.createdOn) - Date.parse(mA?.createdOn))
+        .at(0);
+      if (message) {
+        const group = props?.groups?.find((g) => g.id === message.groupId);
+        return Object.assign(message, {
+          displayImage: group?.displayImage!,
+          groupName: group?.name!,
+        });
+      } else {
+        return null;
+      }
+    });
+  }, [props]);
+
   if (props) {
-    const { groups, user, notifs } = props;
-
-    const [unread, setUnread] = useState<number>(0);
-    const [latest, setLatest] = useState<ILatestMessageProps | null>(null);
-
-    useEffect(() => {
-      setUnread(
-        groups?.map((g) => g.unreadCount).reduce((ucA, ucB) => ucA + ucB, 0)
-      );
-      setLatest(() => {
-        const message = groups
-          ?.map((g) => g.lastMessage)
-          .sort(
-            (mA, mB) => Date.parse(mB?.createdOn) - Date.parse(mA?.createdOn)
-          )
-          .at(0);
-        if (message) {
-          const group = groups.find((g) => g.id === message.groupId);
-          return Object.assign(message, {
-            displayImage: group?.displayImage!,
-            groupName: group?.name!,
-          });
-        } else {
-          return null;
-        }
-      });
-    }, [groups, notifs]);
-
     return (
       <SectionLayout title={null}>
         <div className="p-4">
@@ -48,15 +48,17 @@ const Dashboard = (props: IDashboardProps) => {
             </h1>
           </div>
           <div className="pt-4 grid grid-flow-row-dense grid-cols-3 grid-rows-3 gap-2">
-            <SummaryCard
-              cardStyle={
-                "bg-gradient-to-r from-stone-500 to-stone-400 text-white rounded-md"
-              }
-              cardHeaderTitle={"Groups"}
-              cardBodyType={cardBodyTypes.NUMBER}
-              cardBodyContent={groups.length}
-              cardHeaderContent={undefined}
-            />
+            {groups && (
+              <SummaryCard
+                cardStyle={
+                  "bg-gradient-to-r from-stone-500 to-stone-400 text-white rounded-md"
+                }
+                cardHeaderTitle={"Groups"}
+                cardBodyType={cardBodyTypes.NUMBER}
+                cardBodyContent={groups?.length}
+                cardHeaderContent={undefined}
+              />
+            )}
             <SummaryCard
               cardStyle={"bg-stone-400 text-white rounded-md"}
               cardHeaderTitle={"Friends"}

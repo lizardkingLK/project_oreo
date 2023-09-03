@@ -47,21 +47,38 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
 
       socket.on("identity", (userId) => {
         const index = sockets.findIndex((s) => s.id === socket.id);
-        sockets[index] = Object.assign(sockets[index], { userId });
-        socket.emit("set-rooms");
+        if (index !== -1) {
+          sockets[index] = Object.assign(sockets[index], { userId });
+          socket.emit("set-rooms");
+        }
       });
 
       socket.on("set-rooms", (rooms) => {
-        const { userId, groupIds } = rooms;
-        const index = sockets.findIndex((s) => s.userId === userId);
+        const { userId, groupIds } = rooms,
+          index = sockets.findIndex((s) => s.userId === userId);
         if (index !== -1) {
           sockets[index] = Object.assign(sockets[index], { groupIds });
+          const { socket: sock } = sockets[index];
+          let userSockets;
           groupIds.forEach((id: string) => {
-            sockets[index].socket.join(id);
+            sock.join(id);
+            sock
+              .to(id)
+              .emit("set-online", { userId, groupId: id, value: true });
+            userSockets = sockets.filter(
+              (s) =>
+                s.userId !== userId && s.groupIds?.find((gId) => gId === id)
+            );
+            userSockets?.forEach((us) => {
+              const { userId: usUserId, socket: usSocket } = us;
+              usSocket.to(id).emit("set-online", {
+                userId: usUserId,
+                groupId: id,
+                value: true,
+              });
+            });
           });
         }
-
-        console.log(socket.rooms);
       });
 
       socket.on("new-message", async (msg) => {
@@ -69,18 +86,16 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
           { id: msg.toId, value: false },
           { id: msg.fromId, value: true },
         ];
-        const { error } = await supabaseClient
-          .from(tableNames.message)
-          .insert([
-            {
-              referenceId: msg.referenceId,
-              userId: msg.fromId,
-              groupId: msg.groupId,
-              createdFor: [msg.toId, msg.fromId],
-              content: msg.content,
-              readBy,
-            },
-          ]);
+        const { error } = await supabaseClient.from(tableNames.message).insert([
+          {
+            referenceId: msg.referenceId,
+            userId: msg.fromId,
+            groupId: msg.groupId,
+            createdFor: [msg.toId, msg.fromId],
+            content: msg.content,
+            readBy,
+          },
+        ]);
         if (error) {
           return;
         }
@@ -90,8 +105,9 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
       });
 
       socket.on("is-active", (active) => {
-        const value = active.value ? active : false;
-        socket.to(active.groupId).emit("is-active", value);
+        socket
+          .to(active.groupId)
+          .emit("is-active", active.value ? active : false);
       });
 
       socket.on("delete-message", (msg) => {
@@ -107,6 +123,12 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
 
         const index = sockets.findIndex((s) => s.id === socket.id);
         if (index !== -1) {
+          const { socket: sock, groupIds, userId } = sockets[index];
+          groupIds.forEach((id: string) => {
+            sock
+              .to(id)
+              .emit("set-online", { userId, groupId: id, value: false });
+          });
           sockets.splice(index, 1);
         }
       });

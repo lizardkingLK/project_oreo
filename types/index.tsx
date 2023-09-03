@@ -73,6 +73,12 @@ export interface IDeletedMessageProps {
   groupId: string;
 }
 
+export interface IUserOnlineProps {
+  userId: string;
+  groupId: string;
+  value: boolean;
+}
+
 export interface IGroupProps {
   id: string;
   name: NameType;
