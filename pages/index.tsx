@@ -132,7 +132,10 @@ const Messages = () => {
           unreadCount:
             group?.id === output.groupId ? 0 : tempGroup.unreadCount + 1,
         });
-        groups[tempGroupIndex] = tempGroup;
+
+        groups.splice(tempGroupIndex, 1);
+        groups.splice(0, 0, tempGroup);
+
         if (group?.id === output.groupId) {
           setMessages(tempGroupMessages);
         }
@@ -373,9 +376,8 @@ const Messages = () => {
 
   const sendMessage = (newMessage: IMessageProps) => {
     if (newMessage?.content && socket) {
-      const tempGroup: IGroupProps = group;
-
-      const tempGroupMessages = tempGroup?.messages;
+      const tempGroup: IGroupProps = group,
+        tempGroupMessages = tempGroup?.messages;
       newMessage.createdOn = getTimeConverted(new Date(newMessage.createdOn));
       if (tempGroupMessages) {
         tempGroupMessages[tempGroupMessages.length] = newMessage;
@@ -393,6 +395,10 @@ const Messages = () => {
       }
       socket.emit("is-active", { groupId: tempGroup.id, value: false });
       socket.emit("new-message", newMessage);
+
+      const tempGroupIndex = groups.findIndex((g) => g.id === group.id);
+      groups.splice(tempGroupIndex, 1);
+      groups.splice(0, 0, tempGroup);
     }
   };
 
@@ -512,6 +518,11 @@ const Messages = () => {
     const tempGroups = groups;
 
     tempGroups[tempGroups.length] = tempGroup;
+
+    const tempGroupIndex = tempGroups.length - 1;
+    groups.splice(tempGroupIndex, 1);
+    groups.splice(0, 0, tempGroup);
+
     setGroups(tempGroups);
     setGroup(tempGroup);
     setMessages([message]);
