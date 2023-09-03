@@ -149,9 +149,8 @@ const Messages = () => {
       if (tempGroup) {
         tempGroup.isOnline = value;
         Object.assign(groups, tempGroup);
-        console.log("message received");
       }
-      socket.emit("set-online", { fromId: userId, toId: uId, groupId });
+      setOnline(null);
     }
   }, [online, groups, userId]);
 

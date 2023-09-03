@@ -64,22 +64,23 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
             sock
               .to(id)
               .emit("set-online", { userId, groupId: id, value: true });
+
+            const userSockets = sockets.filter(
+              (s) =>
+                s.userId !== userId && s.groupIds?.find((gId) => gId === id)
+            );
+
+            userSockets?.forEach((us) => {
+              const { userId: usUserId, socket: usSocket } = us;
+              usSocket
+                .to(id)
+                .emit("set-online", {
+                  userId: usUserId,
+                  groupId: id,
+                  value: true,
+                });
+            });
           });
-        }
-
-        console.log(socket.rooms);
-      });
-
-      socket.on("set-online", (notice) => {
-        const { fromId, toId, groupId } = notice,
-          index = sockets.findIndex((s) => s.userId === toId);
-        if (index !== -1) {
-          const { socket: sock } = sockets[index];
-          setTimeout(() => {
-            sock
-              .to(groupId)
-              .emit("set-online", { userId: fromId, groupId, value: true });
-          }, 10000);
         }
       });
 

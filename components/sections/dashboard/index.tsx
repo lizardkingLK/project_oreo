@@ -7,25 +7,24 @@ import { IDashboardProps, IGroupProps, ILatestMessageProps } from "@/types";
 import { getBriefContent, isImage } from "@/utils/helpers";
 
 const Dashboard = (props: IDashboardProps) => {
-  const [groups] = useState<IGroupProps[]>(props.groups);
-  const [notifs] = useState<string | boolean | null>(props.notifs);
+  const [groups] = useState<IGroupProps[] | null>(props.groups);
   const [user] = useState<any>(props.user);
-  const [unread, setUnread] = useState<number>(0);
+  const [unread, setUnread] = useState<number | undefined>(0);
   const [latest, setLatest] = useState<ILatestMessageProps | null>(null);
 
   useEffect(() => {
     setUnread(
-      groups?.map((g) => g.unreadCount).reduce((ucA, ucB) => ucA + ucB, 0)
+      props?.groups
+        ?.map((g) => g.unreadCount)
+        .reduce((ucA, ucB) => ucA + ucB, 0)
     );
     setLatest(() => {
-      const message = groups
+      const message = props?.groups
         ?.map((g) => g.lastMessage)
-        .sort(
-          (mA, mB) => Date.parse(mB?.createdOn) - Date.parse(mA?.createdOn)
-        )
+        .sort((mA, mB) => Date.parse(mB?.createdOn) - Date.parse(mA?.createdOn))
         .at(0);
       if (message) {
-        const group = groups.find((g) => g.id === message.groupId);
+        const group = props?.groups?.find((g) => g.id === message.groupId);
         return Object.assign(message, {
           displayImage: group?.displayImage!,
           groupName: group?.name!,
@@ -34,7 +33,7 @@ const Dashboard = (props: IDashboardProps) => {
         return null;
       }
     });
-  }, [groups, notifs]);
+  }, [props]);
 
   if (props) {
     return (
@@ -49,15 +48,17 @@ const Dashboard = (props: IDashboardProps) => {
             </h1>
           </div>
           <div className="pt-4 grid grid-flow-row-dense grid-cols-3 grid-rows-3 gap-2">
-            <SummaryCard
-              cardStyle={
-                "bg-gradient-to-r from-stone-500 to-stone-400 text-white rounded-md"
-              }
-              cardHeaderTitle={"Groups"}
-              cardBodyType={cardBodyTypes.NUMBER}
-              cardBodyContent={groups.length}
-              cardHeaderContent={undefined}
-            />
+            {groups && (
+              <SummaryCard
+                cardStyle={
+                  "bg-gradient-to-r from-stone-500 to-stone-400 text-white rounded-md"
+                }
+                cardHeaderTitle={"Groups"}
+                cardBodyType={cardBodyTypes.NUMBER}
+                cardBodyContent={groups?.length}
+                cardHeaderContent={undefined}
+              />
+            )}
             <SummaryCard
               cardStyle={"bg-stone-400 text-white rounded-md"}
               cardHeaderTitle={"Friends"}
