@@ -10,6 +10,8 @@
 
 An open-source chat application to learn real-time messaging.
 
+[![SonarCloud analysis](https://github.com/lizardkingLK/project_oreo/actions/workflows/sonarcloud.yml/badge.svg)](https://github.com/lizardkingLK/project_oreo/actions/workflows/sonarcloud.yml)
+
 ## .env.local file to be added
 
 ```
