@@ -12,6 +12,8 @@ import { User } from "@clerk/nextjs/dist/types/server";
 
 export type NameType = string | null | undefined;
 
+export type NotifType = string | boolean | null;
+
 export type PersistedSocket = {
   id: string;
   orderNo: number;
@@ -110,7 +112,7 @@ export interface IMessageListProps {
   messages: IMessageProps[] | undefined;
   group: IGroupProps | null | undefined;
   active: IActiveProps;
-  notifs: string | boolean | null;
+  notifs: NotifType;
   lastMessageRef: LegacyRef<HTMLDivElement>;
   onDeleteHandler: Function;
   loading: boolean;
@@ -143,6 +145,7 @@ export interface IMessageEditorProps {
 }
 
 export interface IFeedProps {
+  id: number;
   name: string;
   imagePath: string;
   size: number;
@@ -233,7 +236,7 @@ export interface ISectionLayoutProps {
 export interface IDashboardProps {
   groups: IGroupProps[];
   user: any;
-  notifs: null | boolean | string;
+  notifs: NotifType;
 }
 
 export interface IIntroductionProps {
@@ -246,7 +249,7 @@ export interface ISecitonSwitchProps {
   setSection: Function;
   user: any;
   active: any;
-  notifs: null | boolean | string;
+  notifs: NotifType;
   input: string;
   loading: boolean;
   group: IGroupProps;
@@ -267,7 +270,7 @@ export interface ISecitonSwitchProps {
 export interface IGroupSectionProps {
   group: IGroupProps;
   active: any;
-  notifs: null | boolean | string;
+  notifs: NotifType;
   input: string;
   loading: boolean;
   messages: IMessageProps[] | undefined;

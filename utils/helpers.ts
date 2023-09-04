@@ -17,7 +17,7 @@ const formatCompactNumber = (input: string) => {
 };
 
 const isMedia = (content: string) => {
-  return RegExp(/(\[)+[^\n]+(])+(\()+[^\n]+(\))/).exec(content);
+  return content?.startsWith("[image](");
 };
 
 const isImage = (content: string) => {
@@ -39,10 +39,16 @@ const isLocalStorage = () => {
 };
 
 const getRandomNumber = () => {
-  return `${Math.round(Math.random() * 1_000_000_000_000_000)}`;
+  const crypto = window.crypto,
+    array = new BigUint64Array(1);
+  crypto.getRandomValues(array);
+  return array[0].toString();
 };
 
-const getMessageType = (messageUserId: string, userId: string) => {
+const getMessageType = (
+  messageUserId: string,
+  userId: string | null | undefined
+) => {
   return messageUserId === userId ? messageTypes.SENT : messageTypes.RECEIVED;
 };
 

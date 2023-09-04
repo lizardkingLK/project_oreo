@@ -34,7 +34,7 @@ const handler = async (
   /* Get files using formidable */
   const files = await new Promise<ProcessedFiles | undefined>(
     (resolve, reject) => {
-      const form = new formidable.IncomingForm();
+      const form = new formidable.IncomingForm({ maxFileSize: 10000000 });
       const files: ProcessedFiles = [];
       form.on("file", function (field, file) {
         files.push([field, file]);

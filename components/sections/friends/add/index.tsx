@@ -53,12 +53,11 @@ const AddFriend = (props: IAddFriendProps) => {
         const user = users.find(
           (u) =>
             u.id !== userId &&
-            (u.username?.substring(0, length) === value ||
-              (u.emailAddresses &&
-                u.emailAddresses.find(
-                  (e) =>
-                    e.emailAddress.substring(0, length).toLowerCase() === value
-                )))
+            (u.username?.substring(0, length).toLowerCase() === value.toLowerCase() ||
+              (u?.emailAddresses.find(
+                (e) =>
+                  e.emailAddress.substring(0, length).toLowerCase() === value.toLowerCase()
+              )))
         );
         if (user) {
           setUser(user);

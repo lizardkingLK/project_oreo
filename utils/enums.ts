@@ -21,6 +21,7 @@ export enum apiUrls {
   file = "/api/file",
   invitation = "/api/invitation",
   user = "/api/user",
+  common = "/api/common",
 }
 
 export enum cardBodyTypes {

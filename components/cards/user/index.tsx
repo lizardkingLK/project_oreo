@@ -30,7 +30,7 @@ const UserCard = (props: IUserCardProps) => {
                   : user.username}
               </h5>
               <span className="text-sm text-stone-500 dark:text-stone-400">
-                {user.emailAddresses && user.emailAddresses[0].emailAddress}
+                {user?.emailAddresses?.at(0)?.emailAddress}
               </span>
             </div>
           </div>

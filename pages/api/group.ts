@@ -1,6 +1,5 @@
 import { supabaseClient } from "@/lib/supabase";
 import { quickMessages, tableNames } from "@/utils/enums";
-import { getRandomNumber } from "@/utils/helpers";
 import { clerkClient } from "@clerk/nextjs";
 import { randomUUID } from "crypto";
 import type { NextApiRequest, NextApiResponse } from "next";
@@ -42,7 +41,7 @@ export default async function handler(
             {
               userId: ownerId,
               groupId: randomUUID(),
-              referenceId: getRandomNumber(),
+              referenceId: randomUUID(),
               createdFor: [userId, ownerId],
               readBy: [
                 { id: userId, value: false },

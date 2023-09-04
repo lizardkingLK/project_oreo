@@ -25,13 +25,12 @@ const MessageLink = (props: IMessageLinkProps) => {
       <a
         href={void 0}
         className="cursor-pointer"
-        title={messageAuthorName || undefined}
+        title={messageAuthorName ?? undefined}
         onClick={() => messageOnClick(messageId)}
       >
         <div
-          className={`flex justify-center items-start mb-4 py-4 rounded-2xl hover:bg-stone-800 ${
-            messageIsActive ? "bg-stone-900" : null
-          }`}
+          className={`flex justify-center items-start mb-4 py-4 rounded-2xl hover:bg-stone-800 ${messageIsActive ? "bg-stone-900" : null
+            }`}
         >
           <Avatar
             name={messageAuthorName!}
