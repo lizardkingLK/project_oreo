@@ -487,8 +487,6 @@ const Messages = () => {
     e.key === "Enter" && onSubmitHandler();
 
   const onAddFriendHandler = (messageData: IMessageDataProps) => {
-    console.log(messageData);
-
     const target: ICreatedForDataProps =
       messageData.userId === userId
         ? messageData.createdFor[0]
@@ -585,6 +583,7 @@ const Messages = () => {
             user={user}
             group={group}
             setGroup={setGroup}
+            setMessages={setMessages}
             messages={messages}
             textInputRef={textInputRef}
             input={input}

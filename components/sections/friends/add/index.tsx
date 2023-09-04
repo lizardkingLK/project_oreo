@@ -1,6 +1,6 @@
 import UserCard from "@/components/cards/user";
 import Spinner from "@/components/svgs/spinner";
-import { userSearchMessageTypes } from "@/utils/enums";
+import { sections, userSearchMessageTypes } from "@/utils/enums";
 import { useAuth } from "@clerk/nextjs";
 import { User } from "@clerk/nextjs/dist/types/server";
 import React, { useEffect, useRef, useState } from "react";
@@ -32,9 +32,16 @@ const AddFriend = (props: IAddFriendProps) => {
   }
 
   if (props) {
-    const { onAddFriendHandler } = props;
+    const { onAddFriendHandler, groups, setGroup, setMessages, setSection } = props;
 
     const handleInvitation = async () => {
+      const tempGroup = groups?.find(g => g.targetId === user?.id);
+      if (tempGroup) {
+        setGroup(tempGroup);
+        setMessages(tempGroup?.messages);
+        setSection(sections.group);
+        return;
+      }
       setLoading(true);
       inviteFriend(userId, user?.id).then((data) => {
         if (data) {
