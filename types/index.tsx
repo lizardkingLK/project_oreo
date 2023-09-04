@@ -262,6 +262,7 @@ export interface ISecitonSwitchProps {
   onMediaHandler: Function;
   onAddFriendHandler: Function;
   setGroup: Function;
+  setMessages: Function;
   lastMessageRef: null | LegacyRef<HTMLDivElement>;
   textInputRef: LegacyRef<HTMLInputElement> | null;
   navbar: boolean;
@@ -295,4 +296,8 @@ export interface IMessageMenuProps {
 
 export interface IAddFriendProps {
   onAddFriendHandler: Function;
+  groups: IGroupProps[] | null | undefined;
+  setGroup: Function;
+  setMessages: Function;
+  setSection: Function;
 }

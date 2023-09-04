@@ -21,6 +21,7 @@ const SectionSwitch = (props: ISecitonSwitchProps) => {
       messages,
       group,
       setGroup,
+      setMessages,
       active,
       notifs,
       lastMessageRef,
@@ -57,7 +58,7 @@ const SectionSwitch = (props: ISecitonSwitchProps) => {
     } else if (section === sections.addFriend) {
       return (
         <div className="flex h-screen items-center justify-center w-full">
-          <AddFriend onAddFriendHandler={onAddFriendHandler} />
+          <AddFriend onAddFriendHandler={onAddFriendHandler} groups={groups} setGroup={setGroup} setMessages={setMessages} setSection={setSection} />
         </div>
       );
     } else if (section === sections.feeds) {
@@ -86,7 +87,7 @@ const SectionSwitch = (props: ISecitonSwitchProps) => {
           navbar={navbar}
         />
       );
-    }  else return null;
+    } else return null;
   } else return null;
 };
 
