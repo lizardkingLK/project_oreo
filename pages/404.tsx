@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-const Error = () => {
+const Error404 = () => {
   return (
     <div className="flex flex-col justify-center items-center h-screen">
       <Image
@@ -20,4 +20,4 @@ const Error = () => {
   );
 };
 
-export default Error;
+export default Error404;

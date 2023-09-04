@@ -40,22 +40,23 @@ export default async function handler(
       let matched;
       groupMessages.forEach((gm: IMessageDataProps) => {
         matched = false;
-        gm.readBy.forEach(async (rb: IReadByDataProps) => {
-          matched = rb.id === userId && !rb.value;
-          
-          if (matched) {
-            rb.value = true;
+        gm.readBy.forEach((rb: IReadByDataProps) => {
+          (async () => {
+            matched = rb.id === userId && !rb.value;
+            if (matched) {
+              rb.value = true;
 
-            const { error: errorUpdateMessages } = await supabaseClient
-              .from(tableNames.message)
-              .update({ readBy: gm.readBy })
-              .eq("id", gm.id);
+              const { error: errorUpdateMessages } = await supabaseClient
+                .from(tableNames.message)
+                .update({ readBy: gm.readBy })
+                .eq("id", gm.id);
 
-            if (errorUpdateMessages) {
-              res.status(500).json({ error: "Internal error" });
-              return;
+              if (errorUpdateMessages) {
+                res.status(500).json({ error: "Internal error" });
+                return;
+              }
             }
-          }
+          })();
         });
       });
 

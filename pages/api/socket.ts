@@ -13,7 +13,7 @@ export const config = {
 };
 
 interface SocketServer extends HTTPServer {
-  io?: IOServer | undefined;
+  io?: IOServer;
 }
 
 interface SocketWithIO extends NetSocket {
@@ -92,9 +92,11 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
 
       socket.on("new-message", async (message) => {
         const { toId, fromId, groupId, referenceId, content } = message,
-          isActive = sockets.findIndex(
-            (s) => s.userId === toId && s.activeGroupId === groupId
-          );
+          isActive =
+            -1 !==
+            sockets.findIndex(
+              (s) => s.userId === toId && s.activeGroupId === groupId
+            );
         const readBy = [
           { id: toId, value: isActive },
           { id: fromId, value: true },
@@ -127,8 +129,20 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
       });
 
       socket.on("new-friend", (message) => {
-        const { groupId } = message;
-        const { 0: toUser, 1: fromUser } = message?.createdFor;
+        const { groupId } = message,
+          fromUser = message?.createdFor?.at(1),
+          toUser = message?.createdFor?.at(0),
+          isActive =
+            -1 !==
+            sockets.findIndex(
+              (s) => s.userId === toUser.id && s.activeGroupId === groupId
+            );
+        const readBy = [
+          { id: toUser.id, value: isActive },
+          { id: fromUser.id, value: true },
+        ];
+        message = Object.assign(message, { readBy });
+
         const indexTo = sockets.findIndex((s) => s.userId === toUser?.id);
         if (indexTo !== -1) {
           sockets[indexTo].socket.join(groupId);
@@ -137,6 +151,7 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
         if (indexFrom !== -1) {
           sockets[indexFrom].socket.join(groupId);
         }
+
         socket.broadcast.emit("new-friend", message);
       });
 

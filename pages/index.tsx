@@ -162,22 +162,22 @@ const Messages = () => {
       const { referenceId, groupId } = deleted;
       let tempMessages, deletedMessage: IMessageProps | undefined;
       const tempGroups = groups;
-      tempGroups.forEach((group) => {
-        if (group?.id === groupId) {
-          deletedMessage = group?.messages?.find(
+      tempGroups.forEach((g) => {
+        if (g?.id === groupId) {
+          deletedMessage = g?.messages?.find(
             (m) => m.referenceId === referenceId
           );
           if (
-            group.unreadCount > 0 &&
+            g.unreadCount > 0 &&
             deletedMessage?.readBy.find((rb) => rb.id === userId && !rb.value)
           ) {
-            group.unreadCount = group.unreadCount - 1;
+            g.unreadCount = g.unreadCount - 1;
           }
-          tempMessages = group?.messages?.filter(
+          tempMessages = g?.messages?.filter(
             (m) => m.referenceId !== referenceId
           );
-          group.messages = tempMessages;
-          group.lastMessage =
+          g.messages = tempMessages;
+          g.lastMessage =
             tempMessages.length === 0
               ? null
               : tempMessages[tempMessages.length - 1];
@@ -202,7 +202,7 @@ const Messages = () => {
         const message: IMessageProps = {
           id: friend.id,
           referenceId: friend.referenceId,
-          type: getMessageType(friend.userId, userId!),
+          type: getMessageType(friend.userId, userId),
           content: friend.content,
           createdOn: getTimeConverted(new Date(friend.createdAt)),
           groupId: friend.groupId,
@@ -210,7 +210,7 @@ const Messages = () => {
           fromId: friend.createdFor[0].id,
           toId: friend.createdFor[1].id,
           userId: null,
-          readBy: [],
+          readBy: friend?.readBy,
         };
         const tempGroup = {
           id: friend.groupId,
@@ -226,7 +226,6 @@ const Messages = () => {
         const tempGroups = groups;
         tempGroups[tempGroups.length] = tempGroup;
         setGroups(tempGroups);
-        setGroup(tempGroup);
         setFriend(null);
       }
     }
@@ -305,6 +304,8 @@ const Messages = () => {
       hasRead;
 
     messages?.forEach((message: IMessageDataProps, _: any) => {
+      console.log(message.createdAt);
+
       groupId = message.groupId;
       createdOnDate = new Date(message.createdAt);
       Object.assign(message, {
@@ -326,9 +327,8 @@ const Messages = () => {
         } else {
           unreadCount = hasRead ? 0 : 1;
         }
-      } else if (message.groupType === groupTypes.PUBLIC) {
-        // TODO: set group details
       }
+      // if public set group details. then ->
       if (groups.has(groupId)) {
         group = groups.get(groupId);
         group.unreadCount = unreadCount;
@@ -487,14 +487,16 @@ const Messages = () => {
     e.key === "Enter" && onSubmitHandler();
 
   const onAddFriendHandler = (messageData: IMessageDataProps) => {
-    let target: ICreatedForDataProps =
+    console.log(messageData);
+
+    const target: ICreatedForDataProps =
       messageData.userId === userId
         ? messageData.createdFor[0]
         : messageData.createdFor[1];
     const message: IMessageProps = {
       id: messageData.id,
       referenceId: messageData.referenceId,
-      type: getMessageType(messageData.userId, userId!),
+      type: getMessageType(messageData.userId, userId),
       content: messageData.content,
       createdOn: getTimeConverted(new Date(messageData.createdAt)),
       groupId: messageData.groupId,
@@ -516,7 +518,6 @@ const Messages = () => {
       unreadCount: 0,
     };
     const tempGroups = groups;
-
     tempGroups[tempGroups.length] = tempGroup;
 
     const tempGroupIndex = tempGroups.length - 1;

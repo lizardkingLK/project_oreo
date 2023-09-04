@@ -13,8 +13,8 @@ An open-source chat application to learn real-time messaging.
 ## .env.local file to be added
 
 ```
+NEXT_PUBLIC_LOCAL_STORAGE=NEXT_PUBLIC_LOCAL_STORAGE[local|cloud]
 NEXT_PUBLIC_ABLY_API_KEY=YOUR_NEXT_PUBLIC_ABLY_API_KEY
-NEXT_PUBLIC_LOCAL_STORAGE=YOUR_NEXT_PUBLIC_LOCAL_STORAGE
 NEXT_PUBLIC_SUPABASE_URL=YOUR_NEXT_PUBLIC_SUPABASE_URL
 NEXT_PUBLIC_SUPABASE_ANON_KEY=YOUR_NEXT_PUBLIC_SUPABASE_ANON_KEY
 NEXT_PUBLIC_DATABASE_URL=YOUR_NEXT_PUBLIC_DATABASE_URL
@@ -39,6 +39,7 @@ npx prisma generate
 ```
 npm install -g dotenv-cli
 ```
+
 ```
 dotenv -e .env.local -- npx prisma migrate dev --name init
 ```
