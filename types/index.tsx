@@ -289,9 +289,10 @@ export interface IGroupSectionProps {
 export interface IMessageMenuProps {
   referenceId: string | null;
   options: boolean;
-  onDeleteHandler: Function;
   loading: boolean;
   messageTime: string;
+  onDeleteHandler: Function;
+  setOptions: Function;
 }
 
 export interface IAddFriendProps {
