@@ -37,6 +37,7 @@ export default function MessageCard(props: IMessageCardProps) {
             messageTime={messageTime}
             referenceId={referenceId}
             options={options}
+            setOptions={setOptions}
             onDeleteHandler={onDeleteHandler}
             loading={loading}
           />
@@ -44,11 +45,10 @@ export default function MessageCard(props: IMessageCardProps) {
           <div
             title={messageTime}
             className={`p-4 my-4 min-w-max rounded-xl bg-gradient-to-r 
-        ${
-          type === messageTypes.RECEIVED
-            ? "from-green-400 ml-2 to-green-500 rounded-tl-none cursor-pointer"
-            : "from-stone-400 to-stone-500 rounded-tr-none cursor-pointer text-right"
-        }`}
+        ${type === messageTypes.RECEIVED
+                ? "from-green-400 ml-2 to-green-500 rounded-tl-none cursor-pointer"
+                : "from-stone-400 to-stone-500 rounded-tr-none cursor-pointer text-right"
+              }`}
           >
             <MessageMedia content={content} />
           </div>
