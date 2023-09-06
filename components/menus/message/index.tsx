@@ -1,14 +1,15 @@
+import React from "react";
+
 import Bin from "@/components/svgs/Bin";
-import Close from "@/components/svgs/close";
 import Copy from "@/components/svgs/copy";
 import Pencil from "@/components/svgs/pencil";
 import Spinner from "@/components/svgs/spinner";
+
 import { IMessageMenuProps } from "@/types";
-import React from "react";
 
 const MessageMenu = (props: IMessageMenuProps) => {
   if (props) {
-    const { referenceId, options, onDeleteHandler, loading, messageTime, setOptions } =
+    const { referenceId, options, onDeleteHandler, onCopyHandler, loading, messageTime } =
       props;
 
     if (options) {
@@ -32,7 +33,7 @@ const MessageMenu = (props: IMessageMenuProps) => {
                 type="button"
                 title="Copy Message"
                 className="text-green-500 font-black rounded-full text-sm text-center w-full p-2"
-                onClick={() => setOptions(false)}
+                onClick={() => onCopyHandler(referenceId)}
               >
                 <Copy size={6} />
               </button>

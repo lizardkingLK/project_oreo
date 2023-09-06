@@ -115,6 +115,7 @@ export interface IMessageListProps {
   notifs: NotifType;
   lastMessageRef: LegacyRef<HTMLDivElement>;
   onDeleteHandler: Function;
+  onCopyHandler: Function;
   loading: boolean;
 }
 
@@ -164,6 +165,7 @@ export interface IMessageCardProps {
   messageTime: string;
   messageAuthorName: NameType | string;
   onDeleteHandler: Function;
+  onCopyHandler: Function;
   loading: boolean;
 }
 
@@ -259,6 +261,7 @@ export interface ISecitonSwitchProps {
   onKeyDownHandler: KeyboardEventHandler<HTMLInputElement>;
   onSubmitHandler: MouseEventHandler<HTMLButtonElement>;
   onDeleteHandler: Function;
+  onCopyHandler: Function;
   onMediaHandler: Function;
   onAddFriendHandler: Function;
   setGroup: Function;
@@ -279,6 +282,7 @@ export interface IGroupSectionProps {
   onKeyDownHandler: KeyboardEventHandler<HTMLInputElement>;
   onSubmitHandler: MouseEventHandler<HTMLButtonElement>;
   onDeleteHandler: Function;
+  onCopyHandler: Function;
   onMediaHandler: Function;
   setGroup: Function;
   lastMessageRef: null | LegacyRef<HTMLDivElement>;
@@ -292,7 +296,7 @@ export interface IMessageMenuProps {
   loading: boolean;
   messageTime: string;
   onDeleteHandler: Function;
-  setOptions: Function;
+  onCopyHandler: Function;
 }
 
 export interface IAddFriendProps {

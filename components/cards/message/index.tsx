@@ -19,6 +19,7 @@ export default function MessageCard(props: IMessageCardProps) {
       messageImagePath,
       content,
       onDeleteHandler,
+      onCopyHandler,
       loading,
     } = props;
 
@@ -38,8 +39,8 @@ export default function MessageCard(props: IMessageCardProps) {
             messageTime={messageTime}
             referenceId={referenceId}
             options={options}
-            setOptions={setOptions}
             onDeleteHandler={onDeleteHandler}
+            onCopyHandler={onCopyHandler}
             loading={loading}
           />
         ) : (

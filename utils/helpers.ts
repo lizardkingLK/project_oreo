@@ -16,19 +16,24 @@ const formatCompactNumber = (input: string) => {
   return formatter.format(number);
 };
 
-const isMedia = (content: string) => {
+const isImage = (content: string) => {
   return content?.startsWith("[image](");
 };
 
-const isImage = (content: string) => {
-  return content?.includes(mediaTypes.image);
+const getContent = (content: string) => {
+  const isMedia = isImage(content);
+  return isMedia
+    ? content?.substring(content?.indexOf("(") + 1, content?.indexOf(")"))
+    : content;
+};
+
+const writeContentToClipboard = (content: string) => {
+  navigator.clipboard.writeText(getContent(content));
 };
 
 const getBriefContent = (content: string) => {
-  if (isMedia(content)) {
-    if (isImage(content)) {
-      return mediaTypes.image;
-    }
+  if (isImage(content)) {
+    return mediaTypes.image;
   } else if (content?.length > 30) {
     return content.substring(0, 30).concat("...");
   } else return content;
@@ -65,11 +70,11 @@ const getNameOfUser = (target: {
 export {
   getTimeConverted,
   formatCompactNumber,
-  isMedia,
   isImage,
   getBriefContent,
   isLocalStorage,
   getRandomNumber,
   getMessageType,
   getNameOfUser,
+  writeContentToClipboard,
 };

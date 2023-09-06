@@ -18,6 +18,7 @@ const Group = (props: IGroupSectionProps) => {
       onKeyDownHandler,
       onSubmitHandler,
       onDeleteHandler,
+      onCopyHandler,
       onMediaHandler,
       textInputRef,
       loading,
@@ -56,6 +57,7 @@ const Group = (props: IGroupSectionProps) => {
             notifs={notifs}
             lastMessageRef={lastMessageRef}
             onDeleteHandler={onDeleteHandler}
+            onCopyHandler={onCopyHandler}
             loading={loading}
           />
         </div>

@@ -30,6 +30,7 @@ const SectionSwitch = (props: ISecitonSwitchProps) => {
       onKeyDownHandler,
       onSubmitHandler,
       onDeleteHandler,
+      onCopyHandler,
       onMediaHandler,
       onAddFriendHandler,
       textInputRef,
@@ -82,6 +83,7 @@ const SectionSwitch = (props: ISecitonSwitchProps) => {
           onSubmitHandler={onSubmitHandler}
           onMediaHandler={onMediaHandler}
           onDeleteHandler={onDeleteHandler}
+          onCopyHandler={onCopyHandler}
           textInputRef={textInputRef}
           loading={loading}
           navbar={navbar}

@@ -4,7 +4,7 @@ import { Fragment } from "react";
 
 const MessageList = (props: IMessageListProps) => {
   if (props) {
-    const { messages, group, active, lastMessageRef, onDeleteHandler, loading } = props;
+    const { messages, group, active, lastMessageRef, onDeleteHandler, onCopyHandler, loading } = props;
     return (
       <Fragment>
         {group &&
@@ -18,6 +18,7 @@ const MessageList = (props: IMessageListProps) => {
                 messageTime={message.createdOn}
                 messageImagePath={group.displayImage}
                 onDeleteHandler={onDeleteHandler}
+                onCopyHandler={onCopyHandler}
                 loading={loading}
               />
             </Fragment>
