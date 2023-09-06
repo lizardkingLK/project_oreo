@@ -1,13 +1,15 @@
+import React from "react";
+
 import Bin from "@/components/svgs/Bin";
-import Close from "@/components/svgs/close";
+import Copy from "@/components/svgs/copy";
 import Pencil from "@/components/svgs/pencil";
 import Spinner from "@/components/svgs/spinner";
+
 import { IMessageMenuProps } from "@/types";
-import React from "react";
 
 const MessageMenu = (props: IMessageMenuProps) => {
   if (props) {
-    const { referenceId, options, onDeleteHandler, loading, messageTime, setOptions } =
+    const { referenceId, options, onDeleteHandler, onCopyHandler, loading, messageTime } =
       props;
 
     if (options) {
@@ -23,29 +25,27 @@ const MessageMenu = (props: IMessageMenuProps) => {
                 title="Edit Message"
                 className="text-green-500 font-black rounded-full text-sm text-center w-full p-2"
               >
-                <Pencil />
+                <Pencil size={6} />
               </button>
             </li>
             <li className="pr-2">
               <button
-                id={`${referenceId}`}
                 type="button"
-                title="Delete Message"
+                title="Copy Message"
+                className="text-green-500 font-black rounded-full text-sm text-center w-full p-2"
+                onClick={() => onCopyHandler(referenceId)}
+              >
+                <Copy size={6} />
+              </button>
+            </li>
+            <li className="pr-2">
+              <button
+                type="button"
+                title="Remove Message"
                 className="text-red-500 font-black rounded-full text-sm text-center w-full p-2"
                 onClick={() => onDeleteHandler(referenceId)}
               >
-                {loading ? <Spinner size={8} /> : <Bin size={8} />}
-              </button>
-            </li>
-            <li>
-              <button
-                id={`${referenceId}`}
-                type="button"
-                title="Close"
-                className="text-white font-black rounded-full text-sm text-center w-full p-2"
-                onClick={() => setOptions(false)}
-              >
-                <Close size={8} />
+                {loading ? <Spinner size={6} /> : <Bin size={6} />}
               </button>
             </li>
           </ul>

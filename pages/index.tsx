@@ -29,6 +29,7 @@ import {
   getRandomNumber,
   getTimeConverted,
   isLocalStorage,
+  writeContentToClipboard,
 } from "@/utils/helpers";
 
 import LayoutSwitch from "@/components/layout";
@@ -268,6 +269,11 @@ const Messages = () => {
       setOnline(user);
     });
   };
+
+  const onCopyHandler = (referenceId: string) => {
+    const message = messages?.find(m => m.referenceId === referenceId);
+    writeContentToClipboard(message?.content);
+  }
 
   const onDeleteHandler = async (referenceId: string) => {
     setLoading(true);
@@ -577,6 +583,7 @@ const Messages = () => {
             onSubmitHandler={onSubmitHandler}
             onMediaHandler={onMediaHandler}
             onDeleteHandler={onDeleteHandler}
+            onCopyHandler={onCopyHandler}
             onAddFriendHandler={onAddFriendHandler}
             loading={loading}
             groups={groups}
