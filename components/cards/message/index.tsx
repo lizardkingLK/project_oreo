@@ -5,6 +5,7 @@ import { IMessageCardProps } from "@/types";
 import MessageMedia from "@/components/media/message";
 import VerticalEllipsis from "@/components/svgs/ellipsis/vertical";
 import MessageMenu from "@/components/menus/message";
+import Close from "@/components/svgs/close";
 
 export default function MessageCard(props: IMessageCardProps) {
   const [options, setOptions] = useState(false);
@@ -54,7 +55,13 @@ export default function MessageCard(props: IMessageCardProps) {
           </div>
         )}
         {type === messageTypes.SENT && (
-          <button
+          options ? <button
+            className="flex h-min mt-4 text-stone-100 hover:text-stone-100"
+            title="Close Message Options"
+            onClick={() => setOptions((prev) => !prev)}
+          >
+            <Close size={6} />
+          </button> : <button
             className="flex h-min mt-4 text-stone-900 hover:text-stone-100"
             title="Message Options"
             onClick={() => setOptions((prev) => !prev)}
