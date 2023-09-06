@@ -28,7 +28,6 @@ import {
   getNameOfUser,
   getRandomNumber,
   getTimeConverted,
-  isImage,
   isLocalStorage,
   writeContentToClipboard,
 } from "@/utils/helpers";
