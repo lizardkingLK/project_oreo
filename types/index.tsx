@@ -170,7 +170,7 @@ export interface IMessageCardProps {
 export interface ISummaryCardProps {
   cardStyle: string;
   cardHeaderTitle: string;
-  cardHeaderContent: any;
+  cardHeaderContent?: any;
   cardBodyType: number;
   cardBodyContent: any;
 }
@@ -229,7 +229,7 @@ export interface IDialogProps {
 }
 
 export interface ISectionLayoutProps {
-  title: string | null;
+  title?: string;
   children: ReactNode;
 }
 
