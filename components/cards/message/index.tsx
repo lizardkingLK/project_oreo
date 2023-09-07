@@ -6,6 +6,7 @@ import MessageMedia from "@/components/media/message";
 import VerticalEllipsis from "@/components/svgs/ellipsis/vertical";
 import MessageMenu from "@/components/menus/message";
 import Close from "@/components/svgs/close";
+import { isImage } from "@/utils/helpers";
 
 export default function MessageCard(props: IMessageCardProps) {
   const [options, setOptions] = useState(false);
@@ -20,6 +21,7 @@ export default function MessageCard(props: IMessageCardProps) {
       content,
       onDeleteHandler,
       onCopyHandler,
+      onViewHandler,
       loading,
     } = props;
 
@@ -41,7 +43,9 @@ export default function MessageCard(props: IMessageCardProps) {
             options={options}
             onDeleteHandler={onDeleteHandler}
             onCopyHandler={onCopyHandler}
+            onViewHandler={onViewHandler}
             loading={loading}
+            isImage={isImage(content)}
           />
         ) : (
           <div

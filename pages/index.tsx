@@ -29,6 +29,7 @@ import {
   getRandomNumber,
   getTimeConverted,
   isLocalStorage,
+  openImageInNewTab,
   writeContentToClipboard,
 } from "@/utils/helpers";
 
@@ -273,6 +274,11 @@ const Messages = () => {
   const onCopyHandler = (referenceId: string) => {
     const message = messages?.find(m => m.referenceId === referenceId);
     writeContentToClipboard(message?.content);
+  }
+
+  const onViewHandler = (referenceId: string) => {
+    const message = messages?.find(m => m.referenceId === referenceId);
+    openImageInNewTab(message?.content);
   }
 
   const onDeleteHandler = async (referenceId: string) => {
@@ -584,6 +590,7 @@ const Messages = () => {
             onMediaHandler={onMediaHandler}
             onDeleteHandler={onDeleteHandler}
             onCopyHandler={onCopyHandler}
+            onViewHandler={onViewHandler}
             onAddFriendHandler={onAddFriendHandler}
             loading={loading}
             groups={groups}

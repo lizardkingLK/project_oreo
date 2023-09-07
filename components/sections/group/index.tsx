@@ -19,6 +19,7 @@ const Group = (props: IGroupSectionProps) => {
       onSubmitHandler,
       onDeleteHandler,
       onCopyHandler,
+      onViewHandler,
       onMediaHandler,
       textInputRef,
       loading,
@@ -58,6 +59,7 @@ const Group = (props: IGroupSectionProps) => {
             lastMessageRef={lastMessageRef}
             onDeleteHandler={onDeleteHandler}
             onCopyHandler={onCopyHandler}
+            onViewHandler={onViewHandler}
             loading={loading}
           />
         </div>
