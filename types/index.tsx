@@ -29,6 +29,7 @@ export interface ILayoutProps {
   isSignedIn: boolean;
   navbar: boolean;
   setNavbar: Function;
+  titleData: null | string;
 }
 
 export interface ICreatedForDataProps {
@@ -116,6 +117,7 @@ export interface IMessageListProps {
   lastMessageRef: LegacyRef<HTMLDivElement>;
   onDeleteHandler: Function;
   onCopyHandler: Function;
+  onViewHandler: Function;
   loading: boolean;
 }
 
@@ -166,6 +168,7 @@ export interface IMessageCardProps {
   messageAuthorName: NameType | string;
   onDeleteHandler: Function;
   onCopyHandler: Function;
+  onViewHandler: Function;
   loading: boolean;
 }
 
@@ -262,6 +265,7 @@ export interface ISecitonSwitchProps {
   onSubmitHandler: MouseEventHandler<HTMLButtonElement>;
   onDeleteHandler: Function;
   onCopyHandler: Function;
+  onViewHandler: Function;
   onMediaHandler: Function;
   onAddFriendHandler: Function;
   setGroup: Function;
@@ -283,6 +287,7 @@ export interface IGroupSectionProps {
   onSubmitHandler: MouseEventHandler<HTMLButtonElement>;
   onDeleteHandler: Function;
   onCopyHandler: Function;
+  onViewHandler: Function;
   onMediaHandler: Function;
   setGroup: Function;
   lastMessageRef: null | LegacyRef<HTMLDivElement>;
@@ -297,6 +302,8 @@ export interface IMessageMenuProps {
   messageTime: string;
   onDeleteHandler: Function;
   onCopyHandler: Function;
+  onViewHandler: Function;
+  isImage: boolean;
 }
 
 export interface IAddFriendProps {

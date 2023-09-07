@@ -5,7 +5,6 @@ import { cardBodyTypes } from "@/utils/enums";
 import Avatar from "@/components/avatar";
 import { IDashboardProps, IGroupProps, ILatestMessageProps } from "@/types";
 import { getBriefContent, isImage } from "@/utils/helpers";
-import { log } from "console";
 
 const Dashboard = (props: IDashboardProps) => {
   const [groups] = useState<IGroupProps[] | null>(props.groups);
@@ -16,19 +15,20 @@ const Dashboard = (props: IDashboardProps) => {
   const [latest, setLatest] = useState<ILatestMessageProps | null>(null);
 
   useEffect(() => {
-    setUnread(
-      props?.groups
-        ?.map((g) => g.unreadCount)
-        .reduce((ucA, ucB) => ucA + ucB, 0)
-    );
+    setUnread(props.groups
+      ?.map((g) => g.unreadCount)
+      .reduce((ucA, ucB) => ucA + ucB, 0));
+
     setFriends(() => {
       const friends = props?.groups?.filter(g => Boolean(g.targetId));
       return friends?.length === 0 ? null : friends.length;
     });
+
     setOnline(() => {
       const online = props?.groups?.filter(g => g.isOnline === true);
       return online?.length === 0 ? null : online.length;
     });
+
     setLatest(() => {
       const message = props?.groups
         ?.map((g) => g.lastMessage)

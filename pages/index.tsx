@@ -29,6 +29,7 @@ import {
   getRandomNumber,
   getTimeConverted,
   isLocalStorage,
+  openImageInNewTab,
   writeContentToClipboard,
 } from "@/utils/helpers";
 
@@ -44,6 +45,7 @@ import {
   saveFile,
   updateUnread,
 } from "@/utils/http";
+import Head from "next/head";
 
 let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 
@@ -63,6 +65,7 @@ const Messages = () => {
   const [friend, setFriend] = useState<null | IMessageDataProps>(null);
   const [rooms, setRooms] = useState<boolean>(false);
   const [online, setOnline] = useState<null | IUserOnlineProps>(null);
+  const [unread, setUnread] = useState<null | number>(null);
 
   const textInputRef = useRef<null | HTMLInputElement>(null);
   const lastMessageRef = useRef<null | HTMLDivElement>(null);
@@ -108,6 +111,13 @@ const Messages = () => {
   );
 
   useEffect(() => {
+    setUnread(() => {
+      const unread = groups?.map((g) => g.unreadCount).reduce((ucA, ucB) => ucA + ucB, 0);
+      return unread === 0 ? null : unread;
+    });
+  }, [groups, friend, output]);
+
+  useEffect(() => {
     if (output) {
       const tempGroupIndex = groups.findIndex((g) => g.id === output.groupId),
         tempGroup = groups[tempGroupIndex];
@@ -140,6 +150,7 @@ const Messages = () => {
         if (group?.id === output.groupId) {
           setMessages(tempGroupMessages);
         }
+
         setNotifs(getRandomNumber());
       }
       setOutput(null);
@@ -273,6 +284,11 @@ const Messages = () => {
   const onCopyHandler = (referenceId: string) => {
     const message = messages?.find(m => m.referenceId === referenceId);
     writeContentToClipboard(message?.content);
+  }
+
+  const onViewHandler = (referenceId: string) => {
+    const message = messages?.find(m => m.referenceId === referenceId);
+    openImageInNewTab(message?.content);
   }
 
   const onDeleteHandler = async (referenceId: string) => {
@@ -549,6 +565,7 @@ const Messages = () => {
       isSignedIn={isSignedIn}
       navbar={navbar}
       setNavbar={setNavbar}
+      titleData={unread ? `(${unread})` : null}
     >
       <section className="flex justify-center">
         <div className={groups.length > 0 ? "basis-3/4 md:basis-1/4" : ""}>
@@ -584,6 +601,7 @@ const Messages = () => {
             onMediaHandler={onMediaHandler}
             onDeleteHandler={onDeleteHandler}
             onCopyHandler={onCopyHandler}
+            onViewHandler={onViewHandler}
             onAddFriendHandler={onAddFriendHandler}
             loading={loading}
             groups={groups}

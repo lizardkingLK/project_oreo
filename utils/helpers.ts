@@ -31,6 +31,10 @@ const writeContentToClipboard = (content: string) => {
   navigator.clipboard.writeText(getContent(content));
 };
 
+const openImageInNewTab = (content: string) => {
+  window.open(getContent(content), "_blank");
+};
+
 const getBriefContent = (content: string) => {
   if (isImage(content)) {
     return mediaTypes.image;
@@ -77,4 +81,5 @@ export {
   getMessageType,
   getNameOfUser,
   writeContentToClipboard,
+  openImageInNewTab,
 };
