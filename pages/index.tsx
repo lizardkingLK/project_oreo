@@ -141,6 +141,7 @@ const Messages = () => {
         if (group?.id === output.groupId) {
           setMessages(tempGroupMessages);
         }
+
         setNotifs(getRandomNumber());
       }
       setOutput(null);
