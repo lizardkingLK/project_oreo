@@ -15,15 +15,7 @@ const Dashboard = (props: IDashboardProps) => {
   const [latest, setLatest] = useState<ILatestMessageProps | null>(null);
 
   useEffect(() => {
-    const unread = groups
-      ?.map((g) => g.unreadCount)
-      .reduce((ucA, ucB) => ucA + ucB, 0);
-
-    document.title = unread === 0 ? document.title : `Oreo (${unread})`;
-  }, [latest, groups]);
-
-  useEffect(() => {
-    setUnread(props?.groups
+    setUnread(props.groups
       ?.map((g) => g.unreadCount)
       .reduce((ucA, ucB) => ucA + ucB, 0));
 

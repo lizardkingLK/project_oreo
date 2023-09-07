@@ -29,6 +29,7 @@ export interface ILayoutProps {
   isSignedIn: boolean;
   navbar: boolean;
   setNavbar: Function;
+  titleData: null | string;
 }
 
 export interface ICreatedForDataProps {
