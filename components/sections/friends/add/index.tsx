@@ -32,14 +32,17 @@ const AddFriend = (props: IAddFriendProps) => {
   }
 
   if (props) {
-    const { onAddFriendHandler, groups, setGroup, setMessages, setSection } = props;
+    const { onAddFriendHandler, onSelectGroupHandler, groups,
+      // setGroup, setMessages, setSection 
+    } = props;
 
     const handleInvitation = async () => {
       const tempGroup = groups?.find(g => g.targetId === user?.id);
       if (tempGroup) {
-        setGroup(tempGroup);
-        setMessages(tempGroup?.messages);
-        setSection(sections.group);
+        onSelectGroupHandler(tempGroup.id);
+        // setGroup(tempGroup);
+        // setMessages(tempGroup?.messages);
+        // setSection(sections.group);
         return;
       }
       setLoading(true);

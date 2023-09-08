@@ -603,6 +603,7 @@ const Messages = () => {
             onCopyHandler={onCopyHandler}
             onViewHandler={onViewHandler}
             onAddFriendHandler={onAddFriendHandler}
+            onSelectGroupHandler={onSelectGroupHandler}
             loading={loading}
             groups={groups}
             user={user}
