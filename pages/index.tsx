@@ -115,7 +115,7 @@ const Messages = () => {
       const unread = groups?.map((g) => g.unreadCount).reduce((ucA, ucB) => ucA + ucB, 0);
       return unread === 0 ? null : unread;
     });
-  }, [groups, friend, output]);
+  }, [groups, group, friend, output]);
 
   useEffect(() => {
     if (output) {
@@ -603,12 +603,12 @@ const Messages = () => {
             onCopyHandler={onCopyHandler}
             onViewHandler={onViewHandler}
             onAddFriendHandler={onAddFriendHandler}
+            onSelectGroupHandler={onSelectGroupHandler}
             loading={loading}
             groups={groups}
             user={user}
             group={group}
             setGroup={setGroup}
-            setMessages={setMessages}
             messages={messages}
             textInputRef={textInputRef}
             input={input}
