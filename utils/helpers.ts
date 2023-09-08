@@ -48,10 +48,7 @@ const isLocalStorage = () => {
 };
 
 const getRandomNumber = () => {
-  const crypto = window.crypto,
-    array = new BigUint64Array(1);
-  crypto.getRandomValues(array);
-  return array[0].toString();
+  return window.crypto.randomUUID();
 };
 
 const getMessageType = (
