@@ -32,17 +32,12 @@ const AddFriend = (props: IAddFriendProps) => {
   }
 
   if (props) {
-    const { onAddFriendHandler, onSelectGroupHandler, groups,
-      // setGroup, setMessages, setSection 
-    } = props;
+    const { onAddFriendHandler, onSelectGroupHandler, groups } = props;
 
     const handleInvitation = async () => {
       const tempGroup = groups?.find(g => g.targetId === user?.id);
       if (tempGroup) {
         onSelectGroupHandler(tempGroup.id);
-        // setGroup(tempGroup);
-        // setMessages(tempGroup?.messages);
-        // setSection(sections.group);
         return;
       }
       setLoading(true);
@@ -56,8 +51,7 @@ const AddFriend = (props: IAddFriendProps) => {
 
     const handleSearch = (event: { preventDefault: () => void }) => {
       event.preventDefault();
-      const value = searchRef?.current?.value ?? "";
-      const length = value.length;
+      const value = searchRef?.current?.value ?? "", length = value.length;
       setUserFound(userSearchMessageTypes.notFound);
       if (users && value) {
         const user = users.find(

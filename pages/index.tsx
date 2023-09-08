@@ -609,7 +609,6 @@ const Messages = () => {
             user={user}
             group={group}
             setGroup={setGroup}
-            setMessages={setMessages}
             messages={messages}
             textInputRef={textInputRef}
             input={input}
