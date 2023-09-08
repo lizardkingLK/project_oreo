@@ -5,7 +5,7 @@ import { cardBodyTypes, sections } from "@/utils/enums";
 import { IIntroductionProps } from "@/types";
 import ButtonCard from "@/components/cards/button";
 import Avatar from "@/components/avatar";
-import { writeContentToClipboard } from "@/utils/helpers";
+import { getBriefContent, writeContentToClipboard } from "@/utils/helpers";
 
 const Introduction = (props: IIntroductionProps) => {
   if (props) {
@@ -39,9 +39,9 @@ const Introduction = (props: IIntroductionProps) => {
               cardBodyType={cardBodyTypes.ELEMENT}
               cardBodyContent={
                 <button title="Click to Copy" onClick={() => writeContentToClipboard(user?.emailAddresses?.at(0)?.emailAddress)}
-                  className="text-stone-100 rounded-full p-2 bg-gradient-to-b from-green-400 to-green-500 shadow-sm w-64 text-ellipsis overflow-hidden">
+                  className="text-stone-100 rounded-full p-2 bg-gradient-to-b from-green-400 to-green-500 shadow-sm text-ellipsis overflow-hidden">
                   <h1>
-                    {user?.emailAddresses?.at(0)?.emailAddress}
+                    {getBriefContent(user?.emailAddresses?.at(0)?.emailAddress)}
                   </h1>
                 </button>
               }
