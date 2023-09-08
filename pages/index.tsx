@@ -115,7 +115,7 @@ const Messages = () => {
       const unread = groups?.map((g) => g.unreadCount).reduce((ucA, ucB) => ucA + ucB, 0);
       return unread === 0 ? null : unread;
     });
-  }, [groups, friend, output]);
+  }, [groups, group, friend, output]);
 
   useEffect(() => {
     if (output) {
