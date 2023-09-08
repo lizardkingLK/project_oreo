@@ -4,13 +4,15 @@ import SummaryCard from "@/components/cards/summary";
 import { cardBodyTypes, sections } from "@/utils/enums";
 import { IIntroductionProps } from "@/types";
 import ButtonCard from "@/components/cards/button";
+import Avatar from "@/components/avatar";
+import { writeContentToClipboard } from "@/utils/helpers";
 
 const Introduction = (props: IIntroductionProps) => {
   if (props) {
     const { user, setSection } = props;
 
     return (
-      <SectionLayout title={null}>
+      <SectionLayout>
         <div className="p-4">
           <div className="flex justify-between items-center w-full">
             <h1 className="text-2xl text-white font-bold" id="textGreeting">
@@ -33,11 +35,25 @@ const Introduction = (props: IIntroductionProps) => {
               cardStyle={
                 "bg-gradient-to-r from-green-500 to-green-400 text-white rounded-md"
               }
-              cardHeaderTitle={"Unread"}
-              cardBodyType={cardBodyTypes.NUMBER}
-              cardBodyContent={34}
-              cardHeaderContent={null}
-            />
+              cardHeaderTitle={"User"}
+              cardBodyType={cardBodyTypes.ELEMENT}
+              cardBodyContent={
+                <button title="Click to Copy" onClick={() => writeContentToClipboard(user?.emailAddresses?.at(0)?.emailAddress)}
+                  className="text-stone-100 rounded-full p-2 bg-gradient-to-b from-green-400 to-green-500 shadow-sm w-64 text-ellipsis overflow-hidden">
+                  <h1>
+                    {user?.emailAddresses?.at(0)?.emailAddress}
+                  </h1>
+                </button>
+              }
+              cardHeaderContent={
+                <Avatar
+                  imagePath={user?.imageUrl}
+                  size={60}
+                  name={user?.firstName ?? user?.username}
+                  isStatus={false}
+                  isOnline={true}
+                />
+              } />
           </div>
         </div>
       </SectionLayout>
