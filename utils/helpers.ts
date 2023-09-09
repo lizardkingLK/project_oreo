@@ -7,7 +7,7 @@ const getTimeConverted = (tempDate: Date = new Date()) => {
   return `${tempHours}:${tempMinutes}`;
 };
 
-const formatCompactNumber = (input: string) => {
+const formatCompactNumber = (input: string | null) => {
   const number = Number(input);
   if (isNaN(number)) {
     return 0;

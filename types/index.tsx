@@ -254,6 +254,8 @@ export interface IDialogProps {
 
 export interface ISectionLayoutProps {
   title?: string;
+  content?: string;
+  tooltip?: string;
   children: ReactNode;
 }
 

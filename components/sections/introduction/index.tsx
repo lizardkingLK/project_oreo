@@ -25,7 +25,9 @@ const Introduction = (props: IIntroductionProps) => {
             <SummaryCard
               cardStyle={"bg-gradient-to-r from-stone-500 to-stone-400 text-white rounded-md hover:bg-gradient-to-r hover:from-green-500 hover:to-green-400"}
               cardBodyType={cardBodyTypes.ELEMENT}
-              cardBodyContent={<h1 className="text-2xl font-bold">Add Friend</h1>}
+              cardBodyContent={
+                <h1 className="text-2xl font-bold">Add Friend</h1>
+              }
               cardClickEvent={() => setSection(sections.addFriend)}
               cardType={elementType.button}
               cardTooltip="Add Friend"
