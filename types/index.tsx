@@ -1,10 +1,11 @@
-import { groupTypes, messageTypes, sections } from "@/utils/enums";
+import { elementType, groupTypes, messageTypes, sections } from "@/utils/enums";
 
 import {
   ChangeEventHandler,
   KeyboardEventHandler,
   LegacyRef,
   MouseEventHandler,
+  ReactElement,
   ReactNode,
 } from "react";
 
@@ -12,7 +13,9 @@ import { User } from "@clerk/nextjs/dist/types/server";
 
 export type NameType = string | null | undefined;
 
-export type NotifType = string | boolean | null;
+export type NotificationType = string | boolean | null;
+
+export type CardContentType = string | number | ReactElement;
 
 export type PersistedSocket = {
   id: string;
@@ -113,7 +116,7 @@ export interface IMessageListProps {
   messages: IMessageProps[] | undefined;
   group: IGroupProps | null | undefined;
   active: IActiveProps;
-  notifs: NotifType;
+  notifs: NotificationType;
   lastMessageRef: LegacyRef<HTMLDivElement>;
   onDeleteHandler: Function;
   onCopyHandler: Function;
@@ -172,19 +175,35 @@ export interface IMessageCardProps {
   loading: boolean;
 }
 
-export interface ISummaryCardProps {
-  cardStyle: string;
-  cardHeaderTitle: string;
-  cardHeaderContent?: any;
-  cardBodyType: number;
-  cardBodyContent: any;
+export interface ICardTypeData {
+  clickEvent: MouseEventHandler<HTMLButtonElement> | undefined;
 }
 
-export interface IButtonCardProps {
+export interface ISummaryCardLayoutProps {
+  style: string;
+  type?: elementType;
+  typeData: ICardTypeData;
+  tooltip?: string;
+  children: ReactNode;
+}
+
+export interface ISummaryCardProps {
   cardStyle: string;
-  cardHeaderTitle: string;
-  cardTooltip: string;
-  cardOnClick: MouseEventHandler<HTMLButtonElement>;
+  cardType: elementType;
+  cardHeaderTitle?: string;
+  cardHeaderContent?: CardContentType;
+  cardBodyType: number;
+  cardBodyContent: CardContentType;
+  cardBodyLongContent?: string;
+  cardFooterContent?: CardContentType;
+  cardClickEvent?: MouseEventHandler<HTMLButtonElement>;
+  cardTooltip?: string;
+}
+
+export interface ISummaryCardContentProps {
+  cardBodyType: number;
+  cardBodyContent: CardContentType;
+  cardBodyLongContent?: string;
 }
 
 export interface IAvatarProps {
@@ -241,7 +260,8 @@ export interface ISectionLayoutProps {
 export interface IDashboardProps {
   groups: IGroupProps[];
   user: any;
-  notifs: NotifType;
+  notifs: NotificationType;
+  onSelectGroupHandler: Function;
 }
 
 export interface IIntroductionProps {
@@ -254,7 +274,7 @@ export interface ISecitonSwitchProps {
   setSection: Function;
   user: any;
   active: any;
-  notifs: NotifType;
+  notifs: NotificationType;
   input: string;
   loading: boolean;
   group: IGroupProps;
@@ -278,7 +298,7 @@ export interface ISecitonSwitchProps {
 export interface IGroupSectionProps {
   group: IGroupProps;
   active: any;
-  notifs: NotifType;
+  notifs: NotificationType;
   input: string;
   loading: boolean;
   messages: IMessageProps[] | undefined;
@@ -310,4 +330,9 @@ export interface IAddFriendProps {
   onAddFriendHandler: Function;
   onSelectGroupHandler: Function;
   groups: IGroupProps[] | null | undefined;
+}
+
+export interface IBadgeProps {
+  text: string;
+  tooltip: string;
 }

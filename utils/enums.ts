@@ -67,3 +67,8 @@ export enum sections {
 export enum strings {
   someone = "Someone",
 }
+
+export enum elementType {
+  button = "button",
+  div = "div",
+}
