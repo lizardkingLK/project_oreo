@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import SectionLayout from "../layout";
 import SummaryCard from "@/components/cards/summary";
-import { cardBodyTypes } from "@/utils/enums";
+import { cardBodyTypes, elementType } from "@/utils/enums";
 import Avatar from "@/components/avatar";
 import { IDashboardProps, IGroupProps, ILatestMessageProps } from "@/types";
 import { getBriefContent, isImage } from "@/utils/helpers";
+import Badge from "@/components/badge";
 
 const Dashboard = (props: IDashboardProps) => {
   const [groups] = useState<IGroupProps[] | null>(props.groups);
@@ -33,8 +34,8 @@ const Dashboard = (props: IDashboardProps) => {
       const message = props?.groups
         ?.map((g) => g.lastMessage)
         .sort((mA, mB) => Date.parse(mB?.createdOn) - Date.parse(mA?.createdOn))
-        .at(0);
-      const group = props?.groups?.find((g) => g.id === message?.groupId);
+        .at(0),
+        group = props?.groups?.find((g) => g.id === message?.groupId && g.unreadCount > 0);
       return group && message ? Object.assign(message, {
         displayImage: group?.displayImage!,
         groupName: group?.name!
@@ -43,6 +44,8 @@ const Dashboard = (props: IDashboardProps) => {
   }, [props]);
 
   if (props) {
+    const name = user?.firstName ?? user?.username, gridCols = online || unread ? 3 : 2;
+
     return (
       <SectionLayout>
         <div className="p-4">
@@ -50,16 +53,15 @@ const Dashboard = (props: IDashboardProps) => {
             <h1 className="text-2xl text-white font-bold" id="textGreeting">
               Hello{" "}
               <span className="text-green-400">
-                {user?.firstName ?? user?.username}
+                {name}
               </span>
             </h1>
           </div>
-          <div className={`pt-4 grid grid-flow-row-dense grid-cols-${online || unread ? 3 : 2} grid-rows-3 gap-2`}>
+          <div className={`pt-4 grid grid-flow-row-dense grid-cols-${gridCols} grid-rows-3 gap-2`}>
             {groups && (
               <SummaryCard
-                cardStyle={
-                  "bg-gradient-to-r from-stone-500 to-stone-400 text-white rounded-md"
-                }
+                cardType={elementType.div}
+                cardStyle={"bg-gradient-to-r from-stone-500 to-stone-400 text-white rounded-md"}
                 cardHeaderTitle={"Groups"}
                 cardBodyType={cardBodyTypes.NUMBER}
                 cardBodyContent={groups?.length}
@@ -67,6 +69,7 @@ const Dashboard = (props: IDashboardProps) => {
             )}
             {friends && (
               <SummaryCard
+                cardType={elementType.div}
                 cardStyle={"bg-stone-400 text-white rounded-md"}
                 cardHeaderTitle={"Friends"}
                 cardBodyType={cardBodyTypes.NUMBER}
@@ -75,6 +78,7 @@ const Dashboard = (props: IDashboardProps) => {
             )}
             {online && (
               <SummaryCard
+                cardType={elementType.div}
                 cardStyle={"bg-stone-400 text-white rounded-md"}
                 cardHeaderTitle={"Online"}
                 cardBodyType={cardBodyTypes.NUMBER}
@@ -83,7 +87,8 @@ const Dashboard = (props: IDashboardProps) => {
             )}
             {latest && (
               <SummaryCard
-                cardStyle={"bg-green-600 text-white rounded-md col-span-2 w-64"}
+                cardType={elementType.button}
+                cardStyle={"bg-gradient-to-r from-green-700 to-green-500 text-white rounded-md col-span-2 w-72"}
                 cardHeaderTitle={"Latest"}
                 cardHeaderContent={
                   <Avatar
@@ -93,19 +98,23 @@ const Dashboard = (props: IDashboardProps) => {
                     isStatus={false}
                   />
                 }
-                cardBodyType={cardBodyTypes.STRING}
+                cardBodyType={cardBodyTypes.ELEMENT}
                 cardBodyContent={
-                  isImage(latest.content)
-                    ? "Image"
-                    : getBriefContent(latest.content)
+                  <h1 className="text-xl font-bold">
+                    {isImage(latest.content) ? "Image" : getBriefContent(latest.content)}
+                  </h1>
                 }
+                cardBodyLongContent={latest.content}
+                cardFooterContent={
+                  <Badge text={latest.createdOn} tooltip={latest.createdOn} />
+                }
+                cardClickEvent={() => props.onSelectGroupHandler(latest.groupId)}
               />
             )}
             {unread && (
               <SummaryCard
-                cardStyle={
-                  "bg-gradient-to-r from-green-500 to-green-400 text-white rounded-md"
-                }
+                cardType={elementType.div}
+                cardStyle={"bg-gradient-to-r from-green-500 to-green-400 text-white rounded-md"}
                 cardHeaderTitle={"Unread"}
                 cardBodyType={cardBodyTypes.NUMBER}
                 cardBodyContent={unread}

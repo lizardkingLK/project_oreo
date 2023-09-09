@@ -45,7 +45,6 @@ import {
   saveFile,
   updateUnread,
 } from "@/utils/http";
-import Head from "next/head";
 
 let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 

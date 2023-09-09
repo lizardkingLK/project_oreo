@@ -1,4 +1,4 @@
-import { NameType } from "@/types";
+import { CardContentType, NameType } from "@/types";
 import { mediaTypes, messageTypes } from "./enums";
 
 const getTimeConverted = (tempDate: Date = new Date()) => {
