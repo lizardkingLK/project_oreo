@@ -268,7 +268,9 @@ export interface IDashboardProps {
 
 export interface IIntroductionProps {
   user: any;
+  groups: IGroupProps[];
   setSection: Function;
+  onSelectGroupHandler: Function;
 }
 
 export interface ISecitonSwitchProps {

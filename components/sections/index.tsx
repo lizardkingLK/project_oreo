@@ -48,7 +48,7 @@ const SectionSwitch = (props: ISecitonSwitchProps) => {
     } else if (section === sections.introduction) {
       return (
         <div className="flex h-screen items-center justify-center w-full">
-          <Introduction user={user} setSection={setSection} />
+          <Introduction groups={groups} user={user} setSection={setSection} onSelectGroupHandler={onSelectGroupHandler} />
         </div>
       );
     } else if (section === sections.home) {
