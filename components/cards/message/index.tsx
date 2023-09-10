@@ -50,10 +50,9 @@ export default function MessageCard(props: IMessageCardProps) {
         ) : (
           <div
             title={messageTime}
-            className={`p-4 my-4 min-w-max rounded-xl bg-gradient-to-r 
-        ${type === messageTypes.RECEIVED
-                ? "from-green-400 ml-2 to-green-500 rounded-tl-none cursor-pointer"
-                : "from-stone-400 to-stone-500 rounded-tr-none cursor-pointer text-right"
+            className={`my-4 min-w-max rounded-xl ${isImage(content) ? "bg-transparent" : "p-4 bg-gradient-to-r"} ${type === messageTypes.RECEIVED
+              ? "from-green-400 ml-2 to-green-500 rounded-tl-none cursor-pointer"
+              : "from-stone-400 to-stone-500 rounded-tr-none cursor-pointer text-right"
               }`}
           >
             <MessageMedia content={content} />

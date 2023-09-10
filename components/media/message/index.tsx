@@ -11,7 +11,11 @@ const MessageMedia = (props: { content: string }) => {
         content.indexOf(")")
       );
       const src = isLocalStorage() ? `/uploads/${path}` : path;
-      return <Picture alt="preview" height={120} width={120} src={src} />;
+      return (
+        <div className="bg-gradient-to-r from-green-500 to-green-800 shadow-xl">
+          <Picture alt="preview" height={140} width={140} src={src} />
+        </div>
+      );
     }
     return (
       <h1
