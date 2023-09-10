@@ -72,3 +72,8 @@ export enum elementType {
   button = "button",
   div = "div",
 }
+
+export enum strategyType {
+  local = "local",
+  cloud = "cloud",
+}

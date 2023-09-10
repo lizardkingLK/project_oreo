@@ -254,6 +254,8 @@ export interface IDialogProps {
 
 export interface ISectionLayoutProps {
   title?: string;
+  content?: string;
+  tooltip?: string;
   children: ReactNode;
 }
 
@@ -266,7 +268,9 @@ export interface IDashboardProps {
 
 export interface IIntroductionProps {
   user: any;
+  groups: IGroupProps[];
   setSection: Function;
+  onSelectGroupHandler: Function;
 }
 
 export interface ISecitonSwitchProps {

@@ -1,5 +1,5 @@
-import { CardContentType, NameType } from "@/types";
-import { mediaTypes, messageTypes } from "./enums";
+import { NameType } from "@/types";
+import { mediaTypes, messageTypes, strategyType } from "./enums";
 
 const getTimeConverted = (tempDate: Date = new Date()) => {
   const tempHours = tempDate.getHours().toString().padStart(2, "0"),
@@ -7,7 +7,7 @@ const getTimeConverted = (tempDate: Date = new Date()) => {
   return `${tempHours}:${tempMinutes}`;
 };
 
-const formatCompactNumber = (input: string) => {
+const formatCompactNumber = (input: string | null) => {
   const number = Number(input);
   if (isNaN(number)) {
     return 0;
@@ -38,13 +38,13 @@ const openImageInNewTab = (content: string) => {
 const getBriefContent = (content: string) => {
   if (isImage(content)) {
     return mediaTypes.image;
-  } else if (content?.length > 30) {
-    return content.substring(0, 30).concat("...");
+  } else if (content?.length > 20) {
+    return content.substring(0, 20).concat("...");
   } else return content;
 };
 
 const isLocalStorage = () => {
-  return process.env.NEXT_PUBLIC_LOCAL_STORAGE === "local";
+  return process.env.NEXT_PUBLIC_LOCAL_STORAGE === strategyType.local;
 };
 
 const getRandomNumber = () => {
@@ -68,6 +68,10 @@ const getNameOfUser = (target: {
     : target.username;
 };
 
+const isSocketsStrategy = () => {
+  return process.env.NEXT_PUBLIC_MESSAGE_STRATEGY === strategyType.local;
+};
+
 export {
   getTimeConverted,
   formatCompactNumber,
@@ -79,4 +83,5 @@ export {
   getNameOfUser,
   writeContentToClipboard,
   openImageInNewTab,
+  isSocketsStrategy,
 };

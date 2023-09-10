@@ -1,12 +1,13 @@
 import UserCard from "@/components/cards/user";
 import Spinner from "@/components/svgs/spinner";
-import { sections, userSearchMessageTypes } from "@/utils/enums";
+import { userSearchMessageTypes } from "@/utils/enums";
 import { useAuth } from "@clerk/nextjs";
 import { User } from "@clerk/nextjs/dist/types/server";
 import React, { useEffect, useRef, useState } from "react";
 import SectionLayout from "../../layout";
 import { IAddFriendProps } from "@/types";
 import { getUsers, inviteFriend } from "@/utils/http";
+import { formatCompactNumber } from "@/utils/helpers";
 
 const AddFriend = (props: IAddFriendProps) => {
   const [search, setSearch] = useState("");
@@ -78,8 +79,10 @@ const AddFriend = (props: IAddFriendProps) => {
       setUser(null);
     };
 
+    const usersCount = formatCompactNumber(users?.length.toString() ?? null).toString();
+
     return (
-      <SectionLayout title="Add Friend">
+      <SectionLayout title="Add Friend" content={usersCount} tooltip={`${usersCount} users available`}>
         <form
           onSubmit={handleSearch}
           className="md:flex md:justify-between md:items-center"
