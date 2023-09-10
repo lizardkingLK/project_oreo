@@ -1,5 +1,5 @@
-import { CardContentType, NameType } from "@/types";
-import { mediaTypes, messageTypes } from "./enums";
+import { NameType } from "@/types";
+import { mediaTypes, messageTypes, strategyType } from "./enums";
 
 const getTimeConverted = (tempDate: Date = new Date()) => {
   const tempHours = tempDate.getHours().toString().padStart(2, "0"),
@@ -44,7 +44,7 @@ const getBriefContent = (content: string) => {
 };
 
 const isLocalStorage = () => {
-  return process.env.NEXT_PUBLIC_LOCAL_STORAGE === "local";
+  return process.env.NEXT_PUBLIC_LOCAL_STORAGE === strategyType.local;
 };
 
 const getRandomNumber = () => {
@@ -68,6 +68,10 @@ const getNameOfUser = (target: {
     : target.username;
 };
 
+const isSocketsStrategy = () => {
+  return process.env.NEXT_PUBLIC_MESSAGE_STRATEGY === strategyType.local;
+};
+
 export {
   getTimeConverted,
   formatCompactNumber,
@@ -79,4 +83,5 @@ export {
   getNameOfUser,
   writeContentToClipboard,
   openImageInNewTab,
+  isSocketsStrategy,
 };
