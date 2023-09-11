@@ -68,10 +68,6 @@ const getNameOfUser = (target: {
     : target.username;
 };
 
-const isSocketsStrategy = () => {
-  return process.env.NEXT_PUBLIC_MESSAGE_STRATEGY === strategyType.local;
-};
-
 export {
   getTimeConverted,
   formatCompactNumber,
@@ -83,5 +79,4 @@ export {
   getNameOfUser,
   writeContentToClipboard,
   openImageInNewTab,
-  isSocketsStrategy,
 };

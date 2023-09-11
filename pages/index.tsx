@@ -29,7 +29,6 @@ import {
   getRandomNumber,
   getTimeConverted,
   isLocalStorage,
-  isSocketsStrategy,
   openImageInNewTab,
   writeContentToClipboard,
 } from "@/utils/helpers";
@@ -46,12 +45,10 @@ import {
   saveFile,
   updateUnread,
 } from "@/utils/http";
-import { handleEvent } from "@/utils/io";
 
 let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 
 const Messages = () => {
-  const [messageLocally] = useState(isSocketsStrategy());
   const [storeLocally] = useState(isLocalStorage());
   const [navbar, setNavbar] = useState(false);
   const [groups, setGroups] = useState<IGroupProps[]>([]);
@@ -93,14 +90,9 @@ const Messages = () => {
           setSection(sections.introduction);
         }
       });
-      if (messageLocally) {
-        initializeSocket().then(() => socket.emit("identity", userId));
-      } else {
-        // here initialize ably
-        handleEvent(messageLocally, socket, {});
-      }
+      initializeSocket().then(() => socket.emit("identity", userId));
     }
-  }, [userId, messageLocally]);
+  }, [userId]);
 
   useEffect(() => {
     const tempGroup = groups?.find(
