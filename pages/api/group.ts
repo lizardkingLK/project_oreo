@@ -1,5 +1,4 @@
-import { supabaseClient } from "@/lib/supabase";
-import { quickMessages, tableNames } from "@/utils/enums";
+import { supabaseUtil } from "@/lib/supabase";
 import { clerkClient } from "@clerk/nextjs";
 import { randomUUID } from "crypto";
 import type { NextApiRequest, NextApiResponse } from "next";
@@ -33,24 +32,13 @@ export default async function handler(
   try {
     if (req.method === "POST") {
       const { ownerId, userId } = req.body;
-
       const { data: dataRecordCreate, error: errorRecordCreate } =
-        await supabaseClient
-          .from(tableNames.message)
-          .insert([
-            {
-              userId: ownerId,
-              groupId: randomUUID(),
-              referenceId: randomUUID(),
-              createdFor: [userId, ownerId],
-              readBy: [
-                { id: userId, value: false },
-                { id: ownerId, value: true },
-              ],
-              content: quickMessages.hi,
-            },
-          ])
-          .select();
+        await supabaseUtil.createGroup(
+          ownerId,
+          randomUUID(),
+          randomUUID(),
+          userId
+        );
 
       if (errorRecordCreate) {
         return res.status(500).send({ message: errorRecordCreate.message });
@@ -61,12 +49,8 @@ export default async function handler(
       return res.status(201).json(messages);
     } else if (req.method === "GET") {
       const { userId } = req.query;
-
-      const { data: dataMessages, error: errorMessages } = await supabaseClient
-        .from(tableNames.message)
-        .select()
-        .contains("createdFor", [userId])
-        .order("createdAt", { ascending: true });
+      const { data: dataMessages, error: errorMessages } =
+        await supabaseUtil.getMessages(userId);
 
       if (errorMessages) {
         console.log(errorMessages.message);

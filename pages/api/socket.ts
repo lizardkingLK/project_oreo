@@ -1,4 +1,4 @@
-import { supabaseClient } from "@/lib/supabase";
+import { supabaseUtil } from "@/lib/supabase";
 import { PersistedSocket } from "@/types";
 import { tableNames } from "@/utils/enums";
 import type { Server as HTTPServer } from "http";
@@ -102,16 +102,14 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
           { id: fromId, value: true },
         ];
         message = Object.assign(message, { readBy });
-        const { error } = await supabaseClient.from(tableNames.message).insert([
-          {
-            referenceId: referenceId,
-            userId: fromId,
-            groupId: groupId,
-            createdFor: [toId, fromId],
-            content: content,
-            readBy,
-          },
-        ]);
+        const { error } = await supabaseUtil.createMessage(
+          referenceId,
+          fromId,
+          groupId,
+          toId,
+          content,
+          readBy
+        );
         if (error) {
           return;
         }

@@ -3,7 +3,6 @@ import { useAuth, useUser } from "@clerk/nextjs";
 
 import io, { Socket } from "socket.io-client";
 import { DefaultEventsMap } from "@socket.io/component-emitter";
-import { getPublicUrl, uploadFile } from "@/lib/supabase";
 
 import {
   ICreatedForDataProps,
@@ -45,6 +44,8 @@ import {
   saveFile,
   updateUnread,
 } from "@/utils/http";
+
+import { supabaseUtil } from "@/lib/supabase";
 
 let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 
@@ -473,7 +474,7 @@ const Messages = () => {
         Object.values(files).forEach((file) => {
           (async () => {
             const path = `${group.id}/${getRandomNumber()}`;
-            const response = await uploadFile(
+            const response = await supabaseUtil.uploadFile(
               file,
               bucketNames.attachments,
               path
@@ -481,7 +482,7 @@ const Messages = () => {
             if (response == null || response.error) {
               throw response.error;
             }
-            const { data } = getPublicUrl(bucketNames.attachments, path);
+            const { data } = supabaseUtil.getPublicUrl(bucketNames.attachments, path);
             newMessage.content = `[${mediaTypes.image}](${data.publicUrl})`;
             sendMessage(newMessage);
             setNotifs(getRandomNumber());
