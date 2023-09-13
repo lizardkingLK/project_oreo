@@ -7,8 +7,10 @@ import React, { Fragment } from 'react';
 const Group = (props: IGroupSectionProps) => {
   if (props) {
     const {
+      userId,
       messages,
       group,
+      groups,
       setGroup,
       active,
       notifs,
@@ -19,6 +21,7 @@ const Group = (props: IGroupSectionProps) => {
       onSubmitHandler,
       onDeleteHandler,
       onCopyHandler,
+      onForwardHandler,
       onViewHandler,
       onMediaHandler,
       textInputRef,
@@ -61,8 +64,12 @@ const Group = (props: IGroupSectionProps) => {
             lastMessageRef={lastMessageRef}
             onDeleteHandler={onDeleteHandler}
             onCopyHandler={onCopyHandler}
+            onForwardHandler={onForwardHandler}
+            onGroupClickHandler={onForwardHandler}
             onViewHandler={onViewHandler}
             loading={loading}
+            groups={groups}
+            userId={userId}
           />
         </div>
         <div className="sticky bottom-0 p-4 bg-black">

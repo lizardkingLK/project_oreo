@@ -14,6 +14,7 @@ import Introduction from './introduction';
 const SectionSwitch = (props: ISecitonSwitchProps) => {
   if (props) {
     const {
+      userId,
       section,
       setSection,
       groups,
@@ -30,6 +31,7 @@ const SectionSwitch = (props: ISecitonSwitchProps) => {
       onSubmitHandler,
       onDeleteHandler,
       onCopyHandler,
+      onForwardHandler,
       onViewHandler,
       onMediaHandler,
       onAddFriendHandler,
@@ -86,9 +88,11 @@ const SectionSwitch = (props: ISecitonSwitchProps) => {
     } else if (section === sections.group && group) {
       return (
         <Group
+          userId={userId}
           messages={messages}
           group={group}
           setGroup={setGroup}
+          groups={groups}
           active={active}
           notifs={notifs}
           lastMessageRef={lastMessageRef}
@@ -99,6 +103,7 @@ const SectionSwitch = (props: ISecitonSwitchProps) => {
           onMediaHandler={onMediaHandler}
           onDeleteHandler={onDeleteHandler}
           onCopyHandler={onCopyHandler}
+          onForwardHandler={onForwardHandler}
           onViewHandler={onViewHandler}
           textInputRef={textInputRef}
           loading={loading}

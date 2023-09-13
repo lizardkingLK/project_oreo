@@ -13,7 +13,6 @@ const MessageEditor = (props: IMessageEditorProps) => {
   const [files, setFiles] = useState(null);
   const [file, setFile] = useState(null);
   const [type, setType] = useState(null);
-  const attachmentRef = useRef(null);
 
   if (props) {
     const {
@@ -59,9 +58,9 @@ const MessageEditor = (props: IMessageEditorProps) => {
         <Fragment>
           {mediaModal && (
             <Dialog
-              dialogRef={attachmentRef}
               dialogTitle={'Send Attachment'}
               dialogSubtitle={'Attachment'}
+              dialogCloseTitle={'Cancel Attachment'}
               dialogCloseHandler={mediaCloseHandler}
             >
               {file && type ? (

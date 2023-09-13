@@ -67,6 +67,8 @@ export enum sections {
 export enum strings {
   someone = 'Someone',
   local = 'local',
+  referenceId = 'referenceId',
+  groupId = 'groupId',
 }
 
 export enum elementType {

@@ -33,8 +33,6 @@ import {
 } from '@/utils/helpers';
 
 import LayoutSwitch from '@/components/layout';
-import MessageLinkList from '@/components/lists/message/MessageLinkList';
-import UserNavbar from '@/components/navs/user';
 import Spinner from '@/components/svgs/spinner';
 import SectionSwitch from '@/components/sections';
 import {
@@ -67,6 +65,7 @@ const Messages = () => {
   const [rooms, setRooms] = useState<boolean>(false);
   const [online, setOnline] = useState<null | IUserOnlineProps>(null);
   const [unread, setUnread] = useState<null | number>(null);
+  const [referenceId, setReferenceId] = useState<null | string>(null);
 
   const textInputRef = useRef<null | HTMLInputElement>(null);
   const lastMessageRef = useRef<null | HTMLDivElement>(null);
@@ -290,6 +289,14 @@ const Messages = () => {
   const onCopyHandler = (referenceId: string) => {
     const message = messages?.find((m) => m.referenceId === referenceId);
     writeContentToClipboard(message?.content);
+  };
+
+  const onForwardHandler = (id: string, context: string) => {
+    if (context === strings.referenceId) {
+      setReferenceId(id);
+    } else if (context === strings.groupId) {
+      console.log({ referenceId, groupId: id });
+    }
   };
 
   const onViewHandler = (referenceId: string) => {
@@ -610,6 +617,7 @@ const Messages = () => {
             onMediaHandler={onMediaHandler}
             onDeleteHandler={onDeleteHandler}
             onCopyHandler={onCopyHandler}
+            onForwardHandler={onForwardHandler}
             onViewHandler={onViewHandler}
             onAddFriendHandler={onAddFriendHandler}
             onSelectGroupHandler={onSelectGroupHandler}
@@ -624,6 +632,7 @@ const Messages = () => {
             active={active}
             notifs={notifs}
             navbar={navbar}
+            userId={userId}
           />
         </div>
       </section>

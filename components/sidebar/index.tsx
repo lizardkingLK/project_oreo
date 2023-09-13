@@ -1,7 +1,7 @@
-import React from 'react'
-import UserNavbar from '../navs/user'
-import MessageLinkList from '../lists/message/MessageLinkList'
-import { ISidebarProps } from '@/types'
+import React from 'react';
+import UserNavbar from '../navs/user';
+import MessageLinkList from '../lists/message/MessageLinkList';
+import { ISidebarProps } from '@/types';
 
 const SidebarSwitch = (props: ISidebarProps) => {
   const {
@@ -15,7 +15,7 @@ const SidebarSwitch = (props: ISidebarProps) => {
     group,
     active,
     userId,
-  } = props
+  } = props;
   if (navbar) {
     return (
       <div className={className}>
@@ -26,20 +26,20 @@ const SidebarSwitch = (props: ISidebarProps) => {
           newUser={newUser}
         />
       </div>
-    )
+    );
   } else {
     return (
       <div className={className}>
         <MessageLinkList
           groups={groups}
-          setGroup={onSelectGroupHandler}
+          onGroupClickHandler={onSelectGroupHandler}
           selectedGroup={group}
           active={active}
           userId={userId}
         />
       </div>
-    )
+    );
   }
-}
+};
 
-export default SidebarSwitch
+export default SidebarSwitch;

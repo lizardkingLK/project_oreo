@@ -21,8 +21,10 @@ export default function MessageCard(props: IMessageCardProps) {
       content,
       onDeleteHandler,
       onCopyHandler,
+      onForwardHandler,
       onViewHandler,
       loading,
+      setForwardModal,
     } = props;
 
     return (
@@ -43,9 +45,11 @@ export default function MessageCard(props: IMessageCardProps) {
             options={options}
             onDeleteHandler={onDeleteHandler}
             onCopyHandler={onCopyHandler}
+            onForwardHandler={onForwardHandler}
             onViewHandler={onViewHandler}
             loading={loading}
             isImage={isImage(content)}
+            setForwardModal={setForwardModal}
           />
         ) : (
           <div

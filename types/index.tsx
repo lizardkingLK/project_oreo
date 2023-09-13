@@ -100,7 +100,7 @@ export interface IGroupProps {
 
 export interface IMessageLinkListProps {
   groups: IGroupProps[] | null | undefined;
-  setGroup: Function;
+  onGroupClickHandler: Function;
   selectedGroup: IGroupProps | null | undefined;
   active: any;
   userId: string | null;
@@ -114,12 +114,16 @@ interface IActiveProps {
 
 export interface IMessageListProps {
   messages: IMessageProps[] | undefined;
+  groups: IGroupProps[];
+  userId: string | null;
   group: IGroupProps | null | undefined;
   active: IActiveProps;
   notifs: NotificationType;
   lastMessageRef: LegacyRef<HTMLDivElement>;
+  onGroupClickHandler: Function;
   onDeleteHandler: Function;
   onCopyHandler: Function;
+  onForwardHandler: Function;
   onViewHandler: Function;
   loading: boolean;
 }
@@ -171,7 +175,9 @@ export interface IMessageCardProps {
   messageAuthorName: NameType | string;
   onDeleteHandler: Function;
   onCopyHandler: Function;
+  onForwardHandler: Function;
   onViewHandler: Function;
+  setForwardModal: Function;
   loading: boolean;
 }
 
@@ -247,9 +253,9 @@ export interface IUserCardProps {
 }
 
 export interface IDialogProps {
-  dialogRef: LegacyRef<HTMLDivElement>;
   dialogTitle: string;
   dialogSubtitle: string;
+  dialogCloseTitle: string;
   dialogCloseHandler: MouseEventHandler<HTMLButtonElement>;
   children: ReactNode;
 }
@@ -276,6 +282,7 @@ export interface IIntroductionProps {
 }
 
 export interface ISecitonSwitchProps {
+  userId: string | null;
   section: sections;
   setSection: Function;
   user: any;
@@ -291,6 +298,7 @@ export interface ISecitonSwitchProps {
   onSubmitHandler: MouseEventHandler<HTMLButtonElement>;
   onDeleteHandler: Function;
   onCopyHandler: Function;
+  onForwardHandler: Function;
   onViewHandler: Function;
   onMediaHandler: Function;
   onAddFriendHandler: Function;
@@ -302,7 +310,9 @@ export interface ISecitonSwitchProps {
 }
 
 export interface IGroupSectionProps {
+  userId: string | null;
   group: IGroupProps;
+  groups: IGroupProps[];
   active: any;
   notifs: NotificationType;
   input: string;
@@ -313,6 +323,7 @@ export interface IGroupSectionProps {
   onSubmitHandler: MouseEventHandler<HTMLButtonElement>;
   onDeleteHandler: Function;
   onCopyHandler: Function;
+  onForwardHandler: Function;
   onViewHandler: Function;
   onMediaHandler: Function;
   setGroup: Function;
@@ -328,7 +339,9 @@ export interface IMessageMenuProps {
   messageTime: string;
   onDeleteHandler: Function;
   onCopyHandler: Function;
+  onForwardHandler: Function;
   onViewHandler: Function;
+  setForwardModal: Function;
   isImage: boolean;
 }
 
