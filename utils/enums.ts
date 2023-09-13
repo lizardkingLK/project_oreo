@@ -1,79 +1,80 @@
 export enum messageTypes {
-  SENT = 1,
-  RECEIVED = 2,
+    SENT = 1,
+    RECEIVED = 2,
 }
 
 export enum interTypes {
-  PRIVATE = 1,
+    PRIVATE = 1,
 }
 
 export enum groupTypes {
-  PRIVATE = 1,
-  PUBLIC = 2,
+    PRIVATE = 1,
+    PUBLIC = 2,
 }
 
 export enum apiUrls {
-  group = "/api/group",
-  feed = "/api/feed",
-  message = "/api/message",
-  socket = "/api/socket",
-  login = "/api/login",
-  file = "/api/file",
-  invitation = "/api/invitation",
-  user = "/api/user",
-  common = "/api/common",
+    group = '/api/group',
+    feed = '/api/feed',
+    message = '/api/message',
+    socket = '/api/socket',
+    login = '/api/login',
+    file = '/api/file',
+    invitation = '/api/invitation',
+    user = '/api/user',
+    auth = '/api/auth',
 }
 
 export enum cardBodyTypes {
-  NUMBER = 1,
-  STRING = 2,
-  ELEMENT = 3,
+    NUMBER = 1,
+    STRING = 2,
+    ELEMENT = 3,
 }
 
 export enum mediaTypes {
-  image = "image",
+    image = 'image',
 }
 
 export enum userSearchMessageTypes {
-  found = "User Found",
-  notFound = "No User Found",
+    found = 'User Found',
+    notFound = 'No User Found',
 }
 
 export enum tableNames {
-  message = "Message",
+    message = 'Message',
 }
 
 export enum quickMessages {
-  hi = "Hi!",
+    hi = 'Hi!',
 }
 
 export enum bucketNames {
-  attachments = "attachments",
+    attachments = 'attachments',
 }
 
 export enum resourcePaths {
-  imageFavicon = "/favicon.png",
+    imageFavicon = '/favicon.png',
 }
 
 export enum sections {
-  loading = 0,
-  introduction = 1,
-  home = 2,
-  addFriend = 3,
-  group = 4,
-  feeds = 5,
+    loading = 0,
+    introduction = 1,
+    home = 2,
+    addFriend = 3,
+    group = 4,
+    feeds = 5,
 }
 
 export enum strings {
-  someone = "Someone",
+    someone = 'Someone',
+    local = 'local',
 }
 
 export enum elementType {
-  button = "button",
-  div = "div",
+    button = 'button',
+    div = 'div',
 }
 
-export enum strategyType {
-  local = "local",
-  cloud = "cloud",
+export enum messagingType {
+    sockets = 'sockets',
+    ably = 'ably',
 }

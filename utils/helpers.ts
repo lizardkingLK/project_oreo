@@ -1,13 +1,13 @@
 import { NameType } from "@/types";
-import { mediaTypes, messageTypes, strategyType } from "./enums";
+import { mediaTypes, messageTypes, strings } from "./enums";
 
-const getTimeConverted = (tempDate: Date = new Date()) => {
+export const getTimeConverted = (tempDate: Date = new Date()) => {
   const tempHours = tempDate.getHours().toString().padStart(2, "0"),
     tempMinutes = tempDate.getMinutes().toString().padStart(2, "0");
   return `${tempHours}:${tempMinutes}`;
 };
 
-const formatCompactNumber = (input: string | null) => {
+export const formatCompactNumber = (input: string | null) => {
   const number = Number(input);
   if (isNaN(number)) {
     return 0;
@@ -16,26 +16,26 @@ const formatCompactNumber = (input: string | null) => {
   return formatter.format(number);
 };
 
-const isImage = (content: string) => {
+export const isImage = (content: string) => {
   return content?.startsWith("[image](");
 };
 
-const getContent = (content: string) => {
+export const getContent = (content: string) => {
   const isMedia = isImage(content);
   return isMedia
     ? content?.substring(content?.indexOf("(") + 1, content?.indexOf(")"))
     : content;
 };
 
-const writeContentToClipboard = (content: string) => {
+export const writeContentToClipboard = (content: string) => {
   navigator.clipboard.writeText(getContent(content));
 };
 
-const openImageInNewTab = (content: string) => {
+export const openImageInNewTab = (content: string) => {
   window.open(getContent(content), "_blank");
 };
 
-const getBriefContent = (content: string) => {
+export const getBriefContent = (content: string) => {
   if (isImage(content)) {
     return mediaTypes.image;
   } else if (content?.length > 20) {
@@ -43,22 +43,22 @@ const getBriefContent = (content: string) => {
   } else return content;
 };
 
-const isLocalStorage = () => {
-  return process.env.NEXT_PUBLIC_LOCAL_STORAGE === strategyType.local;
+export const isLocalStorage = () => {
+  return process.env.NEXT_PUBLIC_LOCAL_STORAGE === strings.local;
 };
 
-const getRandomNumber = () => {
+export const getRandomNumber = () => {
   return window.crypto.randomUUID();
 };
 
-const getMessageType = (
+export const getMessageType = (
   messageUserId: string,
   userId: string | null | undefined
 ) => {
   return messageUserId === userId ? messageTypes.SENT : messageTypes.RECEIVED;
 };
 
-const getNameOfUser = (target: {
+export const getNameOfUser = (target: {
   firstName: NameType;
   lastName: NameType;
   username: NameType;
@@ -68,15 +68,6 @@ const getNameOfUser = (target: {
     : target.username;
 };
 
-export {
-  getTimeConverted,
-  formatCompactNumber,
-  isImage,
-  getBriefContent,
-  isLocalStorage,
-  getRandomNumber,
-  getMessageType,
-  getNameOfUser,
-  writeContentToClipboard,
-  openImageInNewTab,
+export const getMessagingMethod = () => {
+  return process.env.NEXT_PUBLIC_MESSAGING;
 };

@@ -53,7 +53,7 @@ const SectionSwitch = (props: ISecitonSwitchProps) => {
       );
     } else if (section === sections.home) {
       return (
-        <div className="hidden md:flex h-screen items-center justify-center md:md:w-full">
+        <div className="flex h-screen items-center justify-center md:md:w-full">
           <Dashboard groups={groups} user={user} notifs={notifs} onSelectGroupHandler={onSelectGroupHandler} />
         </div>
       );
