@@ -1,15 +1,15 @@
-import React from "react";
+import React from 'react';
 
-import { ISecitonSwitchProps } from "@/types";
+import { ISecitonSwitchProps } from '@/types';
 
-import { sections } from "@/utils/enums";
+import { sections } from '@/utils/enums';
 
-import AddFriend from "@/components/sections/friends/add";
-import Feeds from "@/components/sections/feeds";
-import Dashboard from "@/components/sections/dashboard";
-import Group from "./group";
-import Spinner from "../svgs/spinner";
-import Introduction from "./introduction";
+import AddFriend from '@/components/sections/friends/add';
+import Feeds from '@/components/sections/feeds';
+import Dashboard from '@/components/sections/dashboard';
+import Group from './group';
+import Spinner from '../svgs/spinner';
+import Introduction from './introduction';
 
 const SectionSwitch = (props: ISecitonSwitchProps) => {
   if (props) {
@@ -48,19 +48,33 @@ const SectionSwitch = (props: ISecitonSwitchProps) => {
     } else if (section === sections.introduction) {
       return (
         <div className="flex h-screen items-center justify-center w-full">
-          <Introduction groups={groups} user={user} setSection={setSection} onSelectGroupHandler={onSelectGroupHandler} />
+          <Introduction
+            groups={groups}
+            user={user}
+            setSection={setSection}
+            onSelectGroupHandler={onSelectGroupHandler}
+          />
         </div>
       );
     } else if (section === sections.home) {
       return (
         <div className="flex h-screen items-center justify-center md:md:w-full">
-          <Dashboard groups={groups} user={user} notifs={notifs} onSelectGroupHandler={onSelectGroupHandler} />
+          <Dashboard
+            groups={groups}
+            user={user}
+            notifs={notifs}
+            onSelectGroupHandler={onSelectGroupHandler}
+          />
         </div>
       );
     } else if (section === sections.addFriend) {
       return (
         <div className="flex h-screen items-center justify-center w-full">
-          <AddFriend onAddFriendHandler={onAddFriendHandler} onSelectGroupHandler={onSelectGroupHandler} groups={groups} />
+          <AddFriend
+            onAddFriendHandler={onAddFriendHandler}
+            onSelectGroupHandler={onSelectGroupHandler}
+            groups={groups}
+          />
         </div>
       );
     } else if (section === sections.feeds) {

@@ -1,8 +1,8 @@
-import { Fragment } from "react";
-import Head from "next/head";
-import { ClerkProvider } from "@clerk/nextjs";
-import type { AppProps } from "next/app";
-import "@/styles/globals.css";
+import { Fragment } from 'react';
+import Head from 'next/head';
+import { ClerkProvider } from '@clerk/nextjs';
+import type { AppProps } from 'next/app';
+import '@/styles/globals.css';
 
 export default function App({
   Component,

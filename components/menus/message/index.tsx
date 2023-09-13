@@ -1,17 +1,25 @@
-import React from "react";
+import React from 'react';
 
-import Bin from "@/components/svgs/Bin";
-import Copy from "@/components/svgs/copy";
-import Pencil from "@/components/svgs/pencil";
-import Spinner from "@/components/svgs/spinner";
+import Bin from '@/components/svgs/Bin';
+import Copy from '@/components/svgs/copy';
+import Pencil from '@/components/svgs/pencil';
+import Spinner from '@/components/svgs/spinner';
 
-import { IMessageMenuProps } from "@/types";
-import Picture from "@/components/svgs/picture";
+import { IMessageMenuProps } from '@/types';
+import Picture from '@/components/svgs/picture';
 
 const MessageMenu = (props: IMessageMenuProps) => {
   if (props) {
-    const { referenceId, options, onDeleteHandler, onCopyHandler, onViewHandler, loading, messageTime, isImage } =
-      props;
+    const {
+      referenceId,
+      options,
+      onDeleteHandler,
+      onCopyHandler,
+      onViewHandler,
+      loading,
+      messageTime,
+      isImage,
+    } = props;
 
     if (options) {
       return (

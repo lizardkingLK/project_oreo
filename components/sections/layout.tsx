@@ -1,6 +1,6 @@
-import { ISectionLayoutProps } from "@/types";
-import React from "react";
-import Badge from "../badge";
+import { ISectionLayoutProps } from '@/types';
+import React from 'react';
+import Badge from '../badge';
 
 const SectionLayout = (props: ISectionLayoutProps) => {
   if (props) {
@@ -9,7 +9,7 @@ const SectionLayout = (props: ISectionLayoutProps) => {
       <section className="flex justify-center">
         <div
           className={
-            "bg-black md:bg-transparent md:relative md:block container p-4"
+            'bg-black md:bg-transparent md:relative md:block container p-4'
           }
         >
           <div className="flex justify-between items-center">
@@ -18,9 +18,7 @@ const SectionLayout = (props: ISectionLayoutProps) => {
                 {title}
               </h1>
             )}
-            {content && tooltip && (
-              <Badge text={content} tooltip={tooltip} />
-            )}
+            {content && tooltip && <Badge text={content} tooltip={tooltip} />}
           </div>
           {children}
         </div>

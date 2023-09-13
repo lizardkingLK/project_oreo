@@ -1,6 +1,6 @@
-import React, { Fragment } from "react";
-import MessageLink from "@/components/links/message";
-import { IMessageLinkListProps } from "@/types";
+import React, { Fragment } from 'react';
+import MessageLink from '@/components/links/message';
+import { IMessageLinkListProps } from '@/types';
 
 const MessageLinkList = (props: IMessageLinkListProps) => {
   if (props) {
@@ -8,7 +8,7 @@ const MessageLinkList = (props: IMessageLinkListProps) => {
 
     return (
       <Fragment>
-        {groups?.map(group => {
+        {groups?.map((group) => {
           return (
             <MessageLink
               key={group.id}

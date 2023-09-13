@@ -1,8 +1,8 @@
-import MessageEditor from "@/components/forms/message";
-import MessageList from "@/components/lists/message/MessageList";
-import ChevronBack from "@/components/svgs/chevronBack";
-import { IGroupSectionProps } from "@/types";
-import React, { Fragment } from "react";
+import MessageEditor from '@/components/forms/message';
+import MessageList from '@/components/lists/message/MessageList';
+import ChevronBack from '@/components/svgs/chevronBack';
+import { IGroupSectionProps } from '@/types';
+import React, { Fragment } from 'react';
 
 const Group = (props: IGroupSectionProps) => {
   if (props) {
@@ -34,12 +34,14 @@ const Group = (props: IGroupSectionProps) => {
           >
             <ChevronBack />
           </button>
-          <div className={`basis-8/12 ${navbar ? "collapse" : "visible"}`}>
+          <div className={`basis-8/12 ${navbar ? 'collapse' : 'visible'}`}>
             <h1 className="flex text-md md:text-2xl text-white font-bold">
               <span>{group.name}</span>
             </h1>
             {group.isOnline ? (
-              <h1 className="text-sm md:text-md font-bold text-green-500">Online</h1>
+              <h1 className="text-sm md:text-md font-bold text-green-500">
+                Online
+              </h1>
             ) : (
               <h1 className="text-sm md:text-md font-bold text-white">
                 {group.lastMessage?.createdOn}

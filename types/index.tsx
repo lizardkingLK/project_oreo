@@ -1,4 +1,4 @@
-import { elementType, groupTypes, messageTypes, sections } from "@/utils/enums";
+import { elementType, groupTypes, messageTypes, sections } from '@/utils/enums';
 
 import {
   ChangeEventHandler,
@@ -7,9 +7,9 @@ import {
   MouseEventHandler,
   ReactElement,
   ReactNode,
-} from "react";
+} from 'react';
 
-import { User } from "@clerk/nextjs/dist/types/server";
+import { User } from '@clerk/nextjs/dist/types/server';
 
 export type NameType = string | null | undefined;
 
@@ -339,4 +339,17 @@ export interface IAddFriendProps {
 export interface IBadgeProps {
   text: string;
   tooltip: string;
+}
+
+export interface ISidebarProps {
+  className: string;
+  navbar: boolean;
+  setNavbar: Function;
+  setSection: Function;
+  newUser: boolean;
+  groups: IGroupProps[];
+  active: boolean;
+  userId: string | null;
+  onSelectGroupHandler: Function;
+  group: IGroupProps;
 }

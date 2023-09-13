@@ -1,5 +1,5 @@
-import { quickMessages, tableNames } from "@/utils/enums";
-import { createClient } from "@supabase/supabase-js";
+import { quickMessages, tableNames } from '@/utils/enums';
+import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
@@ -56,26 +56,26 @@ export const supabaseUtil = {
     return await supabaseClient
       .from(tableNames.message)
       .select()
-      .contains("createdFor", [userId])
-      .order("createdAt", { ascending: true });
+      .contains('createdFor', [userId])
+      .order('createdAt', { ascending: true });
   },
   async deleteMessages(referenceId: string | string[] | undefined) {
     return await supabaseClient
       .from(tableNames.message)
       .delete()
-      .eq("referenceId", referenceId);
+      .eq('referenceId', referenceId);
   },
   async getMessagesByGroupId(groupId: string | string[] | undefined) {
     return await supabaseClient
       .from(tableNames.message)
       .select()
-      .eq("groupId", groupId);
+      .eq('groupId', groupId);
   },
   async updateMessages(readBy: { id: string; value: boolean }[], id: string) {
     return await supabaseClient
       .from(tableNames.message)
       .update({ readBy })
-      .eq("id", id);
+      .eq('id', id);
   },
   async createMessage(
     referenceId: string,

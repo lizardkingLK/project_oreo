@@ -1,4 +1,4 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 type Feed = {
   id: number;
@@ -15,22 +15,22 @@ export default function handler(
   res.status(200).json([
     {
       id: 1,
-      name: "Amelia Nelson",
-      imagePath: "/static/pfp1.jpg",
+      name: 'Amelia Nelson',
+      imagePath: '/static/pfp1.jpg',
       size: 50,
       isStatus: false,
     },
     {
       id: 2,
-      name: "Sam Jetstream",
-      imagePath: "/static/pfp2.jpg",
+      name: 'Sam Jetstream',
+      imagePath: '/static/pfp2.jpg',
       size: 50,
       isStatus: true,
     },
     {
       id: 3,
-      name: "Rob Halford",
-      imagePath: "/static/pfp3.jpg",
+      name: 'Rob Halford',
+      imagePath: '/static/pfp3.jpg',
       size: 50,
       isStatus: false,
     },

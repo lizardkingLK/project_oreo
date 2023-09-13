@@ -1,9 +1,9 @@
-import { NameType } from "@/types";
-import { mediaTypes, messageTypes, strings } from "./enums";
+import { NameType } from '@/types';
+import { mediaTypes, messageTypes, strings } from './enums';
 
 export const getTimeConverted = (tempDate: Date = new Date()) => {
-  const tempHours = tempDate.getHours().toString().padStart(2, "0"),
-    tempMinutes = tempDate.getMinutes().toString().padStart(2, "0");
+  const tempHours = tempDate.getHours().toString().padStart(2, '0'),
+    tempMinutes = tempDate.getMinutes().toString().padStart(2, '0');
   return `${tempHours}:${tempMinutes}`;
 };
 
@@ -12,18 +12,18 @@ export const formatCompactNumber = (input: string | null) => {
   if (isNaN(number)) {
     return 0;
   }
-  const formatter = Intl.NumberFormat("en", { notation: "compact" });
+  const formatter = Intl.NumberFormat('en', { notation: 'compact' });
   return formatter.format(number);
 };
 
 export const isImage = (content: string) => {
-  return content?.startsWith("[image](");
+  return content?.startsWith('[image](');
 };
 
 export const getContent = (content: string) => {
   const isMedia = isImage(content);
   return isMedia
-    ? content?.substring(content?.indexOf("(") + 1, content?.indexOf(")"))
+    ? content?.substring(content?.indexOf('(') + 1, content?.indexOf(')'))
     : content;
 };
 
@@ -32,14 +32,14 @@ export const writeContentToClipboard = (content: string) => {
 };
 
 export const openImageInNewTab = (content: string) => {
-  window.open(getContent(content), "_blank");
+  window.open(getContent(content), '_blank');
 };
 
 export const getBriefContent = (content: string) => {
   if (isImage(content)) {
     return mediaTypes.image;
   } else if (content?.length > 20) {
-    return content.substring(0, 20).concat("...");
+    return content.substring(0, 20).concat('...');
   } else return content;
 };
 

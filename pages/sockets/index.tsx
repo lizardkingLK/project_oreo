@@ -1,8 +1,8 @@
-import React, { useState, useRef, useEffect } from "react";
-import { useAuth, useUser } from "@clerk/nextjs";
+import React, { useState, useRef, useEffect } from 'react';
+import { useAuth, useUser } from '@clerk/nextjs';
 
-import io, { Socket } from "socket.io-client";
-import { DefaultEventsMap } from "@socket.io/component-emitter";
+import io, { Socket } from 'socket.io-client';
+import { DefaultEventsMap } from '@socket.io/component-emitter';
 
 import {
   ICreatedForDataProps,
@@ -11,7 +11,7 @@ import {
   IMessageDataProps,
   IMessageProps,
   IUserOnlineProps,
-} from "@/types";
+} from '@/types';
 
 import {
   bucketNames,
@@ -20,7 +20,7 @@ import {
   messageTypes,
   sections,
   strings,
-} from "@/utils/enums";
+} from '@/utils/enums';
 
 import {
   getMessageType,
@@ -30,22 +30,23 @@ import {
   isLocalStorage,
   openImageInNewTab,
   writeContentToClipboard,
-} from "@/utils/helpers";
+} from '@/utils/helpers';
 
-import LayoutSwitch from "@/components/layout";
-import MessageLinkList from "@/components/lists/message/MessageLinkList";
-import UserNavbar from "@/components/navs/user";
-import Spinner from "@/components/svgs/spinner";
-import SectionSwitch from "@/components/sections";
+import LayoutSwitch from '@/components/layout';
+import MessageLinkList from '@/components/lists/message/MessageLinkList';
+import UserNavbar from '@/components/navs/user';
+import Spinner from '@/components/svgs/spinner';
+import SectionSwitch from '@/components/sections';
 import {
   createSocket,
   deleteMessage,
   getGroups,
   saveFile,
   updateUnread,
-} from "@/utils/http";
+} from '@/utils/http';
 
-import { supabaseUtil } from "@/lib/supabase";
+import { supabaseUtil } from '@/lib/supabase';
+import SidebarSwitch from '@/components/sidebar';
 
 let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 
@@ -55,7 +56,7 @@ const Messages = () => {
   const [groups, setGroups] = useState<IGroupProps[]>([]);
   const [group, setGroup] = useState<any>(null);
   const [section, setSection] = useState(sections.loading);
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState('');
   const [output, setOutput] = useState<any>(null);
   const [active, setActive] = useState<any>(false);
   const [notifs, setNotifs] = useState<null | boolean | string>(null);
@@ -91,7 +92,7 @@ const Messages = () => {
           setSection(sections.introduction);
         }
       });
-      initializeSocket().then(() => socket?.emit("identity", userId));
+      initializeSocket().then(() => socket?.emit('identity', userId));
     }
   }, [userId]);
 
@@ -106,13 +107,15 @@ const Messages = () => {
   }, [active, groups]);
 
   useEffect(
-    () => lastMessageRef?.current?.scrollIntoView({ behavior: "smooth" }),
+    () => lastMessageRef?.current?.scrollIntoView({ behavior: 'smooth' }),
     [notifs, input, group]
   );
 
   useEffect(() => {
     setUnread(() => {
-      const unread = groups?.map((g) => g.unreadCount).reduce((ucA, ucB) => ucA + ucB, 0);
+      const unread = groups
+        ?.map((g) => g.unreadCount)
+        .reduce((ucA, ucB) => ucA + ucB, 0);
       return unread === 0 ? null : unread;
     });
   }, [groups, group, friend, output]);
@@ -245,7 +248,10 @@ const Messages = () => {
 
   useEffect(() => {
     if (userId && socket) {
-      socket?.emit("set-rooms", { userId, groupIds: groups.map((g) => g.id) });
+      socket?.emit('set-rooms', {
+        userId,
+        groupIds: groups.map((g) => g.id),
+      });
     }
   }, [rooms, groups, userId]);
 
@@ -254,42 +260,42 @@ const Messages = () => {
 
     socket = io();
 
-    socket.on("connect", () => console.log("connected"));
+    socket.on('connect', () => console.log('connected'));
 
-    socket.on("new-message", (msg) => {
+    socket.on('new-message', (msg) => {
       setOutput(msg);
     });
 
-    socket.on("is-active", (active) => {
+    socket.on('is-active', (active) => {
       setActive(active);
     });
 
-    socket.on("delete-message", (msg) => {
+    socket.on('delete-message', (msg) => {
       setDeleted(msg);
     });
 
-    socket.on("new-friend", (msg) => {
+    socket.on('new-friend', (msg) => {
       setFriend(msg);
     });
 
-    socket.on("set-rooms", () => {
+    socket.on('set-rooms', () => {
       setRooms(true);
     });
 
-    socket.on("set-online", (user) => {
+    socket.on('set-online', (user) => {
       setOnline(user);
     });
   };
 
   const onCopyHandler = (referenceId: string) => {
-    const message = messages?.find(m => m.referenceId === referenceId);
+    const message = messages?.find((m) => m.referenceId === referenceId);
     writeContentToClipboard(message?.content);
-  }
+  };
 
   const onViewHandler = (referenceId: string) => {
-    const message = messages?.find(m => m.referenceId === referenceId);
+    const message = messages?.find((m) => m.referenceId === referenceId);
     openImageInNewTab(message?.content);
-  }
+  };
 
   const onDeleteHandler = async (referenceId: string) => {
     setLoading(true);
@@ -311,7 +317,7 @@ const Messages = () => {
       setLoading(false);
       setGroups(tempGroups);
       setMessages(tempMessages);
-      socket?.emit("delete-message", { referenceId, groupId: group.id });
+      socket?.emit('delete-message', { referenceId, groupId: group.id });
     });
   };
 
@@ -388,7 +394,7 @@ const Messages = () => {
   }) => {
     setInput(e.target.value);
 
-    socket?.emit("is-active", {
+    socket?.emit('is-active', {
       value: true,
       groupId: group.id,
       name: user?.firstName ?? strings.someone,
@@ -408,15 +414,16 @@ const Messages = () => {
         messages: tempGroupMessages,
         lastMessage: newMessage,
       });
-      setInput("");
+      setInput('');
       setGroup(tempGroup);
       setMessages(tempGroupMessages);
       setNotifs(null);
       if (textInputRef?.current) {
         textInputRef.current.focus();
       }
-      socket?.emit("is-active", { groupId: tempGroup.id, value: false });
-      socket?.emit("new-message", newMessage);
+
+      socket?.emit('is-active', { groupId: tempGroup.id, value: false });
+      socket?.emit('new-message', newMessage);
 
       const tempGroupIndex = groups.findIndex((g) => g.id === group.id);
       groups.splice(tempGroupIndex, 1);
@@ -427,7 +434,7 @@ const Messages = () => {
   const onSubmitHandler = () => {
     if (input && group) {
       sendMessage({
-        id: "NEW_MESSAGE",
+        id: 'NEW_MESSAGE',
         referenceId: getRandomNumber(),
         type: messageTypes.SENT,
         content: input,
@@ -447,7 +454,7 @@ const Messages = () => {
   ) => {
     if (group) {
       const newMessage = {
-        id: "NEW_MESSAGE",
+        id: 'NEW_MESSAGE',
         referenceId: getRandomNumber(),
         type: messageTypes.SENT,
         createdOn: new Date().toISOString(),
@@ -455,14 +462,14 @@ const Messages = () => {
         status: true,
         fromId: userId,
         toId: group.targetId,
-        content: "MESSAGE_CONTENT",
+        content: 'MESSAGE_CONTENT',
         userId: null,
         readBy: [],
       };
       if (storeLocally) {
         const formData = new FormData();
         Object.values(files).forEach((file) => {
-          formData.append("file", file);
+          formData.append('file', file);
         });
 
         saveFile(formData).then((data) => {
@@ -482,7 +489,10 @@ const Messages = () => {
             if (response == null || response.error) {
               throw response.error;
             }
-            const { data } = supabaseUtil.getPublicUrl(bucketNames.attachments, path);
+            const { data } = supabaseUtil.getPublicUrl(
+              bucketNames.attachments,
+              path
+            );
             newMessage.content = `[${mediaTypes.image}](${data.publicUrl})`;
             sendMessage(newMessage);
             setNotifs(getRandomNumber());
@@ -498,7 +508,7 @@ const Messages = () => {
       tempGroup.unreadCount = 0;
       updateUnread(tempGroup?.id, userId);
     }
-    socket?.emit("focus-group", { groupId, userId });
+    socket?.emit('focus-group', { groupId, userId });
     setGroup(tempGroup);
     setMessages(tempGroup?.messages);
     textInputRef?.current?.focus();
@@ -506,7 +516,7 @@ const Messages = () => {
   };
 
   const onKeyDownHandler = (e: { key: string }) =>
-    e.key === "Enter" && onSubmitHandler();
+    e.key === 'Enter' && onSubmitHandler();
 
   const onAddFriendHandler = (messageData: IMessageDataProps) => {
     const target: ICreatedForDataProps =
@@ -547,7 +557,7 @@ const Messages = () => {
     setGroups(tempGroups);
     setGroup(tempGroup);
     setMessages([message]);
-    socket?.emit("new-friend", messageData);
+    socket?.emit('new-friend', messageData);
     setSection(sections.group);
   };
 
@@ -568,25 +578,19 @@ const Messages = () => {
       titleData={unread ? `(${unread})` : null}
     >
       <section className="flex justify-center">
-        <div className={groups.length > 0 ? "basis-3/4 md:basis-1/4" : ""}>
-          {navbar ? (
-            <UserNavbar
-              navbar={navbar}
-              setNavbar={setNavbar}
-              setSection={setSection}
-              newUser={groups.length > 0}
-            />
-          ) : (
-            <div className="mt-24 md:mt-20">
-              <MessageLinkList
-                groups={groups}
-                setGroup={onSelectGroupHandler}
-                selectedGroup={group}
-                active={active}
-                userId={userId}
-              />
-            </div>
-          )}
+        <div className={groups.length > 0 ? 'basis-3/4 md:basis-1/4' : ''}>
+          <SidebarSwitch
+            className={navbar ? '' : 'mt-24 md:mt-20'}
+            navbar={navbar}
+            setNavbar={setNavbar}
+            setSection={setSection}
+            newUser={groups.length > 0}
+            groups={groups}
+            active={active}
+            userId={userId}
+            onSelectGroupHandler={onSelectGroupHandler}
+            group={group}
+          />
         </div>
         <div
           className={`basis-3/4 absolute top-0 bg-black md:bg-transparent md:relative md:block container`}

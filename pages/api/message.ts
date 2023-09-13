@@ -1,29 +1,29 @@
-import { supabaseUtil } from "@/lib/supabase";
-import { IMessageDataProps, IReadByDataProps } from "@/types";
-import type { NextApiRequest, NextApiResponse } from "next";
+import { supabaseUtil } from '@/lib/supabase';
+import { IMessageDataProps, IReadByDataProps } from '@/types';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<object>
 ) {
-  if (req.method === "DELETE") {
+  if (req.method === 'DELETE') {
     const { referenceId, groupId } = req.query;
     const { error } = await supabaseUtil.deleteMessages(referenceId);
 
     if (error) {
-      res.status(500).json({ error: "Bad parameters" });
+      res.status(500).json({ error: 'Bad parameters' });
       return;
     }
 
     res.status(200).json({ referenceId, groupId });
     return;
-  } else if (req.method === "PUT") {
+  } else if (req.method === 'PUT') {
     const { groupId, userId } = req.body;
     const { data: groupMessages, error: errorGroupMessages } =
       await supabaseUtil.getMessagesByGroupId(groupId);
 
     if (errorGroupMessages) {
-      res.status(500).json({ error: "Bad parameters" });
+      res.status(500).json({ error: 'Bad parameters' });
       return;
     }
 
@@ -41,7 +41,7 @@ export default async function handler(
                 await supabaseUtil.updateMessages(gm.readBy, gm.id);
 
               if (errorUpdateMessages) {
-                res.status(500).json({ error: "Internal error" });
+                res.status(500).json({ error: 'Internal error' });
                 return;
               }
             }
@@ -53,5 +53,5 @@ export default async function handler(
       return;
     }
   }
-  res.status(500).json({ error: "Invalid request" });
+  res.status(500).json({ error: 'Invalid request' });
 }

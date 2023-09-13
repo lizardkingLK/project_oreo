@@ -1,4 +1,4 @@
-import { apiUrls } from "./enums";
+import { apiUrls } from './enums';
 
 export const getFeeds = async (userId: string) => {
   return await fetch(`${apiUrls.feed}?id=${userId}`)
@@ -22,7 +22,7 @@ export const deleteMessage = async (referenceId: string, groupId: string) => {
   return await fetch(
     `${apiUrls.message}?referenceId=${referenceId}&groupId=${groupId}`,
     {
-      method: "DELETE",
+      method: 'DELETE',
     }
   )
     .then((response) => response.json())
@@ -34,8 +34,8 @@ export const updateUnread = async (
   userId: string
 ) => {
   return await fetch(apiUrls.message, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ groupId, userId }),
   })
     .then((response) => response.json())
@@ -47,9 +47,9 @@ export const inviteFriend = async (
   friendId: string | undefined
 ) => {
   return await fetch(apiUrls.group, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({ ownerId: userId, userId: friendId }),
   })
@@ -59,7 +59,7 @@ export const inviteFriend = async (
 
 export const saveFile = async (formData: FormData) => {
   return await fetch(apiUrls.file, {
-    method: "POST",
+    method: 'POST',
     body: formData,
   })
     .then((response) => response.json())

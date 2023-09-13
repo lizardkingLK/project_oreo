@@ -1,14 +1,14 @@
-import React from "react";
-import Picture from "../../picture";
-import { isLocalStorage, isImage } from "@/utils/helpers";
+import React from 'react';
+import Picture from '../../picture';
+import { isLocalStorage, isImage } from '@/utils/helpers';
 
 const MessageMedia = (props: { content: string }) => {
   const { content } = props;
   if (props) {
     if (isImage(content)) {
       const path = content.substring(
-        content.indexOf("(") + 1,
-        content.indexOf(")")
+        content.indexOf('(') + 1,
+        content.indexOf(')')
       );
       const src = isLocalStorage() ? `/uploads/${path}` : path;
       return (
