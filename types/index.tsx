@@ -194,6 +194,7 @@ export interface ISummaryCardProps {
   cardHeaderContent?: CardContentType;
   cardBodyType: number;
   cardBodyContent: CardContentType;
+  cardBodyStyle?: string;
   cardBodyLongContent?: string;
   cardFooterContent?: CardContentType;
   cardClickEvent?: MouseEventHandler<HTMLButtonElement>;
@@ -203,6 +204,7 @@ export interface ISummaryCardProps {
 export interface ISummaryCardContentProps {
   cardBodyType: number;
   cardBodyContent: CardContentType;
+  cardBodyStyle?: string;
   cardBodyLongContent?: string;
 }
 

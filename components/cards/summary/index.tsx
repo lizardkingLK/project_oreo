@@ -13,6 +13,7 @@ const SummaryCard = (props: ISummaryCardProps) => {
       cardHeaderContent,
       cardBodyType,
       cardBodyContent,
+      cardBodyStyle,
       cardBodyLongContent,
       cardFooterContent,
       cardClickEvent,
@@ -27,9 +28,9 @@ const SummaryCard = (props: ISummaryCardProps) => {
         tooltip={cardTooltip}
       >
         {cardHeaderTitle && (
-          <div className="p-2 flex justify-between">
+          <div className="p-2 flex justify-between items-center">
             <h1 className="text-lg font-bold">{cardHeaderTitle}</h1>
-            <h1 className="text-lg font-bold">{cardHeaderContent}</h1>
+            {cardHeaderContent}
           </div>
         )}
         <div className="p-4">
@@ -37,6 +38,7 @@ const SummaryCard = (props: ISummaryCardProps) => {
             cardBodyType={cardBodyType}
             cardBodyContent={cardBodyContent}
             cardBodyLongContent={cardBodyLongContent}
+            cardBodyStyle={cardBodyStyle}
           />
           {cardFooterContent && (
             <div className="pt-2 flex justify-end">{cardFooterContent}</div>
@@ -48,7 +50,8 @@ const SummaryCard = (props: ISummaryCardProps) => {
 };
 
 const SummaryContent = (props: ISummaryCardContentProps) => {
-  const { cardBodyType, cardBodyContent, cardBodyLongContent } = props;
+  const { cardBodyType, cardBodyContent, cardBodyStyle, cardBodyLongContent } =
+    props;
   if (cardBodyType === cardBodyTypes.NUMBER) {
     return (
       <h1 title={cardBodyContent.toString()} className="text-5xl font-bold">
@@ -68,7 +71,11 @@ const SummaryContent = (props: ISummaryCardContentProps) => {
     cardBodyType === cardBodyTypes.ELEMENT &&
     typeof cardBodyContent === 'object'
   ) {
-    return <div title={cardBodyLongContent}>{cardBodyContent}</div>;
+    return (
+      <div className={cardBodyStyle ?? ''} title={cardBodyLongContent}>
+        {cardBodyContent}
+      </div>
+    );
   } else return null;
 };
 

@@ -4,9 +4,9 @@ import SummaryCard from '@/components/cards/summary';
 import { cardBodyTypes, elementType } from '@/utils/enums';
 import Avatar from '@/components/avatar';
 import { IDashboardProps, IGroupProps, ILatestMessageProps } from '@/types';
-import { getBriefContent, isImage } from '@/utils/helpers';
+import { formatCompactNumber, getBriefContent, isImage } from '@/utils/helpers';
 import Badge from '@/components/badge';
-import Close from '@/components/svgs/close';
+import Groups from '@/components/svgs/groups';
 
 const Dashboard = (props: IDashboardProps) => {
   const [groups] = useState<IGroupProps[] | null>(props.groups);
@@ -67,13 +67,23 @@ const Dashboard = (props: IDashboardProps) => {
           >
             {groups && (
               <SummaryCard
-                cardType={elementType.div}
+                cardType={elementType.button}
                 cardStyle={
-                  'bg-gradient-to-r from-stone-500 to-stone-400 text-white rounded-md'
+                  'bg-gradient-to-r from-green-500 to-green-400 text-white rounded-md'
                 }
                 cardHeaderTitle={'Groups'}
-                cardBodyType={cardBodyTypes.NUMBER}
-                cardBodyContent={groups?.length}
+                cardHeaderContent={
+                  <Badge
+                    text={`${formatCompactNumber(groups?.length)}`}
+                    tooltip={`${groups?.length} Group(s)`}
+                  />
+                }
+                cardBodyType={cardBodyTypes.ELEMENT}
+                cardBodyStyle="flex justify-center"
+                cardBodyContent={<Groups size={12} />}
+                cardClickEvent={() =>
+                  props.onSelectGroupHandler(latest?.groupId, true)
+                }
               />
             )}
             {friends && (

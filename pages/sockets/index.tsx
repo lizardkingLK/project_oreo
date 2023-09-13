@@ -502,8 +502,13 @@ const Messages = () => {
     }
   };
 
-  const onSelectGroupHandler = async (groupId: string) => {
-    const tempGroup = groups.find((g) => g.id === groupId);
+  const onSelectGroupHandler = async (
+    groupId: string,
+    isFirst: boolean = false
+  ) => {
+    const tempGroup = isFirst
+      ? groups[0]
+      : groups.find((g) => g.id === groupId);
     if (tempGroup?.id && userId && tempGroup.unreadCount) {
       tempGroup.unreadCount = 0;
       updateUnread(tempGroup?.id, userId);

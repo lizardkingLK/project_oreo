@@ -7,7 +7,7 @@ export const getTimeConverted = (tempDate: Date = new Date()) => {
   return `${tempHours}:${tempMinutes}`;
 };
 
-export const formatCompactNumber = (input: string | null) => {
+export const formatCompactNumber = (input: string | number | null) => {
   const number = Number(input);
   if (isNaN(number)) {
     return 0;
