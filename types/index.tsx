@@ -1,4 +1,4 @@
-import { elementType, groupTypes, messageTypes, sections } from "@/utils/enums";
+import { elementType, groupTypes, messageTypes, sections } from '@/utils/enums';
 
 import {
   ChangeEventHandler,
@@ -7,9 +7,9 @@ import {
   MouseEventHandler,
   ReactElement,
   ReactNode,
-} from "react";
+} from 'react';
 
-import { User } from "@clerk/nextjs/dist/types/server";
+import { User } from '@clerk/nextjs/dist/types/server';
 
 export type NameType = string | null | undefined;
 
@@ -194,6 +194,7 @@ export interface ISummaryCardProps {
   cardHeaderContent?: CardContentType;
   cardBodyType: number;
   cardBodyContent: CardContentType;
+  cardBodyStyle?: string;
   cardBodyLongContent?: string;
   cardFooterContent?: CardContentType;
   cardClickEvent?: MouseEventHandler<HTMLButtonElement>;
@@ -203,6 +204,7 @@ export interface ISummaryCardProps {
 export interface ISummaryCardContentProps {
   cardBodyType: number;
   cardBodyContent: CardContentType;
+  cardBodyStyle?: string;
   cardBodyLongContent?: string;
 }
 
@@ -339,4 +341,17 @@ export interface IAddFriendProps {
 export interface IBadgeProps {
   text: string;
   tooltip: string;
+}
+
+export interface ISidebarProps {
+  className: string;
+  navbar: boolean;
+  setNavbar: Function;
+  setSection: Function;
+  newUser: boolean;
+  groups: IGroupProps[];
+  active: boolean;
+  userId: string | null;
+  onSelectGroupHandler: Function;
+  group: IGroupProps;
 }

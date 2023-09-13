@@ -1,10 +1,10 @@
-import { supabaseClient } from "@/lib/supabase";
-import { PersistedSocket } from "@/types";
-import { tableNames } from "@/utils/enums";
-import type { Server as HTTPServer } from "http";
-import type { Socket as NetSocket } from "net";
-import { NextApiResponse } from "next";
-import { Server as IOServer } from "socket.io";
+import { supabaseUtil } from '@/lib/supabase';
+import { PersistedSocket } from '@/types';
+import { tableNames } from '@/utils/enums';
+import type { Server as HTTPServer } from 'http';
+import type { Socket as NetSocket } from 'net';
+import { NextApiResponse } from 'next';
+import { Server as IOServer } from 'socket.io';
 
 export const config = {
   api: {
@@ -28,14 +28,14 @@ const sockets: PersistedSocket[] = [];
 
 const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
   if (res.socket.server.io) {
-    console.log("Socket is already running");
+    console.log('Socket is already running');
   } else {
-    console.log("Socket is initializing");
+    console.log('Socket is initializing');
 
     const io = new IOServer(res.socket.server);
     res.socket.server.io = io;
 
-    io.on("connection", (socket) => {
+    io.on('connection', (socket) => {
       sockets.push({
         id: socket.id,
         orderNo:
@@ -46,15 +46,15 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
         socket,
       });
 
-      socket.on("identity", (userId) => {
+      socket.on('identity', (userId) => {
         const index = sockets.findIndex((s) => s.id === socket.id);
         if (index !== -1) {
           sockets[index] = Object.assign(sockets[index], { userId });
-          socket.emit("set-rooms");
+          socket.emit('set-rooms');
         }
       });
 
-      socket.on("set-rooms", (rooms) => {
+      socket.on('set-rooms', (rooms) => {
         const { userId, groupIds } = rooms,
           index = sockets.findIndex((s) => s.userId === userId);
         if (index !== -1) {
@@ -65,14 +65,14 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
             sock.join(id);
             sock
               .to(id)
-              .emit("set-online", { userId, groupId: id, value: true });
+              .emit('set-online', { userId, groupId: id, value: true });
             userSockets = sockets.filter(
               (s) =>
                 s.userId !== userId && s.groupIds?.find((gId) => gId === id)
             );
             userSockets?.forEach((us) => {
               const { userId: usUserId, socket: usSocket } = us;
-              usSocket.to(id).emit("set-online", {
+              usSocket.to(id).emit('set-online', {
                 userId: usUserId,
                 groupId: id,
                 value: true,
@@ -82,7 +82,7 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
         }
       });
 
-      socket.on("focus-group", (group) => {
+      socket.on('focus-group', (group) => {
         const { groupId, userId } = group,
           index = sockets.findIndex((s) => s.userId === userId);
         if (index !== -1) {
@@ -90,7 +90,7 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
         }
       });
 
-      socket.on("new-message", async (message) => {
+      socket.on('new-message', async (message) => {
         const { toId, fromId, groupId, referenceId, content } = message,
           isActive =
             -1 !==
@@ -102,33 +102,31 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
           { id: fromId, value: true },
         ];
         message = Object.assign(message, { readBy });
-        const { error } = await supabaseClient.from(tableNames.message).insert([
-          {
-            referenceId: referenceId,
-            userId: fromId,
-            groupId: groupId,
-            createdFor: [toId, fromId],
-            content: content,
-            readBy,
-          },
-        ]);
+        const { error } = await supabaseUtil.createMessage(
+          referenceId,
+          fromId,
+          groupId,
+          toId,
+          content,
+          readBy
+        );
         if (error) {
           return;
         }
-        socket.to(groupId).emit("new-message", message);
+        socket.to(groupId).emit('new-message', message);
       });
 
-      socket.on("is-active", (active) => {
+      socket.on('is-active', (active) => {
         socket
           .to(active.groupId)
-          .emit("is-active", active.value ? active : false);
+          .emit('is-active', active.value ? active : false);
       });
 
-      socket.on("delete-message", (message) => {
-        socket.to(message.groupId).emit("delete-message", message);
+      socket.on('delete-message', (message) => {
+        socket.to(message.groupId).emit('delete-message', message);
       });
 
-      socket.on("new-friend", (message) => {
+      socket.on('new-friend', (message) => {
         const { groupId } = message,
           fromUser = message?.createdFor?.at(1),
           toUser = message?.createdFor?.at(0),
@@ -152,10 +150,10 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
           sockets[indexFrom].socket.join(groupId);
         }
 
-        socket.broadcast.emit("new-friend", message);
+        socket.broadcast.emit('new-friend', message);
       });
 
-      socket.on("disconnect", () => {
+      socket.on('disconnect', () => {
         console.log(`1 disconnected. id = %s`, socket.id);
 
         const index = sockets.findIndex((s) => s.id === socket.id);
@@ -164,7 +162,7 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
           groupIds.forEach((id: string) => {
             sock
               .to(id)
-              .emit("set-online", { userId, groupId: id, value: false });
+              .emit('set-online', { userId, groupId: id, value: false });
           });
           sockets.splice(index, 1);
         }

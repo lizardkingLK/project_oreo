@@ -1,6 +1,6 @@
-import React from "react";
-import Close from "../svgs/close";
-import { IDialogProps } from "@/types";
+import React from 'react';
+import Close from '../svgs/close';
+import { IDialogProps } from '@/types';
 
 const Dialog = (props: IDialogProps) => {
   if (props) {

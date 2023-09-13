@@ -1,8 +1,8 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import path from "path";
-import { promises as fs } from "fs";
-import formidable, { File } from "formidable";
-import { randomUUID } from "crypto";
+import type { NextApiRequest, NextApiResponse } from 'next';
+import path from 'path';
+import { promises as fs } from 'fs';
+import formidable, { File } from 'formidable';
+import { randomUUID } from 'crypto';
 
 export const config = {
   api: {
@@ -18,7 +18,7 @@ type UploadResponse = {
   data?: string;
 };
 
-const uploads = "/public/uploads/";
+const uploads = '/public/uploads/';
 
 const handler = async (
   req: NextApiRequest,
@@ -26,9 +26,9 @@ const handler = async (
 ) => {
   let status = 200,
     resultBody = {
-      status: "ok",
-      message: "Files were uploaded successfully",
-      data: "",
+      status: 'ok',
+      message: 'Files were uploaded successfully',
+      data: '',
     };
 
   /* Get files using formidable */
@@ -36,18 +36,18 @@ const handler = async (
     (resolve, reject) => {
       const form = new formidable.IncomingForm({ maxFileSize: 10000000 });
       const files: ProcessedFiles = [];
-      form.on("file", function (field, file) {
+      form.on('file', function (field, file) {
         files.push([field, file]);
       });
-      form.on("end", () => resolve(files));
-      form.on("error", (err) => reject(err));
+      form.on('end', () => resolve(files));
+      form.on('error', (err) => reject(err));
       form.parse(req, () => {
         //
       });
     }
   ).catch((_e) => {
     status = 500;
-    resultBody = { status: "fail", message: "Upload error", data: "" };
+    resultBody = { status: 'fail', message: 'Upload error', data: '' };
   });
 
   if (files?.length) {

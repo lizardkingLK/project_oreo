@@ -1,10 +1,19 @@
-import MessageCard from "@/components/cards/message";
-import { IMessageListProps } from "@/types";
-import { Fragment } from "react";
+import MessageCard from '@/components/cards/message';
+import { IMessageListProps } from '@/types';
+import { Fragment } from 'react';
 
 const MessageList = (props: IMessageListProps) => {
   if (props) {
-    const { messages, group, active, lastMessageRef, onDeleteHandler, onCopyHandler, onViewHandler, loading } = props;
+    const {
+      messages,
+      group,
+      active,
+      lastMessageRef,
+      onDeleteHandler,
+      onCopyHandler,
+      onViewHandler,
+      loading,
+    } = props;
     return (
       <Fragment>
         {group &&

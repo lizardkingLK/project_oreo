@@ -1,6 +1,6 @@
-import Image from "next/image";
-import Link from "next/link";
-import React from "react";
+import Image from 'next/image';
+import Link from 'next/link';
+import React from 'react';
 
 const Error404 = () => {
   return (
@@ -10,7 +10,7 @@ const Error404 = () => {
         width={50}
         height={50}
         alt="logo"
-        src={"/favicon.png"}
+        src={'/favicon.png'}
       />
       <h1 className="m-2 text-4xl text-white font-bold">Page Not Found</h1>
       <h1 className="m-2 text-xl text-green-500 font-bold">

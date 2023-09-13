@@ -1,8 +1,8 @@
-import Avatar from "@/components/avatar";
-import Spinner from "@/components/svgs/spinner";
-import { IUserCardProps } from "@/types";
-import { resourcePaths } from "@/utils/enums";
-import React from "react";
+import Avatar from '@/components/avatar';
+import Spinner from '@/components/svgs/spinner';
+import { IUserCardProps } from '@/types';
+import { resourcePaths } from '@/utils/enums';
+import React from 'react';
 
 const UserCard = (props: IUserCardProps) => {
   if (props) {

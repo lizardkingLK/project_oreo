@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import SectionLayout from "../layout";
-import FeedList from "@/components/feeds";
-import { useAuth } from "@clerk/nextjs";
-import Spinner from "@/components/svgs/spinner";
-import { getFeeds } from "@/utils/http";
-import { IFeedProps } from "@/types";
+import React, { useEffect, useState } from 'react';
+import SectionLayout from '../layout';
+import FeedList from '@/components/feeds';
+import { useAuth } from '@clerk/nextjs';
+import Spinner from '@/components/svgs/spinner';
+import { getFeeds } from '@/utils/http';
+import { IFeedProps } from '@/types';
 
 const Feeds = () => {
   const { isLoaded, userId } = useAuth();

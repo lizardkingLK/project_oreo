@@ -1,19 +1,19 @@
-import UserCard from "@/components/cards/user";
-import Spinner from "@/components/svgs/spinner";
-import { userSearchMessageTypes } from "@/utils/enums";
-import { useAuth } from "@clerk/nextjs";
-import { User } from "@clerk/nextjs/dist/types/server";
-import React, { useEffect, useRef, useState } from "react";
-import SectionLayout from "../../layout";
-import { IAddFriendProps } from "@/types";
-import { getUsers, inviteFriend } from "@/utils/http";
-import { formatCompactNumber } from "@/utils/helpers";
+import UserCard from '@/components/cards/user';
+import Spinner from '@/components/svgs/spinner';
+import { userSearchMessageTypes } from '@/utils/enums';
+import { useAuth } from '@clerk/nextjs';
+import { User } from '@clerk/nextjs/dist/types/server';
+import React, { useEffect, useRef, useState } from 'react';
+import SectionLayout from '../../layout';
+import { IAddFriendProps } from '@/types';
+import { getUsers, inviteFriend } from '@/utils/http';
+import { formatCompactNumber } from '@/utils/helpers';
 
 const AddFriend = (props: IAddFriendProps) => {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
   const [users, setUsers] = useState<null | User[]>(null);
   const [user, setUser] = useState<null | User>();
-  const [userFound, setUserFound] = useState("");
+  const [userFound, setUserFound] = useState('');
   const [loading, setLoading] = useState(false);
 
   const searchRef = useRef<HTMLInputElement>(null);
@@ -36,7 +36,7 @@ const AddFriend = (props: IAddFriendProps) => {
     const { onAddFriendHandler, onSelectGroupHandler, groups } = props;
 
     const handleInvitation = async () => {
-      const tempGroup = groups?.find(g => g.targetId === user?.id);
+      const tempGroup = groups?.find((g) => g.targetId === user?.id);
       if (tempGroup) {
         onSelectGroupHandler(tempGroup.id);
         return;
@@ -52,17 +52,20 @@ const AddFriend = (props: IAddFriendProps) => {
 
     const handleSearch = (event: { preventDefault: () => void }) => {
       event.preventDefault();
-      const value = searchRef?.current?.value ?? "", length = value.length;
+      const value = searchRef?.current?.value ?? '',
+        length = value.length;
       setUserFound(userSearchMessageTypes.notFound);
       if (users && value) {
         const user = users.find(
           (u) =>
             u.id !== userId &&
-            (u.username?.substring(0, length).toLowerCase() === value.toLowerCase() ||
-              (u?.emailAddresses.find(
+            (u.username?.substring(0, length).toLowerCase() ===
+              value.toLowerCase() ||
+              u?.emailAddresses.find(
                 (e) =>
-                  e.emailAddress.substring(0, length).toLowerCase() === value.toLowerCase()
-              )))
+                  e.emailAddress.substring(0, length).toLowerCase() ===
+                  value.toLowerCase()
+              ))
         );
         if (user) {
           setUser(user);
@@ -75,14 +78,20 @@ const AddFriend = (props: IAddFriendProps) => {
       target: { value: React.SetStateAction<string> };
     }) => {
       setSearch(event.target.value);
-      setUserFound("");
+      setUserFound('');
       setUser(null);
     };
 
-    const usersCount = formatCompactNumber(users?.length.toString() ?? null).toString();
+    const usersCount = formatCompactNumber(
+      users?.length.toString() ?? null
+    ).toString();
 
     return (
-      <SectionLayout title="Add Friend" content={usersCount} tooltip={`${usersCount} users available`}>
+      <SectionLayout
+        title="Add Friend"
+        content={usersCount}
+        tooltip={`${usersCount} users available`}
+      >
         <form
           onSubmit={handleSearch}
           className="md:flex md:justify-between md:items-center"

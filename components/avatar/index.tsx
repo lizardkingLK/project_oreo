@@ -1,6 +1,6 @@
-import React, { Fragment, useState } from "react";
-import Image from "next/image";
-import { IAvatarProps } from "@/types";
+import React, { Fragment, useState } from 'react';
+import Image from 'next/image';
+import { IAvatarProps } from '@/types';
 
 const Avatar = (props: IAvatarProps) => {
   const [loading, setLoading] = useState(true);
@@ -10,19 +10,19 @@ const Avatar = (props: IAvatarProps) => {
       <Fragment>
         <div
           className={`flex justify-center items-center flex-wrap rounded-full ml-2
-        ${loading ? "blur-xl" : "blur-0"}
-        ${isStatus ? "p-1 border-2 border-stone-500" : ""}
-        ${size === 50 ? "w-10" : "w-12"}`}
+        ${loading ? 'blur-xl' : 'blur-0'}
+        ${isStatus ? 'p-1 border-2 border-stone-500' : ''}
+        ${size === 50 ? 'w-10' : 'w-12'}`}
         >
           <Image
             className="rounded-full"
             width={size}
             height={size}
-            src={imagePath ?? "/favicon.png"}
+            src={imagePath ?? '/favicon.png'}
             alt={name}
             title={name}
             priority={true}
-            blurDataURL={"/favicon.png"}
+            blurDataURL={'/favicon.png'}
             onLoadingComplete={() => setLoading(false)}
           />
           {isOnline ? (

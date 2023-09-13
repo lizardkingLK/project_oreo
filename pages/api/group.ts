@@ -1,8 +1,7 @@
-import { supabaseClient } from "@/lib/supabase";
-import { quickMessages, tableNames } from "@/utils/enums";
-import { clerkClient } from "@clerk/nextjs";
-import { randomUUID } from "crypto";
-import type { NextApiRequest, NextApiResponse } from "next";
+import { supabaseUtil } from '@/lib/supabase';
+import { clerkClient } from '@clerk/nextjs';
+import { randomUUID } from 'crypto';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 const getUsersCombined = async (dataMessages: any[]) => {
   const users = await clerkClient.users.getUserList();
@@ -31,26 +30,15 @@ export default async function handler(
   res: NextApiResponse<object>
 ) {
   try {
-    if (req.method === "POST") {
+    if (req.method === 'POST') {
       const { ownerId, userId } = req.body;
-
       const { data: dataRecordCreate, error: errorRecordCreate } =
-        await supabaseClient
-          .from(tableNames.message)
-          .insert([
-            {
-              userId: ownerId,
-              groupId: randomUUID(),
-              referenceId: randomUUID(),
-              createdFor: [userId, ownerId],
-              readBy: [
-                { id: userId, value: false },
-                { id: ownerId, value: true },
-              ],
-              content: quickMessages.hi,
-            },
-          ])
-          .select();
+        await supabaseUtil.createGroup(
+          ownerId,
+          randomUUID(),
+          randomUUID(),
+          userId
+        );
 
       if (errorRecordCreate) {
         return res.status(500).send({ message: errorRecordCreate.message });
@@ -59,14 +47,10 @@ export default async function handler(
       const messages = await getUsersCombined(dataRecordCreate);
 
       return res.status(201).json(messages);
-    } else if (req.method === "GET") {
+    } else if (req.method === 'GET') {
       const { userId } = req.query;
-
-      const { data: dataMessages, error: errorMessages } = await supabaseClient
-        .from(tableNames.message)
-        .select()
-        .contains("createdFor", [userId])
-        .order("createdAt", { ascending: true });
+      const { data: dataMessages, error: errorMessages } =
+        await supabaseUtil.getMessages(userId);
 
       if (errorMessages) {
         console.log(errorMessages.message);

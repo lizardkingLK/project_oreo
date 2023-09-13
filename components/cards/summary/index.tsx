@@ -1,8 +1,8 @@
-import React from "react";
-import { ISummaryCardContentProps, ISummaryCardProps } from "@/types";
-import { cardBodyTypes } from "@/utils/enums";
-import { formatCompactNumber } from "@/utils/helpers";
-import SummaryCardLayout from "./layout";
+import React from 'react';
+import { ISummaryCardContentProps, ISummaryCardProps } from '@/types';
+import { cardBodyTypes } from '@/utils/enums';
+import { formatCompactNumber } from '@/utils/helpers';
+import SummaryCardLayout from './layout';
 
 const SummaryCard = (props: ISummaryCardProps) => {
   if (props) {
@@ -13,6 +13,7 @@ const SummaryCard = (props: ISummaryCardProps) => {
       cardHeaderContent,
       cardBodyType,
       cardBodyContent,
+      cardBodyStyle,
       cardBodyLongContent,
       cardFooterContent,
       cardClickEvent,
@@ -20,11 +21,16 @@ const SummaryCard = (props: ISummaryCardProps) => {
     } = props;
 
     return (
-      <SummaryCardLayout style={cardStyle} type={cardType} typeData={{ clickEvent: cardClickEvent }} tooltip={cardTooltip}>
+      <SummaryCardLayout
+        style={cardStyle}
+        type={cardType}
+        typeData={{ clickEvent: cardClickEvent }}
+        tooltip={cardTooltip}
+      >
         {cardHeaderTitle && (
-          <div className="p-2 flex justify-between">
+          <div className="p-2 flex justify-between items-center">
             <h1 className="text-lg font-bold">{cardHeaderTitle}</h1>
-            <h1 className="text-lg font-bold">{cardHeaderContent}</h1>
+            {cardHeaderContent}
           </div>
         )}
         <div className="p-4">
@@ -32,11 +38,11 @@ const SummaryCard = (props: ISummaryCardProps) => {
             cardBodyType={cardBodyType}
             cardBodyContent={cardBodyContent}
             cardBodyLongContent={cardBodyLongContent}
+            cardBodyStyle={cardBodyStyle}
           />
-          {cardFooterContent &&
-            <div className="pt-2 flex justify-end">
-              {cardFooterContent}
-            </div>}
+          {cardFooterContent && (
+            <div className="pt-2 flex justify-end">{cardFooterContent}</div>
+          )}
         </div>
       </SummaryCardLayout>
     );
@@ -44,11 +50,8 @@ const SummaryCard = (props: ISummaryCardProps) => {
 };
 
 const SummaryContent = (props: ISummaryCardContentProps) => {
-  const {
-    cardBodyType,
-    cardBodyContent,
-    cardBodyLongContent,
-  } = props;
+  const { cardBodyType, cardBodyContent, cardBodyStyle, cardBodyLongContent } =
+    props;
   if (cardBodyType === cardBodyTypes.NUMBER) {
     return (
       <h1 title={cardBodyContent.toString()} className="text-5xl font-bold">
@@ -64,9 +67,12 @@ const SummaryContent = (props: ISummaryCardContentProps) => {
         {cardBodyContent}
       </h1>
     );
-  } else if (cardBodyType === cardBodyTypes.ELEMENT && typeof cardBodyContent === "object") {
+  } else if (
+    cardBodyType === cardBodyTypes.ELEMENT &&
+    typeof cardBodyContent === 'object'
+  ) {
     return (
-      <div title={cardBodyLongContent}>
+      <div className={cardBodyStyle ?? ''} title={cardBodyLongContent}>
         {cardBodyContent}
       </div>
     );

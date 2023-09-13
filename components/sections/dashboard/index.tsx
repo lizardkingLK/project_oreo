@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
-import SectionLayout from "../layout";
-import SummaryCard from "@/components/cards/summary";
-import { cardBodyTypes, elementType } from "@/utils/enums";
-import Avatar from "@/components/avatar";
-import { IDashboardProps, IGroupProps, ILatestMessageProps } from "@/types";
-import { getBriefContent, isImage } from "@/utils/helpers";
-import Badge from "@/components/badge";
+import React, { useEffect, useState } from 'react';
+import SectionLayout from '../layout';
+import SummaryCard from '@/components/cards/summary';
+import { cardBodyTypes, elementType } from '@/utils/enums';
+import Avatar from '@/components/avatar';
+import { IDashboardProps, IGroupProps, ILatestMessageProps } from '@/types';
+import { formatCompactNumber, getBriefContent, isImage } from '@/utils/helpers';
+import Badge from '@/components/badge';
+import Groups from '@/components/svgs/groups';
 
 const Dashboard = (props: IDashboardProps) => {
   const [groups] = useState<IGroupProps[] | null>(props.groups);
@@ -16,62 +17,80 @@ const Dashboard = (props: IDashboardProps) => {
   const [latest, setLatest] = useState<ILatestMessageProps | null>(null);
 
   useEffect(() => {
-    setUnread(props.groups
-      ?.map((g) => g.unreadCount)
-      .reduce((ucA, ucB) => ucA + ucB, 0));
+    setUnread(
+      props.groups?.map((g) => g.unreadCount).reduce((ucA, ucB) => ucA + ucB, 0)
+    );
 
     setFriends(() => {
-      const friends = props?.groups?.filter(g => Boolean(g.targetId));
+      const friends = props?.groups?.filter((g) => Boolean(g.targetId));
       return friends?.length === 0 ? null : friends.length;
     });
 
     setOnline(() => {
-      const online = props?.groups?.filter(g => g.isOnline === true);
+      const online = props?.groups?.filter((g) => g.isOnline === true);
       return online?.length === 0 ? null : online.length;
     });
 
     setLatest(() => {
       const message = props?.groups
-        ?.map((g) => g.lastMessage)
-        .sort((mA, mB) => Date.parse(mB?.createdOn) - Date.parse(mA?.createdOn))
-        .at(0),
-        group = props?.groups?.find((g) => g.id === message?.groupId && g.unreadCount > 0);
-      return group && message ? Object.assign(message, {
-        displayImage: group?.displayImage!,
-        groupName: group?.name!
-      }) : null;
+          ?.map((g) => g.lastMessage)
+          .sort(
+            (mA, mB) => Date.parse(mB?.createdOn) - Date.parse(mA?.createdOn)
+          )
+          .at(0),
+        group = props?.groups?.find(
+          (g) => g.id === message?.groupId && g.unreadCount > 0
+        );
+      return group && message
+        ? Object.assign(message, {
+            displayImage: group?.displayImage!,
+            groupName: group?.name!,
+          })
+        : null;
     });
   }, [props]);
 
   if (props) {
-    const name = user?.firstName ?? user?.username, gridCols = online || unread ? 3 : 2;
+    const name = user?.firstName ?? user?.username,
+      gridCols = online || unread ? 3 : 2;
 
     return (
       <SectionLayout>
         <div className="p-4">
           <div className="flex justify-between items-center w-full">
             <h1 className="text-2xl text-white font-bold" id="textGreeting">
-              Hello{" "}
-              <span className="text-green-400">
-                {name}
-              </span>
+              Hello <span className="text-green-400">{name}</span>
             </h1>
           </div>
-          <div className={`pt-4 grid grid-flow-row-dense grid-cols-${gridCols} grid-rows-3 gap-2`}>
+          <div
+            className={`pt-4 grid grid-flow-row-dense grid-cols-${gridCols} grid-rows-3 gap-2`}
+          >
             {groups && (
               <SummaryCard
-                cardType={elementType.div}
-                cardStyle={"bg-gradient-to-r from-stone-500 to-stone-400 text-white rounded-md"}
-                cardHeaderTitle={"Groups"}
-                cardBodyType={cardBodyTypes.NUMBER}
-                cardBodyContent={groups?.length}
+                cardType={elementType.button}
+                cardStyle={
+                  'bg-gradient-to-r from-green-500 to-green-400 text-white rounded-md'
+                }
+                cardHeaderTitle={'Groups'}
+                cardHeaderContent={
+                  <Badge
+                    text={`${formatCompactNumber(groups?.length)}`}
+                    tooltip={`${groups?.length} Group(s)`}
+                  />
+                }
+                cardBodyType={cardBodyTypes.ELEMENT}
+                cardBodyStyle="flex justify-center"
+                cardBodyContent={<Groups size={12} />}
+                cardClickEvent={() =>
+                  props.onSelectGroupHandler(latest?.groupId, true)
+                }
               />
             )}
             {friends && (
               <SummaryCard
                 cardType={elementType.div}
-                cardStyle={"bg-stone-400 text-white rounded-md"}
-                cardHeaderTitle={"Friends"}
+                cardStyle={'bg-stone-400 text-white rounded-md'}
+                cardHeaderTitle={'Friends'}
                 cardBodyType={cardBodyTypes.NUMBER}
                 cardBodyContent={friends}
               />
@@ -79,8 +98,8 @@ const Dashboard = (props: IDashboardProps) => {
             {online && (
               <SummaryCard
                 cardType={elementType.div}
-                cardStyle={"bg-stone-400 text-white rounded-md"}
-                cardHeaderTitle={"Online"}
+                cardStyle={'bg-stone-400 text-white rounded-md'}
+                cardHeaderTitle={'Online'}
                 cardBodyType={cardBodyTypes.NUMBER}
                 cardBodyContent={online}
               />
@@ -88,8 +107,10 @@ const Dashboard = (props: IDashboardProps) => {
             {latest && (
               <SummaryCard
                 cardType={elementType.button}
-                cardStyle={"bg-gradient-to-r from-green-700 to-green-500 text-white rounded-md col-span-2 w-72"}
-                cardHeaderTitle={"Latest"}
+                cardStyle={
+                  'bg-gradient-to-r from-green-700 to-green-500 text-white rounded-md col-span-2 w-72'
+                }
+                cardHeaderTitle={'Latest'}
                 cardHeaderContent={
                   <Avatar
                     imagePath={latest.displayImage}
@@ -101,21 +122,27 @@ const Dashboard = (props: IDashboardProps) => {
                 cardBodyType={cardBodyTypes.ELEMENT}
                 cardBodyContent={
                   <h1 className="text-xl font-bold">
-                    {isImage(latest.content) ? "Image" : getBriefContent(latest.content)}
+                    {isImage(latest.content)
+                      ? 'Image'
+                      : getBriefContent(latest.content)}
                   </h1>
                 }
                 cardBodyLongContent={latest.content}
                 cardFooterContent={
                   <Badge text={latest.createdOn} tooltip={latest.createdOn} />
                 }
-                cardClickEvent={() => props.onSelectGroupHandler(latest.groupId)}
+                cardClickEvent={() =>
+                  props.onSelectGroupHandler(latest.groupId)
+                }
               />
             )}
             {unread && (
               <SummaryCard
                 cardType={elementType.div}
-                cardStyle={"bg-gradient-to-r from-green-500 to-green-400 text-white rounded-md"}
-                cardHeaderTitle={"Unread"}
+                cardStyle={
+                  'bg-gradient-to-r from-green-500 to-green-400 text-white rounded-md'
+                }
+                cardHeaderTitle={'Unread'}
                 cardBodyType={cardBodyTypes.NUMBER}
                 cardBodyContent={unread}
               />

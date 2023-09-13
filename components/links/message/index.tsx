@@ -1,7 +1,7 @@
-import React from "react";
-import Avatar from "@/components/avatar";
-import { IMessageLinkProps } from "@/types";
-import { getBriefContent, isImage } from "@/utils/helpers";
+import React from 'react';
+import Avatar from '@/components/avatar';
+import { IMessageLinkProps } from '@/types';
+import { getBriefContent, isImage } from '@/utils/helpers';
 
 const MessageLink = (props: IMessageLinkProps) => {
   if (props) {
@@ -29,8 +29,9 @@ const MessageLink = (props: IMessageLinkProps) => {
         onClick={() => messageOnClick(messageId)}
       >
         <div
-          className={`flex justify-center items-start mb-4 py-4 rounded-2xl hover:bg-stone-800 ${messageIsActive ? "bg-stone-900" : null
-            }`}
+          className={`flex justify-center items-start mb-4 py-4 rounded-2xl hover:bg-stone-800 ${
+            messageIsActive ? 'bg-stone-900' : null
+          }`}
         >
           <Avatar
             name={messageAuthorName!}
@@ -44,14 +45,14 @@ const MessageLink = (props: IMessageLinkProps) => {
               {messageAuthorName}
             </h1>
             <p
-              className={"text-sm md:text-md text-stone-500 truncate max-w-xs"}
+              className={'text-sm md:text-md text-stone-500 truncate max-w-xs'}
             >
               {active?.groupId === messageId && active?.value ? (
                 <span className="text-green-500">typing...</span>
               ) : (
                 <span
-                  className={messageContentIsActive ? "text-green-500" : ""}
-                  title={isImage(messageContent) ? "Image" : messageContent}
+                  className={messageContentIsActive ? 'text-green-500' : ''}
+                  title={isImage(messageContent) ? 'Image' : messageContent}
                 >
                   {getBriefContent(messageContent)}
                 </span>

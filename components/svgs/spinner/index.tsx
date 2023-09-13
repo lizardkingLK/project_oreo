@@ -1,5 +1,5 @@
-import React from "react";
-import { ISpinnerProps } from "@/types";
+import React from 'react';
+import { ISpinnerProps } from '@/types';
 
 const Spinner = (props: ISpinnerProps) => {
   if (props) {

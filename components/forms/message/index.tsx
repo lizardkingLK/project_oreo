@@ -1,12 +1,12 @@
-import React, { Fragment, useRef, useState } from "react";
-import { IMessageEditorProps } from "@/types";
-import Send from "@/components/svgs/send";
-import Emoji from "@/components/svgs/emoji";
-import Attachment from "@/components/svgs/attachment";
-import BrowseMedia from "@/components/media/browse";
-import Upload from "@/components/svgs/upload/upload";
-import Clear from "@/components/svgs/clear";
-import Dialog from "@/components/dialog";
+import React, { Fragment, useRef, useState } from 'react';
+import { IMessageEditorProps } from '@/types';
+import Send from '@/components/svgs/send';
+import Emoji from '@/components/svgs/emoji';
+import Attachment from '@/components/svgs/attachment';
+import BrowseMedia from '@/components/media/browse';
+import Upload from '@/components/svgs/upload/upload';
+import Clear from '@/components/svgs/clear';
+import Dialog from '@/components/dialog';
 
 const MessageEditor = (props: IMessageEditorProps) => {
   const [mediaModal, setMediaModal] = useState(false);
@@ -60,8 +60,8 @@ const MessageEditor = (props: IMessageEditorProps) => {
           {mediaModal && (
             <Dialog
               dialogRef={attachmentRef}
-              dialogTitle={"Send Attachment"}
-              dialogSubtitle={"Attachment"}
+              dialogTitle={'Send Attachment'}
+              dialogSubtitle={'Attachment'}
               dialogCloseHandler={mediaCloseHandler}
             >
               {file && type ? (
@@ -70,7 +70,7 @@ const MessageEditor = (props: IMessageEditorProps) => {
                     <BrowseMedia
                       type={type}
                       pictureProps={{
-                        alt: "preview",
+                        alt: 'preview',
                         height: 150,
                         width: 150,
                         src: URL.createObjectURL(file),
@@ -134,7 +134,7 @@ const MessageEditor = (props: IMessageEditorProps) => {
             />
             <button
               className={`p-4 rounded-r-full bg-stone-900 ${
-                mediaModal ? "text-green-500" : "text-white"
+                mediaModal ? 'text-green-500' : 'text-white'
               } hover:text-green-500`}
               title="Send Media"
               onClick={() => setMediaModal(!mediaModal)}
