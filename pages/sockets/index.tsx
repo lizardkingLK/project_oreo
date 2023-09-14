@@ -77,6 +77,7 @@ const Messages = () => {
   useEffect(() => {
     if (section !== sections.group) {
       setGroup(null);
+      setForward(false);
     }
   }, [section]);
 
@@ -540,8 +541,14 @@ const Messages = () => {
     }
   };
 
-  const onSelectGroupHandler = async (groupId: string) => {
-    const tempGroup = groups.find((g) => g.id === groupId);
+  const onSelectGroupHandler = async (
+    groupId: string,
+    _context: string | null,
+    isFirst: boolean = false
+  ) => {
+    const tempGroup = isFirst
+      ? groups[0]
+      : groups.find((g) => g.id === groupId);
     if (tempGroup?.id && userId && tempGroup.unreadCount) {
       tempGroup.unreadCount = 0;
       updateUnread(tempGroup?.id, userId);
@@ -551,6 +558,7 @@ const Messages = () => {
     setMessages(tempGroup?.messages);
     textInputRef?.current?.focus();
     setSection(sections.group);
+    setForward(false);
   };
 
   const onKeyDownHandler = (e: { key: string }) =>

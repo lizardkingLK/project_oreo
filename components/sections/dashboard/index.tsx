@@ -81,9 +81,9 @@ const Dashboard = (props: IDashboardProps) => {
                 cardBodyType={cardBodyTypes.ELEMENT}
                 cardBodyStyle="flex justify-center"
                 cardBodyContent={<Groups size={12} />}
-                cardClickEvent={() =>
-                  props.onSelectGroupHandler(latest?.groupId, true)
-                }
+                cardClickEvent={() => {
+                  props.onSelectGroupHandler(latest?.groupId, null, true);
+                }}
               />
             )}
             {friends && (

@@ -1,18 +1,24 @@
 import MessageCard from '@/components/cards/message';
 import Dialog from '@/components/dialog';
-import { IMessageListProps } from '@/types';
-import { Fragment, useState } from 'react';
+import { IGroupProps, IMessageListProps } from '@/types';
+import { Fragment, useEffect, useState } from 'react';
 import MessageLinkList from './MessageLinkList';
 
 const MessageList = (props: IMessageListProps) => {
+  const { group, groups } = props;
+
   const [currentMenuId, setCurrentMenuId] = useState<null | string>(null);
+  const [forwarableGroups, setForwardableGroups] = useState<IGroupProps[]>([]);
+
+  useEffect(() => {
+    setForwardableGroups(groups?.filter((g) => g.id !== group?.id));
+  }, [group, groups]);
 
   if (props) {
     const {
       messages,
       userId,
       group,
-      groups,
       active,
       lastMessageRef,
       onDeleteHandler,
@@ -62,13 +68,19 @@ const MessageList = (props: IMessageListProps) => {
               dialogCloseHandler={() => setForward(false)}
             >
               <div className="py-4 m-4">
-                <MessageLinkList
-                  groups={groups?.filter((g) => g.id !== group?.id)}
-                  onGroupClickHandler={onForwardHandler}
-                  selectedGroup={group}
-                  active={active}
-                  userId={userId}
-                />
+                {forwarableGroups.length > 0 ? (
+                  <MessageLinkList
+                    groups={forwarableGroups}
+                    onGroupClickHandler={onForwardHandler}
+                    selectedGroup={group}
+                    active={active}
+                    userId={userId}
+                  />
+                ) : (
+                  <h1 className="text-md text-white text-center">
+                    You have no other groups
+                  </h1>
+                )}
               </div>
             </Dialog>
           </div>
