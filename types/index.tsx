@@ -180,6 +180,8 @@ export interface IMessageCardProps {
   onForwardHandler: Function;
   onViewHandler: Function;
   setForward: Function;
+  setCurrentMenuId: Function;
+  currentMenuId: string | null;
   loading: boolean;
 }
 

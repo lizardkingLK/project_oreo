@@ -1,10 +1,12 @@
 import MessageCard from '@/components/cards/message';
 import Dialog from '@/components/dialog';
 import { IMessageListProps } from '@/types';
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import MessageLinkList from './MessageLinkList';
 
 const MessageList = (props: IMessageListProps) => {
+  const [currentMenuId, setCurrentMenuId] = useState<null | string>(null);
+
   if (props) {
     const {
       messages,
@@ -21,6 +23,7 @@ const MessageList = (props: IMessageListProps) => {
       forward,
       setForward,
     } = props;
+
     return (
       <Fragment>
         {group &&
@@ -39,6 +42,8 @@ const MessageList = (props: IMessageListProps) => {
                 onViewHandler={onViewHandler}
                 loading={loading}
                 setForward={setForward}
+                setCurrentMenuId={setCurrentMenuId}
+                currentMenuId={currentMenuId}
               />
             </Fragment>
           ))}
