@@ -33,8 +33,6 @@ import {
 } from '@/utils/helpers';
 
 import LayoutSwitch from '@/components/layout';
-import MessageLinkList from '@/components/lists/message/MessageLinkList';
-import UserNavbar from '@/components/navs/user';
 import Spinner from '@/components/svgs/spinner';
 import SectionSwitch from '@/components/sections';
 import {
@@ -67,6 +65,8 @@ const Messages = () => {
   const [rooms, setRooms] = useState<boolean>(false);
   const [online, setOnline] = useState<null | IUserOnlineProps>(null);
   const [unread, setUnread] = useState<null | number>(null);
+  const [forward, setForward] = useState(false);
+  const [referenceId, setReferenceId] = useState<null | string>(null);
 
   const textInputRef = useRef<null | HTMLInputElement>(null);
   const lastMessageRef = useRef<null | HTMLDivElement>(null);
@@ -77,6 +77,7 @@ const Messages = () => {
   useEffect(() => {
     if (section !== sections.group) {
       setGroup(null);
+      setForward(false);
     }
   }, [section]);
 
@@ -118,7 +119,7 @@ const Messages = () => {
         .reduce((ucA, ucB) => ucA + ucB, 0);
       return unread === 0 ? null : unread;
     });
-  }, [groups, group, friend, output]);
+  }, [deleted, groups, group, friend, output]);
 
   useEffect(() => {
     if (output) {
@@ -174,9 +175,9 @@ const Messages = () => {
 
   useEffect(() => {
     if (deleted) {
-      const { referenceId, groupId } = deleted;
       let tempMessages, deletedMessage: IMessageProps | undefined;
-      const tempGroups = groups;
+      const { referenceId, groupId } = deleted,
+        tempGroups = groups;
       tempGroups.forEach((g) => {
         if (g?.id === groupId) {
           deletedMessage = g?.messages?.find(
@@ -292,6 +293,35 @@ const Messages = () => {
     writeContentToClipboard(message?.content);
   };
 
+  const onForwardHandler = (id: string, context: string) => {
+    if (context === strings.referenceId) {
+      setReferenceId(id);
+    } else if (context === strings.groupId) {
+      const tempMessage = messages?.find((m) => m.referenceId === referenceId),
+        tempGroup = groups?.find((g) => g.id === id),
+        date = new Date();
+      if (tempMessage && tempGroup) {
+        sendMessage(
+          {
+            id: date.getMilliseconds().toString(),
+            referenceId: getRandomNumber(),
+            type: messageTypes.SENT,
+            content: tempMessage.content,
+            createdOn: date.toISOString(),
+            groupId: tempGroup?.id,
+            status: true,
+            fromId: userId,
+            toId: tempGroup?.targetId,
+            userId: null,
+            readBy: [],
+          },
+          true
+        );
+        setForward(false);
+      }
+    }
+  };
+
   const onViewHandler = (referenceId: string) => {
     const message = messages?.find((m) => m.referenceId === referenceId);
     openImageInNewTab(message?.content);
@@ -402,9 +432,14 @@ const Messages = () => {
     });
   };
 
-  const sendMessage = (newMessage: IMessageProps) => {
+  const sendMessage = (
+    newMessage: IMessageProps,
+    isForward: boolean = false
+  ) => {
     if (newMessage?.content && socket) {
-      const tempGroup: IGroupProps = group,
+      const tempGroup: IGroupProps = isForward
+          ? groups?.find((g) => g.id === newMessage.groupId)
+          : group,
         tempGroupMessages = tempGroup?.messages;
       newMessage.createdOn = getTimeConverted(new Date(newMessage.createdOn));
       if (tempGroupMessages) {
@@ -415,8 +450,10 @@ const Messages = () => {
         lastMessage: newMessage,
       });
       setInput('');
-      setGroup(tempGroup);
-      setMessages(tempGroupMessages);
+      if (!isForward) {
+        setGroup(tempGroup);
+        setMessages(tempGroupMessages);
+      }
       setNotifs(null);
       if (textInputRef?.current) {
         textInputRef.current.focus();
@@ -425,9 +462,11 @@ const Messages = () => {
       socket?.emit('is-active', { groupId: tempGroup.id, value: false });
       socket?.emit('new-message', newMessage);
 
-      const tempGroupIndex = groups.findIndex((g) => g.id === group.id);
-      groups.splice(tempGroupIndex, 1);
-      groups.splice(0, 0, tempGroup);
+      if (!isForward) {
+        const tempGroupIndex = groups.findIndex((g) => g.id === group.id);
+        groups.splice(tempGroupIndex, 1);
+        groups.splice(0, 0, tempGroup);
+      }
     }
   };
 
@@ -504,6 +543,7 @@ const Messages = () => {
 
   const onSelectGroupHandler = async (
     groupId: string,
+    _context: string | null,
     isFirst: boolean = false
   ) => {
     const tempGroup = isFirst
@@ -518,6 +558,7 @@ const Messages = () => {
     setMessages(tempGroup?.messages);
     textInputRef?.current?.focus();
     setSection(sections.group);
+    setForward(false);
   };
 
   const onKeyDownHandler = (e: { key: string }) =>
@@ -610,6 +651,7 @@ const Messages = () => {
             onMediaHandler={onMediaHandler}
             onDeleteHandler={onDeleteHandler}
             onCopyHandler={onCopyHandler}
+            onForwardHandler={onForwardHandler}
             onViewHandler={onViewHandler}
             onAddFriendHandler={onAddFriendHandler}
             onSelectGroupHandler={onSelectGroupHandler}
@@ -624,6 +666,9 @@ const Messages = () => {
             active={active}
             notifs={notifs}
             navbar={navbar}
+            userId={userId}
+            forward={forward}
+            setForward={setForward}
           />
         </div>
       </section>

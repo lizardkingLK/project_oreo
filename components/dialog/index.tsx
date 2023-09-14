@@ -5,15 +5,14 @@ import { IDialogProps } from '@/types';
 const Dialog = (props: IDialogProps) => {
   if (props) {
     const {
-      dialogRef,
       dialogTitle,
       dialogSubtitle,
+      dialogCloseTitle,
       dialogCloseHandler,
       children,
     } = props;
     return (
       <div
-        ref={dialogRef}
         className={`rounded-2xl bg-gradient-to-r from-stone-400 to-stone-500 shadow-black shadow-2xl w-full mb-4`}
       >
         <div className="flex justify-between items-center p-4">
@@ -25,10 +24,10 @@ const Dialog = (props: IDialogProps) => {
           </h1>
           <button
             className="text-white"
-            title="Cancel Attachment"
+            title={dialogCloseTitle}
             onClick={dialogCloseHandler}
           >
-            <Close size={undefined} />
+            <Close size={6} />
           </button>
         </div>
         {children}

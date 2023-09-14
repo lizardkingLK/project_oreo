@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Avatar from '@/components/avatar';
 import { messageTypes } from '@/utils/enums';
 import { IMessageCardProps } from '@/types';
@@ -11,6 +11,14 @@ import { isImage } from '@/utils/helpers';
 export default function MessageCard(props: IMessageCardProps) {
   const [options, setOptions] = useState(false);
 
+  const { currentMenuId, setCurrentMenuId, referenceId } = props;
+
+  useEffect(() => {
+    if (currentMenuId && currentMenuId !== referenceId) {
+      setOptions(false);
+    }
+  }, [currentMenuId, referenceId, setCurrentMenuId]);
+
   if (props) {
     const {
       referenceId,
@@ -21,9 +29,17 @@ export default function MessageCard(props: IMessageCardProps) {
       content,
       onDeleteHandler,
       onCopyHandler,
+      onForwardHandler,
       onViewHandler,
       loading,
+      setForward,
+      setCurrentMenuId,
     } = props;
+
+    const handleOpenMessageOptions = () => {
+      setCurrentMenuId(referenceId);
+      setOptions((prev) => !prev);
+    };
 
     return (
       <div className={`flex ${type === messageTypes.SENT && 'justify-end'}`}>
@@ -41,11 +57,14 @@ export default function MessageCard(props: IMessageCardProps) {
             messageTime={messageTime}
             referenceId={referenceId}
             options={options}
+            setOptions={setOptions}
             onDeleteHandler={onDeleteHandler}
             onCopyHandler={onCopyHandler}
+            onForwardHandler={onForwardHandler}
             onViewHandler={onViewHandler}
             loading={loading}
             isImage={isImage(content)}
+            setForward={setForward}
           />
         ) : (
           <div
@@ -74,7 +93,7 @@ export default function MessageCard(props: IMessageCardProps) {
             <button
               className="flex h-min mt-4 text-stone-900 hover:text-stone-100"
               title="Message Options"
-              onClick={() => setOptions((prev) => !prev)}
+              onClick={handleOpenMessageOptions}
             >
               <VerticalEllipsis />
             </button>

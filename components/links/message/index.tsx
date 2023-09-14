@@ -2,13 +2,14 @@ import React from 'react';
 import Avatar from '@/components/avatar';
 import { IMessageLinkProps } from '@/types';
 import { getBriefContent, isImage } from '@/utils/helpers';
+import { strings } from '@/utils/enums';
 
 const MessageLink = (props: IMessageLinkProps) => {
   if (props) {
     const {
+      messageId,
       messageOnClick,
       messageAuthorName,
-      messageId,
       messageImagePath,
       messageImageSize,
       messageIsActive,
@@ -25,8 +26,8 @@ const MessageLink = (props: IMessageLinkProps) => {
       <a
         href={void 0}
         className="cursor-pointer"
-        title={messageAuthorName ?? undefined}
-        onClick={() => messageOnClick(messageId)}
+        title={messageAuthorName ?? ''}
+        onClick={() => messageOnClick(messageId, strings.groupId)}
       >
         <div
           className={`flex justify-center items-start mb-4 py-4 rounded-2xl hover:bg-stone-800 ${

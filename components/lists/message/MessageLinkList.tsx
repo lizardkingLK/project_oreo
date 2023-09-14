@@ -4,7 +4,8 @@ import { IMessageLinkListProps } from '@/types';
 
 const MessageLinkList = (props: IMessageLinkListProps) => {
   if (props) {
-    const { groups, setGroup, selectedGroup, active, userId } = props;
+    const { groups, onGroupClickHandler, selectedGroup, active, userId } =
+      props;
 
     return (
       <Fragment>
@@ -13,7 +14,7 @@ const MessageLinkList = (props: IMessageLinkListProps) => {
             <MessageLink
               key={group.id}
               messageId={group.id}
-              messageOnClick={setGroup}
+              messageOnClick={onGroupClickHandler}
               messageImagePath={group.displayImage}
               messageImageSize={60}
               messageAuthorName={group.name}

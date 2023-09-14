@@ -7,18 +7,23 @@ import Spinner from '@/components/svgs/spinner';
 
 import { IMessageMenuProps } from '@/types';
 import Picture from '@/components/svgs/picture';
+import Forward from '@/components/svgs/forward';
+import { strings } from '@/utils/enums';
 
 const MessageMenu = (props: IMessageMenuProps) => {
   if (props) {
     const {
       referenceId,
       options,
+      setOptions,
       onDeleteHandler,
       onCopyHandler,
+      onForwardHandler,
       onViewHandler,
       loading,
       messageTime,
       isImage,
+      setForward,
     } = props;
 
     if (options) {
@@ -40,9 +45,26 @@ const MessageMenu = (props: IMessageMenuProps) => {
             <li className="pr-2">
               <button
                 type="button"
+                title="Forward Message"
+                className="text-green-500 font-black rounded-full text-sm text-center w-full p-2"
+                onClick={() => {
+                  setForward((prev: boolean) => !prev);
+                  onForwardHandler(referenceId, strings.referenceId);
+                  setOptions(false);
+                }}
+              >
+                <Forward size={6} />
+              </button>
+            </li>
+            <li className="pr-2">
+              <button
+                type="button"
                 title="Copy Message"
                 className="text-green-500 font-black rounded-full text-sm text-center w-full p-2"
-                onClick={() => onCopyHandler(referenceId)}
+                onClick={() => {
+                  onCopyHandler(referenceId);
+                  setOptions(false);
+                }}
               >
                 <Copy size={6} />
               </button>
@@ -53,7 +75,10 @@ const MessageMenu = (props: IMessageMenuProps) => {
                   type="button"
                   title="View Image"
                   className="text-green-500 font-black rounded-full text-sm text-center w-full p-2"
-                  onClick={() => onViewHandler(referenceId)}
+                  onClick={() => {
+                    onViewHandler(referenceId);
+                    setOptions(false);
+                  }}
                 >
                   <Picture size={6} />
                 </button>
