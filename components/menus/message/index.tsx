@@ -15,6 +15,7 @@ const MessageMenu = (props: IMessageMenuProps) => {
     const {
       referenceId,
       options,
+      setOptions,
       onDeleteHandler,
       onCopyHandler,
       onForwardHandler,
@@ -22,7 +23,7 @@ const MessageMenu = (props: IMessageMenuProps) => {
       loading,
       messageTime,
       isImage,
-      setForwardModal,
+      setForward,
     } = props;
 
     if (options) {
@@ -47,8 +48,9 @@ const MessageMenu = (props: IMessageMenuProps) => {
                 title="Forward Message"
                 className="text-green-500 font-black rounded-full text-sm text-center w-full p-2"
                 onClick={() => {
-                  setForwardModal((prev: boolean) => !prev);
+                  setForward((prev: boolean) => !prev);
                   onForwardHandler(referenceId, strings.referenceId);
+                  setOptions(false);
                 }}
               >
                 <Forward size={6} />
@@ -59,7 +61,10 @@ const MessageMenu = (props: IMessageMenuProps) => {
                 type="button"
                 title="Copy Message"
                 className="text-green-500 font-black rounded-full text-sm text-center w-full p-2"
-                onClick={() => onCopyHandler(referenceId)}
+                onClick={() => {
+                  onCopyHandler(referenceId);
+                  setOptions(false);
+                }}
               >
                 <Copy size={6} />
               </button>
@@ -70,7 +75,10 @@ const MessageMenu = (props: IMessageMenuProps) => {
                   type="button"
                   title="View Image"
                   className="text-green-500 font-black rounded-full text-sm text-center w-full p-2"
-                  onClick={() => onViewHandler(referenceId)}
+                  onClick={() => {
+                    onViewHandler(referenceId);
+                    setOptions(false);
+                  }}
                 >
                   <Picture size={6} />
                 </button>

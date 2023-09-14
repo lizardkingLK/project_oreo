@@ -65,6 +65,7 @@ const Messages = () => {
   const [rooms, setRooms] = useState<boolean>(false);
   const [online, setOnline] = useState<null | IUserOnlineProps>(null);
   const [unread, setUnread] = useState<null | number>(null);
+  const [forward, setForward] = useState(false);
   const [referenceId, setReferenceId] = useState<null | string>(null);
 
   const textInputRef = useRef<null | HTMLInputElement>(null);
@@ -117,7 +118,7 @@ const Messages = () => {
         .reduce((ucA, ucB) => ucA + ucB, 0);
       return unread === 0 ? null : unread;
     });
-  }, [groups, group, friend, output]);
+  }, [deleted, groups, group, friend, output]);
 
   useEffect(() => {
     if (output) {
@@ -173,9 +174,9 @@ const Messages = () => {
 
   useEffect(() => {
     if (deleted) {
-      const { referenceId, groupId } = deleted;
       let tempMessages, deletedMessage: IMessageProps | undefined;
-      const tempGroups = groups;
+      const { referenceId, groupId } = deleted,
+        tempGroups = groups;
       tempGroups.forEach((g) => {
         if (g?.id === groupId) {
           deletedMessage = g?.messages?.find(
@@ -295,7 +296,28 @@ const Messages = () => {
     if (context === strings.referenceId) {
       setReferenceId(id);
     } else if (context === strings.groupId) {
-      console.log({ referenceId, groupId: id });
+      const tempMessage = messages?.find((m) => m.referenceId === referenceId),
+        tempGroup = groups?.find((g) => g.id === id),
+        date = new Date();
+      if (tempMessage && tempGroup) {
+        sendMessage(
+          {
+            id: date.getMilliseconds().toString(),
+            referenceId: getRandomNumber(),
+            type: messageTypes.SENT,
+            content: tempMessage.content,
+            createdOn: date.toISOString(),
+            groupId: tempGroup?.id,
+            status: true,
+            fromId: userId,
+            toId: tempGroup?.targetId,
+            userId: null,
+            readBy: [],
+          },
+          true
+        );
+        setForward(false);
+      }
     }
   };
 
@@ -409,9 +431,14 @@ const Messages = () => {
     });
   };
 
-  const sendMessage = (newMessage: IMessageProps) => {
+  const sendMessage = (
+    newMessage: IMessageProps,
+    isForward: boolean = false
+  ) => {
     if (newMessage?.content && socket) {
-      const tempGroup: IGroupProps = group,
+      const tempGroup: IGroupProps = isForward
+          ? groups?.find((g) => g.id === newMessage.groupId)
+          : group,
         tempGroupMessages = tempGroup?.messages;
       newMessage.createdOn = getTimeConverted(new Date(newMessage.createdOn));
       if (tempGroupMessages) {
@@ -422,8 +449,10 @@ const Messages = () => {
         lastMessage: newMessage,
       });
       setInput('');
-      setGroup(tempGroup);
-      setMessages(tempGroupMessages);
+      if (!isForward) {
+        setGroup(tempGroup);
+        setMessages(tempGroupMessages);
+      }
       setNotifs(null);
       if (textInputRef?.current) {
         textInputRef.current.focus();
@@ -432,9 +461,11 @@ const Messages = () => {
       socket?.emit('is-active', { groupId: tempGroup.id, value: false });
       socket?.emit('new-message', newMessage);
 
-      const tempGroupIndex = groups.findIndex((g) => g.id === group.id);
-      groups.splice(tempGroupIndex, 1);
-      groups.splice(0, 0, tempGroup);
+      if (!isForward) {
+        const tempGroupIndex = groups.findIndex((g) => g.id === group.id);
+        groups.splice(tempGroupIndex, 1);
+        groups.splice(0, 0, tempGroup);
+      }
     }
   };
 
@@ -509,13 +540,8 @@ const Messages = () => {
     }
   };
 
-  const onSelectGroupHandler = async (
-    groupId: string,
-    isFirst: boolean = false
-  ) => {
-    const tempGroup = isFirst
-      ? groups[0]
-      : groups.find((g) => g.id === groupId);
+  const onSelectGroupHandler = async (groupId: string) => {
+    const tempGroup = groups.find((g) => g.id === groupId);
     if (tempGroup?.id && userId && tempGroup.unreadCount) {
       tempGroup.unreadCount = 0;
       updateUnread(tempGroup?.id, userId);
@@ -633,6 +659,8 @@ const Messages = () => {
             notifs={notifs}
             navbar={navbar}
             userId={userId}
+            forward={forward}
+            setForward={setForward}
           />
         </div>
       </section>

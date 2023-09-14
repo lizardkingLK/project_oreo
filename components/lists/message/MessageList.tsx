@@ -1,12 +1,10 @@
 import MessageCard from '@/components/cards/message';
 import Dialog from '@/components/dialog';
 import { IMessageListProps } from '@/types';
-import { Fragment, useState } from 'react';
+import { Fragment } from 'react';
 import MessageLinkList from './MessageLinkList';
 
 const MessageList = (props: IMessageListProps) => {
-  const [forwardModal, setForwardModal] = useState(false);
-
   if (props) {
     const {
       messages,
@@ -20,6 +18,8 @@ const MessageList = (props: IMessageListProps) => {
       onForwardHandler,
       onViewHandler,
       loading,
+      forward,
+      setForward,
     } = props;
     return (
       <Fragment>
@@ -38,7 +38,7 @@ const MessageList = (props: IMessageListProps) => {
                 onForwardHandler={onForwardHandler}
                 onViewHandler={onViewHandler}
                 loading={loading}
-                setForwardModal={setForwardModal}
+                setForward={setForward}
               />
             </Fragment>
           ))}
@@ -48,17 +48,17 @@ const MessageList = (props: IMessageListProps) => {
             <p className="text-sm text-stone-500">{`${active.name} is typing...`}</p>
           </div>
         )}
-        {forwardModal && (
+        {forward && (
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96">
             <Dialog
               dialogTitle={'Forward Message'}
               dialogSubtitle={'Forward'}
               dialogCloseTitle={'Cancel Forward Message'}
-              dialogCloseHandler={() => setForwardModal(false)}
+              dialogCloseHandler={() => setForward(false)}
             >
-              <div className="flex justify-center items-center m-4">
+              <div className="py-4 m-4">
                 <MessageLinkList
-                  groups={groups}
+                  groups={groups?.filter((g) => g.id !== group?.id)}
                   onGroupClickHandler={onForwardHandler}
                   selectedGroup={group}
                   active={active}

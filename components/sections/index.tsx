@@ -39,6 +39,8 @@ const SectionSwitch = (props: ISecitonSwitchProps) => {
       textInputRef,
       loading,
       navbar,
+      forward,
+      setForward,
     } = props;
 
     if (section === sections.loading) {
@@ -108,6 +110,8 @@ const SectionSwitch = (props: ISecitonSwitchProps) => {
           textInputRef={textInputRef}
           loading={loading}
           navbar={navbar}
+          forward={forward}
+          setForward={setForward}
         />
       );
     } else return null;

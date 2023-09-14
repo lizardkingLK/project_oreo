@@ -125,6 +125,8 @@ export interface IMessageListProps {
   onCopyHandler: Function;
   onForwardHandler: Function;
   onViewHandler: Function;
+  setForward: Function;
+  forward: boolean;
   loading: boolean;
 }
 
@@ -177,7 +179,7 @@ export interface IMessageCardProps {
   onCopyHandler: Function;
   onForwardHandler: Function;
   onViewHandler: Function;
-  setForwardModal: Function;
+  setForward: Function;
   loading: boolean;
 }
 
@@ -284,7 +286,6 @@ export interface IIntroductionProps {
 export interface ISecitonSwitchProps {
   userId: string | null;
   section: sections;
-  setSection: Function;
   user: any;
   active: any;
   notifs: NotificationType;
@@ -304,6 +305,9 @@ export interface ISecitonSwitchProps {
   onAddFriendHandler: Function;
   onSelectGroupHandler: Function;
   setGroup: Function;
+  setSection: Function;
+  setForward: Function;
+  forward: boolean;
   lastMessageRef: null | LegacyRef<HTMLDivElement>;
   textInputRef: LegacyRef<HTMLInputElement> | null;
   navbar: boolean;
@@ -327,6 +331,8 @@ export interface IGroupSectionProps {
   onViewHandler: Function;
   onMediaHandler: Function;
   setGroup: Function;
+  setForward: Function;
+  forward: boolean;
   lastMessageRef: null | LegacyRef<HTMLDivElement>;
   textInputRef: LegacyRef<HTMLInputElement> | null;
   navbar: boolean;
@@ -341,7 +347,8 @@ export interface IMessageMenuProps {
   onCopyHandler: Function;
   onForwardHandler: Function;
   onViewHandler: Function;
-  setForwardModal: Function;
+  setOptions: Function;
+  setForward: Function;
   isImage: boolean;
 }
 

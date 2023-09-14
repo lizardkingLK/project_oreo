@@ -27,6 +27,8 @@ const Group = (props: IGroupSectionProps) => {
       textInputRef,
       loading,
       navbar,
+      forward,
+      setForward,
     } = props;
     return (
       <Fragment>
@@ -70,6 +72,8 @@ const Group = (props: IGroupSectionProps) => {
             loading={loading}
             groups={groups}
             userId={userId}
+            forward={forward}
+            setForward={setForward}
           />
         </div>
         <div className="sticky bottom-0 p-4 bg-black">

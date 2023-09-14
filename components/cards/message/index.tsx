@@ -24,7 +24,7 @@ export default function MessageCard(props: IMessageCardProps) {
       onForwardHandler,
       onViewHandler,
       loading,
-      setForwardModal,
+      setForward,
     } = props;
 
     return (
@@ -43,13 +43,14 @@ export default function MessageCard(props: IMessageCardProps) {
             messageTime={messageTime}
             referenceId={referenceId}
             options={options}
+            setOptions={setOptions}
             onDeleteHandler={onDeleteHandler}
             onCopyHandler={onCopyHandler}
             onForwardHandler={onForwardHandler}
             onViewHandler={onViewHandler}
             loading={loading}
             isImage={isImage(content)}
-            setForwardModal={setForwardModal}
+            setForward={setForward}
           />
         ) : (
           <div
