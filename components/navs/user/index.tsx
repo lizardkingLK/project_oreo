@@ -32,6 +32,7 @@ const UserNavbar = (props: IUserNavbarProps) => {
             <div className="p-4">
               <UserButton
                 afterSignOutUrl="/"
+                userProfileMode="modal"
                 appearance={{
                   elements: {
                     avatarImage: 'w-12 h-12',

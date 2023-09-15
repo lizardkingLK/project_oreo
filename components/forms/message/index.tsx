@@ -1,4 +1,4 @@
-import React, { Fragment, useRef, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { IMessageEditorProps } from '@/types';
 import Send from '@/components/svgs/send';
 import Emoji from '@/components/svgs/emoji';
@@ -8,11 +8,30 @@ import Upload from '@/components/svgs/upload/upload';
 import Clear from '@/components/svgs/clear';
 import Dialog from '@/components/dialog';
 
+const useWidth = () => {
+  const [width, setWidth] = useState(window.innerWidth);
+  useEffect(() => {
+    const resizeListener = () => setWidth(window.innerWidth);
+    window.addEventListener('resize', resizeListener);
+    return () => removeEventListener('resize', resizeListener);
+  });
+  return width;
+};
+
 const MessageEditor = (props: IMessageEditorProps) => {
   const [mediaModal, setMediaModal] = useState(false);
   const [files, setFiles] = useState(null);
   const [file, setFile] = useState(null);
   const [type, setType] = useState(null);
+  const [ui, setUi] = useState({ iconSize: 0, iconPadding: 0 });
+
+  const width = useWidth();
+
+  useEffect(() => {
+    setUi({ iconSize: width < 768 ? 6 : 7, iconPadding: 0 });
+  }, [width]);
+
+  console.log(width);
 
   if (props) {
     const {
@@ -90,7 +109,7 @@ const MessageEditor = (props: IMessageEditorProps) => {
                       title="Send"
                       onClick={mediaSubmitHandler}
                     >
-                      <Send size={undefined} />
+                      <Send size={ui.iconSize} />
                     </button>
                   </div>
                 </Fragment>
@@ -116,16 +135,16 @@ const MessageEditor = (props: IMessageEditorProps) => {
               )}
             </Dialog>
           )}
-          <div className="flex items-center">
+          <div className="flex items-center justify-center w-full">
             <button
-              className="py-4 pl-4 rounded-l-full bg-stone-900 text-white hover:text-green-500 flex items-center justify-center"
+              className="py-2 md:py-4 pl-2 md:pl-4 rounded-l-full bg-stone-900 text:md md:text-xl text-white hover:text-green-500 flex items-center justify-center"
               title="Insert Emoji"
             >
-              <Emoji />
+              <Emoji size={ui.iconSize} />
             </button>
             <input
               ref={textInputRef}
-              className="basis-0 w-44 md:basis-11/12 p-4 outline-none text-xl font-semibold bg-stone-900 text-white"
+              className="basis-0 w-60 md:basis-11/12 p-2 md:p-4 outline-none text-md md:text-xl font-semibold bg-stone-900 text-white"
               placeholder="Type a message"
               value={input}
               onBlur={onBlurHandler}
@@ -134,21 +153,21 @@ const MessageEditor = (props: IMessageEditorProps) => {
               title="Type Message Here"
             />
             <button
-              className={`p-4 rounded-r-full bg-stone-900 ${
+              className={`p-2 md:p-4 bg-stone-900 ${
                 mediaModal ? 'text-green-500' : 'text-white'
               } hover:text-green-500`}
               title="Send Media"
               onClick={() => setMediaModal(!mediaModal)}
             >
-              <Attachment />
+              <Attachment size={ui.iconSize} />
             </button>
             <button
               type="submit"
-              className="p-4 ml-4 rounded-full bg-green-500 hover:bg-green-600 text-white"
+              className="p-2 md:p-4 rounded-r-full bg-green-500 hover:bg-green-600 text-white"
               title="Send Message"
               onClick={onSubmitHandler}
             >
-              <Send size={undefined} />
+              <Send size={ui.iconSize} />
             </button>
           </div>
         </Fragment>

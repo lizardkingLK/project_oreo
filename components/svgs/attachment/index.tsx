@@ -1,6 +1,7 @@
 import React from 'react';
 
-const Attachment = () => {
+const Attachment = ({ size }: { size: number | undefined }) => {
+  const className = size ? `w-${size} h-${size}` : 'w-8 h-8';
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -8,7 +9,7 @@ const Attachment = () => {
       viewBox="0 0 24 24"
       strokeWidth={2}
       stroke="currentColor"
-      className="w-7 h-7"
+      className={className}
     >
       <path
         strokeLinecap="round"
