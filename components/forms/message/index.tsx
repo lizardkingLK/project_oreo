@@ -19,6 +19,7 @@ const MessageEditor = (props: IMessageEditorProps) => {
       group,
       input,
       onChangeHandler,
+      onBlurHandler,
       onKeyDownHandler,
       onSubmitHandler,
       onMediaHandler,
@@ -127,6 +128,7 @@ const MessageEditor = (props: IMessageEditorProps) => {
               className="basis-0 w-44 md:basis-11/12 p-4 outline-none text-xl font-semibold bg-stone-900 text-white"
               placeholder="Type a message"
               value={input}
+              onBlur={onBlurHandler}
               onChange={onChangeHandler}
               onKeyDown={onKeyDownHandler}
               title="Type Message Here"

@@ -17,6 +17,7 @@ const Group = (props: IGroupSectionProps) => {
       lastMessageRef,
       input,
       onChangeHandler,
+      onBlurHandler,
       onKeyDownHandler,
       onSubmitHandler,
       onDeleteHandler,
@@ -81,6 +82,7 @@ const Group = (props: IGroupSectionProps) => {
             group={group}
             input={input}
             onChangeHandler={onChangeHandler}
+            onBlurHandler={onBlurHandler}
             onKeyDownHandler={onKeyDownHandler}
             onSubmitHandler={onSubmitHandler}
             onMediaHandler={onMediaHandler}
