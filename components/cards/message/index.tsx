@@ -30,6 +30,7 @@ export default function MessageCard(props: IMessageCardProps) {
       onDeleteHandler,
       onCopyHandler,
       onForwardHandler,
+      onEditHandler,
       onViewHandler,
       loading,
       setForward,
@@ -61,6 +62,7 @@ export default function MessageCard(props: IMessageCardProps) {
             onDeleteHandler={onDeleteHandler}
             onCopyHandler={onCopyHandler}
             onForwardHandler={onForwardHandler}
+            onEditHandler={onEditHandler}
             onViewHandler={onViewHandler}
             loading={loading}
             isImage={isImage(content)}

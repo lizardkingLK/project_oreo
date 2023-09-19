@@ -24,6 +24,7 @@ const MessageList = (props: IMessageListProps) => {
       onDeleteHandler,
       onCopyHandler,
       onForwardHandler,
+      onEditHandler,
       onViewHandler,
       loading,
       forward,
@@ -45,6 +46,7 @@ const MessageList = (props: IMessageListProps) => {
                 onDeleteHandler={onDeleteHandler}
                 onCopyHandler={onCopyHandler}
                 onForwardHandler={onForwardHandler}
+                onEditHandler={onEditHandler}
                 onViewHandler={onViewHandler}
                 loading={loading}
                 setForward={setForward}
@@ -72,6 +74,7 @@ const MessageList = (props: IMessageListProps) => {
                   <MessageLinkList
                     groups={forwarableGroups}
                     onGroupClickHandler={onForwardHandler}
+                    onEditHandler={onEditHandler}
                     selectedGroup={group}
                     active={active}
                     userId={userId}
