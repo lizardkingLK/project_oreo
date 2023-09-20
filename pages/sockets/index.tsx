@@ -419,6 +419,15 @@ const Messages = () => {
     );
   };
 
+  const onBlurHandler = () => {
+    socket?.emit('is-active', {
+      value: false,
+      groupId: group.id,
+      name: user?.firstName ?? strings.someone,
+      userId,
+    });
+  };
+
   const onChangeHandler = (e: {
     target: { value: React.SetStateAction<string> };
   }) => {
@@ -459,7 +468,6 @@ const Messages = () => {
         textInputRef.current.focus();
       }
 
-      socket?.emit('is-active', { groupId: tempGroup.id, value: false });
       socket?.emit('new-message', newMessage);
 
       if (!isForward) {
@@ -646,6 +654,7 @@ const Messages = () => {
             setSection={setSection}
             lastMessageRef={lastMessageRef}
             onChangeHandler={onChangeHandler}
+            onBlurHandler={onBlurHandler}
             onKeyDownHandler={onKeyDownHandler}
             onSubmitHandler={onSubmitHandler}
             onMediaHandler={onMediaHandler}

@@ -2,6 +2,7 @@ import { elementType, groupTypes, messageTypes, sections } from '@/utils/enums';
 
 import {
   ChangeEventHandler,
+  FocusEventHandler,
   KeyboardEventHandler,
   LegacyRef,
   MouseEventHandler,
@@ -150,6 +151,7 @@ export interface IMessageEditorProps {
   group: IGroupProps;
   input: string;
   onChangeHandler: ChangeEventHandler<HTMLInputElement>;
+  onBlurHandler: FocusEventHandler<HTMLInputElement>;
   onKeyDownHandler: KeyboardEventHandler<HTMLInputElement>;
   onSubmitHandler: MouseEventHandler<HTMLButtonElement>;
   onMediaHandler: Function;
@@ -297,6 +299,7 @@ export interface ISecitonSwitchProps {
   groups: IGroupProps[];
   messages: IMessageProps[] | undefined;
   onChangeHandler: ChangeEventHandler<HTMLInputElement>;
+  onBlurHandler: FocusEventHandler<HTMLInputElement>;
   onKeyDownHandler: KeyboardEventHandler<HTMLInputElement>;
   onSubmitHandler: MouseEventHandler<HTMLButtonElement>;
   onDeleteHandler: Function;
@@ -325,6 +328,7 @@ export interface IGroupSectionProps {
   loading: boolean;
   messages: IMessageProps[] | undefined;
   onChangeHandler: ChangeEventHandler<HTMLInputElement>;
+  onBlurHandler: FocusEventHandler<HTMLInputElement>;
   onKeyDownHandler: KeyboardEventHandler<HTMLInputElement>;
   onSubmitHandler: MouseEventHandler<HTMLButtonElement>;
   onDeleteHandler: Function;

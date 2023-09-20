@@ -17,6 +17,7 @@ const Group = (props: IGroupSectionProps) => {
       lastMessageRef,
       input,
       onChangeHandler,
+      onBlurHandler,
       onKeyDownHandler,
       onSubmitHandler,
       onDeleteHandler,
@@ -55,7 +56,7 @@ const Group = (props: IGroupSectionProps) => {
           </div>
         </div>
         <div
-          className="overflow-scroll h-[calc(100vh-12rem)]"
+          className="overflow-scroll h-[calc(100vh-8rem)] md:h-[calc(100vh-12rem)]"
           id="divMessageList"
         >
           <MessageList
@@ -76,11 +77,12 @@ const Group = (props: IGroupSectionProps) => {
             setForward={setForward}
           />
         </div>
-        <div className="sticky bottom-0 p-4 bg-black">
+        <div className="sticky bottom-0 p-2 md:p-4 bg-black">
           <MessageEditor
             group={group}
             input={input}
             onChangeHandler={onChangeHandler}
+            onBlurHandler={onBlurHandler}
             onKeyDownHandler={onKeyDownHandler}
             onSubmitHandler={onSubmitHandler}
             onMediaHandler={onMediaHandler}
