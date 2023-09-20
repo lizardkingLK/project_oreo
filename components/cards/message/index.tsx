@@ -71,8 +71,10 @@ export default function MessageCard(props: IMessageCardProps) {
         ) : (
           <div
             title={messageTime}
-            className={`my-4 min-w-max rounded-xl ${
-              isImage(content) ? 'bg-transparent' : 'p-4 bg-gradient-to-r'
+            className={`my-2 md:my-4 min-w-max rounded-lg md:rounded-xl ${
+              isImage(content)
+                ? 'bg-transparent'
+                : 'p-2 md:p-4 bg-gradient-to-r'
             } ${
               type === messageTypes.RECEIVED
                 ? 'from-green-400 ml-2 to-green-500 rounded-tl-none cursor-pointer'

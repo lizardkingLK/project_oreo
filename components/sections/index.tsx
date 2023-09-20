@@ -27,6 +27,7 @@ const SectionSwitch = (props: ISecitonSwitchProps) => {
       lastMessageRef,
       input,
       onChangeHandler,
+      onBlurHandler,
       onKeyDownHandler,
       onSubmitHandler,
       onDeleteHandler,
@@ -101,6 +102,7 @@ const SectionSwitch = (props: ISecitonSwitchProps) => {
           lastMessageRef={lastMessageRef}
           input={input}
           onChangeHandler={onChangeHandler}
+          onBlurHandler={onBlurHandler}
           onKeyDownHandler={onKeyDownHandler}
           onSubmitHandler={onSubmitHandler}
           onMediaHandler={onMediaHandler}
