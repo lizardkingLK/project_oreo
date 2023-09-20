@@ -74,7 +74,6 @@ const MessageList = (props: IMessageListProps) => {
                   <MessageLinkList
                     groups={forwarableGroups}
                     onGroupClickHandler={onForwardHandler}
-                    onEditHandler={onEditHandler}
                     selectedGroup={group}
                     active={active}
                     userId={userId}
