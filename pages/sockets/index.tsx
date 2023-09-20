@@ -293,6 +293,11 @@ const Messages = () => {
     writeContentToClipboard(message?.content);
   };
 
+  const onEditHandler = (referenceId: string) => {
+    const message = messages?.find((m) => m.referenceId === referenceId);
+    setInput(message?.content);
+  };
+
   const onForwardHandler = (id: string, context: string) => {
     if (context === strings.referenceId) {
       setReferenceId(id);
@@ -661,6 +666,7 @@ const Messages = () => {
             onDeleteHandler={onDeleteHandler}
             onCopyHandler={onCopyHandler}
             onForwardHandler={onForwardHandler}
+            onEditHandler={onEditHandler}
             onViewHandler={onViewHandler}
             onAddFriendHandler={onAddFriendHandler}
             onSelectGroupHandler={onSelectGroupHandler}

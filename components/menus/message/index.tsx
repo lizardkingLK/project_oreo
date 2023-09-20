@@ -19,6 +19,7 @@ const MessageMenu = (props: IMessageMenuProps) => {
       onDeleteHandler,
       onCopyHandler,
       onForwardHandler,
+      onEditHandler,
       onViewHandler,
       loading,
       messageTime,
@@ -38,6 +39,10 @@ const MessageMenu = (props: IMessageMenuProps) => {
                 type="button"
                 title="Edit Message"
                 className="text-green-500 font-black rounded-full text-sm text-center w-full p-2"
+                onClick={() => {
+                  onEditHandler(referenceId);
+                  setOptions(false);
+                }}
               >
                 <Pencil size={6} />
               </button>

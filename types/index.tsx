@@ -125,6 +125,7 @@ export interface IMessageListProps {
   onDeleteHandler: Function;
   onCopyHandler: Function;
   onForwardHandler: Function;
+  onEditHandler: Function;
   onViewHandler: Function;
   setForward: Function;
   forward: boolean;
@@ -180,6 +181,7 @@ export interface IMessageCardProps {
   onDeleteHandler: Function;
   onCopyHandler: Function;
   onForwardHandler: Function;
+  onEditHandler: Function;
   onViewHandler: Function;
   setForward: Function;
   setCurrentMenuId: Function;
@@ -305,6 +307,7 @@ export interface ISecitonSwitchProps {
   onDeleteHandler: Function;
   onCopyHandler: Function;
   onForwardHandler: Function;
+  onEditHandler: Function;
   onViewHandler: Function;
   onMediaHandler: Function;
   onAddFriendHandler: Function;
@@ -334,6 +337,7 @@ export interface IGroupSectionProps {
   onDeleteHandler: Function;
   onCopyHandler: Function;
   onForwardHandler: Function;
+  onEditHandler: Function;
   onViewHandler: Function;
   onMediaHandler: Function;
   setGroup: Function;
@@ -352,6 +356,7 @@ export interface IMessageMenuProps {
   onDeleteHandler: Function;
   onCopyHandler: Function;
   onForwardHandler: Function;
+  onEditHandler: Function;
   onViewHandler: Function;
   setOptions: Function;
   setForward: Function;
