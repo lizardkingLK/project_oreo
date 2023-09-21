@@ -41,6 +41,7 @@ import {
   deleteMessage,
   getGroups,
   saveFile,
+  updateMessage,
   updateUnread,
 } from '@/utils/http';
 
@@ -300,6 +301,9 @@ const Messages = () => {
     setContext(actions.beforeEdit);
     setInput(message?.content);
     setReferenceId(referenceId);
+    if (textInputRef?.current) {
+      textInputRef.current.focus();
+    }
   };
 
   const onForwardHandler = (id: string, context: string) => {
@@ -491,9 +495,7 @@ const Messages = () => {
     }
   };
 
-  const onSubmitHandler = (ctx: actions = actions.create) => {
-    console.log(ctx);
-
+  const onSubmitHandler = (ctx: actions) => {
     if (ctx === actions.create) {
       if (input && group) {
         sendMessage({
@@ -508,6 +510,32 @@ const Messages = () => {
           toId: group.targetId,
           userId: null,
           readBy: [],
+        });
+      }
+    } else if (ctx === actions.edit) {
+      if (input && referenceId) {
+        updateMessage(input, referenceId).then(() => {
+          let tempMessages;
+          const tempGroups = groups;
+          tempGroups.forEach((g) => {
+            if (g?.id === group?.id) {
+              tempMessages = g?.messages;
+              tempMessages.forEach((m) => {
+                if (m.referenceId === referenceId) {
+                  m.content = input;
+                  if (g.lastMessage?.referenceId === referenceId) {
+                    g.lastMessage = m;
+                  }
+                }
+              });
+              g.messages = tempMessages;
+            }
+          });
+          setGroups(tempGroups);
+          setMessages(tempMessages);
+          setReferenceId(null);
+          setInput('');
+          setContext(actions.create);
         });
       }
     } else if (ctx === actions.beforeEdit) {
@@ -590,7 +618,7 @@ const Messages = () => {
   };
 
   const onKeyDownHandler = (e: { key: string }) =>
-    e.key === 'Enter' && onSubmitHandler();
+    e.key === 'Enter' && onSubmitHandler(context);
 
   const onAddFriendHandler = (messageData: IMessageDataProps) => {
     const target: ICreatedForDataProps =

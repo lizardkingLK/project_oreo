@@ -71,6 +71,15 @@ export const supabaseUtil = {
       .select()
       .eq('groupId', groupId);
   },
+  async updateMessage(
+    referenceId: string | string[] | undefined,
+    content: string
+  ) {
+    return await supabaseClient
+      .from(tableNames.message)
+      .update({ content })
+      .eq('referenceId', referenceId);
+  },
   async updateMessages(readBy: { id: string; value: boolean }[], id: string) {
     return await supabaseClient
       .from(tableNames.message)

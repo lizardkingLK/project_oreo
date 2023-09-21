@@ -84,5 +84,9 @@ export enum elementType {
 
 export enum messagingType {
   sockets = 'sockets',
-  ably = 'ably',
+}
+
+export enum restContext {
+  updateUnread = 'UPDATE_UNREAD',
+  updateMessage = 'UPDATE_MESSAGE',
 }

@@ -1,4 +1,4 @@
-import { apiUrls } from './enums';
+import { apiUrls, restContext } from './enums';
 
 export const getFeeds = async (userId: string) => {
   return await fetch(`${apiUrls.feed}?id=${userId}`)
@@ -36,7 +36,25 @@ export const updateUnread = async (
   return await fetch(apiUrls.message, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ groupId, userId }),
+    body: JSON.stringify({
+      context: restContext.updateUnread,
+      groupId,
+      userId,
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => data);
+};
+
+export const updateMessage = async (content: string, referenceId: string) => {
+  return await fetch(apiUrls.message, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      context: restContext.updateMessage,
+      referenceId,
+      content,
+    }),
   })
     .then((response) => response.json())
     .then((data) => data);
