@@ -64,6 +64,12 @@ export enum sections {
   feeds = 5,
 }
 
+export enum actions {
+  create = 1,
+  beforeEdit = 2,
+  edit = 3,
+}
+
 export enum strings {
   someone = 'Someone',
   local = 'local',

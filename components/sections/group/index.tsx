@@ -31,6 +31,7 @@ const Group = (props: IGroupSectionProps) => {
       navbar,
       forward,
       setForward,
+      context,
     } = props;
     return (
       <Fragment>
@@ -89,6 +90,7 @@ const Group = (props: IGroupSectionProps) => {
             onSubmitHandler={onSubmitHandler}
             onMediaHandler={onMediaHandler}
             textInputRef={textInputRef}
+            context={context}
           />
         </div>
       </Fragment>

@@ -14,6 +14,7 @@ import {
 } from '@/types';
 
 import {
+  actions,
   bucketNames,
   groupTypes,
   mediaTypes,
@@ -67,6 +68,7 @@ const Messages = () => {
   const [unread, setUnread] = useState<null | number>(null);
   const [forward, setForward] = useState(false);
   const [referenceId, setReferenceId] = useState<null | string>(null);
+  const [context, setContext] = useState<actions>(actions.create);
 
   const textInputRef = useRef<null | HTMLInputElement>(null);
   const lastMessageRef = useRef<null | HTMLDivElement>(null);
@@ -295,7 +297,9 @@ const Messages = () => {
 
   const onEditHandler = (referenceId: string) => {
     const message = messages?.find((m) => m.referenceId === referenceId);
+    setContext(actions.beforeEdit);
     setInput(message?.content);
+    setReferenceId(referenceId);
   };
 
   const onForwardHandler = (id: string, context: string) => {
@@ -437,7 +441,11 @@ const Messages = () => {
     target: { value: React.SetStateAction<string> };
   }) => {
     setInput(e.target.value);
-
+    setContext((prev: actions) => {
+      if (prev === actions.beforeEdit) {
+        return actions.edit;
+      } else return prev;
+    });
     socket?.emit('is-active', {
       value: true,
       groupId: group.id,
@@ -483,21 +491,28 @@ const Messages = () => {
     }
   };
 
-  const onSubmitHandler = () => {
-    if (input && group) {
-      sendMessage({
-        id: 'NEW_MESSAGE',
-        referenceId: getRandomNumber(),
-        type: messageTypes.SENT,
-        content: input,
-        createdOn: new Date().toISOString(),
-        groupId: group.id,
-        status: true,
-        fromId: userId,
-        toId: group.targetId,
-        userId: null,
-        readBy: [],
-      });
+  const onSubmitHandler = (ctx: actions = actions.create) => {
+    console.log(ctx);
+
+    if (ctx === actions.create) {
+      if (input && group) {
+        sendMessage({
+          id: 'NEW_MESSAGE',
+          referenceId: getRandomNumber(),
+          type: messageTypes.SENT,
+          content: input,
+          createdOn: new Date().toISOString(),
+          groupId: group.id,
+          status: true,
+          fromId: userId,
+          toId: group.targetId,
+          userId: null,
+          readBy: [],
+        });
+      }
+    } else if (ctx === actions.beforeEdit) {
+      setContext(actions.create);
+      setInput('');
     }
   };
 
@@ -684,6 +699,7 @@ const Messages = () => {
             userId={userId}
             forward={forward}
             setForward={setForward}
+            context={context}
           />
         </div>
       </section>

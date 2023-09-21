@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { IMessageEditorProps } from '@/types';
+import { IMessageEditorProps, IUIProps } from '@/types';
 import Send from '@/components/svgs/send';
 import Emoji from '@/components/svgs/emoji';
 import Attachment from '@/components/svgs/attachment';
@@ -7,6 +7,8 @@ import BrowseMedia from '@/components/media/browse';
 import Upload from '@/components/svgs/upload/upload';
 import Clear from '@/components/svgs/clear';
 import Dialog from '@/components/dialog';
+import { actions } from '@/utils/enums';
+import SubmitButton from './buttons/Submit';
 
 const useWidth = () => {
   const [width, setWidth] = useState(window.innerWidth);
@@ -23,15 +25,13 @@ const MessageEditor = (props: IMessageEditorProps) => {
   const [files, setFiles] = useState(null);
   const [file, setFile] = useState(null);
   const [type, setType] = useState(null);
-  const [ui, setUi] = useState({ iconSize: 0, iconPadding: 0 });
+  const [ui, setUi] = useState<IUIProps>({ iconSize: 0, iconPadding: 0 });
 
   const width = useWidth();
 
   useEffect(() => {
     setUi({ iconSize: width < 768 ? 6 : 7, iconPadding: 0 });
   }, [width]);
-
-  console.log(width);
 
   if (props) {
     const {
@@ -43,6 +43,7 @@ const MessageEditor = (props: IMessageEditorProps) => {
       onSubmitHandler,
       onMediaHandler,
       textInputRef,
+      context,
     } = props;
 
     const mediaHandler = (event: any) => {
@@ -161,14 +162,11 @@ const MessageEditor = (props: IMessageEditorProps) => {
             >
               <Attachment size={ui.iconSize} />
             </button>
-            <button
-              type="submit"
-              className="p-2 md:p-4 rounded-r-full bg-green-500 hover:bg-green-600 text-white"
-              title="Send Message"
-              onClick={onSubmitHandler}
-            >
-              <Send size={ui.iconSize} />
-            </button>
+            <SubmitButton
+              context={context}
+              onSubmitHandler={onSubmitHandler}
+              ui={ui}
+            />
           </div>
         </Fragment>
       )

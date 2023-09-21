@@ -1,4 +1,10 @@
-import { elementType, groupTypes, messageTypes, sections } from '@/utils/enums';
+import {
+  actions,
+  elementType,
+  groupTypes,
+  messageTypes,
+  sections,
+} from '@/utils/enums';
 
 import {
   ChangeEventHandler,
@@ -154,9 +160,10 @@ export interface IMessageEditorProps {
   onChangeHandler: ChangeEventHandler<HTMLInputElement>;
   onBlurHandler: FocusEventHandler<HTMLInputElement>;
   onKeyDownHandler: KeyboardEventHandler<HTMLInputElement>;
-  onSubmitHandler: MouseEventHandler<HTMLButtonElement>;
+  onSubmitHandler: Function;
   onMediaHandler: Function;
   textInputRef: LegacyRef<HTMLInputElement> | null;
+  context: actions;
 }
 
 export interface IFeedProps {
@@ -303,7 +310,7 @@ export interface ISecitonSwitchProps {
   onChangeHandler: ChangeEventHandler<HTMLInputElement>;
   onBlurHandler: FocusEventHandler<HTMLInputElement>;
   onKeyDownHandler: KeyboardEventHandler<HTMLInputElement>;
-  onSubmitHandler: MouseEventHandler<HTMLButtonElement>;
+  onSubmitHandler: Function;
   onDeleteHandler: Function;
   onCopyHandler: Function;
   onForwardHandler: Function;
@@ -319,6 +326,7 @@ export interface ISecitonSwitchProps {
   lastMessageRef: null | LegacyRef<HTMLDivElement>;
   textInputRef: LegacyRef<HTMLInputElement> | null;
   navbar: boolean;
+  context: actions;
 }
 
 export interface IGroupSectionProps {
@@ -333,7 +341,7 @@ export interface IGroupSectionProps {
   onChangeHandler: ChangeEventHandler<HTMLInputElement>;
   onBlurHandler: FocusEventHandler<HTMLInputElement>;
   onKeyDownHandler: KeyboardEventHandler<HTMLInputElement>;
-  onSubmitHandler: MouseEventHandler<HTMLButtonElement>;
+  onSubmitHandler: Function;
   onDeleteHandler: Function;
   onCopyHandler: Function;
   onForwardHandler: Function;
@@ -346,6 +354,7 @@ export interface IGroupSectionProps {
   lastMessageRef: null | LegacyRef<HTMLDivElement>;
   textInputRef: LegacyRef<HTMLInputElement> | null;
   navbar: boolean;
+  context: actions;
 }
 
 export interface IMessageMenuProps {
@@ -385,4 +394,9 @@ export interface ISidebarProps {
   userId: string | null;
   onSelectGroupHandler: Function;
   group: IGroupProps;
+}
+
+export interface IUIProps {
+  iconSize: number;
+  iconPadding: number;
 }
