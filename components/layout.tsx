@@ -13,7 +13,7 @@ const LayoutSwitch = (props: ILayoutProps) => {
       </Head>
       <div className="container">
         <main className="min-h-screen" id={rootElementId}>
-          <div className="absolute z-10 block md:flex items-center p-4 border-stone-900 w-full">
+          <div className="absolute z-10 block md:flex items-center p-4 border-stone-900">
             <div className="basis-1/4 flex justify-between md:justify-start items-center my-4 md:m-0">
               {isSignedIn && (
                 <button

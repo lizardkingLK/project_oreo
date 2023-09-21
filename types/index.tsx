@@ -82,9 +82,15 @@ export interface IMessageDataProps extends IMessageProps {
   readBy: IReadByDataProps[];
 }
 
-export interface IDeletedMessageProps {
+export interface IChangedMessageProps {
   referenceId: string;
   groupId: string;
+}
+
+export interface IDeletedMessageProps extends IChangedMessageProps {}
+
+export interface IUpdatedMessageProps extends IChangedMessageProps {
+  input: string;
 }
 
 export interface IUserOnlineProps {

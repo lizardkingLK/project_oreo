@@ -10,6 +10,7 @@ import {
   IGroupProps,
   IMessageDataProps,
   IMessageProps,
+  IUpdatedMessageProps,
   IUserOnlineProps,
 } from '@/types';
 
@@ -62,6 +63,7 @@ const Messages = () => {
   const [notifs, setNotifs] = useState<null | boolean | string>(null);
   const [messages, setMessages] = useState<IMessageProps[] | undefined>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [updated, setUpdated] = useState<null | IUpdatedMessageProps>(null);
   const [deleted, setDeleted] = useState<null | IDeletedMessageProps>(null);
   const [friend, setFriend] = useState<null | IMessageDataProps>(null);
   const [rooms, setRooms] = useState<boolean>(false);
@@ -211,6 +213,33 @@ const Messages = () => {
   }, [deleted, groups, group, userId]);
 
   useEffect(() => {
+    if (updated) {
+      const { groupId, input, referenceId } = updated;
+      let tempMessages;
+      const tempGroups = groups;
+      tempGroups.forEach((g) => {
+        if (g?.id === groupId) {
+          tempMessages = g?.messages;
+          tempMessages.forEach((m) => {
+            if (m.referenceId === referenceId) {
+              m.content = input;
+              if (g.lastMessage?.referenceId === referenceId) {
+                g.lastMessage = m;
+              }
+            }
+          });
+          g.messages = tempMessages;
+        }
+      });
+      setGroups(tempGroups);
+      if (group?.id === groupId) {
+        setMessages(tempMessages);
+      }
+      setUpdated(null);
+    }
+  }, [updated, groups, group, userId]);
+
+  useEffect(() => {
     if (friend) {
       const targeted = friend.createdFor.find((u) => u.id === userId);
       if (targeted) {
@@ -276,6 +305,10 @@ const Messages = () => {
 
     socket.on('delete-message', (msg) => {
       setDeleted(msg);
+    });
+
+    socket.on('update-message', (msg) => {
+      setUpdated(msg);
     });
 
     socket.on('new-friend', (msg) => {
@@ -495,6 +528,37 @@ const Messages = () => {
     }
   };
 
+  const editMessage = (input: string, referenceId: string) => {
+    updateMessage(input, referenceId).then(() => {
+      let tempMessages;
+      const tempGroups = groups;
+      tempGroups.forEach((g) => {
+        if (g?.id === group?.id) {
+          tempMessages = g?.messages;
+          tempMessages.forEach((m) => {
+            if (m.referenceId === referenceId) {
+              m.content = input;
+              if (g.lastMessage?.referenceId === referenceId) {
+                g.lastMessage = m;
+              }
+            }
+          });
+          g.messages = tempMessages;
+        }
+      });
+      setGroups(tempGroups);
+      setMessages(tempMessages);
+      setReferenceId(null);
+      setInput('');
+      setContext(actions.create);
+      socket?.emit('update-message', {
+        referenceId,
+        groupId: group?.id,
+        input,
+      });
+    });
+  };
+
   const onSubmitHandler = (ctx: actions) => {
     if (ctx === actions.create) {
       if (input && group) {
@@ -514,34 +578,13 @@ const Messages = () => {
       }
     } else if (ctx === actions.edit) {
       if (input && referenceId) {
-        updateMessage(input, referenceId).then(() => {
-          let tempMessages;
-          const tempGroups = groups;
-          tempGroups.forEach((g) => {
-            if (g?.id === group?.id) {
-              tempMessages = g?.messages;
-              tempMessages.forEach((m) => {
-                if (m.referenceId === referenceId) {
-                  m.content = input;
-                  if (g.lastMessage?.referenceId === referenceId) {
-                    g.lastMessage = m;
-                  }
-                }
-              });
-              g.messages = tempMessages;
-            }
-          });
-          setGroups(tempGroups);
-          setMessages(tempMessages);
-          setReferenceId(null);
-          setInput('');
-          setContext(actions.create);
-        });
+        editMessage(input, referenceId);
       }
     } else if (ctx === actions.beforeEdit) {
       setContext(actions.create);
       setInput('');
     }
+    onBlurHandler();
   };
 
   const onMediaHandler = async (
