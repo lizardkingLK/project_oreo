@@ -99,6 +99,10 @@ const Messages = () => {
         }
       });
       initializeSocket().then(() => socket?.emit('identity', userId));
+
+      return () => {
+        socket.close();
+      };
     }
   }, [userId]);
 
