@@ -25,7 +25,7 @@ const LayoutSwitch = (props: ILayoutProps) => {
                 </button>
               )}
               {!navbar && (
-                <h1 className="ml-4 md:ml-2 text-3xl text-center md:text-left text-white font-bold">
+                <h1 className="text-3xl text-center md:text-left text-white font-bold">
                   OREO
                 </h1>
               )}

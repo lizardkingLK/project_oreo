@@ -10,10 +10,12 @@ import {
   IGroupProps,
   IMessageDataProps,
   IMessageProps,
+  IUpdatedMessageProps,
   IUserOnlineProps,
 } from '@/types';
 
 import {
+  actions,
   bucketNames,
   groupTypes,
   mediaTypes,
@@ -40,6 +42,7 @@ import {
   deleteMessage,
   getGroups,
   saveFile,
+  updateMessage,
   updateUnread,
 } from '@/utils/http';
 
@@ -60,6 +63,7 @@ const Messages = () => {
   const [notifs, setNotifs] = useState<null | boolean | string>(null);
   const [messages, setMessages] = useState<IMessageProps[] | undefined>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [updated, setUpdated] = useState<null | IUpdatedMessageProps>(null);
   const [deleted, setDeleted] = useState<null | IDeletedMessageProps>(null);
   const [friend, setFriend] = useState<null | IMessageDataProps>(null);
   const [rooms, setRooms] = useState<boolean>(false);
@@ -67,6 +71,7 @@ const Messages = () => {
   const [unread, setUnread] = useState<null | number>(null);
   const [forward, setForward] = useState(false);
   const [referenceId, setReferenceId] = useState<null | string>(null);
+  const [context, setContext] = useState<actions>(actions.create);
 
   const textInputRef = useRef<null | HTMLInputElement>(null);
   const lastMessageRef = useRef<null | HTMLDivElement>(null);
@@ -94,6 +99,10 @@ const Messages = () => {
         }
       });
       initializeSocket().then(() => socket?.emit('identity', userId));
+
+      return () => {
+        socket.close();
+      };
     }
   }, [userId]);
 
@@ -208,6 +217,33 @@ const Messages = () => {
   }, [deleted, groups, group, userId]);
 
   useEffect(() => {
+    if (updated) {
+      const { groupId, input, referenceId } = updated;
+      let tempMessages;
+      const tempGroups = groups;
+      tempGroups.forEach((g) => {
+        if (g?.id === groupId) {
+          tempMessages = g?.messages;
+          tempMessages.forEach((m) => {
+            if (m.referenceId === referenceId) {
+              m.content = input;
+              if (g.lastMessage?.referenceId === referenceId) {
+                g.lastMessage = m;
+              }
+            }
+          });
+          g.messages = tempMessages;
+        }
+      });
+      setGroups(tempGroups);
+      if (group?.id === groupId) {
+        setMessages(tempMessages);
+      }
+      setUpdated(null);
+    }
+  }, [updated, groups, group, userId]);
+
+  useEffect(() => {
     if (friend) {
       const targeted = friend.createdFor.find((u) => u.id === userId);
       if (targeted) {
@@ -275,6 +311,10 @@ const Messages = () => {
       setDeleted(msg);
     });
 
+    socket.on('update-message', (msg) => {
+      setUpdated(msg);
+    });
+
     socket.on('new-friend', (msg) => {
       setFriend(msg);
     });
@@ -295,7 +335,12 @@ const Messages = () => {
 
   const onEditHandler = (referenceId: string) => {
     const message = messages?.find((m) => m.referenceId === referenceId);
+    setContext(actions.beforeEdit);
     setInput(message?.content);
+    setReferenceId(referenceId);
+    if (textInputRef?.current) {
+      textInputRef.current.focus();
+    }
   };
 
   const onForwardHandler = (id: string, context: string) => {
@@ -437,7 +482,11 @@ const Messages = () => {
     target: { value: React.SetStateAction<string> };
   }) => {
     setInput(e.target.value);
-
+    setContext((prev: actions) => {
+      if (prev === actions.beforeEdit) {
+        return actions.edit;
+      } else return prev;
+    });
     socket?.emit('is-active', {
       value: true,
       groupId: group.id,
@@ -483,22 +532,63 @@ const Messages = () => {
     }
   };
 
-  const onSubmitHandler = () => {
-    if (input && group) {
-      sendMessage({
-        id: 'NEW_MESSAGE',
-        referenceId: getRandomNumber(),
-        type: messageTypes.SENT,
-        content: input,
-        createdOn: new Date().toISOString(),
-        groupId: group.id,
-        status: true,
-        fromId: userId,
-        toId: group.targetId,
-        userId: null,
-        readBy: [],
+  const editMessage = (input: string, referenceId: string) => {
+    updateMessage(input, referenceId).then(() => {
+      let tempMessages;
+      const tempGroups = groups;
+      tempGroups.forEach((g) => {
+        if (g?.id === group?.id) {
+          tempMessages = g?.messages;
+          tempMessages.forEach((m) => {
+            if (m.referenceId === referenceId) {
+              m.content = input;
+              if (g.lastMessage?.referenceId === referenceId) {
+                g.lastMessage = m;
+              }
+            }
+          });
+          g.messages = tempMessages;
+        }
       });
+      setGroups(tempGroups);
+      setMessages(tempMessages);
+      setReferenceId(null);
+      setInput('');
+      setContext(actions.create);
+      socket?.emit('update-message', {
+        referenceId,
+        groupId: group?.id,
+        input,
+      });
+    });
+  };
+
+  const onSubmitHandler = (ctx: actions) => {
+    if (ctx === actions.create) {
+      if (input && group) {
+        sendMessage({
+          id: 'NEW_MESSAGE',
+          referenceId: getRandomNumber(),
+          type: messageTypes.SENT,
+          content: input,
+          createdOn: new Date().toISOString(),
+          groupId: group.id,
+          status: true,
+          fromId: userId,
+          toId: group.targetId,
+          userId: null,
+          readBy: [],
+        });
+      }
+    } else if (ctx === actions.edit) {
+      if (input && referenceId) {
+        editMessage(input, referenceId);
+      }
+    } else if (ctx === actions.beforeEdit) {
+      setContext(actions.create);
+      setInput('');
     }
+    onBlurHandler();
   };
 
   const onMediaHandler = async (
@@ -575,7 +665,7 @@ const Messages = () => {
   };
 
   const onKeyDownHandler = (e: { key: string }) =>
-    e.key === 'Enter' && onSubmitHandler();
+    e.key === 'Enter' && onSubmitHandler(context);
 
   const onAddFriendHandler = (messageData: IMessageDataProps) => {
     const target: ICreatedForDataProps =
@@ -684,6 +774,7 @@ const Messages = () => {
             userId={userId}
             forward={forward}
             setForward={setForward}
+            context={context}
           />
         </div>
       </section>

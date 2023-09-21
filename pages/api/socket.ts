@@ -126,6 +126,10 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
         socket.to(message.groupId).emit('delete-message', message);
       });
 
+      socket.on('update-message', (message) => {
+        socket.to(message.groupId).emit('update-message', message);
+      });
+
       socket.on('new-friend', (message) => {
         const { groupId } = message,
           fromUser = message?.createdFor?.at(1),

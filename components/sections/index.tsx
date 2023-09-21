@@ -43,6 +43,7 @@ const SectionSwitch = (props: ISecitonSwitchProps) => {
       navbar,
       forward,
       setForward,
+      context,
     } = props;
 
     if (section === sections.loading) {
@@ -116,6 +117,7 @@ const SectionSwitch = (props: ISecitonSwitchProps) => {
           navbar={navbar}
           forward={forward}
           setForward={setForward}
+          context={context}
         />
       );
     } else return null;

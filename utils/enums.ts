@@ -64,6 +64,12 @@ export enum sections {
   feeds = 5,
 }
 
+export enum actions {
+  create = 1,
+  beforeEdit = 2,
+  edit = 3,
+}
+
 export enum strings {
   someone = 'Someone',
   local = 'local',
@@ -78,5 +84,9 @@ export enum elementType {
 
 export enum messagingType {
   sockets = 'sockets',
-  ably = 'ably',
+}
+
+export enum restContext {
+  updateUnread = 'UPDATE_UNREAD',
+  updateMessage = 'UPDATE_MESSAGE',
 }
