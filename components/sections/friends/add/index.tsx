@@ -103,6 +103,7 @@ const AddFriend = (props: IAddFriendProps) => {
             className="text-xl md:text-5xl font-bold w-full bg-transparent outline-none placeholder-stone-400 text-green-500 py-4"
             placeholder="Enter email..."
             ref={searchRef}
+            autoFocus={true}
             required
           />
           <button

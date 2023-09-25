@@ -34,19 +34,21 @@ const MessageMenu = (props: IMessageMenuProps) => {
             You at {messageTime}
           </h1>
           <ul className="rounded-xl flex justify-end items-center">
-            <li className="pr-2">
-              <button
-                type="button"
-                title="Edit Message"
-                className="text-green-500 font-black rounded-full text-sm text-center w-full p-2"
-                onClick={() => {
-                  onEditHandler(referenceId);
-                  setOptions(false);
-                }}
-              >
-                <Pencil size={6} />
-              </button>
-            </li>
+            {!isImage && (
+              <li className="pr-2">
+                <button
+                  type="button"
+                  title="Edit Message"
+                  className="text-green-500 font-black rounded-full text-sm text-center w-full p-2"
+                  onClick={() => {
+                    onEditHandler(referenceId);
+                    setOptions(false);
+                  }}
+                >
+                  <Pencil size={6} />
+                </button>
+              </li>
+            )}
             <li className="pr-2">
               <button
                 type="button"
