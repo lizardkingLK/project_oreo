@@ -8,7 +8,7 @@ const MessageList = (props: IMessageListProps) => {
   const { group, groups } = props;
 
   const [currentMenuId, setCurrentMenuId] = useState<null | string>(null);
-  const [forwarableGroups, setForwardableGroups] = useState<IGroupProps[]>([]);
+  const [forwardableGroups, setForwardableGroups] = useState<IGroupProps[]>([]);
 
   useEffect(() => {
     setForwardableGroups(groups?.filter((g) => g.id !== group?.id));
@@ -70,13 +70,14 @@ const MessageList = (props: IMessageListProps) => {
               dialogCloseHandler={() => setForward(false)}
             >
               <div className="py-4 m-4">
-                {forwarableGroups.length > 0 ? (
+                {forwardableGroups.length > 0 ? (
                   <MessageLinkList
-                    groups={forwarableGroups}
+                    groups={forwardableGroups}
                     onGroupClickHandler={onForwardHandler}
                     selectedGroup={group}
                     active={active}
                     userId={userId}
+                    requireOptions={false}
                   />
                 ) : (
                   <h1 className="text-md text-white text-center">

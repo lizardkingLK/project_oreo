@@ -117,6 +117,7 @@ export interface IMessageLinkListProps {
   selectedGroup: IGroupProps | null | undefined;
   active: any;
   userId: string | null;
+  requireOptions: boolean;
 }
 
 interface IActiveProps {
@@ -158,6 +159,9 @@ export interface IMessageLinkProps {
   messageOnClick: Function;
   messageUnread: number;
   active: any;
+  requireOptions: boolean;
+  setCurrentMenuId: Function;
+  currentMenuId: string | null;
 }
 
 export interface IMessageEditorProps {
@@ -376,6 +380,13 @@ export interface IMessageMenuProps {
   setOptions: Function;
   setForward: Function;
   isImage: boolean;
+}
+
+export interface IGroupMenuProps {
+  options: boolean;
+  name: NameType;
+  groupId: string;
+  isUnread: boolean;
 }
 
 export interface IAddFriendProps {
