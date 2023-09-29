@@ -36,6 +36,7 @@ const SidebarSwitch = (props: ISidebarProps) => {
           selectedGroup={group}
           active={active}
           userId={userId}
+          requireOptions={true}
         />
       </div>
     );

@@ -1,11 +1,19 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import MessageLink from '@/components/links/message';
 import { IMessageLinkListProps } from '@/types';
 
 const MessageLinkList = (props: IMessageLinkListProps) => {
+  const [currentMenuId, setCurrentMenuId] = useState<null | string>(null);
+
   if (props) {
-    const { groups, onGroupClickHandler, selectedGroup, active, userId } =
-      props;
+    const {
+      groups,
+      onGroupClickHandler,
+      selectedGroup,
+      active,
+      userId,
+      requireOptions,
+    } = props;
 
     return (
       <Fragment>
@@ -28,6 +36,9 @@ const MessageLinkList = (props: IMessageLinkListProps) => {
               messageIsActive={selectedGroup && selectedGroup.id === group.id}
               messageUnread={group.unreadCount}
               active={active}
+              requireOptions={requireOptions}
+              currentMenuId={currentMenuId}
+              setCurrentMenuId={setCurrentMenuId}
             />
           );
         })}
