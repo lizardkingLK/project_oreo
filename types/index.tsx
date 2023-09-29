@@ -386,6 +386,7 @@ export interface IGroupMenuProps {
   options: boolean;
   name: NameType;
   groupId: string;
+  isUnread: boolean;
 }
 
 export interface IAddFriendProps {

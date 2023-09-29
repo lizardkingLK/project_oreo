@@ -50,6 +50,7 @@ const MessageLink = (props: IMessageLinkProps) => {
               name={messageAuthorName}
               groupId={messageId}
               options={options}
+              isUnread={messageUnread > 0}
             />
           </div>
         ) : (
