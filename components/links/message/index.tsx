@@ -61,8 +61,8 @@ const MessageLink = (props: IMessageLinkProps) => {
             onClick={() => messageOnClick(messageId, strings.groupId)}
           >
             <div
-              className={`flex justify-center items-start mb-4 py-4 rounded-2xl hover:bg-stone-800 ${
-                messageIsActive ? 'bg-stone-900' : null
+              className={`flex justify-center items-start mb-4 py-4 rounded-2xl hover:bg-stone-400 ${
+                messageIsActive ? 'bg-stone-400' : null
               }`}
             >
               <Avatar
@@ -73,12 +73,12 @@ const MessageLink = (props: IMessageLinkProps) => {
                 isOnline={messageAuthorIsOnline}
               />
               <div className="basis-2/4 ml-4 font-bold truncate">
-                <h1 className="text-md md:text-xl text-white truncate max-w-xs">
+                <h1 className="text-md md:text-xl text-black truncate max-w-xs">
                   {messageAuthorName}
                 </h1>
                 <p
                   className={
-                    'text-sm md:text-md text-stone-500 truncate max-w-xs'
+                    'text-sm md:text-md text-stone-700 truncate max-w-xs'
                   }
                 >
                   {active?.groupId === messageId && active?.value ? (
@@ -99,7 +99,7 @@ const MessageLink = (props: IMessageLinkProps) => {
                     {messageUnread}
                   </p>
                 ) : (
-                  <p className="mx-2 text-xs md:text-md text-white font-bold">
+                  <p className="mx-2 text-xs md:text-md text-black font-bold">
                     {messageTime}
                   </p>
                 )}
@@ -119,7 +119,7 @@ const MessageLink = (props: IMessageLinkProps) => {
               </button>
             ) : (
               <button
-                className="flex h-min text-stone-900 hover:text-stone-100"
+                className="flex h-min text-stone-900 hover:text-white"
                 title="Group Options"
                 onClick={handleOpenGroupOptions}
               >

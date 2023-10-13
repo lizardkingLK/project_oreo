@@ -742,7 +742,7 @@ const Messages = () => {
           />
         </div>
         <div
-          className={`basis-3/4 absolute top-0 bg-black md:bg-transparent md:relative md:block container`}
+          className={`basis-3/4 absolute top-0 bg-stone-300 md:bg-transparent md:relative md:block container`}
         >
           <SectionSwitch
             section={section}

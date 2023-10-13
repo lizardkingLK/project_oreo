@@ -99,14 +99,14 @@ const MessageEditor = (props: IMessageEditorProps) => {
                   </div>
                   <div className="flex justify-between items-center p-4">
                     <button
-                      className="text-white hover:text-black"
+                      className="text-black hover:text-black"
                       title="Clear"
                       onClick={clearInputs}
                     >
                       <Clear />
                     </button>
                     <button
-                      className="text-white hover:text-black"
+                      className="text-black hover:text-black"
                       title="Send"
                       onClick={mediaSubmitHandler}
                     >
@@ -119,7 +119,7 @@ const MessageEditor = (props: IMessageEditorProps) => {
                   <div className="flex justify-center items-center pb-8">
                     <label
                       htmlFor="inputFiles"
-                      className="w-40 h-40 m-8 rounded-full p-2 md:p-4 bg-gradient-to-r from-stone-300 to-stone-400 hover:bg-gradient-to-r hover:from-green-300 hover:to-green-400 text-white cursor-pointer flex flex-col justify-center items-center text-xl"
+                      className="w-40 h-40 m-8 rounded-full p-2 md:p-4 bg-gradient-to-r from-stone-300 to-stone-400 hover:bg-gradient-to-r hover:from-green-300 hover:to-green-400 text-black cursor-pointer flex flex-col justify-center items-center text-xl"
                       title="Upload Files"
                     >
                       <Upload />
@@ -138,14 +138,14 @@ const MessageEditor = (props: IMessageEditorProps) => {
           )}
           <div className="flex items-center justify-center w-full">
             <button
-              className="py-2 md:py-4 pl-2 md:pl-4 rounded-l-full bg-stone-900 text:md md:text-xl text-white hover:text-green-500 flex items-center justify-center"
+              className="py-2 md:py-4 pl-2 md:pl-4 rounded-l-full bg-stone-400 text:md md:text-xl text-black hover:text-green-500 flex items-center justify-center"
               title="Insert Emoji"
             >
               <Emoji size={ui.iconSize} />
             </button>
             <input
               ref={textInputRef}
-              className="basis-0 w-60 md:basis-11/12 p-2 md:p-4 outline-none text-md md:text-xl font-semibold bg-stone-900 text-white"
+              className="basis-0 w-60 md:basis-11/12 p-2 md:p-4 outline-none text-md md:text-xl font-semibold bg-stone-400 text-black placeholder-stone-600"
               placeholder="Type a message"
               value={input}
               onBlur={onBlurHandler}
@@ -154,8 +154,8 @@ const MessageEditor = (props: IMessageEditorProps) => {
               title="Type Message Here"
             />
             <button
-              className={`p-2 md:p-4 bg-stone-900 ${
-                mediaModal ? 'text-green-500' : 'text-white'
+              className={`p-2 md:p-4 bg-stone-400 ${
+                mediaModal ? 'text-green-500' : 'text-black'
               } hover:text-green-500`}
               title="Send Media"
               onClick={() => setMediaModal(!mediaModal)}

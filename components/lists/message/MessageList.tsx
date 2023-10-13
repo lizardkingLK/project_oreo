@@ -80,7 +80,7 @@ const MessageList = (props: IMessageListProps) => {
                     requireOptions={false}
                   />
                 ) : (
-                  <h1 className="text-md text-white text-center">
+                  <h1 className="text-md text-black text-center">
                     You have no other groups
                   </h1>
                 )}

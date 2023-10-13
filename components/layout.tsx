@@ -18,14 +18,14 @@ const LayoutSwitch = (props: ILayoutProps) => {
               {isSignedIn && (
                 <button
                   id="btnToggleNavbar"
-                  className="mr-4 md:mr-2 text-white hover:text-stone-600"
+                  className="mr-4 md:mr-2 text-black hover:text-white"
                   onClick={() => setNavbar((prevState: boolean) => !prevState)}
                 >
                   <Bars />
                 </button>
               )}
               {!navbar && (
-                <h1 className="text-3xl text-center md:text-left text-white font-bold">
+                <h1 className="text-3xl text-center md:text-left text-black font-bold">
                   OREO
                 </h1>
               )}

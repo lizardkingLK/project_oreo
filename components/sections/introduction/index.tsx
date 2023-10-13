@@ -41,7 +41,7 @@ const Introduction = (props: IIntroductionProps) => {
       <SectionLayout>
         <div className="p-4">
           <div className="flex justify-between items-center w-full">
-            <h1 className="text-2xl text-white font-bold" id="textGreeting">
+            <h1 className="text-2xl text-black font-bold" id="textGreeting">
               Welcome{' '}
               <span className="text-green-400">
                 {user?.firstName ?? user?.username}
@@ -52,7 +52,7 @@ const Introduction = (props: IIntroductionProps) => {
             <SummaryCard
               cardType={elementType.button}
               cardStyle={
-                'bg-gradient-to-r from-stone-500 to-stone-400 text-white rounded-md hover:bg-gradient-to-r hover:from-green-500 hover:to-green-400 col-span-2'
+                'bg-gradient-to-r from-stone-500 to-stone-400 text-black rounded-md hover:bg-gradient-to-r hover:from-green-500 hover:to-green-400 col-span-2'
               }
               cardBodyType={cardBodyTypes.ELEMENT}
               cardBodyContent={
@@ -64,7 +64,7 @@ const Introduction = (props: IIntroductionProps) => {
             <SummaryCard
               cardType={elementType.div}
               cardStyle={
-                'bg-gradient-to-r from-green-500 to-green-400 text-white rounded-md col-span-2'
+                'bg-gradient-to-r from-green-500 to-green-400 text-black rounded-md col-span-2'
               }
               cardHeaderTitle={'User'}
               cardBodyType={cardBodyTypes.ELEMENT}
@@ -97,7 +97,7 @@ const Introduction = (props: IIntroductionProps) => {
               <SummaryCard
                 cardType={elementType.button}
                 cardStyle={
-                  'bg-gradient-to-r from-green-700 to-green-500 text-white rounded-md col-span-2'
+                  'bg-gradient-to-r from-green-700 to-green-500 text-black rounded-md col-span-2'
                 }
                 cardHeaderTitle={'Latest'}
                 cardHeaderContent={

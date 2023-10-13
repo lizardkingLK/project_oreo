@@ -58,7 +58,7 @@ const Dashboard = (props: IDashboardProps) => {
       <SectionLayout>
         <div className="p-4">
           <div className="flex justify-between items-center w-full">
-            <h1 className="text-2xl text-white font-bold" id="textGreeting">
+            <h1 className="text-2xl text-black font-bold" id="textGreeting">
               Hello <span className="text-green-400">{name}</span>
             </h1>
           </div>
@@ -69,7 +69,7 @@ const Dashboard = (props: IDashboardProps) => {
               <SummaryCard
                 cardType={elementType.button}
                 cardStyle={
-                  'bg-gradient-to-r from-green-500 to-green-400 text-white rounded-md'
+                  'bg-gradient-to-r from-green-500 to-green-400 text-black rounded-md'
                 }
                 cardHeaderTitle={'Groups'}
                 cardHeaderContent={
@@ -89,7 +89,7 @@ const Dashboard = (props: IDashboardProps) => {
             {friends && (
               <SummaryCard
                 cardType={elementType.div}
-                cardStyle={'bg-stone-400 text-white rounded-md'}
+                cardStyle={'bg-stone-400 text-black rounded-md'}
                 cardHeaderTitle={'Friends'}
                 cardBodyType={cardBodyTypes.NUMBER}
                 cardBodyContent={friends}
@@ -98,7 +98,7 @@ const Dashboard = (props: IDashboardProps) => {
             {online && (
               <SummaryCard
                 cardType={elementType.div}
-                cardStyle={'bg-stone-400 text-white rounded-md'}
+                cardStyle={'bg-stone-400 text-black rounded-md'}
                 cardHeaderTitle={'Online'}
                 cardBodyType={cardBodyTypes.NUMBER}
                 cardBodyContent={online}
@@ -108,7 +108,7 @@ const Dashboard = (props: IDashboardProps) => {
               <SummaryCard
                 cardType={elementType.button}
                 cardStyle={
-                  'bg-gradient-to-r from-green-700 to-green-500 text-white rounded-md col-span-2 w-72'
+                  'bg-gradient-to-r from-green-700 to-green-500 text-black rounded-md col-span-2 w-72'
                 }
                 cardHeaderTitle={'Latest'}
                 cardHeaderContent={
@@ -140,7 +140,7 @@ const Dashboard = (props: IDashboardProps) => {
               <SummaryCard
                 cardType={elementType.div}
                 cardStyle={
-                  'bg-gradient-to-r from-green-500 to-green-400 text-white rounded-md'
+                  'bg-gradient-to-r from-green-500 to-green-400 text-black rounded-md'
                 }
                 cardHeaderTitle={'Unread'}
                 cardBodyType={cardBodyTypes.NUMBER}

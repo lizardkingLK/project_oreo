@@ -87,7 +87,7 @@ export default function MessageCard(props: IMessageCardProps) {
         {type === messageTypes.SENT &&
           (options ? (
             <button
-              className="flex h-min mt-4 text-stone-100 hover:text-stone-100"
+              className="flex h-min mt-4 text-stone-100 hover:text-white"
               title="Close Message Options"
               onClick={() => setOptions((prev) => !prev)}
             >
@@ -95,7 +95,7 @@ export default function MessageCard(props: IMessageCardProps) {
             </button>
           ) : (
             <button
-              className="flex h-min mt-4 text-stone-900 hover:text-stone-100"
+              className="flex h-min mt-4 text-stone-900 hover:text-white"
               title="Message Options"
               onClick={handleOpenMessageOptions}
             >

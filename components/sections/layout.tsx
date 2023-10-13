@@ -9,12 +9,12 @@ const SectionLayout = (props: ISectionLayoutProps) => {
       <section className="flex justify-center">
         <div
           className={
-            'bg-black md:bg-transparent md:relative md:block container p-4'
+            'bg-stone-300 md:bg-transparent md:relative md:block container p-4'
           }
         >
           <div className="flex justify-between items-center">
             {title && (
-              <h1 className="text-2xl text-white font-bold py-4" id="textTitle">
+              <h1 className="text-2xl text-black font-bold py-4" id="textTitle">
                 {title}
               </h1>
             )}

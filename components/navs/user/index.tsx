@@ -54,7 +54,7 @@ const UserNavbar = (props: IUserNavbarProps) => {
         {isSignedIn ? (
           <Fragment>
             <button
-              className="text-xl text-center p-4 hover:text-white hover:bg-stone-600 font-medium flex items-center justify-start"
+              className="text-xl text-center p-4 hover:text-black hover:bg-stone-400 font-medium flex items-center justify-start"
               onClick={() =>
                 handleSelection(newUser ? sections.home : sections.introduction)
               }
@@ -63,14 +63,14 @@ const UserNavbar = (props: IUserNavbarProps) => {
               &nbsp;&nbsp;&nbsp;Home
             </button>
             <button
-              className="text-xl text-center p-4 hover:text-white hover:bg-stone-600 font-medium flex items-center justify-start"
+              className="text-xl text-center p-4 hover:text-black hover:bg-stone-400 font-medium flex items-center justify-start"
               onClick={() => handleSelection(sections.addFriend)}
             >
               <Invitation />
               &nbsp;&nbsp;&nbsp;Add Friend
             </button>
             <button
-              className="text-xl text-center p-4 hover:text-white hover:bg-stone-600 font-medium flex items-center justify-start"
+              className="text-xl text-center p-4 hover:text-black hover:bg-stone-400 font-medium flex items-center justify-start"
               onClick={() => handleSelection(sections.feeds)}
             >
               <Feeds />
@@ -79,7 +79,7 @@ const UserNavbar = (props: IUserNavbarProps) => {
           </Fragment>
         ) : (
           <Link
-            className="text-xl text-center p-4 hover:text-white hover:bg-stone-600 font-medium"
+            className="text-xl text-center p-4 hover:text-black hover:bg-stone-400 font-medium"
             href="/sign-in"
           >
             Login
@@ -87,8 +87,8 @@ const UserNavbar = (props: IUserNavbarProps) => {
         )}
         {navbar && (
           <button
-            className={`absolute left-full mt-8 ml-4 hover:text-stone-600
-                        ${navbar ? 'text-stone-800' : 'text-white'}`}
+            className={`absolute left-full mt-8 ml-4 hover:text-white
+                        ${navbar ? 'text-stone-800' : 'text-black'}`}
             onClick={(prevState) => setNavbar(!prevState)}
           >
             <Bars />

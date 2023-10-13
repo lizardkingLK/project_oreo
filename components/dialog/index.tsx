@@ -13,17 +13,17 @@ const Dialog = (props: IDialogProps) => {
     } = props;
     return (
       <div
-        className={`rounded-2xl bg-gradient-to-r from-stone-400 to-stone-500 shadow-black shadow-2xl w-full mb-4`}
+        className={`rounded-2xl bg-gradient-to-r from-stone-400 to-stone-500 shadow-stone-500 shadow-2xl w-full mb-4`}
       >
         <div className="flex justify-between items-center p-4">
-          <h1 className="hidden md:block text-white text-md md:text-xl font-bold">
+          <h1 className="hidden md:block text-black text-md md:text-xl font-bold">
             {dialogTitle}
           </h1>
-          <h1 className="block md:hidden text-white text-md md:text-xl font-bold">
+          <h1 className="block md:hidden text-black text-md md:text-xl font-bold">
             {dialogSubtitle}
           </h1>
           <button
-            className="text-white"
+            className="text-black"
             title={dialogCloseTitle}
             onClick={dialogCloseHandler}
           >
