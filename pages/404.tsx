@@ -12,7 +12,7 @@ const Error404 = () => {
         alt="logo"
         src={'/favicon.png'}
       />
-      <h1 className="m-2 text-4xl text-white font-bold">Page Not Found</h1>
+      <h1 className="m-2 text-4xl text-black font-bold">Page Not Found</h1>
       <h1 className="m-2 text-xl text-green-500 font-bold">
         <Link href="/">Home</Link>
       </h1>

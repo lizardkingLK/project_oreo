@@ -13,7 +13,7 @@ const UserCard = (props: IUserCardProps) => {
     }
 
     return (
-      <div className="w-full bg-black rounded-lg shadow">
+      <div className="w-full bg-s rounded-lg shadow">
         <div className="block md:flex justify-between items-center py-4">
           <div className="flex items-center">
             <div className="mr-4">
@@ -24,7 +24,7 @@ const UserCard = (props: IUserCardProps) => {
               />
             </div>
             <div>
-              <h5 className="text-xl font-medium text-stone-900 dark:text-white">
+              <h5 className="text-xl font-medium text-stone-900 dark:text-black">
                 {user.firstName
                   ? `${user.firstName} ${user.lastName}`
                   : user.username}
@@ -36,7 +36,7 @@ const UserCard = (props: IUserCardProps) => {
           </div>
           <div className="flex mt-4">
             <button
-              className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 flex justify-center items-center w-full"
+              className="focus:outline-none text-black bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 flex justify-center items-center w-full"
               onClick={handleInvitation}
             >
               {loading && (

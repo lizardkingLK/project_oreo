@@ -35,15 +35,15 @@ const Group = (props: IGroupSectionProps) => {
     } = props;
     return (
       <Fragment>
-        <div className="p-4 flex items-center sticky top-0 bg-black z-10">
+        <div className="p-4 flex items-center sticky top-0 bg-stone-300 z-10">
           <button
-            className="block md:hidden text-white hover:text-green-500 basis-1/12 mr-4"
+            className="block md:hidden text-black hover:text-green-500 basis-1/12 mr-4"
             onClick={() => setGroup(null)}
           >
             <ChevronBack />
           </button>
           <div className={`basis-8/12 ${navbar ? 'collapse' : 'visible'}`}>
-            <h1 className="flex text-md md:text-2xl text-white font-bold">
+            <h1 className="flex text-md md:text-2xl text-black font-bold">
               <span>{group.name}</span>
             </h1>
             {group.isOnline ? (
@@ -51,7 +51,7 @@ const Group = (props: IGroupSectionProps) => {
                 Online
               </h1>
             ) : (
-              <h1 className="text-sm md:text-md font-bold text-white">
+              <h1 className="text-sm md:text-md font-bold text-black">
                 {group.lastMessage?.createdOn}
               </h1>
             )}
@@ -80,7 +80,7 @@ const Group = (props: IGroupSectionProps) => {
             setForward={setForward}
           />
         </div>
-        <div className="sticky bottom-0 p-2 md:p-4 bg-black">
+        <div className="sticky bottom-0 p-2 md:p-4 bg-stone-300">
           <MessageEditor
             group={group}
             input={input}

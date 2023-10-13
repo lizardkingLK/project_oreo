@@ -7,12 +7,12 @@ const Welcome = () => {
       className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
       id="divWelcome"
     >
-      <div className="text-white font-black text-center">
+      <div className="text-black font-black text-center">
         <span className="text-transparent text-8xl md:text-9xl bg-clip-text bg-gradient-to-r from-green-600 to-green-900">
           OREO
         </span>
         <br />
-        <span className="text-2xl tracking-normal md:tracking-widest text-white">
+        <span className="text-2xl tracking-normal md:tracking-widest text-black">
           A Chat Application
         </span>
         <br />

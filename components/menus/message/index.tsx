@@ -30,7 +30,7 @@ const MessageMenu = (props: IMessageMenuProps) => {
     if (options) {
       return (
         <div className="flex justify-between items-center pt-2">
-          <h1 className="text-sm font-medium rounded-lg px-2 mr-2 bg-black text-white">
+          <h1 className="text-sm font-medium rounded-lg px-2 mr-2 bg-stone-300 text-black">
             You at {messageTime}
           </h1>
           <ul className="rounded-xl flex justify-end items-center">
