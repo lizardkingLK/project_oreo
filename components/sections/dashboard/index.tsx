@@ -17,9 +17,12 @@ const Dashboard = (props: IDashboardProps) => {
   const [latest, setLatest] = useState<ILatestMessageProps | null>(null);
 
   useEffect(() => {
-    setUnread(
-      props.groups?.map((g) => g.unreadCount).reduce((ucA, ucB) => ucA + ucB, 0)
-    );
+    setUnread(() => {
+      const unread = props.groups
+        ?.map((g) => g.unreadCount)
+        .reduce((ucA, ucB) => ucA + ucB, 0);
+      return unread === 0 ? null : unread;
+    });
 
     setFriends(() => {
       const friends = props?.groups?.filter((g) => Boolean(g.targetId));
