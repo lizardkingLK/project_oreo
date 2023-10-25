@@ -44,7 +44,7 @@ export const getBriefContent = (content: string) => {
 };
 
 export const isLocalStorage = () => {
-  return process.env.NEXT_PUBLIC_LOCAL_STORAGE === strings.local;
+  return process.env.NEXT_PUBLIC_STORAGE === strings.local;
 };
 
 export const getRandomNumber = () => {

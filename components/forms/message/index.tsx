@@ -7,18 +7,8 @@ import BrowseMedia from '@/components/media/browse';
 import Upload from '@/components/svgs/upload/upload';
 import Clear from '@/components/svgs/clear';
 import Dialog from '@/components/dialog';
-import { actions } from '@/utils/enums';
 import SubmitButton from './buttons/Submit';
-
-const useWidth = () => {
-  const [width, setWidth] = useState(window.innerWidth);
-  useEffect(() => {
-    const resizeListener = () => setWidth(window.innerWidth);
-    window.addEventListener('resize', resizeListener);
-    return () => removeEventListener('resize', resizeListener);
-  });
-  return width;
-};
+import useWidth from '@/components/hooks/useWidth';
 
 const MessageEditor = (props: IMessageEditorProps) => {
   const [mediaModal, setMediaModal] = useState(false);

@@ -83,7 +83,8 @@ export enum elementType {
 }
 
 export enum messagingType {
-  sockets = 'sockets',
+  local = 'local',
+  cloud = 'cloud',
 }
 
 export enum restContext {

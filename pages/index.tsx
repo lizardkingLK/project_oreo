@@ -9,10 +9,10 @@ const AppRouter = () => {
   useEffect(() => {
     const method = getMessagingMethod();
 
-    if (method === messagingType.sockets) {
-      router.push('/sockets');
-    } else if (method === messagingType.ably) {
-      router.push('/ably');
+    if (method === messagingType.local) {
+      router.push('/lcl');
+    } else if (method === messagingType.cloud) {
+      router.push('/cld');
     }
   }, [router]);
 };
