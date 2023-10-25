@@ -39,6 +39,3 @@ next-env.d.ts
 
 # uploads
 uploads
-
-# prisma
-prisma/migrations

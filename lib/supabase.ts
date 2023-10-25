@@ -8,6 +8,42 @@ const supabaseClient = createClient(supabaseUrl, supabaseKey, {
   auth: { persistSession: false },
 });
 
+// table changes
+export const registerRealtime = (
+  tableName: string,
+  handler: (payload: object) => void
+) => {
+  return supabaseClient
+    .channel(tableName)
+    .on(
+      'postgres_changes',
+      { event: '*', schema: 'public', table: tableName },
+      handler
+    )
+    .subscribe();
+};
+
+// presence
+export const registerPresence = (roomNames: string[]) => {
+  roomNames?.forEach((name) => {
+    const roomOne = supabaseClient.channel(name);
+
+    roomOne
+      .on('presence', { event: 'sync' }, () => {
+        const newState = roomOne.presenceState();
+        console.log('sync', newState);
+      })
+      .on('presence', { event: 'join' }, ({ key, newPresences }) => {
+        console.log('join', key, newPresences);
+      })
+      .on('presence', { event: 'leave' }, ({ key, leftPresences }) => {
+        console.log('leave', key, leftPresences);
+      })
+      .subscribe();
+  });
+};
+
+// utilities
 export const supabaseUtil = {
   getPublicUrl(bucketName: string, filePath: string) {
     return supabaseClient.storage.from(bucketName).getPublicUrl(filePath);

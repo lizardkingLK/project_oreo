@@ -15,8 +15,8 @@ An open-source chat application to learn real-time messaging.
 ## .env.local file to be added
 
 ```
-NEXT_PUBLIC_MESSAGING=NEXT_PUBLIC_MESSAGING[sockets]
-NEXT_PUBLIC_LOCAL_STORAGE=NEXT_PUBLIC_LOCAL_STORAGE[local|cloud]
+NEXT_PUBLIC_MESSAGING=NEXT_PUBLIC_MESSAGING[local|cloud]
+NEXT_PUBLIC_STORAGE=NEXT_PUBLIC_STORAGE[local|cloud]
 NEXT_PUBLIC_SUPABASE_URL=YOUR_NEXT_PUBLIC_SUPABASE_URL
 NEXT_PUBLIC_SUPABASE_ANON_KEY=YOUR_NEXT_PUBLIC_SUPABASE_ANON_KEY
 NEXT_PUBLIC_DATABASE_URL=YOUR_NEXT_PUBLIC_DATABASE_URL
@@ -30,24 +30,16 @@ NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=YOUR_NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL
 
 ## Commands to run
 
-### Generate ORM
+### DB Migration
 
-```
-npx prisma generate
-```
+#### Windows
 
-### DB Migrate
+`.\scripts\db.ps1`
 
-```
-npm install -g dotenv-cli
-```
+#### Linux
 
-```
-dotenv -e .env.local -- npx prisma migrate dev --name init
-```
+`.\scripts\db.sh`
 
 ### Start Application
 
-```
-npm run dev
-```
+`npm run dev`
