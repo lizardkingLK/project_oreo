@@ -58,7 +58,7 @@ const Group = (props: IGroupSectionProps) => {
           </div>
         </div>
         <div
-          className="md:ml-8 overflow-scroll h-[calc(100vh-8rem)] md:h-[calc(100vh-12rem)]"
+          className="md:ml-4 overflow-scroll h-[calc(100vh-8rem)] md:h-[calc(100vh-12rem)]"
           id="divMessageList"
         >
           <MessageList

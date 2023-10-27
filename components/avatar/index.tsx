@@ -9,7 +9,7 @@ const Avatar = (props: IAvatarProps) => {
     return (
       <Fragment>
         <div
-          className={`flex justify-center items-center flex-wrap rounded-full ml-2
+          className={`flex justify-center items-center flex-wrap rounded-full
         ${loading ? 'blur-xl' : 'blur-0'}
         ${isStatus ? 'p-1 border-2 border-stone-500' : ''}
         ${size === 50 ? 'w-10' : 'w-12'}`}

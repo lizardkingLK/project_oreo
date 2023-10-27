@@ -19,7 +19,7 @@ const MessageMedia = (props: { content: string }) => {
     }
     return (
       <h1
-        className="max-w-xs text-sm md:text-md text-white font-semibold md:font-bold text-ellipsis overflow-hidden"
+        className="max-w-xs text-sm md:text-md font-semibold md:font-bold text-ellipsis overflow-hidden"
         title={content}
       >
         {content}

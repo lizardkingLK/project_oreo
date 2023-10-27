@@ -98,13 +98,15 @@ const Messages = () => {
 
   useEffect(() => {
     if (userId) {
-      getGroups(userId).then((data) => {
-        if (data.length > 0) {
+      getGroups(userId).then((groups) => {
+        if (groups.length > 0) {
           initializePresence(
             userId,
-            new Set(data.map((d: { groupId: string }) => d.groupId))
+            new Set(
+              groups.map((message: { groupId: string }) => message.groupId)
+            )
           );
-          groupMessages(data, userId);
+          groupMessages(groups, userId);
           setSection(sections.home);
         } else {
           setSection(sections.introduction);
