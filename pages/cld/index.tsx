@@ -17,6 +17,7 @@ import {
 import {
   actions,
   bucketNames,
+  eventTypes,
   groupTypes,
   mediaTypes,
   messageTypes,
@@ -53,8 +54,10 @@ import {
   supabaseUtil,
 } from '@/lib/supabase';
 import SidebarSwitch from '@/components/sidebar';
+import { RealtimeChannel } from '@supabase/supabase-js';
 
 let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
+let realtime: RealtimeChannel;
 
 const Messages = () => {
   const [storeLocally] = useState(isLocalStorage());
@@ -95,19 +98,26 @@ const Messages = () => {
 
   useEffect(() => {
     if (userId) {
-      getGroups(userId).then((data) => {
-        if (data.length > 0) {
-          groupMessages(data, userId);
+      getGroups(userId).then((groups) => {
+        if (groups.length > 0) {
+          initializePresence(
+            userId,
+            new Set(
+              groups.map((message: { groupId: string }) => message.groupId)
+            )
+          );
+          groupMessages(groups, userId);
           setSection(sections.home);
         } else {
           setSection(sections.introduction);
         }
       });
       initializeSocket().then(() => socket?.emit('identity', userId));
-      initializeRealtime().then(() => initializePresence());
+      initializeRealtime();
 
       return () => {
         socket.close();
+        realtime.unsubscribe();
       };
     }
   }, [userId]);
@@ -298,12 +308,20 @@ const Messages = () => {
     }
   }, [rooms, groups, userId]);
 
-  const initializeRealtime = async () => {
-    registerRealtime(tableNames.message, (payload) => console.log(payload));
+  const initializeRealtime = () => {
+    const handleMessageEvents = (payload: any) => {
+      const { eventType } = payload;
+      if (eventType === eventTypes.insert) {
+        console.log('inserted', payload);
+      } else if (eventType === eventTypes.update) {
+        console.log('updated', payload);
+      }
+    };
+    realtime = registerRealtime(tableNames.message, handleMessageEvents);
   };
 
-  const initializePresence = async () => {
-    registerPresence([]);
+  const initializePresence = (userId: string, groupIds: Set<string>) => {
+    registerPresence(userId, Array.from(groupIds));
   };
 
   const initializeSocket = async () => {

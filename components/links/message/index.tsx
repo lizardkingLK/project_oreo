@@ -3,8 +3,6 @@ import Avatar from '@/components/avatar';
 import { IMessageLinkProps } from '@/types';
 import { getBriefContent, isImage } from '@/utils/helpers';
 import { strings } from '@/utils/enums';
-import VerticalEllipsis from '@/components/svgs/ellipsis/vertical';
-import Close from '@/components/svgs/close';
 import GroupMenu from '@/components/menus/group';
 
 const MessageLink = (props: IMessageLinkProps) => {
@@ -51,18 +49,20 @@ const MessageLink = (props: IMessageLinkProps) => {
               groupId={messageId}
               options={options}
               isUnread={messageUnread > 0}
+              requireOptions={requireOptions}
+              setOptions={setOptions}
             />
           </div>
         ) : (
-          <a
-            href={void 0}
+          <button
             className="cursor-pointer min-w-full"
             title={messageAuthorName ?? ''}
             onClick={() => messageOnClick(messageId, strings.groupId)}
+            onDoubleClick={handleOpenGroupOptions}
           >
             <div
-              className={`flex justify-center items-start mb-4 py-4 rounded-2xl hover:bg-stone-400 ${
-                messageIsActive ? 'bg-stone-400' : null
+              className={`flex justify-center items-start py-4 rounded-xl ${
+                messageIsActive ? 'bg-stone-300' : null
               }`}
             >
               <Avatar
@@ -72,13 +72,17 @@ const MessageLink = (props: IMessageLinkProps) => {
                 isStatus={messageAuthorIsStatus}
                 isOnline={messageAuthorIsOnline}
               />
-              <div className="basis-2/4 ml-4 font-bold truncate">
-                <h1 className="text-md md:text-xl text-black truncate max-w-xs">
+              <div className="basis-2/4 ml-4 font-normal truncate">
+                <h1
+                  className={`${
+                    messageIsActive ? 'bg-black text-white' : 'text-black'
+                  } text-md md:text-xl truncate max-w-xs text-left`}
+                >
                   {messageAuthorName}
                 </h1>
                 <p
                   className={
-                    'text-sm md:text-md text-stone-700 truncate max-w-xs'
+                    'text-sm md:text-md text-stone-700 truncate max-w-xs text-left'
                   }
                 >
                   {active?.groupId === messageId && active?.value ? (
@@ -105,28 +109,7 @@ const MessageLink = (props: IMessageLinkProps) => {
                 )}
               </div>
             </div>
-          </a>
-        )}
-        {requireOptions && (
-          <div className="mx-2 mb-4 z-10">
-            {options ? (
-              <button
-                className="flex h-min text-stone-100"
-                title="Close Group Options"
-                onClick={() => setOptions((prev) => !prev)}
-              >
-                <Close size={6} />
-              </button>
-            ) : (
-              <button
-                className="flex h-min text-stone-900 hover:text-white"
-                title="Group Options"
-                onClick={handleOpenGroupOptions}
-              >
-                <VerticalEllipsis />
-              </button>
-            )}
-          </div>
+          </button>
         )}
       </div>
     );

@@ -91,3 +91,8 @@ export enum restContext {
   updateUnread = 'UPDATE_UNREAD',
   updateMessage = 'UPDATE_MESSAGE',
 }
+
+export enum eventTypes {
+  insert = 'INSERT',
+  update = 'UPDATE',
+}

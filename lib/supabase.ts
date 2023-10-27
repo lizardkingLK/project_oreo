@@ -24,13 +24,13 @@ export const registerRealtime = (
 };
 
 // presence
-export const registerPresence = (roomNames: string[]) => {
+export const registerPresence = (userId: string, roomNames: string[]) => {
   roomNames?.forEach((name) => {
-    const roomOne = supabaseClient.channel(name);
+    const room = supabaseClient.channel(name);
 
-    roomOne
+    room
       .on('presence', { event: 'sync' }, () => {
-        const newState = roomOne.presenceState();
+        const newState = room.presenceState();
         console.log('sync', newState);
       })
       .on('presence', { event: 'join' }, ({ key, newPresences }) => {
@@ -39,7 +39,16 @@ export const registerPresence = (roomNames: string[]) => {
       .on('presence', { event: 'leave' }, ({ key, leftPresences }) => {
         console.log('leave', key, leftPresences);
       })
-      .subscribe();
+      .subscribe(async (status) => {
+        if (status !== 'SUBSCRIBED') {
+          return;
+        }
+        const presenceTrackStatus = await room.track({
+          user: userId,
+          online_at: new Date().toISOString(),
+        });
+        console.log(presenceTrackStatus);
+      });
   });
 };
 

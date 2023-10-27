@@ -1,5 +1,5 @@
 # db.ps1 - Run As Administrator
-cd ../../
+cd ../
 
 # installing dependencies
 Write-Host "Installing Dependencies..."

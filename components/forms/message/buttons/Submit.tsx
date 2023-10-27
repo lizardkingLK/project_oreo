@@ -14,7 +14,7 @@ const SubmitButton = (props: {
     return (
       <button
         type="submit"
-        className="p-2 md:p-4 rounded-r-full bg-green-500 hover:bg-green-600 text-black"
+        className="p-2 md:p-4 rounded-r-full text-stone-600 hover:text-green-600"
         title="Send Message"
         onClick={() => onSubmitHandler(context)}
       >
@@ -25,7 +25,7 @@ const SubmitButton = (props: {
     return (
       <button
         type="submit"
-        className="p-2 md:p-4 rounded-r-full bg-green-500 hover:bg-green-600 text-black"
+        className="p-2 md:p-4 rounded-r-full text-stone-600 hover:text-green-600"
         title="Cancel Edit"
         onClick={() => onSubmitHandler(context)}
       >

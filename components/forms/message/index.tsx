@@ -128,14 +128,14 @@ const MessageEditor = (props: IMessageEditorProps) => {
           )}
           <div className="flex items-center justify-center w-full">
             <button
-              className="py-2 md:py-4 pl-2 md:pl-4 rounded-l-full bg-stone-400 text:md md:text-xl text-black hover:text-green-500 flex items-center justify-center"
+              className="py-2 md:py-4 pl-2 md:pl-4 rounded-l-full bg-stone-300 text:md md:text-xl text-stone-600 hover:text-green-500 flex items-center justify-center"
               title="Insert Emoji"
             >
               <Emoji size={ui.iconSize} />
             </button>
             <input
               ref={textInputRef}
-              className="basis-0 w-60 md:basis-11/12 p-2 md:p-4 outline-none text-md md:text-xl font-semibold bg-stone-400 text-black placeholder-stone-600"
+              className="basis-0 w-60 md:basis-11/12 p-2 md:p-4 outline-none text-md md:text-xl font-semibold bg-stone-300 text-black placeholder-stone-600"
               placeholder="Type a message"
               value={input}
               onBlur={onBlurHandler}
@@ -144,8 +144,8 @@ const MessageEditor = (props: IMessageEditorProps) => {
               title="Type Message Here"
             />
             <button
-              className={`p-2 md:p-4 bg-stone-400 ${
-                mediaModal ? 'text-green-500' : 'text-black'
+              className={`p-2 md:p-4 bg-stone-300 ${
+                mediaModal ? 'text-green-500' : 'text-stone-600'
               } hover:text-green-500`}
               title="Send Media"
               onClick={() => setMediaModal(!mediaModal)}
