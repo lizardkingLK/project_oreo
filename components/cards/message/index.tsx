@@ -21,9 +21,7 @@ export default function MessageCard(props: IMessageCardProps) {
     const {
       referenceId,
       type,
-      // messageAuthorName,
       messageTime,
-      // messageImagePath,
       content,
       onDeleteHandler,
       onCopyHandler,
