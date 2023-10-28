@@ -19,6 +19,7 @@ const Group = (props: IGroupSectionProps) => {
       onChangeHandler,
       onBlurHandler,
       onKeyDownHandler,
+      onEmojiHandler,
       onSubmitHandler,
       onDeleteHandler,
       onCopyHandler,
@@ -29,8 +30,12 @@ const Group = (props: IGroupSectionProps) => {
       textInputRef,
       loading,
       navbar,
-      forward,
-      setForward,
+      forwardModal,
+      emojiModal,
+      attachmentModal,
+      setForwardModal,
+      setEmojiModal,
+      setAttachmentModal,
       context,
     } = props;
     return (
@@ -76,8 +81,8 @@ const Group = (props: IGroupSectionProps) => {
             loading={loading}
             groups={groups}
             userId={userId}
-            forward={forward}
-            setForward={setForward}
+            forwardModal={forwardModal}
+            setForwardModal={setForwardModal}
           />
         </div>
         <div className="sticky bottom-0 p-2 md:p-4 bg-stone-300">
@@ -87,10 +92,15 @@ const Group = (props: IGroupSectionProps) => {
             onChangeHandler={onChangeHandler}
             onBlurHandler={onBlurHandler}
             onKeyDownHandler={onKeyDownHandler}
+            onEmojiHandler={onEmojiHandler}
             onSubmitHandler={onSubmitHandler}
             onMediaHandler={onMediaHandler}
             textInputRef={textInputRef}
             context={context}
+            emojiModal={emojiModal}
+            attachmentModal={attachmentModal}
+            setEmojiModal={setEmojiModal}
+            setAttachmentModal={setAttachmentModal}
           />
         </div>
       </Fragment>

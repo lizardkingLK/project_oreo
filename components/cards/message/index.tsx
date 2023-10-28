@@ -29,7 +29,7 @@ export default function MessageCard(props: IMessageCardProps) {
       onEditHandler,
       onViewHandler,
       loading,
-      setForward,
+      setForwardModal,
       setCurrentMenuId,
     } = props;
 
@@ -54,7 +54,7 @@ export default function MessageCard(props: IMessageCardProps) {
               onViewHandler={onViewHandler}
               loading={loading}
               isImage={isImage(content)}
-              setForward={setForward}
+              setForwardModal={setForwardModal}
             />
           </div>
         ) : (

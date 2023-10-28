@@ -28,8 +28,8 @@ const MessageList = (props: IMessageListProps) => {
       onEditHandler,
       onViewHandler,
       loading,
-      forward,
-      setForward,
+      forwardModal,
+      setForwardModal,
     } = props;
 
     return (
@@ -50,7 +50,7 @@ const MessageList = (props: IMessageListProps) => {
                 onEditHandler={onEditHandler}
                 onViewHandler={onViewHandler}
                 loading={loading}
-                setForward={setForward}
+                setForwardModal={setForwardModal}
                 setCurrentMenuId={setCurrentMenuId}
                 currentMenuId={currentMenuId}
               />
@@ -58,13 +58,13 @@ const MessageList = (props: IMessageListProps) => {
           ))}
         {active?.groupId === group?.id && <MessagePlaceholder />}
         <div ref={lastMessageRef}></div>
-        {forward && (
+        {forwardModal && (
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96">
             <Dialog
               dialogTitle={'Forward Message'}
               dialogSubtitle={'Forward'}
               dialogCloseTitle={'Cancel Forward Message'}
-              dialogCloseHandler={() => setForward(false)}
+              dialogCloseHandler={() => setForwardModal(false)}
             >
               <div className="py-4 m-4">
                 {forwardableGroups.length > 0 ? (

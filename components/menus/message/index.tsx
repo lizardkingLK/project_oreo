@@ -24,7 +24,7 @@ const MessageMenu = (props: IMessageMenuProps) => {
       loading,
       messageTime,
       isImage,
-      setForward,
+      setForwardModal,
     } = props;
 
     if (options) {
@@ -55,7 +55,7 @@ const MessageMenu = (props: IMessageMenuProps) => {
                 title="Forward Message"
                 className="text-green-500 font-black rounded-full text-sm text-center w-full p-2"
                 onClick={() => {
-                  setForward((prev: boolean) => !prev);
+                  setForwardModal((prev: boolean) => !prev);
                   onForwardHandler(referenceId, strings.referenceId);
                   setOptions(false);
                 }}
