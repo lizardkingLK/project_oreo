@@ -48,6 +48,7 @@ import {
 
 import { supabaseUtil } from '@/lib/supabase';
 import SidebarSwitch from '@/components/sidebar';
+import { EmojiClickData } from 'emoji-picker-react';
 
 let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 
@@ -69,7 +70,9 @@ const Messages = () => {
   const [rooms, setRooms] = useState<boolean>(false);
   const [online, setOnline] = useState<null | IUserOnlineProps>(null);
   const [unread, setUnread] = useState<null | number>(null);
-  const [forward, setForward] = useState(false);
+  const [forwardModal, setForwardModal] = useState(false);
+  const [attachmentModal, setAttachmentModal] = useState(false);
+  const [emojiModal, setEmojiModal] = useState(false);
   const [referenceId, setReferenceId] = useState<null | string>(null);
   const [context, setContext] = useState<actions>(actions.create);
 
@@ -82,7 +85,7 @@ const Messages = () => {
   useEffect(() => {
     if (section !== sections.group) {
       setGroup(null);
-      setForward(false);
+      hideDialogModals();
     }
   }, [section]);
 
@@ -292,6 +295,12 @@ const Messages = () => {
     }
   }, [rooms, groups, userId]);
 
+  const hideDialogModals = () => {
+    setForwardModal(false);
+    setEmojiModal(false);
+    setAttachmentModal(false);
+  };
+
   const initializeSocket = async () => {
     createSocket();
 
@@ -367,7 +376,7 @@ const Messages = () => {
           },
           true
         );
-        setForward(false);
+        hideDialogModals();
       }
     }
   };
@@ -495,12 +504,17 @@ const Messages = () => {
     });
   };
 
+  const onEmojiHandler = (emoji: EmojiClickData) => {
+    const { emoji: selected } = emoji;
+    setInput((prev) => prev + selected);
+  };
+
   const sendMessage = (
     newMessage: IMessageProps,
-    isForward: boolean = false
+    isforwardModal: boolean = false
   ) => {
     if (newMessage?.content && socket) {
-      const tempGroup: IGroupProps = isForward
+      const tempGroup: IGroupProps = isforwardModal
           ? groups?.find((g) => g.id === newMessage.groupId)
           : group,
         tempGroupMessages = tempGroup?.messages;
@@ -513,7 +527,7 @@ const Messages = () => {
         lastMessage: newMessage,
       });
       setInput('');
-      if (!isForward) {
+      if (!isforwardModal) {
         setGroup(tempGroup);
         setMessages(tempGroupMessages);
       }
@@ -524,7 +538,7 @@ const Messages = () => {
 
       socket?.emit('new-message', newMessage);
 
-      if (!isForward) {
+      if (!isforwardModal) {
         const tempGroupIndex = groups.findIndex((g) => g.id === group.id);
         groups.splice(tempGroupIndex, 1);
         groups.splice(0, 0, tempGroup);
@@ -588,6 +602,8 @@ const Messages = () => {
       setContext(actions.create);
       setInput('');
     }
+    setNotifs(getRandomNumber());
+    hideDialogModals();
     onBlurHandler();
   };
 
@@ -661,7 +677,7 @@ const Messages = () => {
     setMessages(tempGroup?.messages);
     textInputRef?.current?.focus();
     setSection(sections.group);
-    setForward(false);
+    hideDialogModals();
   };
 
   const onKeyDownHandler = (e: { key: string }) =>
@@ -749,6 +765,7 @@ const Messages = () => {
             setSection={setSection}
             lastMessageRef={lastMessageRef}
             onChangeHandler={onChangeHandler}
+            onEmojiHandler={onEmojiHandler}
             onBlurHandler={onBlurHandler}
             onKeyDownHandler={onKeyDownHandler}
             onSubmitHandler={onSubmitHandler}
@@ -772,8 +789,12 @@ const Messages = () => {
             notifs={notifs}
             navbar={navbar}
             userId={userId}
-            forward={forward}
-            setForward={setForward}
+            forwardModal={forwardModal}
+            emojiModal ={emojiModal}
+            attachmentModal ={attachmentModal}
+            setForwardModal={setForwardModal}
+            setEmojiModal={setEmojiModal}
+            setAttachmentModal={setAttachmentModal}
             context={context}
           />
         </div>

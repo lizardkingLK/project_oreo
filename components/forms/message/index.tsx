@@ -1,4 +1,10 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, {
+  Dispatch,
+  Fragment,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react';
 import { IMessageEditorProps, IUIProps } from '@/types';
 import Send from '@/components/svgs/send';
 import Emoji from '@/components/svgs/emoji';
@@ -9,10 +15,9 @@ import Clear from '@/components/svgs/clear';
 import Dialog from '@/components/dialog';
 import SubmitButton from './buttons/Submit';
 import useWidth from '@/components/hooks/useWidth';
+import EmojiPicker from 'emoji-picker-react';
 
 const MessageEditor = (props: IMessageEditorProps) => {
-  const [attachmentModal, setAttachmentModal] = useState(false);
-  const [emojiModal, setEmojiModal] = useState(false);
   const [files, setFiles] = useState(null);
   const [file, setFile] = useState(null);
   const [type, setType] = useState(null);
@@ -31,10 +36,15 @@ const MessageEditor = (props: IMessageEditorProps) => {
       onChangeHandler,
       onBlurHandler,
       onKeyDownHandler,
+      onEmojiHandler,
       onSubmitHandler,
       onMediaHandler,
       textInputRef,
       context,
+      emojiModal,
+      setEmojiModal,
+      attachmentModal,
+      setAttachmentModal,
     } = props;
 
     const attachmentHandler = (event: any) => {
@@ -66,18 +76,26 @@ const MessageEditor = (props: IMessageEditorProps) => {
       }
     };
 
+    const openDialogHandler = (
+      offModal: Dispatch<SetStateAction<boolean>>,
+      onModal: (prev: (state: boolean) => boolean) => void
+    ) => {
+      offModal(false);
+      onModal((prev: boolean) => !prev);
+    };
+
     return (
       group && (
         <Fragment>
           {emojiModal && (
             <Dialog
               dialogTitle={'Send Emojis'}
-              dialogSubtitle={'Select'}
+              dialogSubtitle={'Emojis'}
               dialogCloseTitle={'Cancel Emoji'}
               dialogCloseHandler={dialogCloseHandler}
             >
-              <div className="flex justify-start items-center p-4">
-                <h1>hello</h1>
+              <div className="flex justify-center items-center p-4">
+                <EmojiPicker onEmojiClick={onEmojiHandler} width={'100%'} />
               </div>
             </Dialog>
           )}
@@ -144,10 +162,9 @@ const MessageEditor = (props: IMessageEditorProps) => {
             <button
               className="py-2 md:py-4 pl-2 md:pl-4 rounded-l-full bg-stone-300 text:md md:text-xl text-stone-600 hover:text-green-500 flex items-center justify-center"
               title="Insert Emoji"
-              onClick={() => {
-                setAttachmentModal(false);
-                setEmojiModal(!emojiModal);
-              }}
+              onClick={() =>
+                openDialogHandler(setAttachmentModal, setEmojiModal)
+              }
             >
               <Emoji size={ui.iconSize} />
             </button>
@@ -166,10 +183,9 @@ const MessageEditor = (props: IMessageEditorProps) => {
                 attachmentModal ? 'text-green-500' : 'text-stone-600'
               } hover:text-green-500`}
               title="Send Attachment"
-              onClick={() => {
-                setEmojiModal(false);
-                setAttachmentModal(!attachmentModal);
-              }}
+              onClick={() =>
+                openDialogHandler(setEmojiModal, setAttachmentModal)
+              }
             >
               <Attachment size={ui.iconSize} />
             </button>

@@ -8,15 +8,18 @@ import {
 
 import {
   ChangeEventHandler,
+  Dispatch,
   FocusEventHandler,
   KeyboardEventHandler,
   LegacyRef,
   MouseEventHandler,
   ReactElement,
   ReactNode,
+  SetStateAction,
 } from 'react';
 
 import { User } from '@clerk/nextjs/dist/types/server';
+import { EmojiClickData } from 'emoji-picker-react';
 
 export type NameType = string | null | undefined;
 
@@ -140,8 +143,8 @@ export interface IMessageListProps {
   onForwardHandler: Function;
   onEditHandler: Function;
   onViewHandler: Function;
-  setForward: Function;
-  forward: boolean;
+  setForwardModal: Function;
+  forwardModal: boolean;
   loading: boolean;
 }
 
@@ -170,10 +173,15 @@ export interface IMessageEditorProps {
   onChangeHandler: ChangeEventHandler<HTMLInputElement>;
   onBlurHandler: FocusEventHandler<HTMLInputElement>;
   onKeyDownHandler: KeyboardEventHandler<HTMLInputElement>;
+  onEmojiHandler: (emoji: EmojiClickData, event: MouseEvent) => void;
   onSubmitHandler: Function;
   onMediaHandler: Function;
   textInputRef: LegacyRef<HTMLInputElement> | null;
   context: actions;
+  emojiModal: boolean;
+  attachmentModal: boolean;
+  setEmojiModal: Dispatch<SetStateAction<boolean>>;
+  setAttachmentModal: Dispatch<SetStateAction<boolean>>;
 }
 
 export interface IFeedProps {
@@ -200,7 +208,7 @@ export interface IMessageCardProps {
   onForwardHandler: Function;
   onEditHandler: Function;
   onViewHandler: Function;
-  setForward: Function;
+  setForwardModal: Function;
   setCurrentMenuId: Function;
   currentMenuId: string | null;
   loading: boolean;
@@ -306,7 +314,7 @@ export interface IIntroductionProps {
   onSelectGroupHandler: Function;
 }
 
-export interface ISecitonSwitchProps {
+export interface ISectionSwitchProps {
   userId: string | null;
   section: sections;
   user: any;
@@ -320,6 +328,7 @@ export interface ISecitonSwitchProps {
   onChangeHandler: ChangeEventHandler<HTMLInputElement>;
   onBlurHandler: FocusEventHandler<HTMLInputElement>;
   onKeyDownHandler: KeyboardEventHandler<HTMLInputElement>;
+  onEmojiHandler: (emoji: EmojiClickData, event: MouseEvent) => void;
   onSubmitHandler: Function;
   onDeleteHandler: Function;
   onCopyHandler: Function;
@@ -331,8 +340,12 @@ export interface ISecitonSwitchProps {
   onSelectGroupHandler: Function;
   setGroup: Function;
   setSection: Function;
-  setForward: Function;
-  forward: boolean;
+  forwardModal: boolean;
+  emojiModal: boolean;
+  attachmentModal: boolean;
+  setForwardModal: Function;
+  setEmojiModal: Dispatch<SetStateAction<boolean>>;
+  setAttachmentModal: Dispatch<SetStateAction<boolean>>;
   lastMessageRef: null | LegacyRef<HTMLDivElement>;
   textInputRef: LegacyRef<HTMLInputElement> | null;
   navbar: boolean;
@@ -351,6 +364,7 @@ export interface IGroupSectionProps {
   onChangeHandler: ChangeEventHandler<HTMLInputElement>;
   onBlurHandler: FocusEventHandler<HTMLInputElement>;
   onKeyDownHandler: KeyboardEventHandler<HTMLInputElement>;
+  onEmojiHandler: (emoji: EmojiClickData, event: MouseEvent) => void;
   onSubmitHandler: Function;
   onDeleteHandler: Function;
   onCopyHandler: Function;
@@ -359,8 +373,12 @@ export interface IGroupSectionProps {
   onViewHandler: Function;
   onMediaHandler: Function;
   setGroup: Function;
-  setForward: Function;
-  forward: boolean;
+  forwardModal: boolean;
+  emojiModal: boolean;
+  attachmentModal: boolean;
+  setForwardModal: Function;
+  setEmojiModal: Dispatch<SetStateAction<boolean>>;
+  setAttachmentModal: Dispatch<SetStateAction<boolean>>;
   lastMessageRef: null | LegacyRef<HTMLDivElement>;
   textInputRef: LegacyRef<HTMLInputElement> | null;
   navbar: boolean;
@@ -378,7 +396,7 @@ export interface IMessageMenuProps {
   onEditHandler: Function;
   onViewHandler: Function;
   setOptions: Function;
-  setForward: Function;
+  setForwardModal: Function;
   isImage: boolean;
 }
 

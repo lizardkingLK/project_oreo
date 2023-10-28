@@ -55,6 +55,7 @@ import {
 } from '@/lib/supabase';
 import SidebarSwitch from '@/components/sidebar';
 import { RealtimeChannel } from '@supabase/supabase-js';
+import { EmojiClickData } from 'emoji-picker-react';
 
 let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 let realtime: RealtimeChannel;
@@ -77,7 +78,9 @@ const Messages = () => {
   const [rooms, setRooms] = useState<boolean>(false);
   const [online, setOnline] = useState<null | IUserOnlineProps>(null);
   const [unread, setUnread] = useState<null | number>(null);
-  const [forward, setForward] = useState(false);
+  const [forwardModal, setForwardModal] = useState(false);
+  const [attachmentModal, setAttachmentModal] = useState(false);
+  const [emojiModal, setEmojiModal] = useState(false);
   const [referenceId, setReferenceId] = useState<null | string>(null);
   const [context, setContext] = useState<actions>(actions.create);
 
@@ -90,7 +93,7 @@ const Messages = () => {
   useEffect(() => {
     if (section !== sections.group) {
       setGroup(null);
-      setForward(false);
+      hideDialogModals();
     }
   }, [section]);
 
@@ -134,7 +137,7 @@ const Messages = () => {
 
   useEffect(
     () => lastMessageRef?.current?.scrollIntoView({ behavior: 'smooth' }),
-    [notifs, input, group]
+    [notifs, group]
   );
 
   useEffect(() => {
@@ -308,6 +311,12 @@ const Messages = () => {
     }
   }, [rooms, groups, userId]);
 
+  const hideDialogModals = () => {
+    setForwardModal(false);
+    setEmojiModal(false);
+    setAttachmentModal(false);
+  };
+
   const initializeRealtime = () => {
     const handleMessageEvents = (payload: any) => {
       const { eventType } = payload;
@@ -399,7 +408,7 @@ const Messages = () => {
           },
           true
         );
-        setForward(false);
+        hideDialogModals();
       }
     }
   };
@@ -527,6 +536,11 @@ const Messages = () => {
     });
   };
 
+  const onEmojiHandler = (emoji: EmojiClickData) => {
+    const { emoji: selected } = emoji;
+    setInput((prev) => prev + selected);
+  };
+
   const sendMessage = (
     newMessage: IMessageProps,
     isForward: boolean = false
@@ -620,6 +634,8 @@ const Messages = () => {
       setContext(actions.create);
       setInput('');
     }
+    setNotifs(getRandomNumber());
+    hideDialogModals();
     onBlurHandler();
   };
 
@@ -693,7 +709,7 @@ const Messages = () => {
     setMessages(tempGroup?.messages);
     textInputRef?.current?.focus();
     setSection(sections.group);
-    setForward(false);
+    hideDialogModals();
   };
 
   const onKeyDownHandler = (e: { key: string }) =>
@@ -781,6 +797,7 @@ const Messages = () => {
             setSection={setSection}
             lastMessageRef={lastMessageRef}
             onChangeHandler={onChangeHandler}
+            onEmojiHandler={onEmojiHandler}
             onBlurHandler={onBlurHandler}
             onKeyDownHandler={onKeyDownHandler}
             onSubmitHandler={onSubmitHandler}
@@ -804,8 +821,12 @@ const Messages = () => {
             notifs={notifs}
             navbar={navbar}
             userId={userId}
-            forward={forward}
-            setForward={setForward}
+            forwardModal={forwardModal}
+            emojiModal={emojiModal}
+            attachmentModal={attachmentModal}
+            setForwardModal={setForwardModal}
+            setEmojiModal={setEmojiModal}
+            setAttachmentModal={setAttachmentModal}
             context={context}
           />
         </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ISecitonSwitchProps } from '@/types';
+import { ISectionSwitchProps } from '@/types';
 
 import { sections } from '@/utils/enums';
 
@@ -11,7 +11,7 @@ import Group from './group';
 import Spinner from '../svgs/spinner';
 import Introduction from './introduction';
 
-const SectionSwitch = (props: ISecitonSwitchProps) => {
+const SectionSwitch = (props: ISectionSwitchProps) => {
   if (props) {
     const {
       userId,
@@ -29,6 +29,7 @@ const SectionSwitch = (props: ISecitonSwitchProps) => {
       onChangeHandler,
       onBlurHandler,
       onKeyDownHandler,
+      onEmojiHandler,
       onSubmitHandler,
       onDeleteHandler,
       onCopyHandler,
@@ -41,8 +42,12 @@ const SectionSwitch = (props: ISecitonSwitchProps) => {
       textInputRef,
       loading,
       navbar,
-      forward,
-      setForward,
+      forwardModal,
+      emojiModal,
+      attachmentModal,
+      setForwardModal,
+      setEmojiModal,
+      setAttachmentModal,
       context,
     } = props;
 
@@ -105,6 +110,7 @@ const SectionSwitch = (props: ISecitonSwitchProps) => {
           onChangeHandler={onChangeHandler}
           onBlurHandler={onBlurHandler}
           onKeyDownHandler={onKeyDownHandler}
+          onEmojiHandler={onEmojiHandler}
           onSubmitHandler={onSubmitHandler}
           onMediaHandler={onMediaHandler}
           onDeleteHandler={onDeleteHandler}
@@ -115,8 +121,12 @@ const SectionSwitch = (props: ISecitonSwitchProps) => {
           textInputRef={textInputRef}
           loading={loading}
           navbar={navbar}
-          forward={forward}
-          setForward={setForward}
+          forwardModal={forwardModal}
+          emojiModal={emojiModal}
+          attachmentModal={attachmentModal}
+          setForwardModal={setForwardModal}
+          setEmojiModal={setEmojiModal}
+          setAttachmentModal={setAttachmentModal}
           context={context}
         />
       );

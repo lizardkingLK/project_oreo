@@ -75,7 +75,9 @@ const MessageLink = (props: IMessageLinkProps) => {
               <div className="basis-2/4 ml-4 font-normal truncate">
                 <h1
                   className={`${
-                    messageIsActive ? 'bg-black text-white' : 'text-black'
+                    messageIsActive
+                      ? 'bg-black text-white delay-75'
+                      : 'text-black'
                   } text-md md:text-xl truncate max-w-xs text-left`}
                 >
                   {messageAuthorName}
