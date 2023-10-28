@@ -121,6 +121,7 @@ export interface IMessageLinkListProps {
   active: any;
   userId: string | null;
   requireOptions: boolean;
+  handleReadUnread: Function;
 }
 
 interface IActiveProps {
@@ -165,6 +166,7 @@ export interface IMessageLinkProps {
   requireOptions: boolean;
   setCurrentMenuId: Function;
   currentMenuId: string | null;
+  handleReadUnread: Function;
 }
 
 export interface IMessageEditorProps {
@@ -350,6 +352,7 @@ export interface ISectionSwitchProps {
   textInputRef: LegacyRef<HTMLInputElement> | null;
   navbar: boolean;
   context: actions;
+  handleReadUnread: Function;
 }
 
 export interface IGroupSectionProps {
@@ -383,6 +386,7 @@ export interface IGroupSectionProps {
   textInputRef: LegacyRef<HTMLInputElement> | null;
   navbar: boolean;
   context: actions;
+  handleReadUnread: Function;
 }
 
 export interface IMessageMenuProps {
@@ -407,6 +411,7 @@ export interface IGroupMenuProps {
   isUnread: boolean;
   requireOptions: boolean;
   setOptions: Function;
+  handleReadUnread: Function;
 }
 
 export interface IAddFriendProps {
@@ -431,6 +436,7 @@ export interface ISidebarProps {
   userId: string | null;
   onSelectGroupHandler: Function;
   group: IGroupProps;
+  handleReadUnread: Function;
 }
 
 export interface IUIProps {

@@ -1,3 +1,4 @@
+import { IMessageDataProps } from '@/types';
 import { apiUrls, restContext } from './enums';
 
 export const getFeeds = async (userId: string) => {
@@ -37,9 +38,20 @@ export const updateUnread = async (
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      context: restContext.updateUnread,
+      context: restContext.updateRead,
       groupId,
       userId,
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => data);
+};
+
+export const markAsUnread = async (message: IMessageDataProps) => {
+  return await fetch(apiUrls.group, {
+    method: 'PUT',
+    body: JSON.stringify({
+      message,
     }),
   })
     .then((response) => response.json())

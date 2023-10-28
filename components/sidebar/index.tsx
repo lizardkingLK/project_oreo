@@ -15,6 +15,7 @@ const SidebarSwitch = (props: ISidebarProps) => {
     group,
     active,
     userId,
+    handleReadUnread,
   } = props;
   if (navbar) {
     return (
@@ -37,6 +38,7 @@ const SidebarSwitch = (props: ISidebarProps) => {
           active={active}
           userId={userId}
           requireOptions={true}
+          handleReadUnread={handleReadUnread}
         />
       </div>
     );

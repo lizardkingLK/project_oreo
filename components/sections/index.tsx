@@ -49,6 +49,7 @@ const SectionSwitch = (props: ISectionSwitchProps) => {
       setEmojiModal,
       setAttachmentModal,
       context,
+      handleReadUnread,
     } = props;
 
     if (section === sections.loading) {
@@ -128,6 +129,7 @@ const SectionSwitch = (props: ISectionSwitchProps) => {
           setEmojiModal={setEmojiModal}
           setAttachmentModal={setAttachmentModal}
           context={context}
+          handleReadUnread={handleReadUnread}
         />
       );
     } else return null;
