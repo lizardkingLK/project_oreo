@@ -41,6 +41,7 @@ import {
   createSocket,
   deleteMessage,
   getGroups,
+  markAsUnread,
   saveFile,
   updateMessage,
   updateUnread,
@@ -294,6 +295,23 @@ const Messages = () => {
       });
     }
   }, [rooms, groups, userId]);
+
+  const handleReadUnread = async (groupId: string, isUnread: boolean) => {
+    const tempGroup: any = groups.find((g) => g.id === groupId);
+    const readByIndex = tempGroup?.lastMessage?.readBy?.findIndex(
+      (readBy: { id: string | null | undefined }) => readBy?.id === userId
+    );
+    if (readByIndex !== -1) {
+      tempGroup.lastMessage.readBy[readByIndex].value = isUnread;
+      await markAsUnread(tempGroup.lastMessage).then((data) => {
+        if (data?.success) {
+          tempGroup.unreadCount = 1;
+          setGroup(null);
+          setSection(sections.home);
+        }
+      });
+    }
+  };
 
   const hideDialogModals = () => {
     setForwardModal(false);
@@ -755,6 +773,7 @@ const Messages = () => {
             userId={userId}
             onSelectGroupHandler={onSelectGroupHandler}
             group={group}
+            handleReadUnread={handleReadUnread}
           />
         </div>
         <div
@@ -790,12 +809,13 @@ const Messages = () => {
             navbar={navbar}
             userId={userId}
             forwardModal={forwardModal}
-            emojiModal ={emojiModal}
-            attachmentModal ={attachmentModal}
+            emojiModal={emojiModal}
+            attachmentModal={attachmentModal}
             setForwardModal={setForwardModal}
             setEmojiModal={setEmojiModal}
             setAttachmentModal={setAttachmentModal}
             context={context}
+            handleReadUnread={handleReadUnread}
           />
         </div>
       </section>

@@ -1,4 +1,5 @@
 import { supabaseUtil } from '@/lib/supabase';
+import { IMessageDataProps } from '@/types';
 import { clerkClient } from '@clerk/nextjs';
 import { randomUUID } from 'crypto';
 import type { NextApiRequest, NextApiResponse } from 'next';
@@ -60,6 +61,17 @@ export default async function handler(
       const messages = await getUsersCombined(dataMessages);
 
       return res.status(200).json(messages ?? []);
+    } else if (req.method === 'PUT') {
+      const { message } = JSON.parse(req.body);
+      const { error } = await supabaseUtil.updateMarkAsUnread(message);
+
+      if (error) {
+        res.status(500).json({ error: 'Internal error' });
+        return;
+      }
+
+      res.status(200).json({ success: true });
+      return;
     }
   } catch (error) {
     return res.status(500).send({ message: error });

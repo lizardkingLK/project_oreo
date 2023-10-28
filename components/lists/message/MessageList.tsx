@@ -75,6 +75,7 @@ const MessageList = (props: IMessageListProps) => {
                     active={active}
                     userId={userId}
                     requireOptions={false}
+                    handleReadUnread={() => null}
                   />
                 ) : (
                   <h1 className="text-md text-black text-center">

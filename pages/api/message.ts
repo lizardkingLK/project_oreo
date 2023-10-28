@@ -20,7 +20,7 @@ export default async function handler(
     return;
   } else if (req.method === 'PUT') {
     const { context } = req.body;
-    if (context === restContext.updateUnread) {
+    if (context === restContext.updateRead) {
       const { groupId, userId } = req.body;
       const { data: groupMessages, error: errorGroupMessages } =
         await supabaseUtil.getMessagesByGroupId(groupId);
@@ -57,7 +57,10 @@ export default async function handler(
       }
     } else if (context === restContext.updateMessage) {
       const { referenceId, content } = req.body;
-      const { error } = await supabaseUtil.updateMessage(referenceId, content);
+      const { error } = await supabaseUtil.updateMessageContent(
+        referenceId,
+        content
+      );
 
       if (error) {
         res.status(500).json({ error: 'Internal error' });

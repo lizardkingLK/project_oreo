@@ -1,13 +1,19 @@
 import React from 'react';
 
-const Close = ({ size }: { size: number | undefined }) => {
+const Close = ({
+  size,
+  thicness = 1.5,
+}: {
+  size: number | undefined;
+  thicness?: number;
+}) => {
   const className = size ? `w-${size} h-${size}` : 'w-8 h-8';
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
-      strokeWidth={1.5}
+      strokeWidth={thicness}
       stroke="currentColor"
       className={className}
     >

@@ -1,3 +1,4 @@
+import { IMessageDataProps } from './../types/index';
 import { quickMessages, tableNames } from '@/utils/enums';
 import { createClient } from '@supabase/supabase-js';
 
@@ -116,7 +117,13 @@ export const supabaseUtil = {
       .select()
       .eq('groupId', groupId);
   },
-  async updateMessage(
+  async updateMarkAsUnread(message: IMessageDataProps) {
+    return await supabaseClient
+      .from(tableNames.message)
+      .update({ readBy: message.readBy })
+      .eq('referenceId', message.referenceId);
+  },
+  async updateMessageContent(
     referenceId: string | string[] | undefined,
     content: string
   ) {

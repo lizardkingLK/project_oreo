@@ -33,6 +33,7 @@ const MessageLink = (props: IMessageLinkProps) => {
       active,
       requireOptions,
       setCurrentMenuId,
+      handleReadUnread,
     } = props;
 
     const handleOpenGroupOptions = () => {
@@ -51,11 +52,12 @@ const MessageLink = (props: IMessageLinkProps) => {
               isUnread={messageUnread > 0}
               requireOptions={requireOptions}
               setOptions={setOptions}
+              handleReadUnread={handleReadUnread}
             />
           </div>
         ) : (
           <button
-            className="cursor-pointer min-w-full"
+            className="cursor-pointer min-w-full select-none"
             title={messageAuthorName ?? ''}
             onClick={() => messageOnClick(messageId, strings.groupId)}
             onDoubleClick={handleOpenGroupOptions}

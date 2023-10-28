@@ -13,6 +13,7 @@ const MessageLinkList = (props: IMessageLinkListProps) => {
       active,
       userId,
       requireOptions,
+      handleReadUnread,
     } = props;
 
     return (
@@ -39,6 +40,7 @@ const MessageLinkList = (props: IMessageLinkListProps) => {
               requireOptions={requireOptions}
               currentMenuId={currentMenuId}
               setCurrentMenuId={setCurrentMenuId}
+              handleReadUnread={handleReadUnread}
             />
           );
         })}

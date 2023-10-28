@@ -88,8 +88,9 @@ export enum messagingType {
 }
 
 export enum restContext {
-  updateUnread = 'UPDATE_UNREAD',
+  updateRead = 'UPDATE_READ',
   updateMessage = 'UPDATE_MESSAGE',
+  markAsUnread = 'MARK_AS_UNREAD',
 }
 
 export enum eventTypes {
