@@ -23,9 +23,7 @@ const UserNavbar = (props: IUserNavbarProps) => {
     return (
       <nav
         className={`fixed top-0 left-0 h-screen w-3/4 md:w-1/4 shadow-green-400 shadow-2xl z-10
-            ${
-              navbar ? 'flex flex-col' : 'hidden'
-            } bg-gradient-to-r from-green-400 to-green-700`}
+            ${navbar ? 'flex flex-col' : 'hidden'} bg-green-500`}
       >
         <div className="flex justify-center items-center p-4">
           {isSignedIn ? (
@@ -54,32 +52,32 @@ const UserNavbar = (props: IUserNavbarProps) => {
         {isSignedIn ? (
           <Fragment>
             <button
-              className="text-xl text-center p-4 hover:text-black hover:bg-stone-400 font-medium flex items-center justify-start"
+              className="text-xl text-center p-4 hover:bg-green-300 font-medium flex items-center justify-start"
               onClick={() =>
                 handleSelection(newUser ? sections.home : sections.introduction)
               }
             >
               <Home />
-              &nbsp;&nbsp;&nbsp;Home
+              <span className="ml-4">Home</span>
             </button>
             <button
-              className="text-xl text-center p-4 hover:text-black hover:bg-stone-400 font-medium flex items-center justify-start"
+              className="text-xl text-center p-4 hover:bg-green-300 font-medium flex items-center justify-start"
               onClick={() => handleSelection(sections.addFriend)}
             >
               <Invitation />
-              &nbsp;&nbsp;&nbsp;Add Friend
+              <span className="ml-4">Add Friend</span>
             </button>
             <button
-              className="text-xl text-center p-4 hover:text-black hover:bg-stone-400 font-medium flex items-center justify-start"
+              className="text-xl text-center p-4 hover:bg-green-300 font-medium flex items-center justify-start"
               onClick={() => handleSelection(sections.feeds)}
             >
               <Feeds />
-              &nbsp;&nbsp;&nbsp;Feeds
+              <span className="ml-4">Feeds</span>
             </button>
           </Fragment>
         ) : (
           <Link
-            className="text-xl text-center p-4 hover:text-black hover:bg-stone-400 font-medium"
+            className="text-xl text-center p-4 hover:bg-green-300 font-medium"
             href="/sign-in"
           >
             Login

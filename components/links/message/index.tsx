@@ -86,10 +86,16 @@ const MessageLink = (props: IMessageLinkProps) => {
                   }
                 >
                   {active?.groupId === messageId && active?.value ? (
-                    <span className="text-green-500">typing...</span>
+                    <span className="text-green-500 font-bold animate-pulse">
+                      typing...
+                    </span>
                   ) : (
                     <span
-                      className={messageContentIsActive ? 'text-green-500' : ''}
+                      className={
+                        messageContentIsActive
+                          ? 'text-green-500 font-bold '
+                          : ''
+                      }
                       title={isImage(messageContent) ? 'Image' : messageContent}
                     >
                       {getBriefContent(messageContent)}

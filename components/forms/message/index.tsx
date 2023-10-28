@@ -11,7 +11,8 @@ import SubmitButton from './buttons/Submit';
 import useWidth from '@/components/hooks/useWidth';
 
 const MessageEditor = (props: IMessageEditorProps) => {
-  const [mediaModal, setMediaModal] = useState(false);
+  const [attachmentModal, setAttachmentModal] = useState(false);
+  const [emojiModal, setEmojiModal] = useState(false);
   const [files, setFiles] = useState(null);
   const [file, setFile] = useState(null);
   const [type, setType] = useState(null);
@@ -36,7 +37,7 @@ const MessageEditor = (props: IMessageEditorProps) => {
       context,
     } = props;
 
-    const mediaHandler = (event: any) => {
+    const attachmentHandler = (event: any) => {
       if (event?.target?.files) {
         const files = event.target.files,
           file = files[0];
@@ -52,27 +53,40 @@ const MessageEditor = (props: IMessageEditorProps) => {
       setType(null);
     };
 
-    const mediaCloseHandler = () => {
+    const dialogCloseHandler = () => {
       clearInputs();
-      setMediaModal(false);
+      setEmojiModal(false);
+      setAttachmentModal(false);
     };
 
-    const mediaSubmitHandler = () => {
+    const attachmentSubmitHandler = () => {
       if (files) {
         onMediaHandler(files);
-        mediaCloseHandler();
+        dialogCloseHandler();
       }
     };
 
     return (
       group && (
         <Fragment>
-          {mediaModal && (
+          {emojiModal && (
+            <Dialog
+              dialogTitle={'Send Emojis'}
+              dialogSubtitle={'Select'}
+              dialogCloseTitle={'Cancel Emoji'}
+              dialogCloseHandler={dialogCloseHandler}
+            >
+              <div className="flex justify-start items-center p-4">
+                <h1>hello</h1>
+              </div>
+            </Dialog>
+          )}
+          {attachmentModal && (
             <Dialog
               dialogTitle={'Send Attachment'}
               dialogSubtitle={'Attachment'}
               dialogCloseTitle={'Cancel Attachment'}
-              dialogCloseHandler={mediaCloseHandler}
+              dialogCloseHandler={dialogCloseHandler}
             >
               {file && type ? (
                 <Fragment>
@@ -98,7 +112,7 @@ const MessageEditor = (props: IMessageEditorProps) => {
                     <button
                       className="text-black hover:text-black"
                       title="Send"
-                      onClick={mediaSubmitHandler}
+                      onClick={attachmentSubmitHandler}
                     >
                       <Send size={ui.iconSize} />
                     </button>
@@ -109,14 +123,14 @@ const MessageEditor = (props: IMessageEditorProps) => {
                   <div className="flex justify-center items-center pb-8">
                     <label
                       htmlFor="inputFiles"
-                      className="w-40 h-40 m-8 rounded-full p-2 md:p-4 bg-gradient-to-r from-stone-300 to-stone-400 hover:bg-gradient-to-r hover:from-green-300 hover:to-green-400 text-black cursor-pointer flex flex-col justify-center items-center text-xl"
+                      className="w-40 h-40 m-8 rounded-full p-2 md:p-4 bg-stone-300 hover:bg-green-400 text-black cursor-pointer flex flex-col justify-center items-center text-xl"
                       title="Upload Files"
                     >
                       <Upload />
                     </label>
                     <input
                       id="inputFiles"
-                      onChange={mediaHandler}
+                      onChange={attachmentHandler}
                       type="file"
                       name="file"
                       hidden={true}
@@ -130,6 +144,10 @@ const MessageEditor = (props: IMessageEditorProps) => {
             <button
               className="py-2 md:py-4 pl-2 md:pl-4 rounded-l-full bg-stone-300 text:md md:text-xl text-stone-600 hover:text-green-500 flex items-center justify-center"
               title="Insert Emoji"
+              onClick={() => {
+                setAttachmentModal(false);
+                setEmojiModal(!emojiModal);
+              }}
             >
               <Emoji size={ui.iconSize} />
             </button>
@@ -145,10 +163,13 @@ const MessageEditor = (props: IMessageEditorProps) => {
             />
             <button
               className={`p-2 md:p-4 bg-stone-300 ${
-                mediaModal ? 'text-green-500' : 'text-stone-600'
+                attachmentModal ? 'text-green-500' : 'text-stone-600'
               } hover:text-green-500`}
-              title="Send Media"
-              onClick={() => setMediaModal(!mediaModal)}
+              title="Send Attachment"
+              onClick={() => {
+                setEmojiModal(false);
+                setAttachmentModal(!attachmentModal);
+              }}
             >
               <Attachment size={ui.iconSize} />
             </button>

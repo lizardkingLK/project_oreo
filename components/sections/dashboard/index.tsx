@@ -62,7 +62,7 @@ const Dashboard = (props: IDashboardProps) => {
         <div className="p-4">
           <div className="flex justify-between items-center w-full">
             <h1 className="text-2xl text-black font-bold" id="textGreeting">
-              Hello <span className="text-green-400">{name}</span>
+              Hello <span className="text-green-500">{name}</span>
             </h1>
           </div>
           <div

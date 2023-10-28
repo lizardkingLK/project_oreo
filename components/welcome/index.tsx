@@ -8,17 +8,19 @@ const Welcome = () => {
       id="divWelcome"
     >
       <div className="text-black font-black text-center">
-        <span className="text-transparent text-8xl md:text-9xl bg-clip-text bg-gradient-to-r from-green-600 to-green-900">
+        <span className="text-transparent text-8xl md:text-9xl bg-clip-text bg-green-600">
           OREO
         </span>
         <br />
-        <span className="text-2xl tracking-normal md:tracking-widest text-black">
+        <span className="text-xl tracking-normal md:tracking-widest text-stone-600">
           A Chat Application
         </span>
         <br />
         <div className="mt-4 flex justify-evenly">
           <Link href="/sign-up">
-            <button className="bg-green-600 px-4 py-2 rounded-lg">JOIN</button>
+            <button className="bg-green-600 text-white px-4 py-2 rounded-lg">
+              JOIN
+            </button>
           </Link>
         </div>
       </div>

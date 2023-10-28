@@ -108,7 +108,7 @@ const AddFriend = (props: IAddFriendProps) => {
           />
           <button
             type="submit"
-            className="text-black bg-stone-300 hover:bg-stone-300 focus:outline-none focus:ring-4 focus:ring-stone-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-stone-400 dark:hover:bg-stone-500 dark:hover:text-white dark:focus:ring-stone-700 dark:border-stone-700 w-full md:w-auto"
+            className="text-white bg-stone-300 hover:bg-stone-300 focus:outline-none focus:ring-4 focus:ring-stone-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-stone-400 dark:hover:bg-stone-500 dark:hover:text-white dark:focus:ring-stone-700 dark:border-stone-700 w-full md:w-auto"
             title="Search"
           >
             Search
