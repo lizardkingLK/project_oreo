@@ -13,7 +13,7 @@ const Dialog = (props: IDialogProps) => {
     } = props;
     return (
       <div
-        className={`rounded-2xl bg-gradient-to-r from-stone-200 to-stone-200  w-full mb-4`}
+        className={`rounded-2xl bg-gradient-to-r from-stone-200 to-stone-200 w-full mb-4`}
       >
         <div className="flex justify-between items-center p-4">
           <h1 className="hidden md:block text-black text-md md:text-xl font-bold">

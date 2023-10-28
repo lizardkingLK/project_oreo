@@ -3,6 +3,7 @@ import Dialog from '@/components/dialog';
 import { IGroupProps, IMessageListProps } from '@/types';
 import { Fragment, useEffect, useState } from 'react';
 import MessageLinkList from './MessageLinkList';
+import MessagePlaceholder from '@/components/placeholder/message';
 
 const MessageList = (props: IMessageListProps) => {
   const { group, groups } = props;
@@ -55,12 +56,8 @@ const MessageList = (props: IMessageListProps) => {
               />
             </Fragment>
           ))}
+        {active?.groupId === group?.id && <MessagePlaceholder />}
         <div ref={lastMessageRef}></div>
-        {active?.groupId === group?.id && (
-          <div className="absolute bottom-5 md:bottom-12 m-8 z-10">
-            <p className="text-xs text-stone-500">{`${active.name} is typing...`}</p>
-          </div>
-        )}
         {forward && (
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96">
             <Dialog

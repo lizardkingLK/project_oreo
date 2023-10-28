@@ -59,11 +59,7 @@ export default function MessageCard(props: IMessageCardProps) {
           </div>
         ) : (
           <button
-            onClick={() =>
-              type === messageTypes.SENT && handleOpenMessageOptions()
-            }
-            title={messageTime}
-            className={`my-2 md:my-4 min-w-max rounded-lg md:rounded-xl cursor-pointer ${
+            className={`my-2 md:my-4 mx-2 min-w-max rounded-xl cursor-pointer ${
               isImage(content)
                 ? 'bg-transparent'
                 : 'p-2 md:p-4 bg-gradient-to-r'
@@ -72,6 +68,10 @@ export default function MessageCard(props: IMessageCardProps) {
                 ? 'bg-black text-white rounded-tl-none'
                 : 'bg-white text-black rounded-tr-none'
             }`}
+            title={messageTime}
+            onClick={() =>
+              type === messageTypes.SENT && handleOpenMessageOptions()
+            }
           >
             <MessageMedia content={content} />
           </button>
