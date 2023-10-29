@@ -34,11 +34,18 @@ NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=YOUR_NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL
 
 #### Windows
 
-`.\scripts\db.ps1`
+```
+.\scripts\db.ps1
+```
 
 #### Linux
 
-`.\scripts\db.sh`
+```
+cd scripts
+chmod +x db.sh
+./db.sh
+```
+
 
 ### Start Application
 
