@@ -18,6 +18,7 @@ model Message {
   readBy        Json[]
   content       String?
   createdAt     DateTime @default(now())
+  timestamp     Int?
   status        Int      @default(1)
 }
 
