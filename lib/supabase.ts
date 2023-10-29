@@ -94,6 +94,7 @@ export const supabaseUtil = {
             { id: ownerId, value: true },
           ],
           content: quickMessages.hi,
+          timestamp: new Date().getTime()
         },
       ])
       .select();
@@ -154,6 +155,7 @@ export const supabaseUtil = {
         createdFor: [toId, fromId],
         content: content,
         readBy,
+        timestamp: new Date().getTime()
       },
     ]);
   },

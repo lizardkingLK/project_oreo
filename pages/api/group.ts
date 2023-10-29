@@ -1,5 +1,4 @@
 import { supabaseUtil } from '@/lib/supabase';
-import { IMessageDataProps } from '@/types';
 import { clerkClient } from '@clerk/nextjs';
 import { randomUUID } from 'crypto';
 import type { NextApiRequest, NextApiResponse } from 'next';

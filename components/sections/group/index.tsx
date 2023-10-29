@@ -3,6 +3,7 @@ import MessageList from '@/components/lists/message/MessageList';
 import ChevronBack from '@/components/svgs/chevronBack';
 import { IGroupSectionProps } from '@/types';
 import React, { Fragment } from 'react';
+import { getRelativeTime } from '@/utils/helpers';
 
 const Group = (props: IGroupSectionProps) => {
   if (props) {
@@ -38,6 +39,7 @@ const Group = (props: IGroupSectionProps) => {
       setAttachmentModal,
       context,
     } = props;
+
     return (
       <Fragment>
         <div className="p-4 flex items-center sticky top-0 bg-stone-300 z-10">
@@ -57,7 +59,7 @@ const Group = (props: IGroupSectionProps) => {
               </h1>
             ) : (
               <h1 className="text-sm md:text-md font-bold text-black">
-                {group.lastMessage?.createdOn}
+                {getRelativeTime(group.lastMessage?.createdOn)}
               </h1>
             )}
           </div>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Avatar from '@/components/avatar';
 import { IMessageLinkProps } from '@/types';
-import { getBriefContent, isImage } from '@/utils/helpers';
+import { getBriefContent, getRelativeTime, getTimeConverted, isImage } from '@/utils/helpers';
 import { strings } from '@/utils/enums';
 import GroupMenu from '@/components/menus/group';
 
@@ -113,8 +113,11 @@ const MessageLink = (props: IMessageLinkProps) => {
                     {messageUnread}
                   </p>
                 ) : (
-                  <p className="mx-2 text-xs md:text-md text-black font-bold">
-                    {messageTime}
+                  <p
+                    className="mx-2 text-xs md:text-md text-black font-bold"
+                    title={getRelativeTime(messageTime)}
+                  >
+                    {getTimeConverted(messageTime)}
                   </p>
                 )}
               </div>

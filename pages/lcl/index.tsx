@@ -146,7 +146,7 @@ const Messages = () => {
             type: messageTypes.RECEIVED,
             content: output.content,
             fromId: output.fromId,
-            createdOn: getTimeConverted(),
+            createdOn: getTimeConverted(output.timestamp),
             groupId: tempGroup.id,
             status: true,
             toId: output.toId,
@@ -260,7 +260,7 @@ const Messages = () => {
           referenceId: friend.referenceId,
           type: getMessageType(friend.userId, userId),
           content: friend.content,
-          createdOn: getTimeConverted(new Date(friend.createdAt)),
+          createdOn: getTimeConverted(friend.timestamp),
           groupId: friend.groupId,
           status: friend.status,
           fromId: friend.createdFor[0].id,
@@ -434,19 +434,14 @@ const Messages = () => {
       group,
       tempMessages,
       target: ICreatedForDataProps,
-      createdOnDate,
       unreadCount: number,
       hasRead;
 
     messages?.forEach((message: IMessageDataProps, _: any) => {
-      console.log(message.createdAt);
-
       groupId = message.groupId;
-      createdOnDate = new Date(message.createdAt);
       Object.assign(message, {
         type: getMessageType(message.userId, userId),
-        createdOnDate,
-        createdOn: getTimeConverted(createdOnDate),
+        createdOn: message.timestamp,
       });
       if (message.groupType === groupTypes.PRIVATE) {
         if (message.userId === userId) {
@@ -536,7 +531,7 @@ const Messages = () => {
           ? groups?.find((g) => g.id === newMessage.groupId)
           : group,
         tempGroupMessages = tempGroup?.messages;
-      newMessage.createdOn = getTimeConverted(new Date(newMessage.createdOn));
+      newMessage.createdOn = new Date().getTime();
       if (tempGroupMessages) {
         tempGroupMessages[tempGroupMessages.length] = newMessage;
       }
@@ -711,7 +706,7 @@ const Messages = () => {
       referenceId: messageData.referenceId,
       type: getMessageType(messageData.userId, userId),
       content: messageData.content,
-      createdOn: getTimeConverted(new Date(messageData.createdAt)),
+      createdOn: getTimeConverted(messageData.timestamp),
       groupId: messageData.groupId,
       status: messageData.status,
       fromId: messageData.createdFor[0].id,

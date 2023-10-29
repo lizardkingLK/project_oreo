@@ -96,4 +96,5 @@ export enum restContext {
 export enum eventTypes {
   insert = 'INSERT',
   update = 'UPDATE',
+  delete = 'DELETE',
 }
