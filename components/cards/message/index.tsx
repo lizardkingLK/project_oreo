@@ -68,7 +68,7 @@ export default function MessageCard(props: IMessageCardProps) {
                 ? 'bg-black text-white rounded-tl-none'
                 : 'bg-white text-black rounded-tr-none'
             }`}
-            title={messageTime}
+            title={new Date(Number(messageTime)).toLocaleTimeString()}
             onClick={() =>
               type === messageTypes.SENT && handleOpenMessageOptions()
             }

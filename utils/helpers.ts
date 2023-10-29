@@ -1,10 +1,20 @@
 import { NameType } from '@/types';
 import { mediaTypes, messageTypes, strings } from './enums';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
 
-export const getTimeConverted = (tempDate: Date = new Date()) => {
-  const tempHours = tempDate.getHours().toString().padStart(2, '0'),
-    tempMinutes = tempDate.getMinutes().toString().padStart(2, '0');
+dayjs.extend(relativeTime);
+
+export const getTimeConverted = (timestamp: string) => {
+  const tempDate = new Date(Number(timestamp));
+  const tempHours = tempDate.getHours().toString().padStart(2, '0');
+  const tempMinutes = tempDate.getMinutes().toString().padStart(2, '0');
   return `${tempHours}:${tempMinutes}`;
+};
+
+export const getRelativeTime = (timestamp: string) => {
+  const messageDateTime = new Date(Number(timestamp));
+  return dayjs().to(dayjs(messageDateTime));
 };
 
 export const formatCompactNumber = (input: string | number | null) => {

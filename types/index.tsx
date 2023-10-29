@@ -83,6 +83,7 @@ export interface IMessageDataProps extends IMessageProps {
   groupType: groupTypes;
   createdFor: ICreatedForDataProps[];
   readBy: IReadByDataProps[];
+  timestamp: string;
 }
 
 export interface IChangedMessageProps {
