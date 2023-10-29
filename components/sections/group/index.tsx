@@ -3,11 +3,7 @@ import MessageList from '@/components/lists/message/MessageList';
 import ChevronBack from '@/components/svgs/chevronBack';
 import { IGroupSectionProps } from '@/types';
 import React, { Fragment } from 'react';
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
 import { getRelativeTime } from '@/utils/helpers';
-
-dayjs.extend(relativeTime);
 
 const Group = (props: IGroupSectionProps) => {
   if (props) {
