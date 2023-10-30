@@ -146,7 +146,7 @@ const Messages = () => {
             type: messageTypes.RECEIVED,
             content: output.content,
             fromId: output.fromId,
-            createdOn: getTimeConverted(output.timestamp),
+            createdOn: output.createdOn,
             groupId: tempGroup.id,
             status: true,
             toId: output.toId,

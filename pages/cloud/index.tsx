@@ -57,6 +57,7 @@ import {
 import SidebarSwitch from '@/components/sidebar';
 import { RealtimeChannel } from '@supabase/supabase-js';
 import { EmojiClickData } from 'emoji-picker-react';
+import { useRouter } from 'next/router';
 
 let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 let realtime: RealtimeChannel;
@@ -162,7 +163,7 @@ const Messages = () => {
             type: messageTypes.RECEIVED,
             content: output.content,
             fromId: output.fromId,
-            createdOn: getTimeConverted(output.timestamp),
+            createdOn: output.createdOn,
             groupId: tempGroup.id,
             status: true,
             toId: output.toId,
