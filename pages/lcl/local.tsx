@@ -105,7 +105,7 @@ const Messages = () => {
       initializeSocket().then(() => socket?.emit('identity', userId));
 
       return () => {
-        socket.close();
+        socket?.close();
       };
     }
   }, [userId]);

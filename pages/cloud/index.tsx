@@ -50,6 +50,7 @@ import {
 } from '@/utils/http';
 
 import {
+  presenceEventTypes,
   registerPresence,
   registerRealtime,
   supabaseUtil,
@@ -57,7 +58,6 @@ import {
 import SidebarSwitch from '@/components/sidebar';
 import { RealtimeChannel } from '@supabase/supabase-js';
 import { EmojiClickData } from 'emoji-picker-react';
-import { useRouter } from 'next/router';
 
 let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 let realtime: RealtimeChannel;
@@ -117,11 +117,11 @@ const Messages = () => {
           setSection(sections.introduction);
         }
       });
-      initializeSocket().then(() => socket?.emit('identity', userId));
+      // initializeSocket().then(() => socket?.emit('identity', userId));
       initializeRealtime();
 
       return () => {
-        socket.close();
+        socket?.close();
         realtime.unsubscribe();
       };
     }
@@ -351,7 +351,25 @@ const Messages = () => {
   };
 
   const initializePresence = (userId: string, groupIds: Set<string>) => {
-    registerPresence(userId, Array.from(groupIds));
+    const handlePresence = (presence: {
+      event: string;
+      states: [];
+      key: string | null;
+    }) => {
+      const { event, states } = presence;
+      if (event === presenceEventTypes.join) {
+        states?.forEach((state) => {
+          const { userId, groupId } = state;
+          setOnline({ userId, groupId, value: true });
+        });
+      } else if (event === presenceEventTypes.leave) {
+        states?.forEach((state) => {
+          const { userId, groupId } = state;
+          setOnline({ userId, groupId, value: false });
+        });
+      }
+    };
+    registerPresence(userId, Array.from(groupIds), handlePresence);
   };
 
   const initializeSocket = async () => {
