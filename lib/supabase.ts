@@ -24,29 +24,59 @@ export const registerRealtime = (
     .subscribe();
 };
 
+export const enum presenceEventTypes {
+  sync = 'sync',
+  join = 'join',
+  leave = 'leave',
+}
+
 // presence
-export const registerPresence = (userId: string, roomNames: string[]) => {
+export const registerPresence = (
+  userId: string,
+  roomNames: string[],
+  handlePresence: Function
+) => {
   roomNames?.forEach((name) => {
     const room = supabaseClient.channel(name);
 
     room
-      .on('presence', { event: 'sync' }, () => {
+      .on('presence', { event: presenceEventTypes.sync }, () => {
         const newState = room.presenceState();
-        console.log('sync', newState);
+        handlePresence({
+          event: presenceEventTypes.sync,
+          states: newState,
+          key: null,
+        });
       })
-      .on('presence', { event: 'join' }, ({ key, newPresences }) => {
-        console.log('join', key, newPresences);
-      })
-      .on('presence', { event: 'leave' }, ({ key, leftPresences }) => {
-        console.log('leave', key, leftPresences);
-      })
+      .on(
+        'presence',
+        { event: presenceEventTypes.join },
+        ({ key, newPresences }) => {
+          handlePresence({
+            event: presenceEventTypes.join,
+            states: newPresences,
+            key,
+          });
+        }
+      )
+      .on(
+        'presence',
+        { event: presenceEventTypes.leave },
+        ({ key, leftPresences }) => {
+          handlePresence({
+            event: presenceEventTypes.leave,
+            states: leftPresences,
+            key,
+          });
+        }
+      )
       .subscribe(async (status) => {
         if (status !== 'SUBSCRIBED') {
           return;
         }
         const presenceTrackStatus = await room.track({
-          user: userId,
-          online_at: new Date().toISOString(),
+          userId,
+          groupId: name,
         });
         console.log(presenceTrackStatus);
       });
@@ -94,7 +124,7 @@ export const supabaseUtil = {
             { id: ownerId, value: true },
           ],
           content: quickMessages.hi,
-          timestamp: new Date().getTime()
+          timestamp: new Date().getTime(),
         },
       ])
       .select();
@@ -155,7 +185,7 @@ export const supabaseUtil = {
         createdFor: [toId, fromId],
         content: content,
         readBy,
-        timestamp: new Date().getTime()
+        timestamp: new Date().getTime(),
       },
     ]);
   },

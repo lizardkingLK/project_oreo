@@ -17,13 +17,11 @@ import {
 import {
   actions,
   bucketNames,
-  eventTypes,
   groupTypes,
   mediaTypes,
   messageTypes,
   sections,
   strings,
-  tableNames,
 } from '@/utils/enums';
 
 import {
@@ -49,17 +47,11 @@ import {
   updateUnread,
 } from '@/utils/http';
 
-import {
-  registerPresence,
-  registerRealtime,
-  supabaseUtil,
-} from '@/lib/supabase';
+import { supabaseUtil } from '@/lib/supabase';
 import SidebarSwitch from '@/components/sidebar';
-import { RealtimeChannel } from '@supabase/supabase-js';
 import { EmojiClickData } from 'emoji-picker-react';
 
 let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
-let realtime: RealtimeChannel;
 
 const Messages = () => {
   const [storeLocally] = useState(isLocalStorage());
@@ -102,26 +94,18 @@ const Messages = () => {
 
   useEffect(() => {
     if (userId) {
-      getGroups(userId).then((groups) => {
-        if (groups.length > 0) {
-          initializePresence(
-            userId,
-            new Set(
-              groups.map((message: { groupId: string }) => message.groupId)
-            )
-          );
-          groupMessages(groups, userId);
+      getGroups(userId).then((data) => {
+        if (data.length > 0) {
+          groupMessages(data, userId);
           setSection(sections.home);
         } else {
           setSection(sections.introduction);
         }
       });
       initializeSocket().then(() => socket?.emit('identity', userId));
-      initializeRealtime();
 
       return () => {
-        socket.close();
-        realtime.unsubscribe();
+        socket?.close();
       };
     }
   }, [userId]);
@@ -138,7 +122,7 @@ const Messages = () => {
 
   useEffect(
     () => lastMessageRef?.current?.scrollIntoView({ behavior: 'smooth' }),
-    [notifs, group]
+    [notifs, input, group]
   );
 
   useEffect(() => {
@@ -162,7 +146,7 @@ const Messages = () => {
             type: messageTypes.RECEIVED,
             content: output.content,
             fromId: output.fromId,
-            createdOn: getTimeConverted(output.timestamp),
+            createdOn: output.createdOn,
             groupId: tempGroup.id,
             status: true,
             toId: output.toId,
@@ -333,24 +317,6 @@ const Messages = () => {
     setForwardModal(false);
     setEmojiModal(false);
     setAttachmentModal(false);
-  };
-
-  const initializeRealtime = () => {
-    const handleMessageEvents = (payload: any) => {
-      const { eventType } = payload;
-      if (eventType === eventTypes.insert) {
-        console.log('inserted', payload);
-      } else if (eventType === eventTypes.update) {
-        console.log('updated', payload);
-      } else if (eventType === eventTypes.delete) {
-        console.log('deleted', payload);
-      }
-    };
-    realtime = registerRealtime(tableNames.message, handleMessageEvents);
-  };
-
-  const initializePresence = (userId: string, groupIds: Set<string>) => {
-    registerPresence(userId, Array.from(groupIds));
   };
 
   const initializeSocket = async () => {
@@ -558,10 +524,10 @@ const Messages = () => {
 
   const sendMessage = (
     newMessage: IMessageProps,
-    isForward: boolean = false
+    isforwardModal: boolean = false
   ) => {
     if (newMessage?.content && socket) {
-      const tempGroup: IGroupProps = isForward
+      const tempGroup: IGroupProps = isforwardModal
           ? groups?.find((g) => g.id === newMessage.groupId)
           : group,
         tempGroupMessages = tempGroup?.messages;
@@ -574,7 +540,7 @@ const Messages = () => {
         lastMessage: newMessage,
       });
       setInput('');
-      if (!isForward) {
+      if (!isforwardModal) {
         setGroup(tempGroup);
         setMessages(tempGroupMessages);
       }
@@ -585,7 +551,7 @@ const Messages = () => {
 
       socket?.emit('new-message', newMessage);
 
-      if (!isForward) {
+      if (!isforwardModal) {
         const tempGroupIndex = groups.findIndex((g) => g.id === group.id);
         groups.splice(tempGroupIndex, 1);
         groups.splice(0, 0, tempGroup);

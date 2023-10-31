@@ -5,14 +5,13 @@ import { useEffect } from 'react';
 
 const AppRouter = () => {
   const router = useRouter();
-
   useEffect(() => {
     const method = getMessagingMethod();
 
     if (method === messagingType.local) {
-      router.push('/lcl');
+      router.push('/local');
     } else if (method === messagingType.cloud) {
-      router.push('/cld');
+      router.push('/cloud');
     }
   }, [router]);
 };

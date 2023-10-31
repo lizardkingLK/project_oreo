@@ -4,7 +4,13 @@ import SummaryCard from '@/components/cards/summary';
 import { cardBodyTypes, elementType } from '@/utils/enums';
 import Avatar from '@/components/avatar';
 import { IDashboardProps, IGroupProps, ILatestMessageProps } from '@/types';
-import { formatCompactNumber, getBriefContent, isImage } from '@/utils/helpers';
+import {
+  formatCompactNumber,
+  getBriefContent,
+  getRelativeTime,
+  getTimeConverted,
+  isImage,
+} from '@/utils/helpers';
 import Badge from '@/components/badge';
 import Groups from '@/components/svgs/groups';
 
@@ -132,7 +138,10 @@ const Dashboard = (props: IDashboardProps) => {
                 }
                 cardBodyLongContent={latest.content}
                 cardFooterContent={
-                  <Badge text={latest.createdOn} tooltip={latest.createdOn} />
+                  <Badge
+                    text={getRelativeTime(latest.createdOn)}
+                    tooltip={getTimeConverted(latest.createdOn)}
+                  />
                 }
                 cardClickEvent={() =>
                   props.onSelectGroupHandler(latest.groupId)
