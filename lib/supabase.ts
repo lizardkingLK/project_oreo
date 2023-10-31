@@ -40,14 +40,6 @@ export const registerPresence = (
     const room = supabaseClient.channel(name);
 
     room
-      .on('presence', { event: presenceEventTypes.sync }, () => {
-        const newState = room.presenceState();
-        handlePresence({
-          event: presenceEventTypes.sync,
-          states: newState,
-          key: null,
-        });
-      })
       .on(
         'presence',
         { event: presenceEventTypes.join },

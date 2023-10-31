@@ -105,19 +105,19 @@ const Messages = () => {
     if (userId) {
       getGroups(userId).then((groups) => {
         if (groups.length > 0) {
-          initializePresence(
-            userId,
-            new Set(
-              groups.map((message: { groupId: string }) => message.groupId)
-            )
-          );
+          // initializePresence(
+          //   userId,
+          //   new Set(
+          //     groups.map((message: { groupId: string }) => message.groupId)
+          //   )
+          // );
           groupMessages(groups, userId);
           setSection(sections.home);
         } else {
           setSection(sections.introduction);
         }
       });
-      // initializeSocket().then(() => socket?.emit('identity', userId));
+      initializeSocket().then(() => socket?.emit('identity', userId));
       initializeRealtime();
 
       return () => {
@@ -277,7 +277,7 @@ const Messages = () => {
           referenceId: friend.referenceId,
           type: getMessageType(friend.userId, userId),
           content: friend.content,
-          createdOn: getTimeConverted(friend.timestamp),
+          createdOn: friend.timestamp,
           groupId: friend.groupId,
           status: friend.status,
           fromId: friend.createdFor[0].id,
@@ -759,7 +759,7 @@ const Messages = () => {
       referenceId: messageData.referenceId,
       type: getMessageType(messageData.userId, userId),
       content: messageData.content,
-      createdOn: getTimeConverted(messageData.timestamp),
+      createdOn: messageData.timestamp,
       groupId: messageData.groupId,
       status: messageData.status,
       fromId: messageData.createdFor[0].id,
