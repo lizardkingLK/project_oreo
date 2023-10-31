@@ -19,7 +19,7 @@ import {
   bucketNames,
   groupTypes,
   mediaTypes,
-  messageTypes,
+  messageWays,
   sections,
   strings,
 } from '@/utils/enums';
@@ -145,7 +145,7 @@ const Messages = () => {
           newMessage = {
             id: output.id,
             referenceId: output.referenceId,
-            type: messageTypes.RECEIVED,
+            type: messageWays.RECEIVED,
             content: output.content,
             fromId: output.fromId,
             createdOn: output.createdOn,
@@ -384,7 +384,7 @@ const Messages = () => {
           {
             id: date.getMilliseconds().toString(),
             referenceId: getRandomNumber(),
-            type: messageTypes.SENT,
+            type: messageWays.SENT,
             content: tempMessage.content,
             createdOn: date.toISOString(),
             groupId: tempGroup?.id,
@@ -598,7 +598,7 @@ const Messages = () => {
         sendMessage({
           id: 'NEW_MESSAGE',
           referenceId: getRandomNumber(),
-          type: messageTypes.SENT,
+          type: messageWays.SENT,
           content: input,
           createdOn: new Date().toISOString(),
           groupId: group.id,
@@ -629,7 +629,7 @@ const Messages = () => {
       const newMessage = {
         id: 'NEW_MESSAGE',
         referenceId: getRandomNumber(),
-        type: messageTypes.SENT,
+        type: messageWays.SENT,
         createdOn: new Date().toISOString(),
         groupId: group.id,
         status: true,

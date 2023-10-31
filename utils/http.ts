@@ -87,6 +87,18 @@ export const inviteFriend = async (
     .then((data) => data);
 };
 
+export const getUsersMerged = async (createdFor: string[]) => {
+  return await fetch(apiUrls.message, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(createdFor),
+  })
+    .then((response) => response.json())
+    .then((data) => data);
+};
+
 export const saveFile = async (formData: FormData) => {
   return await fetch(apiUrls.file, {
     method: 'POST',

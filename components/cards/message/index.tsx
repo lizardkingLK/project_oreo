@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { messageTypes } from '@/utils/enums';
+import { messageWays } from '@/utils/enums';
 import { IMessageCardProps } from '@/types';
 import MessageMedia from '@/components/media/message';
 import MessageMenu from '@/components/menus/message';
@@ -39,7 +39,7 @@ export default function MessageCard(props: IMessageCardProps) {
     };
 
     return (
-      <div className={`flex ${type === messageTypes.SENT && 'justify-end'}`}>
+      <div className={`flex ${type === messageWays.SENT && 'justify-end'}`}>
         {options ? (
           <div className="mt-6">
             <MessageMenu
@@ -64,19 +64,19 @@ export default function MessageCard(props: IMessageCardProps) {
                 ? 'bg-transparent'
                 : 'p-2 md:p-4 bg-gradient-to-r'
             } ${
-              type === messageTypes.RECEIVED
+              type === messageWays.RECEIVED
                 ? 'bg-black text-white rounded-tl-none'
                 : 'bg-white text-black rounded-tr-none'
             }`}
             title={new Date(Number(messageTime)).toLocaleTimeString()}
             onClick={() =>
-              type === messageTypes.SENT && handleOpenMessageOptions()
+              type === messageWays.SENT && handleOpenMessageOptions()
             }
           >
             <MessageMedia content={content} />
           </button>
         )}
-        {type === messageTypes.SENT && options && (
+        {type === messageWays.SENT && options && (
           <button
             className="flex h-min mt-8 text-white hover:text-white bg-black rounded-full"
             title="Close Message Options"

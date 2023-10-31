@@ -1,5 +1,5 @@
 import { IMessageDataProps } from './../types/index';
-import { quickMessages, tableNames } from '@/utils/enums';
+import { messageTypes, quickMessages, tableNames } from '@/utils/enums';
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -115,6 +115,7 @@ export const supabaseUtil = {
           ],
           content: quickMessages.hi,
           timestamp: new Date().getTime(),
+          messageType: messageTypes.INTRODUCTION,
         },
       ])
       .select();

@@ -2,12 +2,23 @@ import { supabaseUtil } from '@/lib/supabase';
 import { IMessageDataProps, IReadByDataProps } from '@/types';
 import { restContext } from '@/utils/enums';
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { getUsersCombined } from './user';
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<object>
 ) {
-  if (req.method === 'DELETE') {
+  if (req.method === 'POST') {
+    const createdFor = req.body,
+      messageData = await getUsersCombined([{ createdFor }]);
+
+    if (!messageData) {
+      res.status(500).json({ error: 'Bad parameters' });
+      return;
+    }
+
+    res.status(200).json(messageData[0].createdFor);
+  } else if (req.method === 'DELETE') {
     const { referenceId, groupId } = req.query;
     const { error } = await supabaseUtil.deleteMessages(referenceId);
 
