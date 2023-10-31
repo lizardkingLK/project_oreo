@@ -21,6 +21,7 @@ import {
   groupTypes,
   mediaTypes,
   messageTypes,
+  messageWays,
   sections,
   strings,
   tableNames,
@@ -30,7 +31,6 @@ import {
   getMessageType,
   getNameOfUser,
   getRandomNumber,
-  getTimeConverted,
   isLocalStorage,
   openImageInNewTab,
   writeContentToClipboard,
@@ -43,6 +43,7 @@ import {
   createSocket,
   deleteMessage,
   getGroups,
+  getUsersMerged,
   markAsUnread,
   saveFile,
   updateMessage,
@@ -103,26 +104,28 @@ const Messages = () => {
 
   useEffect(() => {
     if (userId) {
-      getGroups(userId).then((groups) => {
-        if (groups.length > 0) {
-          initializePresence(
-            userId,
-            new Set(
-              groups.map((message: { groupId: string }) => message.groupId)
-            )
-          );
-          groupMessages(groups, userId);
-          setSection(sections.home);
-        } else {
-          setSection(sections.introduction);
-        }
-      });
-      // initializeSocket().then(() => socket?.emit('identity', userId));
-      initializeRealtime();
-
+      getGroups(userId)
+        .then((groups) => {
+          if (groups.length > 0) {
+            initializePresence(
+              userId,
+              new Set(
+                groups.map((message: { groupId: string }) => message.groupId)
+              )
+            );
+            groupMessages(groups, userId);
+            setSection(sections.home);
+          } else {
+            setSection(sections.introduction);
+          }
+        })
+        .then(() => {
+          // initializeSocket().then(() => socket?.emit('identity', userId));
+          initializeRealtime(userId);
+        });
       return () => {
         socket?.close();
-        realtime.unsubscribe();
+        realtime?.unsubscribe();
       };
     }
   }, [userId]);
@@ -160,7 +163,7 @@ const Messages = () => {
           newMessage = {
             id: output.id,
             referenceId: output.referenceId,
-            type: messageTypes.RECEIVED,
+            type: messageWays.RECEIVED,
             content: output.content,
             fromId: output.fromId,
             createdOn: output.createdOn,
@@ -184,7 +187,6 @@ const Messages = () => {
         if (group?.id === output.groupId) {
           setMessages(tempGroupMessages);
         }
-
         setNotifs(getRandomNumber());
       }
       setOutput(null);
@@ -277,7 +279,7 @@ const Messages = () => {
           referenceId: friend.referenceId,
           type: getMessageType(friend.userId, userId),
           content: friend.content,
-          createdOn: getTimeConverted(friend.timestamp),
+          createdOn: friend.timestamp,
           groupId: friend.groupId,
           status: friend.status,
           fromId: friend.createdFor[0].id,
@@ -336,11 +338,21 @@ const Messages = () => {
     setAttachmentModal(false);
   };
 
-  const initializeRealtime = () => {
+  const initializeRealtime = (userId: string | null | undefined) => {
     const handleMessageEvents = (payload: any) => {
       const { eventType } = payload;
       if (eventType === eventTypes.insert) {
-        console.log('inserted', payload);
+        const { new: body } = payload;
+        if (body?.userId === userId) {
+          return;
+        }
+        if (body?.messageType === messageTypes.INTRODUCTION) {
+          getUsersMerged(body?.createdFor).then((data) => {
+            setFriend(Object.assign(body, { createdFor: data }));
+          });
+        } else if (body?.messageType === messageTypes.DEFAULT) {
+          console.log('new message (inserted)', payload);
+        }
       } else if (eventType === eventTypes.update) {
         console.log('updated', payload);
       } else if (eventType === eventTypes.delete) {
@@ -435,7 +447,7 @@ const Messages = () => {
           {
             id: date.getMilliseconds().toString(),
             referenceId: getRandomNumber(),
-            type: messageTypes.SENT,
+            type: messageWays.SENT,
             content: tempMessage.content,
             createdOn: date.toISOString(),
             groupId: tempGroup?.id,
@@ -649,7 +661,7 @@ const Messages = () => {
         sendMessage({
           id: 'NEW_MESSAGE',
           referenceId: getRandomNumber(),
-          type: messageTypes.SENT,
+          type: messageWays.SENT,
           content: input,
           createdOn: new Date().toISOString(),
           groupId: group.id,
@@ -680,7 +692,7 @@ const Messages = () => {
       const newMessage = {
         id: 'NEW_MESSAGE',
         referenceId: getRandomNumber(),
-        type: messageTypes.SENT,
+        type: messageWays.SENT,
         createdOn: new Date().toISOString(),
         groupId: group.id,
         status: true,
@@ -746,8 +758,9 @@ const Messages = () => {
     hideDialogModals();
   };
 
-  const onKeyDownHandler = (e: { key: string }) =>
+  const onKeyDownHandler = (e: { key: string }) => {
     e.key === 'Enter' && onSubmitHandler(context);
+  };
 
   const onAddFriendHandler = (messageData: IMessageDataProps) => {
     const target: ICreatedForDataProps =
@@ -759,7 +772,7 @@ const Messages = () => {
       referenceId: messageData.referenceId,
       type: getMessageType(messageData.userId, userId),
       content: messageData.content,
-      createdOn: getTimeConverted(messageData.timestamp),
+      createdOn: messageData.timestamp,
       groupId: messageData.groupId,
       status: messageData.status,
       fromId: messageData.createdFor[0].id,

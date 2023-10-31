@@ -1,5 +1,5 @@
 import { NameType } from '@/types';
-import { mediaTypes, messageTypes, strings } from './enums';
+import { mediaTypes, messageWays, strings } from './enums';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 
@@ -65,7 +65,7 @@ export const getMessageType = (
   messageUserId: string,
   userId: string | null | undefined
 ) => {
-  return messageUserId === userId ? messageTypes.SENT : messageTypes.RECEIVED;
+  return messageUserId === userId ? messageWays.SENT : messageWays.RECEIVED;
 };
 
 export const getNameOfUser = (target: {

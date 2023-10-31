@@ -1,10 +1,11 @@
-export enum messageTypes {
+export enum messageWays {
   SENT = 1,
   RECEIVED = 2,
 }
 
-export enum interTypes {
-  PRIVATE = 1,
+export enum messageTypes {
+  DEFAULT = 1,
+  INTRODUCTION = 2,
 }
 
 export enum groupTypes {

@@ -30,13 +30,6 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "components/layout.tsx",
-    "pages/api/socket.ts",
-    "pages/previndex.jsx",
-    "utils/providers/socket.provider.js",
-    "pages/messages.jsx",
-    "utils/enums.ts",
-    "pages/api/auth/[...nextauth].js"
   ],
   "exclude": [
     "node_modules"

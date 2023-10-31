@@ -6,6 +6,8 @@ import { IIntroductionProps, ILatestMessageProps } from '@/types';
 import Avatar from '@/components/avatar';
 import {
   getBriefContent,
+  getRelativeTime,
+  getTimeConverted,
   isImage,
   writeContentToClipboard,
 } from '@/utils/helpers';
@@ -118,7 +120,10 @@ const Introduction = (props: IIntroductionProps) => {
                 }
                 cardBodyLongContent={latest.content}
                 cardFooterContent={
-                  <Badge text={latest.createdOn} tooltip={latest.createdOn} />
+                  <Badge
+                    text={getTimeConverted(latest.createdOn)}
+                    tooltip={getRelativeTime(latest.createdOn)}
+                  />
                 }
                 cardClickEvent={() => onSelectGroupHandler(latest.groupId)}
               />

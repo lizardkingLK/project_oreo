@@ -1,5 +1,5 @@
 import { IMessageDataProps } from './../types/index';
-import { quickMessages, tableNames } from '@/utils/enums';
+import { messageTypes, quickMessages, tableNames } from '@/utils/enums';
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -24,13 +24,12 @@ export const registerRealtime = (
     .subscribe();
 };
 
+// presence
 export const enum presenceEventTypes {
   sync = 'sync',
   join = 'join',
   leave = 'leave',
 }
-
-// presence
 export const registerPresence = (
   userId: string,
   roomNames: string[],
@@ -38,16 +37,7 @@ export const registerPresence = (
 ) => {
   roomNames?.forEach((name) => {
     const room = supabaseClient.channel(name);
-
     room
-      .on('presence', { event: presenceEventTypes.sync }, () => {
-        const newState = room.presenceState();
-        handlePresence({
-          event: presenceEventTypes.sync,
-          states: newState,
-          key: null,
-        });
-      })
       .on(
         'presence',
         { event: presenceEventTypes.join },
@@ -125,6 +115,7 @@ export const supabaseUtil = {
           ],
           content: quickMessages.hi,
           timestamp: new Date().getTime(),
+          messageType: messageTypes.INTRODUCTION,
         },
       ])
       .select();

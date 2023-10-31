@@ -2,7 +2,7 @@ import {
   actions,
   elementType,
   groupTypes,
-  messageTypes,
+  messageWays,
   sections,
 } from '@/utils/enums';
 
@@ -61,7 +61,7 @@ export interface IReadByDataProps {
 export interface IMessageProps {
   id: string;
   referenceId: string | null;
-  type: messageTypes | number | undefined;
+  type: messageWays | number | undefined;
   content: any;
   createdOn: any;
   groupId: any;

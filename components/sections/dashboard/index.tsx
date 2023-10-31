@@ -139,8 +139,8 @@ const Dashboard = (props: IDashboardProps) => {
                 cardBodyLongContent={latest.content}
                 cardFooterContent={
                   <Badge
-                    text={getRelativeTime(latest.createdOn)}
-                    tooltip={getTimeConverted(latest.createdOn)}
+                    text={getTimeConverted(latest.createdOn)}
+                    tooltip={getRelativeTime(latest.createdOn)}
                   />
                 }
                 cardClickEvent={() =>

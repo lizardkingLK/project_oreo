@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import Avatar from '@/components/avatar';
 import { IMessageLinkProps } from '@/types';
-import { getBriefContent, getRelativeTime, getTimeConverted, isImage } from '@/utils/helpers';
+import {
+  getBriefContent,
+  getRelativeTime,
+  getTimeConverted,
+  isImage,
+} from '@/utils/helpers';
 import { strings } from '@/utils/enums';
 import GroupMenu from '@/components/menus/group';
 
@@ -108,18 +113,19 @@ const MessageLink = (props: IMessageLinkProps) => {
                 </p>
               </div>
               <div className="basis-1/4 flex flex-col justify-between items-end">
-                {messageUnread ? (
-                  <p className="mx-2 w-6 h-6 text-xs bg-green-300 text-black font-bold flex justify-center items-center rounded-full">
-                    {messageUnread}
-                  </p>
-                ) : (
-                  <p
-                    className="mx-2 text-xs md:text-md text-black font-bold"
-                    title={getRelativeTime(messageTime)}
-                  >
-                    {getTimeConverted(messageTime)}
-                  </p>
-                )}
+                {messageTime &&
+                  (messageUnread ? (
+                    <p className="mx-2 w-6 h-6 text-xs bg-green-300 text-black font-bold flex justify-center items-center rounded-full">
+                      {messageUnread}
+                    </p>
+                  ) : (
+                    <p
+                      className="mx-2 text-xs md:text-md text-black font-bold"
+                      title={getRelativeTime(messageTime)}
+                    >
+                      {getTimeConverted(messageTime)}
+                    </p>
+                  ))}
               </div>
             </div>
           </button>
