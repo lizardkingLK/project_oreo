@@ -24,13 +24,12 @@ export const registerRealtime = (
     .subscribe();
 };
 
+// presence
 export const enum presenceEventTypes {
   sync = 'sync',
   join = 'join',
   leave = 'leave',
 }
-
-// presence
 export const registerPresence = (
   userId: string,
   roomNames: string[],
@@ -38,7 +37,6 @@ export const registerPresence = (
 ) => {
   roomNames?.forEach((name) => {
     const room = supabaseClient.channel(name);
-
     room
       .on(
         'presence',

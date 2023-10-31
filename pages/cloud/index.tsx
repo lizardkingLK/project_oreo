@@ -103,23 +103,25 @@ const Messages = () => {
 
   useEffect(() => {
     if (userId) {
-      getGroups(userId).then((groups) => {
-        if (groups.length > 0) {
-          // initializePresence(
-          //   userId,
-          //   new Set(
-          //     groups.map((message: { groupId: string }) => message.groupId)
-          //   )
-          // );
-          groupMessages(groups, userId);
-          setSection(sections.home);
-        } else {
-          setSection(sections.introduction);
-        }
-      });
-      initializeSocket().then(() => socket?.emit('identity', userId));
-      initializeRealtime();
-
+      getGroups(userId)
+        .then((groups) => {
+          if (groups.length > 0) {
+            initializePresence(
+              userId,
+              new Set(
+                groups.map((message: { groupId: string }) => message.groupId)
+              )
+            );
+            groupMessages(groups, userId);
+            setSection(sections.home);
+          } else {
+            setSection(sections.introduction);
+          }
+        })
+        .then(() => {
+          // initializeSocket().then(() => socket?.emit('identity', userId));
+          initializeRealtime();
+        });
       return () => {
         socket?.close();
         realtime.unsubscribe();

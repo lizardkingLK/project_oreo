@@ -94,16 +94,18 @@ const Messages = () => {
 
   useEffect(() => {
     if (userId) {
-      getGroups(userId).then((data) => {
-        if (data.length > 0) {
-          groupMessages(data, userId);
-          setSection(sections.home);
-        } else {
-          setSection(sections.introduction);
-        }
-      });
-      initializeSocket().then(() => socket?.emit('identity', userId));
-
+      getGroups(userId)
+        .then((data) => {
+          if (data.length > 0) {
+            groupMessages(data, userId);
+            setSection(sections.home);
+          } else {
+            setSection(sections.introduction);
+          }
+        })
+        .then(() => {
+          initializeSocket().then(() => socket?.emit('identity', userId));
+        });
       return () => {
         socket?.close();
       };
@@ -260,7 +262,7 @@ const Messages = () => {
           referenceId: friend.referenceId,
           type: getMessageType(friend.userId, userId),
           content: friend.content,
-          createdOn: getTimeConverted(friend.timestamp),
+          createdOn: friend.timestamp,
           groupId: friend.groupId,
           status: friend.status,
           fromId: friend.createdFor[0].id,
@@ -706,7 +708,7 @@ const Messages = () => {
       referenceId: messageData.referenceId,
       type: getMessageType(messageData.userId, userId),
       content: messageData.content,
-      createdOn: getTimeConverted(messageData.timestamp),
+      createdOn: messageData.timestamp,
       groupId: messageData.groupId,
       status: messageData.status,
       fromId: messageData.createdFor[0].id,
