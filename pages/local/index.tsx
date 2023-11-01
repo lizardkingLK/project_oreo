@@ -528,7 +528,7 @@ const Messages = () => {
     newMessage: IMessageProps,
     isforwardModal: boolean = false
   ) => {
-    if (newMessage?.content && socket) {
+    if (newMessage?.content) {
       const tempGroup: IGroupProps = isforwardModal
           ? groups?.find((g) => g.id === newMessage.groupId)
           : group,
@@ -550,9 +550,7 @@ const Messages = () => {
       if (textInputRef?.current) {
         textInputRef.current.focus();
       }
-
       socket?.emit('new-message', newMessage);
-
       if (!isforwardModal) {
         const tempGroupIndex = groups.findIndex((g) => g.id === group.id);
         groups.splice(tempGroupIndex, 1);
