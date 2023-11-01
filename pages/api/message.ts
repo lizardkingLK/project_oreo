@@ -9,15 +9,39 @@ export default async function handler(
   res: NextApiResponse<object>
 ) {
   if (req.method === 'POST') {
-    const createdFor = req.body,
-      messageData = await getUsersCombined([{ createdFor }]);
+    const { action } = req.body;
 
-    if (!messageData) {
-      res.status(500).json({ error: 'Bad parameters' });
+    if (action === restContext.getUsersMerged) {
+      const { createdFor } = req.body,
+        messageData = await getUsersCombined([{ createdFor }]);
+
+      if (!messageData) {
+        res.status(500).json({ error: 'Bad parameters' });
+        return;
+      }
+
+      res.status(200).json(messageData[0].createdFor);
+    } else if (action === restContext.createMessage) {
+      const { message } = req.body,
+        { toId, fromId, groupId, referenceId, content, readBy } = message;
+
+      const { data, error } = await supabaseUtil.createMessage(
+        referenceId,
+        fromId,
+        groupId,
+        toId,
+        content,
+        readBy
+      );
+
+      if (error) {
+        res.status(500).json({ error: 'Bad parameters' });
+        return;
+      }
+
+      res.status(201).json({ data });
       return;
     }
-
-    res.status(200).json(messageData[0].createdFor);
   } else if (req.method === 'DELETE') {
     const { referenceId, groupId } = req.query;
     const { error } = await supabaseUtil.deleteMessages(referenceId);
@@ -67,11 +91,11 @@ export default async function handler(
         return;
       }
     } else if (context === restContext.updateMessage) {
-      const { referenceId, content } = req.body;
-      const { error } = await supabaseUtil.updateMessageContent(
-        referenceId,
-        content
-      );
+      const { referenceId, content } = req.body,
+        { error } = await supabaseUtil.updateMessageContent(
+          referenceId,
+          content
+        );
 
       if (error) {
         res.status(500).json({ error: 'Internal error' });

@@ -40,6 +40,7 @@ import LayoutSwitch from '@/components/layout';
 import Spinner from '@/components/svgs/spinner';
 import SectionSwitch from '@/components/sections';
 import {
+  createMessage,
   createSocket,
   deleteMessage,
   getGroups,
@@ -166,7 +167,7 @@ const Messages = () => {
             type: messageWays.RECEIVED,
             content: output.content,
             fromId: output.fromId,
-            createdOn: output.createdOn,
+            createdOn: output.timestamp,
             groupId: tempGroup.id,
             status: true,
             toId: output.toId,
@@ -351,7 +352,7 @@ const Messages = () => {
             setFriend(Object.assign(body, { createdFor: data }));
           });
         } else if (body?.messageType === messageTypes.DEFAULT) {
-          console.log('new message (inserted)', payload);
+          setOutput(body);
         }
       } else if (eventType === eventTypes.update) {
         console.log('updated', payload);
@@ -591,7 +592,7 @@ const Messages = () => {
     newMessage: IMessageProps,
     isForward: boolean = false
   ) => {
-    if (newMessage?.content && socket) {
+    if (newMessage?.content) {
       const tempGroup: IGroupProps = isForward
           ? groups?.find((g) => g.id === newMessage.groupId)
           : group,
@@ -613,9 +614,16 @@ const Messages = () => {
       if (textInputRef?.current) {
         textInputRef.current.focus();
       }
-
-      socket?.emit('new-message', newMessage);
-
+      (async () => {
+        await createMessage(
+          Object.assign(newMessage, {
+            readBy: [
+              { id: newMessage.toId, value: false },
+              { id: newMessage.fromId, value: true },
+            ],
+          })
+        );
+      })();
       if (!isForward) {
         const tempGroupIndex = groups.findIndex((g) => g.id === group.id);
         groups.splice(tempGroupIndex, 1);

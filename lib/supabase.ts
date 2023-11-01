@@ -14,6 +14,8 @@ export const registerRealtime = (
   tableName: string,
   handler: (payload: object) => void
 ) => {
+  console.log(tableName);
+
   return supabaseClient
     .channel(tableName)
     .on(
