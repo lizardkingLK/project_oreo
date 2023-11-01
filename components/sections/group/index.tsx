@@ -58,9 +58,11 @@ const Group = (props: IGroupSectionProps) => {
                 Online
               </h1>
             ) : (
-              <h1 className="text-sm md:text-md font-bold text-black">
-                {getRelativeTime(group.lastMessage?.createdOn)}
-              </h1>
+              group.lastMessage && (
+                <h1 className="text-sm md:text-md font-bold text-black">
+                  {getRelativeTime(group.lastMessage.createdOn)}
+                </h1>
+              )
             )}
           </div>
         </div>
