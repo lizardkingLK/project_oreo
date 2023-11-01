@@ -1,4 +1,4 @@
-import { IMessageDataProps } from '@/types';
+import { IMessageDataProps, IMessageProps } from '@/types';
 import { apiUrls, restContext } from './enums';
 
 export const getFeeds = async (userId: string) => {
@@ -58,6 +58,18 @@ export const markAsUnread = async (message: IMessageDataProps) => {
     .then((data) => data);
 };
 
+export const createMessage = async (message: IMessageProps) => {
+  return await fetch(apiUrls.message, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ action: restContext.createMessage, message }),
+  })
+    .then((response) => response.json())
+    .then((data) => data);
+};
+
 export const updateMessage = async (content: string, referenceId: string) => {
   return await fetch(apiUrls.message, {
     method: 'PUT',
@@ -93,7 +105,7 @@ export const getUsersMerged = async (createdFor: string[]) => {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(createdFor),
+    body: JSON.stringify({ action: restContext.getUsersMerged, createdFor }),
   })
     .then((response) => response.json())
     .then((data) => data);
