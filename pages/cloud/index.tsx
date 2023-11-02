@@ -73,7 +73,6 @@ const Messages = () => {
   const [section, setSection] = useState(sections.loading);
   const [input, setInput] = useState('');
   const [output, setOutput] = useState<any>(null);
-  const [active, setActive] = useState<any>(false);
   const [notifs, setNotifs] = useState<null | boolean | string>(null);
   const [messages, setMessages] = useState<IMessageProps[] | undefined>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -88,6 +87,9 @@ const Messages = () => {
   const [referenceId, setReferenceId] = useState<null | string>(null);
   const [context, setContext] = useState<actions>(actions.create);
 
+  // cconst [active, setActive] = useState<any>(false);
+  
+  const active = false;
   const textInputRef = useRef<null | HTMLInputElement>(null);
   const lastMessageRef = useRef<null | HTMLDivElement>(null);
 
