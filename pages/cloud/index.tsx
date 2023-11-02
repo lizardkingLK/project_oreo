@@ -121,7 +121,6 @@ const Messages = () => {
           }
         })
         .then(() => {
-          // initializeSocket().then(() => socket?.emit('identity', userId));
           initializeRealtime(userId);
         });
       return () => {
@@ -339,30 +338,6 @@ const Messages = () => {
     setAttachmentModal(false);
   };
 
-  const initializeRealtime = (userId: string | null | undefined) => {
-    const handleMessageEvents = (payload: any) => {
-      const { eventType } = payload;
-      if (eventType === eventTypes.insert) {
-        const { new: body } = payload;
-        if (body?.userId === userId) {
-          return;
-        }
-        if (body?.messageType === messageTypes.INTRODUCTION) {
-          getUsersMerged(body?.createdFor).then((data) => {
-            setFriend(Object.assign(body, { createdFor: data }));
-          });
-        } else if (body?.messageType === messageTypes.DEFAULT) {
-          setOutput(body);
-        }
-      } else if (eventType === eventTypes.update) {
-        console.log('updated', payload);
-      } else if (eventType === eventTypes.delete) {
-        console.log('deleted', payload);
-      }
-    };
-    realtime = registerRealtime(tableNames.message, handleMessageEvents);
-  };
-
   const initializePresence = (userId: string, groupIds: Set<string>) => {
     const handlePresence = (presence: {
       event: string;
@@ -383,6 +358,38 @@ const Messages = () => {
       }
     };
     registerPresence(userId, Array.from(groupIds), handlePresence);
+  };
+
+  const initializeRealtime = (userId: string | null | undefined) => {
+    const handleMessageEvents = (payload: any) => {
+      const { eventType } = payload;
+      if (eventType === eventTypes.insert) {
+        const { new: body } = payload;
+        if (body?.userId === userId) {
+          return;
+        }
+        if (body?.messageType === messageTypes.INTRODUCTION) {
+          getUsersMerged(body?.createdFor).then((data) => {
+            setFriend(Object.assign(body, { createdFor: data }));
+          });
+        } else if (body?.messageType === messageTypes.DEFAULT) {
+          setOutput(body);
+        }
+      } else if (eventType === eventTypes.update) {
+        const { new: body } = payload;
+        if (body?.userId === userId) {
+          return;
+        }
+        setUpdated({
+          referenceId: body?.referenceId,
+          groupId: body?.groupId,
+          input: body?.content,
+        });
+      } else if (eventType === eventTypes.delete) {
+        console.log('deleted', payload);
+      }
+    };
+    realtime = registerRealtime(tableNames.message, handleMessageEvents);
   };
 
   const initializeSocket = async () => {
@@ -655,11 +662,6 @@ const Messages = () => {
       setReferenceId(null);
       setInput('');
       setContext(actions.create);
-      socket?.emit('update-message', {
-        referenceId,
-        groupId: group?.id,
-        input,
-      });
     });
   };
 
