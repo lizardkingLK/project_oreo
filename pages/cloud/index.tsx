@@ -379,7 +379,7 @@ const Messages = () => {
         const { new: body } = payload;
         if (body?.userId === userId) {
           return;
-        
+        }
         setUpdated({
           referenceId: body?.referenceId,
           groupId: body?.groupId,
