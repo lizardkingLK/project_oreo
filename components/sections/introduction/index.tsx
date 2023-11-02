@@ -29,7 +29,7 @@ const Introduction = (props: IIntroductionProps) => {
         );
       return group && message
         ? Object.assign(message, {
-            displayImage: group?.displayImage!,
+            displayImage: group?.displayImage,
             groupName: group?.name!,
           })
         : null;
@@ -38,7 +38,6 @@ const Introduction = (props: IIntroductionProps) => {
 
   if (props) {
     const { user, setSection, onSelectGroupHandler } = props;
-
     return (
       <SectionLayout>
         <div className="p-4">

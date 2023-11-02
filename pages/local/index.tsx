@@ -28,9 +28,9 @@ import {
   getMessageType,
   getNameOfUser,
   getRandomNumber,
-  getTimeConverted,
   isLocalStorage,
   openImageInNewTab,
+  resolveValue,
   writeContentToClipboard,
 } from '@/utils/helpers';
 
@@ -53,8 +53,9 @@ import { EmojiClickData } from 'emoji-picker-react';
 
 let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 
+const storeLocally = isLocalStorage();
+
 const Messages = () => {
-  const [storeLocally] = useState(isLocalStorage());
   const [navbar, setNavbar] = useState(false);
   const [groups, setGroups] = useState<IGroupProps[]>([]);
   const [group, setGroup] = useState<any>(null);
@@ -189,64 +190,69 @@ const Messages = () => {
   }, [online, groups, userId]);
 
   useEffect(() => {
-    if (deleted) {
-      let tempMessages, deletedMessage: IMessageProps | undefined;
-      const { referenceId, groupId } = deleted,
-        tempGroups = groups;
-      tempGroups.forEach((g) => {
-        if (g?.id === groupId) {
-          deletedMessage = g?.messages?.find(
-            (m) => m.referenceId === referenceId
-          );
-          if (
-            g.unreadCount > 0 &&
-            deletedMessage?.readBy.find((rb) => rb.id === userId && !rb.value)
-          ) {
-            g.unreadCount = g.unreadCount - 1;
-          }
-          tempMessages = g?.messages?.filter(
-            (m) => m.referenceId !== referenceId
-          );
-          g.messages = tempMessages;
-          g.lastMessage =
-            tempMessages.length === 0
-              ? null
-              : tempMessages[tempMessages.length - 1];
-        }
-      });
-      setGroups(tempGroups);
-      if (group?.id === groupId) {
-        setMessages(tempMessages);
-      }
-      setDeleted(null);
+    if (!deleted) {
+      return;
     }
+    let tempMessages, deletedMessage: IMessageProps | undefined;
+    const { referenceId, groupId } = deleted,
+      tempGroups = groups;
+    tempGroups.forEach((g) => {
+      if (g?.id === groupId) {
+        deletedMessage = g?.messages?.find(
+          (m) => m.referenceId === referenceId
+        );
+        g.unreadCount = resolveValue(
+          g.unreadCount > 0 &&
+            deletedMessage?.readBy.find((rb) => rb.id === userId && !rb.value),
+          g.unreadCount - 1,
+          g.unreadCount
+        );
+        tempMessages = g?.messages?.filter(
+          (m) => m.referenceId !== referenceId
+        );
+        g.messages = tempMessages;
+        g.lastMessage = resolveValue(
+          tempMessages.length === 0,
+          null,
+          tempMessages[tempMessages.length - 1]
+        );
+      }
+    });
+    setGroups(tempGroups);
+    if (group?.id === groupId) {
+      setMessages(tempMessages);
+    }
+    setDeleted(null);
   }, [deleted, groups, group, userId]);
 
   useEffect(() => {
-    if (updated) {
-      const { groupId, input, referenceId } = updated;
-      let tempMessages;
-      const tempGroups = groups;
-      tempGroups.forEach((g) => {
-        if (g?.id === groupId) {
-          tempMessages = g?.messages;
-          tempMessages.forEach((m) => {
-            if (m.referenceId === referenceId) {
-              m.content = input;
-              if (g.lastMessage?.referenceId === referenceId) {
-                g.lastMessage = m;
-              }
-            }
-          });
-          g.messages = tempMessages;
-        }
-      });
-      setGroups(tempGroups);
-      if (group?.id === groupId) {
-        setMessages(tempMessages);
-      }
-      setUpdated(null);
+    if (!updated) {
+      return;
     }
+    const { groupId, input, referenceId } = updated,
+      tempGroups = groups;
+    let tempMessages;
+    tempGroups.forEach((g) => {
+      if (g?.id === groupId) {
+        tempMessages = g?.messages;
+        tempMessages.forEach((m) => {
+          if (m.referenceId === referenceId) {
+            m.content = input;
+            g.lastMessage = resolveValue(
+              g.lastMessage?.referenceId === referenceId,
+              m,
+              g.lastMessage
+            );
+          }
+        });
+        g.messages = tempMessages;
+      }
+    });
+    setGroups(tempGroups);
+    if (group?.id === groupId) {
+      setMessages(tempMessages);
+    }
+    setUpdated(null);
   }, [updated, groups, group, userId]);
 
   useEffect(() => {
@@ -438,7 +444,6 @@ const Messages = () => {
       target: ICreatedForDataProps,
       unreadCount: number,
       hasRead;
-
     messages?.forEach((message: IMessageDataProps, _: any) => {
       groupId = message.groupId;
       Object.assign(message, {
@@ -455,9 +460,13 @@ const Messages = () => {
         }
         if (groups.has(groupId)) {
           group = groups.get(groupId);
-          unreadCount = hasRead ? group.unreadCount : group.unreadCount + 1;
+          unreadCount = resolveValue(
+            hasRead,
+            group.unreadCount,
+            group.unreadCount + 1
+          );
         } else {
-          unreadCount = hasRead ? 0 : 1;
+          unreadCount = resolveValue(hasRead, 0, 1);
         }
       }
       // if public set group details. then ->

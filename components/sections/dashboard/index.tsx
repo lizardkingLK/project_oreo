@@ -3,7 +3,7 @@ import SectionLayout from '../layout';
 import SummaryCard from '@/components/cards/summary';
 import { cardBodyTypes, elementType } from '@/utils/enums';
 import Avatar from '@/components/avatar';
-import { IDashboardProps, IGroupProps, ILatestMessageProps } from '@/types';
+import { IDashboardProps, ILatestMessageProps } from '@/types';
 import {
   formatCompactNumber,
   getBriefContent,
@@ -15,8 +15,6 @@ import Badge from '@/components/badge';
 import Groups from '@/components/svgs/groups';
 
 const Dashboard = (props: IDashboardProps) => {
-  const [groups] = useState<IGroupProps[] | null>(props.groups);
-  const [user] = useState<any>(props.user);
   const [unread, setUnread] = useState<number | null>(null);
   const [friends, setFriends] = useState<number | null>(null);
   const [online, setOnline] = useState<number | null>(null);
@@ -29,17 +27,14 @@ const Dashboard = (props: IDashboardProps) => {
         .reduce((ucA, ucB) => ucA + ucB, 0);
       return unread === 0 ? null : unread;
     });
-
     setFriends(() => {
       const friends = props?.groups?.filter((g) => Boolean(g.targetId));
       return friends?.length === 0 ? null : friends.length;
     });
-
     setOnline(() => {
       const online = props?.groups?.filter((g) => g.isOnline === true);
       return online?.length === 0 ? null : online.length;
     });
-
     setLatest(() => {
       const message = props?.groups
           ?.map((g) => g.lastMessage)
@@ -52,7 +47,7 @@ const Dashboard = (props: IDashboardProps) => {
         );
       return group && message
         ? Object.assign(message, {
-            displayImage: group?.displayImage!,
+            displayImage: group?.displayImage,
             groupName: group?.name!,
           })
         : null;
@@ -60,9 +55,10 @@ const Dashboard = (props: IDashboardProps) => {
   }, [props]);
 
   if (props) {
-    const name = user?.firstName ?? user?.username,
+    const groups = props.groups,
+      user = props.user,
+      name = user?.firstName ?? user?.username,
       gridCols = online || unread ? 3 : 2;
-
     return (
       <SectionLayout>
         <div className="p-4">
@@ -74,7 +70,7 @@ const Dashboard = (props: IDashboardProps) => {
           <div
             className={`pt-4 grid grid-flow-row-dense grid-cols-${gridCols} grid-rows-3 gap-2`}
           >
-            {groups && (
+            {props.groups && (
               <SummaryCard
                 cardType={elementType.button}
                 cardStyle={

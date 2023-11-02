@@ -37,7 +37,7 @@ const GroupMenu = (props: IGroupMenuProps) => {
               </button>
             </li>
             <li className="mr-6">
-              {requireOptions && options && (
+              {requireOptions && (
                 <button
                   className="flex h-min text-black font-black"
                   title="Close Group Options"

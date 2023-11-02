@@ -6,7 +6,7 @@ import MessageMenu from '@/components/menus/message';
 import Close from '@/components/svgs/close';
 import { isImage } from '@/utils/helpers';
 
-export default function MessageCard(props: IMessageCardProps) {
+export default function MessageCard(props: Readonly<IMessageCardProps>) {
   const [options, setOptions] = useState(false);
 
   const { currentMenuId, setCurrentMenuId, referenceId } = props;

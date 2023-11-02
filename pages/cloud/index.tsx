@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useAuth, useUser } from '@clerk/nextjs';
 
-import io, { Socket } from 'socket.io-client';
+import { Socket } from 'socket.io-client';
 import { DefaultEventsMap } from '@socket.io/component-emitter';
 
 import {
@@ -33,6 +33,7 @@ import {
   getRandomNumber,
   isLocalStorage,
   openImageInNewTab,
+  resolveValue,
   writeContentToClipboard,
 } from '@/utils/helpers';
 
@@ -41,7 +42,6 @@ import Spinner from '@/components/svgs/spinner';
 import SectionSwitch from '@/components/sections';
 import {
   createMessage,
-  createSocket,
   deleteMessage,
   getGroups,
   getUsersMerged,
@@ -64,8 +64,9 @@ import { EmojiClickData } from 'emoji-picker-react';
 let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 let realtime: RealtimeChannel;
 
+const storeLocally = isLocalStorage();
+
 const Messages = () => {
-  const [storeLocally] = useState(isLocalStorage());
   const [navbar, setNavbar] = useState(false);
   const [groups, setGroups] = useState<IGroupProps[]>([]);
   const [group, setGroup] = useState<any>(null);
@@ -79,7 +80,6 @@ const Messages = () => {
   const [updated, setUpdated] = useState<null | IUpdatedMessageProps>(null);
   const [deleted, setDeleted] = useState<null | IDeletedMessageProps>(null);
   const [friend, setFriend] = useState<null | IMessageDataProps>(null);
-  const [rooms, setRooms] = useState<boolean>(false);
   const [online, setOnline] = useState<null | IUserOnlineProps>(null);
   const [unread, setUnread] = useState<null | number>(null);
   const [forwardModal, setForwardModal] = useState(false);
@@ -206,64 +206,69 @@ const Messages = () => {
   }, [online, groups, userId]);
 
   useEffect(() => {
-    if (deleted) {
-      let tempMessages, deletedMessage: IMessageProps | undefined;
-      const { referenceId, groupId } = deleted,
-        tempGroups = groups;
-      tempGroups.forEach((g) => {
-        if (g?.id === groupId) {
-          deletedMessage = g?.messages?.find(
-            (m) => m.referenceId === referenceId
-          );
-          if (
-            g.unreadCount > 0 &&
-            deletedMessage?.readBy.find((rb) => rb.id === userId && !rb.value)
-          ) {
-            g.unreadCount = g.unreadCount - 1;
-          }
-          tempMessages = g?.messages?.filter(
-            (m) => m.referenceId !== referenceId
-          );
-          g.messages = tempMessages;
-          g.lastMessage =
-            tempMessages.length === 0
-              ? null
-              : tempMessages[tempMessages.length - 1];
-        }
-      });
-      setGroups(tempGroups);
-      if (group?.id === groupId) {
-        setMessages(tempMessages);
-      }
-      setDeleted(null);
+    if (!deleted) {
+      return;
     }
+    let tempMessages, deletedMessage: IMessageProps | undefined;
+    const { referenceId, groupId } = deleted,
+      tempGroups = groups;
+    tempGroups.forEach((g) => {
+      if (g?.id === groupId) {
+        deletedMessage = g?.messages?.find(
+          (m) => m.referenceId === referenceId
+        );
+        g.unreadCount = resolveValue(
+          g.unreadCount > 0 &&
+            deletedMessage?.readBy.find((rb) => rb.id === userId && !rb.value),
+          g.unreadCount - 1,
+          g.unreadCount
+        );
+        tempMessages = g?.messages?.filter(
+          (m) => m.referenceId !== referenceId
+        );
+        g.messages = tempMessages;
+        g.lastMessage = resolveValue(
+          tempMessages.length === 0,
+          null,
+          tempMessages[tempMessages.length - 1]
+        );
+      }
+    });
+    setGroups(tempGroups);
+    if (group?.id === groupId) {
+      setMessages(tempMessages);
+    }
+    setDeleted(null);
   }, [deleted, groups, group, userId]);
 
   useEffect(() => {
-    if (updated) {
-      const { groupId, input, referenceId } = updated;
-      let tempMessages;
-      const tempGroups = groups;
-      tempGroups.forEach((g) => {
-        if (g?.id === groupId) {
-          tempMessages = g?.messages;
-          tempMessages.forEach((m) => {
-            if (m.referenceId === referenceId) {
-              m.content = input;
-              if (g.lastMessage?.referenceId === referenceId) {
-                g.lastMessage = m;
-              }
-            }
-          });
-          g.messages = tempMessages;
-        }
-      });
-      setGroups(tempGroups);
-      if (group?.id === groupId) {
-        setMessages(tempMessages);
-      }
-      setUpdated(null);
+    if (!updated) {
+      return;
     }
+    const { groupId, input, referenceId } = updated,
+      tempGroups = groups;
+    let tempMessages;
+    tempGroups.forEach((g) => {
+      if (g?.id === groupId) {
+        tempMessages = g?.messages;
+        tempMessages.forEach((m) => {
+          if (m.referenceId === referenceId) {
+            m.content = input;
+            g.lastMessage = resolveValue(
+              g.lastMessage?.referenceId === referenceId,
+              m,
+              g.lastMessage
+            );
+          }
+        });
+        g.messages = tempMessages;
+      }
+    });
+    setGroups(tempGroups);
+    if (group?.id === groupId) {
+      setMessages(tempMessages);
+    }
+    setUpdated(null);
   }, [updated, groups, group, userId]);
 
   useEffect(() => {
@@ -305,15 +310,6 @@ const Messages = () => {
       }
     }
   }, [friend, groups, userId]);
-
-  useEffect(() => {
-    if (userId && socket) {
-      socket?.emit('set-rooms', {
-        userId,
-        groupIds: groups.map((g) => g.id),
-      });
-    }
-  }, [rooms, groups, userId]);
 
   const handleReadUnread = async (groupId: string, isUnread: boolean) => {
     const tempGroup: any = groups.find((g) => g.id === groupId);
@@ -386,46 +382,13 @@ const Messages = () => {
           input: body?.content,
         });
       } else if (eventType === eventTypes.delete) {
+        const { old: body } = payload,
+          { id } = body;
         console.log('deleted', payload);
+        //TODO: set status change only as an update. fully delete later
       }
     };
     realtime = registerRealtime(tableNames.message, handleMessageEvents);
-  };
-
-  const initializeSocket = async () => {
-    createSocket();
-
-    socket = io();
-
-    socket.on('connect', () => console.log('connected'));
-
-    socket.on('new-message', (msg) => {
-      setOutput(msg);
-    });
-
-    socket.on('is-active', (active) => {
-      setActive(active);
-    });
-
-    socket.on('delete-message', (msg) => {
-      setDeleted(msg);
-    });
-
-    socket.on('update-message', (msg) => {
-      setUpdated(msg);
-    });
-
-    socket.on('new-friend', (msg) => {
-      setFriend(msg);
-    });
-
-    socket.on('set-rooms', () => {
-      setRooms(true);
-    });
-
-    socket.on('set-online', (user) => {
-      setOnline(user);
-    });
   };
 
   const onCopyHandler = (referenceId: string) => {
@@ -497,7 +460,6 @@ const Messages = () => {
       setLoading(false);
       setGroups(tempGroups);
       setMessages(tempMessages);
-      socket?.emit('delete-message', { referenceId, groupId: group.id });
     });
   };
 
@@ -509,7 +471,6 @@ const Messages = () => {
       target: ICreatedForDataProps,
       unreadCount: number,
       hasRead;
-
     messages?.forEach((message: IMessageDataProps, _: any) => {
       groupId = message.groupId;
       Object.assign(message, {
@@ -526,9 +487,13 @@ const Messages = () => {
         }
         if (groups.has(groupId)) {
           group = groups.get(groupId);
-          unreadCount = hasRead ? group.unreadCount : group.unreadCount + 1;
+          unreadCount = resolveValue(
+            hasRead,
+            group.unreadCount,
+            group.unreadCount + 1
+          );
         } else {
-          unreadCount = hasRead ? 0 : 1;
+          unreadCount = resolveValue(hasRead, 0, 1);
         }
       }
       // if public set group details. then ->

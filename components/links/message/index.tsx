@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import Avatar from '@/components/avatar';
 import { IMessageLinkProps } from '@/types';
 import {
+  classNames,
   getBriefContent,
   getRelativeTime,
   getTimeConverted,
   isImage,
+  resolveValue,
 } from '@/utils/helpers';
 import { strings } from '@/utils/enums';
 import GroupMenu from '@/components/menus/group';
@@ -68,9 +70,10 @@ const MessageLink = (props: IMessageLinkProps) => {
             onDoubleClick={handleOpenGroupOptions}
           >
             <div
-              className={`flex justify-center items-start py-4 rounded-xl ${
-                messageIsActive ? 'bg-stone-300' : null
-              }`}
+              className={classNames(
+                'flex justify-center items-start py-4 rounded-xl',
+                resolveValue(messageIsActive, 'bg-stone-300', null)
+              )}
             >
               <Avatar
                 name={messageAuthorName!}
@@ -81,11 +84,14 @@ const MessageLink = (props: IMessageLinkProps) => {
               />
               <div className="basis-2/4 ml-4 font-normal truncate">
                 <h1
-                  className={`${
-                    messageIsActive
-                      ? 'bg-black text-white delay-75'
-                      : 'text-black'
-                  } text-md md:text-xl truncate max-w-xs text-left`}
+                  className={classNames(
+                    'text-md md:text-xl truncate max-w-xs text-left',
+                    resolveValue(
+                      messageIsActive,
+                      'bg-black text-white delay-75',
+                      'text-black'
+                    )
+                  )}
                 >
                   {messageAuthorName}
                 </h1>
@@ -94,18 +100,24 @@ const MessageLink = (props: IMessageLinkProps) => {
                     'text-sm md:text-md text-stone-700 truncate max-w-xs text-left'
                   }
                 >
-                  {active?.groupId === messageId && active?.value ? (
+                  {resolveValue(
+                    active?.groupId === messageId && active?.value,
                     <span className="text-green-500 font-bold animate-pulse">
                       typing...
-                    </span>
-                  ) : (
+                    </span>,
                     <span
-                      className={
-                        messageContentIsActive
-                          ? 'text-green-500 font-bold '
-                          : ''
-                      }
-                      title={isImage(messageContent) ? 'Image' : messageContent}
+                      className={classNames(
+                        resolveValue(
+                          messageContentIsActive,
+                          'text-green-500 font-bold',
+                          ''
+                        )
+                      )}
+                      title={resolveValue(
+                        isImage(messageContent),
+                        'Image',
+                        messageContent
+                      )}
                     >
                       {getBriefContent(messageContent)}
                     </span>
@@ -114,18 +126,18 @@ const MessageLink = (props: IMessageLinkProps) => {
               </div>
               <div className="basis-1/4 flex flex-col justify-between items-end">
                 {messageTime &&
-                  (messageUnread ? (
+                  resolveValue(
+                    messageUnread,
                     <p className="mx-2 w-6 h-6 text-xs bg-green-300 text-black font-bold flex justify-center items-center rounded-full">
                       {messageUnread}
-                    </p>
-                  ) : (
+                    </p>,
                     <p
                       className="mx-2 text-xs md:text-md text-black font-bold"
                       title={getRelativeTime(messageTime)}
                     >
                       {getTimeConverted(messageTime)}
                     </p>
-                  ))}
+                  )}
               </div>
             </div>
           </button>

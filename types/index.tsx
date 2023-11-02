@@ -444,3 +444,9 @@ export interface IUIProps {
   iconSize: number;
   iconPadding: number;
 }
+
+export interface IModalProps {
+  modal: boolean;
+  handleClose: () => void;
+  options?: any;
+}
