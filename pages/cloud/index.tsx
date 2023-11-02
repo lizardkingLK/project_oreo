@@ -87,7 +87,7 @@ const Messages = () => {
   const [referenceId, setReferenceId] = useState<null | string>(null);
   const [context, setContext] = useState<actions>(actions.create);
 
-  // cconst [active, setActive] = useState<any>(false);
+  // hook for active state from local/index.tsx is here. will be used later
   
   const active = false;
   const textInputRef = useRef<null | HTMLInputElement>(null);
@@ -384,10 +384,8 @@ const Messages = () => {
           input: body?.content,
         });
       } else if (eventType === eventTypes.delete) {
-        const { old: body } = payload,
-          { id } = body;
         console.log('deleted', payload);
-        //TODO: set status change only as an update. fully delete later
+        //set status change only as an update. fully delete later. const { old: body } = payload, { id } = body;
       }
     };
     realtime = registerRealtime(tableNames.message, handleMessageEvents);
