@@ -668,8 +668,6 @@ const Messages = () => {
   }, [updated, groups, group, userId]);
 
   useEffect(() => {
-    console.log(friend);
-
     if (!friend) {
       return;
     }
