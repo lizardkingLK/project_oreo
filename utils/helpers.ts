@@ -54,7 +54,7 @@ export const getBriefContent = (content: string) => {
 };
 
 export const isLocalStorage = () => {
-  return process.env.NEXT_PUBLIC_STORAGE === strings.local;
+  return process.env.NEXT_PUBLIC_STORING === strings.local;
 };
 
 export const getRandomNumber = () => {
@@ -78,6 +78,18 @@ export const getNameOfUser = (target: {
     : target.username;
 };
 
+export const resolveValue = (check: any, tVal: any, fVal: any) => {
+  return check ? tVal : fVal;
+};
+
+export const classNames = (...classes: any) => {
+  return classes.filter(Boolean).join(' ');
+};
+
 export const getMessagingMethod = () => {
   return process.env.NEXT_PUBLIC_MESSAGING;
+};
+
+export const getStoringMethod = () => {
+  return process.env.NEXT_PUBLIC_STORING;
 };

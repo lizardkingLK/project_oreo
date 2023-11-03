@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { IAvatarProps } from '@/types';
 
@@ -7,29 +7,27 @@ const Avatar = (props: IAvatarProps) => {
   if (props) {
     const { isStatus, isOnline, size, imagePath, name } = props;
     return (
-      <Fragment>
-        <div
-          className={`flex justify-center items-center flex-wrap rounded-full
+      <div
+        className={`flex justify-center items-center flex-wrap rounded-full
         ${loading ? 'blur-xl' : 'blur-0'}
         ${isStatus ? 'p-1 border-2 border-stone-500' : ''}
         ${size === 50 ? 'w-10' : 'w-12'}`}
-        >
-          <Image
-            className="rounded-full"
-            width={size}
-            height={size}
-            src={imagePath ?? '/favicon.png'}
-            alt={name}
-            title={name}
-            priority={true}
-            blurDataURL={'/favicon.png'}
-            onLoadingComplete={() => setLoading(false)}
-          />
-          {isOnline ? (
-            <span className="top-0 left-9 absolute w-3.5 h-3.5 bg-green-500 border-2 border-white dark:border-stone-800 rounded-full"></span>
-          ) : null}
-        </div>
-      </Fragment>
+      >
+        <Image
+          className="rounded-full"
+          width={size}
+          height={size}
+          src={imagePath ?? '/favicon.png'}
+          alt={name}
+          title={name}
+          priority={true}
+          blurDataURL={'/favicon.png'}
+          onLoadingComplete={() => setLoading(false)}
+        />
+        {isOnline ? (
+          <span className="top-0 left-9 absolute w-3.5 h-3.5 bg-green-500 border-2 border-white dark:border-stone-800 rounded-full"></span>
+        ) : null}
+      </div>
     );
   } else return null;
 };

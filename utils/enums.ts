@@ -13,18 +13,6 @@ export enum groupTypes {
   PUBLIC = 2,
 }
 
-export enum apiUrls {
-  group = '/api/group',
-  feed = '/api/feed',
-  message = '/api/message',
-  socket = '/api/socket',
-  login = '/api/login',
-  file = '/api/file',
-  invitation = '/api/invitation',
-  user = '/api/user',
-  auth = '/api/auth',
-}
-
 export enum cardBodyTypes {
   NUMBER = 1,
   STRING = 2,
@@ -58,11 +46,11 @@ export enum resourcePaths {
 
 export enum sections {
   loading = 0,
-  introduction = 1,
-  home = 2,
-  addFriend = 3,
-  group = 4,
-  feeds = 5,
+  home = 1,
+  addFriend = 2,
+  group = 3,
+  feeds = 4,
+  introduction = 5,
 }
 
 export enum actions {
@@ -83,16 +71,9 @@ export enum elementType {
   div = 'div',
 }
 
-export enum messagingType {
+export enum strategyTypes {
   local = 'local',
   cloud = 'cloud',
-}
-
-export enum restContext {
-  updateRead = 1,
-  updateMessage = 2,
-  getUsersMerged = 3,
-  createMessage = 4,
 }
 
 export enum eventTypes {

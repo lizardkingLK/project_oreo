@@ -125,7 +125,7 @@ export interface IMessageLinkListProps {
   handleReadUnread: Function;
 }
 
-interface IActiveProps {
+export interface IActiveProps {
   value: boolean;
   groupId: string;
   name: string;
@@ -308,6 +308,7 @@ export interface IDashboardProps {
   user: any;
   notifs: NotificationType;
   onSelectGroupHandler: Function;
+  setSection: Function;
 }
 
 export interface IIntroductionProps {
@@ -443,4 +444,10 @@ export interface ISidebarProps {
 export interface IUIProps {
   iconSize: number;
   iconPadding: number;
+}
+
+export interface IModalProps {
+  modal: boolean;
+  handleClose: () => void;
+  options?: any;
 }

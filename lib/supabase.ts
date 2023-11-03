@@ -74,6 +74,7 @@ export const registerPresence = (
 };
 
 // utilities
+type IdType = string | string[] | undefined;
 export const supabaseUtil = {
   getPublicUrl(bucketName: string, filePath: string) {
     return supabaseClient.storage.from(bucketName).getPublicUrl(filePath);
@@ -120,20 +121,20 @@ export const supabaseUtil = {
       ])
       .select();
   },
-  async getMessages(userId: string | string[] | undefined) {
+  async getMessages(userId: IdType) {
     return await supabaseClient
       .from(tableNames.message)
       .select()
       .contains('createdFor', [userId])
       .order('createdAt', { ascending: true });
   },
-  async deleteMessages(referenceId: string | string[] | undefined) {
+  async deleteMessages(referenceId: IdType) {
     return await supabaseClient
       .from(tableNames.message)
       .delete()
       .eq('referenceId', referenceId);
   },
-  async getMessagesByGroupId(groupId: string | string[] | undefined) {
+  async getMessagesByGroupId(groupId: IdType) {
     return await supabaseClient
       .from(tableNames.message)
       .select()
@@ -145,10 +146,7 @@ export const supabaseUtil = {
       .update({ readBy: message.readBy })
       .eq('referenceId', message.referenceId);
   },
-  async updateMessageContent(
-    referenceId: string | string[] | undefined,
-    content: string
-  ) {
+  async updateMessageContent(referenceId: IdType, content: string) {
     return await supabaseClient
       .from(tableNames.message)
       .update({ content })
