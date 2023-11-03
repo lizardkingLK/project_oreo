@@ -46,11 +46,11 @@ export enum resourcePaths {
 
 export enum sections {
   loading = 0,
-  introduction = 1,
-  home = 2,
-  addFriend = 3,
-  group = 4,
-  feeds = 5,
+  home = 1,
+  addFriend = 2,
+  group = 3,
+  feeds = 4,
+  introduction = 5,
 }
 
 export enum actions {
@@ -71,7 +71,7 @@ export enum elementType {
   div = 'div',
 }
 
-export enum messagingType {
+export enum strategyTypes {
   local = 'local',
   cloud = 'cloud',
 }

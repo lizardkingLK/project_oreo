@@ -1,7 +1,7 @@
 import { supabaseUtil } from '@/lib/supabase';
 import { IMessageDataProps, PersistedSocket } from '@/types';
 import { Socket } from 'socket.io';
-import { DefaultEventsMap } from 'socket.io/dist/typed-events';
+import { DefaultEventsMap } from '@socket.io/component-emitter';
 
 const sockets: PersistedSocket[] = [];
 
@@ -99,6 +99,7 @@ export const handleNewMessage = async (
       { id: toId, value: isActive },
       { id: fromId, value: true },
     ];
+
   message = Object.assign(message, { readBy });
   const { error } = await supabaseUtil.createMessage(
     referenceId,
@@ -111,6 +112,7 @@ export const handleNewMessage = async (
   if (error) {
     return;
   }
+
   socket.to(groupId).emit('new-message', message);
 };
 

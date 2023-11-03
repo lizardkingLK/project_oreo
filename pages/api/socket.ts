@@ -13,7 +13,8 @@ import {
   handleNewMessage,
   handleSetRooms,
   handleUpdateMessage,
-} from '@/utils/socket';
+} from '@/utils/sockets';
+import { PersistedSocket } from '@/types';
 
 export const config = {
   api: {
@@ -42,6 +43,7 @@ const SocketHandler = (_req: any, res: NextApiResponseWithSocket) => {
     res.socket.server.io = io;
     io.on('connection', (socket) => {
       handleConnection(socket);
+
       socket
         .on('identity', (userId) => handleIdentity(socket, userId))
         .on('set-rooms', handleSetRooms)

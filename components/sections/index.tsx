@@ -77,6 +77,7 @@ const SectionSwitch = (props: ISectionSwitchProps) => {
             user={user}
             notifs={notifs}
             onSelectGroupHandler={onSelectGroupHandler}
+            setSection={setSection}
           />
         </div>
       );

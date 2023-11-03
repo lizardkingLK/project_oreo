@@ -1,6 +1,6 @@
 import { IMessageDataProps, IMessageProps } from '@/types';
 
-const apiUrls = {
+export const apiUrls = {
   group: '/api/group',
   feed: '/api/feed',
   message: {
@@ -131,5 +131,3 @@ export const saveFile = async (formData: FormData) => {
     .then((response) => response.json())
     .then((data) => data);
 };
-
-export const createSocket = async () => await fetch(apiUrls.socket);

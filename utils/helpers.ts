@@ -54,7 +54,7 @@ export const getBriefContent = (content: string) => {
 };
 
 export const isLocalStorage = () => {
-  return process.env.NEXT_PUBLIC_STORAGE === strings.local;
+  return process.env.NEXT_PUBLIC_STORING === strings.local;
 };
 
 export const getRandomNumber = () => {
@@ -88,4 +88,8 @@ export const classNames = (...classes: any) => {
 
 export const getMessagingMethod = () => {
   return process.env.NEXT_PUBLIC_MESSAGING;
+};
+
+export const getStoringMethod = () => {
+  return process.env.NEXT_PUBLIC_STORING;
 };
