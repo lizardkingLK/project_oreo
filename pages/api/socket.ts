@@ -14,7 +14,6 @@ import {
   handleSetRooms,
   handleUpdateMessage,
 } from '@/utils/sockets';
-import { PersistedSocket } from '@/types';
 
 export const config = {
   api: {
