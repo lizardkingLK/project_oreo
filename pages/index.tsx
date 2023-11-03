@@ -453,6 +453,7 @@ const Messages = () => {
     setGroups(tempGroups);
     setGroup(tempGroup);
     setMessages([message]);
+
     messaging?.emitMessage('new-friend', messageData);
     setSection(sections.group);
   };
@@ -499,10 +500,6 @@ const Messages = () => {
     }
     (async () => {
       const groups = await getGroups(userId);
-      if (groups.length === 0) {
-        setSection(sections.introduction);
-        return;
-      }
       groupMessages(groups, userId);
       setSection(sections.home);
       messaging = Messaging.create(getMessagingMethod(), {
@@ -519,6 +516,9 @@ const Messages = () => {
         setRooms,
       });
       storing = Storing.create(getStoringMethod(), { setMedia, setNotifs });
+      if (groups.length === 0) {
+        setSection(sections.introduction);
+      }
     })();
     return () => {
       messaging?.dispose();
@@ -668,6 +668,8 @@ const Messages = () => {
   }, [updated, groups, group, userId]);
 
   useEffect(() => {
+    console.log(friend);
+
     if (!friend) {
       return;
     }
