@@ -1,7 +1,7 @@
 import { supabaseUtil } from '@/lib/supabase';
 import { randomUUID } from 'crypto';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { getUsersCombined } from './user';
+import { getUsersCombined } from './user/get_all_users';
 
 export default async function handler(
   req: NextApiRequest,

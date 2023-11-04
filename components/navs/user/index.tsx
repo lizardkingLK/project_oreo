@@ -53,9 +53,7 @@ const UserNavbar = (props: IUserNavbarProps) => {
           <Fragment>
             <button
               className="text-xl text-center p-4 hover:bg-green-300 font-medium flex items-center justify-start"
-              onClick={() =>
-                handleSelection(newUser ? sections.home : sections.introduction)
-              }
+              onClick={() => handleSelection(sections.home)}
             >
               <Home />
               <span className="ml-4">Home</span>

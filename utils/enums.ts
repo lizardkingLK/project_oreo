@@ -50,7 +50,6 @@ export enum sections {
   addFriend = 2,
   group = 3,
   feeds = 4,
-  introduction = 5,
 }
 
 export enum actions {

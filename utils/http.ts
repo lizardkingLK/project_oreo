@@ -7,14 +7,16 @@ export const apiUrls = {
     updateRead: '/api/message/update_read',
     createMessage: '/api/message/create_message',
     updateMessage: '/api/message/update_message',
-    getUsersMerged: '/api/message/get_users_merged',
     deleteMessage: '/api/message/delete_message',
   },
   socket: '/api/socket',
   login: '/api/login',
   file: '/api/file',
   invitation: '/api/invitation',
-  user: '/api/user',
+  user: {
+    getAllUsers: '/api/user/get_all_users',
+    getUsersMerged: '/api/user/get_users_merged',
+  },
   auth: '/api/auth',
 };
 
@@ -33,7 +35,7 @@ export const getGroups = async (userId: string) => {
 };
 
 export const getUsers = async () => {
-  return await fetch(apiUrls.user)
+  return await fetch(apiUrls.user.getAllUsers)
     .then((response) => response.json())
     .then((data) => data);
 };
@@ -114,7 +116,7 @@ export const inviteFriend = async (
 };
 
 export const getUsersMerged = async (createdFor: string[]) => {
-  return await fetch(apiUrls.message.getUsersMerged, {
+  return await fetch(apiUrls.user.getUsersMerged, {
     method: 'POST',
     headers,
     body: JSON.stringify({ createdFor }),

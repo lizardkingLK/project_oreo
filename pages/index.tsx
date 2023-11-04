@@ -517,7 +517,7 @@ const Messages = () => {
       });
       storing = Storing.create(getStoringMethod(), { setMedia, setNotifs });
       if (groups.length === 0) {
-        setSection(sections.introduction);
+        setSection(sections.addFriend);
       }
     })();
     return () => {
