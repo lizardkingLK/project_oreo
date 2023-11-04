@@ -8,6 +8,7 @@ import Invitation from '@/components/svgs/invitation';
 import Home from '@/components/svgs/home';
 import Feeds from '@/components/svgs/feeds';
 import { sections } from '@/utils/enums';
+import { classNames, resolveValue } from '@/utils/helpers';
 
 const UserNavbar = (props: IUserNavbarProps) => {
   const { isSignedIn } = useAuth();
@@ -22,8 +23,11 @@ const UserNavbar = (props: IUserNavbarProps) => {
 
     return (
       <nav
-        className={`fixed top-0 left-0 h-screen w-3/4 md:w-1/4 shadow-green-400 shadow-2xl z-10
-            ${navbar ? 'flex flex-col' : 'hidden'} bg-green-500`}
+        className={classNames(
+          'fixed top-0 left-0 h-screen w-3/4 md:w-1/4 shadow-green-400 shadow-2xl z-10',
+          navbar ? 'flex flex-col' : 'hidden',
+          'bg-green-500'
+        )}
       >
         <div className="flex justify-center items-center p-4">
           {isSignedIn ? (
@@ -53,7 +57,9 @@ const UserNavbar = (props: IUserNavbarProps) => {
           <Fragment>
             <button
               className="text-xl text-center p-4 hover:bg-green-300 font-medium flex items-center justify-start"
-              onClick={() => handleSelection(sections.home)}
+              onClick={() =>
+                handleSelection(newUser ? sections.addFriend : sections.home)
+              }
             >
               <Home />
               <span className="ml-4">Home</span>
@@ -67,7 +73,9 @@ const UserNavbar = (props: IUserNavbarProps) => {
             </button>
             <button
               className="text-xl text-center p-4 hover:bg-green-300 font-medium flex items-center justify-start"
-              onClick={() => handleSelection(sections.feeds)}
+              onClick={() =>
+                handleSelection(newUser ? sections.addFriend : sections.home)
+              }
             >
               <Feeds />
               <span className="ml-4">Feeds</span>

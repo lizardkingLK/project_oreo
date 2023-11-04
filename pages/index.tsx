@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useMemo } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useAuth, useUser } from '@clerk/nextjs';
 import { EmojiClickData } from 'emoji-picker-react';
 
@@ -754,7 +754,7 @@ const Messages = () => {
             navbar={navbar}
             setNavbar={setNavbar}
             setSection={setSection}
-            newUser={groups.length > 0}
+            newUser={groups.length === 0}
             groups={groups}
             active={active}
             userId={userId}
