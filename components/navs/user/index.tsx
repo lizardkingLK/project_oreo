@@ -8,7 +8,7 @@ import Invitation from '@/components/svgs/invitation';
 import Home from '@/components/svgs/home';
 import Feeds from '@/components/svgs/feeds';
 import { sections } from '@/utils/enums';
-import { classNames, resolveValue } from '@/utils/helpers';
+import { classNames } from '@/utils/helpers';
 
 const UserNavbar = (props: IUserNavbarProps) => {
   const { isSignedIn } = useAuth();
