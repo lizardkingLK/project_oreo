@@ -11,8 +11,8 @@ import { DefaultEventsMap } from '@socket.io/component-emitter';
 import { IActiveProps, IDeletedMessageProps, IMessageProps } from '@/types';
 
 type setActiveType = (state: IActiveProps) => void;
-type setDeletedType = (state: IDeletedMessageProps) => void;
 type setRoomsType = (state: boolean) => void;
+type setDeletedType = (state: IDeletedMessageProps) => void;
 
 export class Local implements IMessaging {
   private socket: Socket<DefaultEventsMap, DefaultEventsMap> | null = null;

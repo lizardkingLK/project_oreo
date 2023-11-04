@@ -1,5 +1,10 @@
 import { IMessageDataProps } from './../types/index';
-import { messageTypes, quickMessages, tableNames } from '@/utils/enums';
+import {
+  activeInactive,
+  messageTypes,
+  quickMessages,
+  tableNames,
+} from '@/utils/enums';
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -18,7 +23,12 @@ export const registerRealtime = (
     .channel(tableName)
     .on(
       'postgres_changes',
-      { event: '*', schema: 'public', table: tableName },
+      { event: 'INSERT', schema: 'public', table: tableName },
+      handler
+    )
+    .on(
+      'postgres_changes',
+      { event: 'UPDATE', schema: 'public', table: tableName },
       handler
     )
     .subscribe();
@@ -126,12 +136,13 @@ export const supabaseUtil = {
       .from(tableNames.message)
       .select()
       .contains('createdFor', [userId])
+      .eq('status', activeInactive.YES)
       .order('createdAt', { ascending: true });
   },
   async deleteMessages(referenceId: IdType) {
     return await supabaseClient
       .from(tableNames.message)
-      .delete()
+      .update({ status: activeInactive.NO })
       .eq('referenceId', referenceId);
   },
   async getMessagesByGroupId(groupId: IdType) {

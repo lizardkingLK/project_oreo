@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { useAuth, useUser } from '@clerk/nextjs';
 import { EmojiClickData } from 'emoji-picker-react';
 
@@ -13,6 +13,7 @@ import {
 } from '@/types';
 import {
   actions,
+  activeInactive,
   groupTypes,
   messageWays,
   sections,
@@ -160,10 +161,11 @@ const Messages = () => {
             (g) => g.referenceId !== referenceId
           );
           group.messages = tempMessages;
-          group.lastMessage =
-            tempMessages.length === 0
-              ? null
-              : tempMessages[tempMessages.length - 1];
+          group.lastMessage = resolveValue(
+            tempMessages.length === 0,
+            null,
+            tempMessages[tempMessages.length - 1]
+          );
         }
       });
       setLoading(false);
@@ -641,8 +643,13 @@ const Messages = () => {
     if (!updated) {
       return;
     }
-    const { groupId, input, referenceId } = updated,
+    const { groupId, input, referenceId, status } = updated,
       tempGroups = groups;
+    if (status === activeInactive.NO) {
+      setDeleted({ groupId, referenceId });
+      setUpdated(null);
+      return;
+    }
     let tempMessages;
     tempGroups.forEach((g) => {
       if (g?.id === groupId) {

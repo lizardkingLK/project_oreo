@@ -12,7 +12,7 @@ export default function handler(
   _req: NextApiRequest,
   res: NextApiResponse<Array<Feed>>
 ) {
-  res.status(200).json([
+  return res.status(200).json([
     {
       id: 1,
       name: 'Amelia Nelson',

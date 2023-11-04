@@ -64,9 +64,8 @@ export class Cloud implements IMessaging {
         referenceId: body?.referenceId,
         groupId: body?.groupId,
         input: body?.content,
+        status: body?.status,
       });
-    } else if (eventType === eventTypes.delete) {
-      //set status change only as an update. fully delete later const { old: body } = payload, { id } = body; console.log('deleted', payload);
     }
   };
 

@@ -95,6 +95,7 @@ export interface IDeletedMessageProps extends IChangedMessageProps {}
 
 export interface IUpdatedMessageProps extends IChangedMessageProps {
   input: string;
+  status: number;
 }
 
 export interface IUserOnlineProps {
