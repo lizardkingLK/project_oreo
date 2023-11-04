@@ -461,6 +461,12 @@ const Messages = () => {
   };
 
   useEffect(() => {
+    if (attachmentModal || emojiModal) {
+      document.body.style.overflow = 'hidden';
+    }
+  }, [attachmentModal, emojiModal]);
+
+  useEffect(() => {
     if (!media?.content) {
       return;
     }
