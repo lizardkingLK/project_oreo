@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { getUsersCombined } from '../../user';
+import { getUsersCombined } from '../get_all_users';
 
 export default async function handler(
   req: NextApiRequest,
@@ -9,9 +9,8 @@ export default async function handler(
     messageData = await getUsersCombined([{ createdFor }]);
 
   if (!messageData) {
-    res.status(500).json({ error: 'Bad parameters' });
-    return;
+    return res.status(500).json({ error: 'Bad parameters' });
   }
 
-  res.status(200).json(messageData[0].createdFor);
+  return res.status(200).json(messageData[0].createdFor);
 }

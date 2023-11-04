@@ -9,7 +9,6 @@ import Feeds from '@/components/sections/feeds';
 import Dashboard from '@/components/sections/dashboard';
 import Group from './group';
 import Spinner from '../svgs/spinner';
-import Introduction from './introduction';
 
 const SectionSwitch = (props: ISectionSwitchProps) => {
   if (props) {
@@ -56,17 +55,6 @@ const SectionSwitch = (props: ISectionSwitchProps) => {
       return (
         <div className="flex h-screen items-center justify-center w-full">
           <Spinner size={12} />
-        </div>
-      );
-    } else if (section === sections.introduction) {
-      return (
-        <div className="flex h-screen items-center justify-center w-full">
-          <Introduction
-            groups={groups}
-            user={user}
-            setSection={setSection}
-            onSelectGroupHandler={onSelectGroupHandler}
-          />
         </div>
       );
     } else if (section === sections.home) {

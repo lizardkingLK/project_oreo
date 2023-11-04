@@ -1,12 +1,12 @@
 import { supabaseUtil } from '@/lib/supabase';
-import { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse<object>
 ) {
-  const { referenceId, content } = req.body,
-    { error } = await supabaseUtil.updateMessageContent(referenceId, content);
+  const { message } = JSON.parse(req.body),
+    { error } = await supabaseUtil.updateMarkAsUnread(message);
 
   if (error) {
     return res.status(500).json({ error: 'Internal error' });

@@ -26,5 +26,5 @@ export default async function handler(
   res: NextApiResponse<Array<User>>
 ) {
   const userList = await clerkClient.users.getUserList();
-  res.status(200).json(userList);
+  return res.status(200).json(userList);
 }

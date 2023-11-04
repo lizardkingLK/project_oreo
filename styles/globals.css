@@ -6,3 +6,15 @@ body::-webkit-scrollbar,
 #divMessageList::-webkit-scrollbar {
   display: none;
 }
+
+.typing-dots:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.typing-dots:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-dots:nth-child(3) {
+  animation-delay: 0.3s;
+}

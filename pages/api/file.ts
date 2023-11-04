@@ -69,7 +69,7 @@ const handler = async (
     }
   }
 
-  res.status(status).json(resultBody);
+  return res.status(status).json(resultBody);
 };
 
 export default handler;

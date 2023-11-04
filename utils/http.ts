@@ -1,20 +1,26 @@
 import { IMessageDataProps, IMessageProps } from '@/types';
 
 export const apiUrls = {
-  group: '/api/group',
   feed: '/api/feed',
   message: {
     updateRead: '/api/message/update_read',
     createMessage: '/api/message/create_message',
     updateMessage: '/api/message/update_message',
-    getUsersMerged: '/api/message/get_users_merged',
     deleteMessage: '/api/message/delete_message',
   },
   socket: '/api/socket',
   login: '/api/login',
   file: '/api/file',
   invitation: '/api/invitation',
-  user: '/api/user',
+  user: {
+    getAllUsers: '/api/user/get_all_users',
+    getUsersMerged: '/api/user/get_users_merged',
+  },
+  group: {
+    createGroup: '/api/group/create_group',
+    markAsUnread: '/api/group/mark_as_unread',
+    getAllMessages: '/api/group/get_all_messages',
+  },
   auth: '/api/auth',
 };
 
@@ -27,13 +33,13 @@ export const getFeeds = async (userId: string) => {
 };
 
 export const getGroups = async (userId: string) => {
-  return await fetch(`${apiUrls.group}?userId=${userId}`)
+  return await fetch(apiUrls.group.getAllMessages + '?userId=' + userId)
     .then((response) => response.json())
     .then((data) => data);
 };
 
 export const getUsers = async () => {
-  return await fetch(apiUrls.user)
+  return await fetch(apiUrls.user.getAllUsers)
     .then((response) => response.json())
     .then((data) => data);
 };
@@ -67,7 +73,7 @@ export const updateUnread = async (
 };
 
 export const markAsUnread = async (message: IMessageDataProps) => {
-  return await fetch(apiUrls.group, {
+  return await fetch(apiUrls.group.markAsUnread, {
     method: 'PUT',
     body: JSON.stringify({
       message,
@@ -104,7 +110,7 @@ export const inviteFriend = async (
   userId: string | null,
   friendId: string | undefined
 ) => {
-  return await fetch(apiUrls.group, {
+  return await fetch(apiUrls.group.createGroup, {
     method: 'POST',
     headers,
     body: JSON.stringify({ ownerId: userId, userId: friendId }),
@@ -114,7 +120,7 @@ export const inviteFriend = async (
 };
 
 export const getUsersMerged = async (createdFor: string[]) => {
-  return await fetch(apiUrls.message.getUsersMerged, {
+  return await fetch(apiUrls.user.getUsersMerged, {
     method: 'POST',
     headers,
     body: JSON.stringify({ createdFor }),

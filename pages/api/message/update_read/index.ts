@@ -9,10 +9,11 @@ export default async function handler(
   const { groupId, userId } = req.body,
     { data: groupMessages, error: errorGroupMessages } =
       await supabaseUtil.getMessagesByGroupId(groupId);
+
   if (errorGroupMessages || !groupMessages) {
-    res.status(500).json({ error: 'Bad parameters' });
-    return;
+    return res.status(500).json({ error: 'Bad parameters' });
   }
+
   let matched;
   groupMessages.forEach((gm: IMessageDataProps) => {
     matched = false;
@@ -23,13 +24,13 @@ export default async function handler(
           rb.value = true;
           const { error: errorUpdateMessages } =
             await supabaseUtil.updateMessages(gm.readBy, gm.id);
+
           if (errorUpdateMessages) {
-            res.status(500).json({ error: 'Internal error' });
-            return;
+            return res.status(500).json({ error: 'Internal error' });
           }
         }
       })();
     });
   });
-  res.status(200).json({ success: true });
+  return res.status(200).json({ success: true });
 }

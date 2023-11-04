@@ -18,9 +18,8 @@ export default async function handler(
   );
 
   if (error) {
-    res.status(500).json({ error: 'Bad parameters' });
-    return;
+    return res.status(500).json({ error: 'Bad parameters' });
   }
 
-  res.status(201).json({ data });
+  return res.status(201).json({ data });
 }

@@ -9,9 +9,8 @@ export default async function handler(
     { error } = await supabaseUtil.deleteMessages(referenceId);
 
   if (error) {
-    res.status(500).json({ error: 'Bad parameters' });
-    return;
+    return res.status(500).json({ error: 'Bad parameters' });
   }
 
-  res.status(200).json({ referenceId, groupId });
+  return res.status(200).json({ referenceId, groupId });
 }

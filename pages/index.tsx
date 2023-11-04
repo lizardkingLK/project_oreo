@@ -13,6 +13,7 @@ import {
 } from '@/types';
 import {
   actions,
+  activeInactive,
   groupTypes,
   messageWays,
   sections,
@@ -160,10 +161,11 @@ const Messages = () => {
             (g) => g.referenceId !== referenceId
           );
           group.messages = tempMessages;
-          group.lastMessage =
-            tempMessages.length === 0
-              ? null
-              : tempMessages[tempMessages.length - 1];
+          group.lastMessage = resolveValue(
+            tempMessages.length === 0,
+            null,
+            tempMessages[tempMessages.length - 1]
+          );
         }
       });
       setLoading(false);
@@ -517,7 +519,7 @@ const Messages = () => {
       });
       storing = Storing.create(getStoringMethod(), { setMedia, setNotifs });
       if (groups.length === 0) {
-        setSection(sections.introduction);
+        setSection(sections.addFriend);
       }
     })();
     return () => {
@@ -641,8 +643,13 @@ const Messages = () => {
     if (!updated) {
       return;
     }
-    const { groupId, input, referenceId } = updated,
+    const { groupId, input, referenceId, status } = updated,
       tempGroups = groups;
+    if (status === activeInactive.NO) {
+      setDeleted({ groupId, referenceId });
+      setUpdated(null);
+      return;
+    }
     let tempMessages;
     tempGroups.forEach((g) => {
       if (g?.id === groupId) {
@@ -747,7 +754,7 @@ const Messages = () => {
             navbar={navbar}
             setNavbar={setNavbar}
             setSection={setSection}
-            newUser={groups.length > 0}
+            newUser={groups.length === 0}
             groups={groups}
             active={active}
             userId={userId}

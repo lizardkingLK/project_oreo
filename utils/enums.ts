@@ -1,3 +1,8 @@
+export enum activeInactive {
+  YES = 1,
+  NO = 0,
+}
+
 export enum messageWays {
   SENT = 1,
   RECEIVED = 2,
@@ -50,7 +55,6 @@ export enum sections {
   addFriend = 2,
   group = 3,
   feeds = 4,
-  introduction = 5,
 }
 
 export enum actions {
