@@ -239,7 +239,7 @@ const Messages = () => {
     setGroups(
       Array.from(groups.values()).sort(
         (first, second) =>
-          second.lastMessage.createdOnDate - first.lastMessage.createdOnDate
+          second.lastMessage.timestamp - first.lastMessage.timestamp
       )
     );
   };
