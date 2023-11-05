@@ -70,6 +70,7 @@ const Messages = () => {
   const [referenceId, setReferenceId] = useState<null | string>(null);
   const [context, setContext] = useState<actions>(actions.create);
   const [media, setMedia] = useState<null | IMessageProps>(null);
+  const [scrollLock, setScrollLock] = useState<boolean>(false);
 
   const textInputRef = useRef<null | HTMLInputElement>(null);
   const lastMessageRef = useRef<null | HTMLDivElement>(null);
@@ -461,6 +462,12 @@ const Messages = () => {
   };
 
   useEffect(() => {
+    console.log({
+      scrollLock,
+    });
+  }, [scrollLock]);
+
+  useEffect(() => {
     if (attachmentModal || emojiModal) {
       document.body.style.overflow = 'hidden';
     }
@@ -809,6 +816,7 @@ const Messages = () => {
             setAttachmentModal={setAttachmentModal}
             context={context}
             handleReadUnread={handleReadUnread}
+            setScrollLock={setScrollLock}
           />
         </div>
       </section>
