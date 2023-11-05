@@ -70,6 +70,7 @@ const Messages = () => {
   const [referenceId, setReferenceId] = useState<null | string>(null);
   const [context, setContext] = useState<actions>(actions.create);
   const [media, setMedia] = useState<null | IMessageProps>(null);
+  const [scrollLock, setScrollLock] = useState<boolean>(false);
 
   const textInputRef = useRef<null | HTMLInputElement>(null);
   const lastMessageRef = useRef<null | HTMLDivElement>(null);
@@ -239,7 +240,7 @@ const Messages = () => {
     setGroups(
       Array.from(groups.values()).sort(
         (first, second) =>
-          second.lastMessage.createdOnDate - first.lastMessage.createdOnDate
+          second.lastMessage.timestamp - first.lastMessage.timestamp
       )
     );
   };
@@ -459,6 +460,12 @@ const Messages = () => {
     messaging?.emitMessage('new-friend', messageData);
     setSection(sections.group);
   };
+
+  useEffect(() => {
+    console.log({
+      scrollLock,
+    });
+  }, [scrollLock]);
 
   useEffect(() => {
     if (attachmentModal || emojiModal) {
@@ -809,6 +816,7 @@ const Messages = () => {
             setAttachmentModal={setAttachmentModal}
             context={context}
             handleReadUnread={handleReadUnread}
+            setScrollLock={setScrollLock}
           />
         </div>
       </section>

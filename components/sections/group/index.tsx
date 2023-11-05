@@ -2,10 +2,28 @@ import MessageEditor from '@/components/forms/message';
 import MessageList from '@/components/lists/message/MessageList';
 import ChevronBack from '@/components/svgs/chevronBack';
 import { IGroupSectionProps } from '@/types';
-import React, { Fragment } from 'react';
-import { getRelativeTime } from '@/utils/helpers';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
+import { getRelativeTime, resolveValue } from '@/utils/helpers';
 
 const Group = (props: IGroupSectionProps) => {
+  const { setScrollLock } = props;
+
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const [maxScroll, setMaxScroll] = useState<number>(0);
+
+  useEffect(() => {
+    const current = scrollRef.current,
+      handler = () => {
+        const scroll = current?.scrollTop ?? 0,
+          lockable = maxScroll < scroll;
+        setMaxScroll((prev) => resolveValue(lockable, scroll, prev));
+        setScrollLock(scroll > maxScroll - 240);
+      };
+    current?.addEventListener('scroll', handler);
+    return () => current?.removeEventListener('scroll', handler);
+  }, [maxScroll, scrollRef, setScrollLock]);
+
   if (props) {
     const {
       userId,
@@ -69,6 +87,7 @@ const Group = (props: IGroupSectionProps) => {
         <div
           className="md:ml-4 overflow-scroll h-[calc(100vh-8rem)] md:h-[calc(100vh-12rem)]"
           id="divMessageList"
+          ref={scrollRef}
         >
           <MessageList
             messages={messages}

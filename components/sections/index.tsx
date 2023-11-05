@@ -49,6 +49,7 @@ const SectionSwitch = (props: ISectionSwitchProps) => {
       setAttachmentModal,
       context,
       handleReadUnread,
+      setScrollLock,
     } = props;
 
     if (section === sections.loading) {
@@ -119,6 +120,7 @@ const SectionSwitch = (props: ISectionSwitchProps) => {
           setAttachmentModal={setAttachmentModal}
           context={context}
           handleReadUnread={handleReadUnread}
+          setScrollLock={setScrollLock}
         />
       );
     } else return null;
