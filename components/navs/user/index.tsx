@@ -6,7 +6,6 @@ import { UserButton, useAuth } from '@clerk/nextjs';
 import Link from 'next/link';
 import Invitation from '@/components/svgs/invitation';
 import Home from '@/components/svgs/home';
-import Feeds from '@/components/svgs/feeds';
 import { sections } from '@/utils/enums';
 import { classNames } from '@/utils/helpers';
 
@@ -70,15 +69,6 @@ const UserNavbar = (props: IUserNavbarProps) => {
             >
               <Invitation />
               <span className="ml-4">Add Friend</span>
-            </button>
-            <button
-              className="text-xl text-center p-4 hover:bg-green-300 font-medium flex items-center justify-start"
-              onClick={() =>
-                handleSelection(newUser ? sections.addFriend : sections.home)
-              }
-            >
-              <Feeds />
-              <span className="ml-4">Feeds</span>
             </button>
           </Fragment>
         ) : (

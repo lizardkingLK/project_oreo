@@ -56,6 +56,9 @@ const Group = (props: IGroupSectionProps) => {
       setEmojiModal,
       setAttachmentModal,
       context,
+      newMessages,
+      setNewMessages,
+      onClickNewMessageHandler,
     } = props;
 
     return (
@@ -106,6 +109,9 @@ const Group = (props: IGroupSectionProps) => {
             userId={userId}
             forwardModal={forwardModal}
             setForwardModal={setForwardModal}
+            newMessages={newMessages}
+            setNewMessages={setNewMessages}
+            onClickNewMessageHandler={onClickNewMessageHandler}
           />
         </div>
         <div className="sticky bottom-0 p-2 md:p-4 bg-stone-300">

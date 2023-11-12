@@ -70,7 +70,8 @@ const Messages = () => {
   const [referenceId, setReferenceId] = useState<null | string>(null);
   const [context, setContext] = useState<actions>(actions.create);
   const [media, setMedia] = useState<null | IMessageProps>(null);
-  const [scrollLock, setScrollLock] = useState<boolean>(false);
+  const [isScrollLock, setScrollLock] = useState<boolean>(false);
+  const [newMessages, setNewMessages] = useState<null | number>(null);
 
   const textInputRef = useRef<null | HTMLInputElement>(null);
   const lastMessageRef = useRef<null | HTMLDivElement>(null);
@@ -409,6 +410,7 @@ const Messages = () => {
     setMessages(tempGroup?.messages);
     textInputRef?.current?.focus();
     setSection(sections.group);
+    setNewMessages(0);
     hideDialogModals();
   };
 
@@ -445,6 +447,7 @@ const Messages = () => {
         messages: [message],
         lastMessage: message,
         unreadCount: 0,
+        localUnreadCount: 0,
       },
       tempGroups = groups;
     tempGroups[tempGroups.length] = tempGroup;
@@ -461,11 +464,14 @@ const Messages = () => {
     setSection(sections.group);
   };
 
+  const onClickNewMessageHandler = () => {
+    setNewMessages(null);
+    setNotifs(getRandomNumber());
+  };
+
   useEffect(() => {
-    console.log({
-      scrollLock,
-    });
-  }, [scrollLock]);
+    isScrollLock && setNewMessages(null);
+  }, [isScrollLock]);
 
   useEffect(() => {
     if (attachmentModal || emojiModal) {
@@ -572,14 +578,15 @@ const Messages = () => {
     if (!tempGroup) {
       return;
     }
-    const tempGroupMessages = tempGroup.messages,
+    const isActiveGroup = group?.id === output.groupId,
+      tempGroupMessages = tempGroup.messages,
       newMessage = {
         id: output.id,
         referenceId: output.referenceId,
         type: messageWays.RECEIVED,
         content: output.content,
         fromId: output.fromId,
-        createdOn: output.timestamp,
+        createdOn: output.timestamp | output.createdOn,
         groupId: tempGroup.id,
         status: true,
         toId: output.toId,
@@ -587,21 +594,26 @@ const Messages = () => {
         readBy: output.readBy,
       };
     tempGroupMessages[tempGroupMessages.length] = newMessage;
+
     Object.assign(tempGroup, {
       messages: tempGroupMessages,
       lastMessage: newMessage,
-      unreadCount: group?.id === output.groupId ? 0 : tempGroup.unreadCount + 1,
+      unreadCount: resolveValue(isActiveGroup, 0, tempGroup.unreadCount + 1),
     });
+
+    if (isScrollLock) {
+      setNotifs(getRandomNumber());
+    } else if (isActiveGroup) {
+      setNewMessages((prev) => (prev ?? 0) + 1);
+    }
 
     groups.splice(tempGroupIndex, 1);
     groups.splice(0, 0, tempGroup);
 
-    if (group?.id === output.groupId) {
-      setMessages(tempGroupMessages);
-    }
-    setNotifs(getRandomNumber());
+    isActiveGroup && setMessages(tempGroupMessages);
+
     setOutput(null);
-  }, [output, groups, group]);
+  }, [output, groups, group, isScrollLock]);
 
   useEffect(() => {
     if (!online) {
@@ -723,6 +735,7 @@ const Messages = () => {
         messages: [message],
         lastMessage: message,
         unreadCount: 1,
+        localUnreadCount: 0,
       },
       tempGroups = groups;
     tempGroups[tempGroups.length] = tempGroup;
@@ -739,6 +752,12 @@ const Messages = () => {
       groupIds: groups.map((g) => g.id),
     });
   }, [rooms, groups, userId]);
+
+  useEffect(() => {
+    console.log({
+      isScrollLock,
+    });
+  }, [isScrollLock]);
 
   if (!isLoaded) {
     return (
@@ -817,6 +836,9 @@ const Messages = () => {
             context={context}
             handleReadUnread={handleReadUnread}
             setScrollLock={setScrollLock}
+            newMessages={newMessages}
+            setNewMessages={setNewMessages}
+            onClickNewMessageHandler={onClickNewMessageHandler}
           />
         </div>
       </section>
