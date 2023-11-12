@@ -5,7 +5,6 @@ import { ISectionSwitchProps } from '@/types';
 import { sections } from '@/utils/enums';
 
 import AddFriend from '@/components/sections/friends/add';
-import Feeds from '@/components/sections/feeds';
 import Dashboard from '@/components/sections/dashboard';
 import Group from './group';
 import Spinner from '../svgs/spinner';
@@ -50,6 +49,9 @@ const SectionSwitch = (props: ISectionSwitchProps) => {
       context,
       handleReadUnread,
       setScrollLock,
+      newMessages,
+      setNewMessages,
+      onClickNewMessageHandler,
     } = props;
 
     if (section === sections.loading) {
@@ -78,12 +80,6 @@ const SectionSwitch = (props: ISectionSwitchProps) => {
             onSelectGroupHandler={onSelectGroupHandler}
             groups={groups}
           />
-        </div>
-      );
-    } else if (section === sections.feeds) {
-      return (
-        <div className="flex h-screen items-center justify-center w-full">
-          <Feeds />
         </div>
       );
     } else if (section === sections.group && group) {
@@ -121,6 +117,9 @@ const SectionSwitch = (props: ISectionSwitchProps) => {
           context={context}
           handleReadUnread={handleReadUnread}
           setScrollLock={setScrollLock}
+          newMessages={newMessages}
+          setNewMessages={setNewMessages}
+          onClickNewMessageHandler={onClickNewMessageHandler}
         />
       );
     } else return null;

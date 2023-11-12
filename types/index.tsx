@@ -149,6 +149,9 @@ export interface IMessageListProps {
   setForwardModal: Function;
   forwardModal: boolean;
   loading: boolean;
+  newMessages: null | number;
+  setNewMessages: Function;
+  onClickNewMessageHandler: Function;
 }
 
 export interface IMessageLinkProps {
@@ -194,10 +197,6 @@ export interface IFeedProps {
   imagePath: string;
   size: number;
   isStatus: boolean;
-}
-
-export interface IFeedListProps {
-  feeds: Array<IFeedProps>;
 }
 
 export interface IMessageCardProps {
@@ -294,7 +293,7 @@ export interface IDialogProps {
   dialogSubtitle: string;
   dialogCloseTitle: string;
   dialogCloseHandler: MouseEventHandler<HTMLButtonElement>;
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 export interface ISectionLayoutProps {
@@ -357,6 +356,9 @@ export interface ISectionSwitchProps {
   navbar: boolean;
   context: actions;
   handleReadUnread: Function;
+  newMessages: null | number;
+  setNewMessages: Function;
+  onClickNewMessageHandler: Function;
 }
 
 export interface IGroupSectionProps {
@@ -392,6 +394,9 @@ export interface IGroupSectionProps {
   navbar: boolean;
   context: actions;
   handleReadUnread: Function;
+  newMessages: null | number;
+  setNewMessages: Function;
+  onClickNewMessageHandler: Function;
 }
 
 export interface IMessageMenuProps {
@@ -454,3 +459,18 @@ export interface IModalProps {
   handleClose: () => void;
   options?: any;
 }
+
+export interface IAlertProps extends IModalProps {}
+
+export interface IButtonProps {
+  clickEvent: MouseEventHandler<HTMLButtonElement>;
+  color: string;
+  text: string;
+  font: string;
+  width: string;
+  height: string;
+  title: string;
+  children: ReactNode;
+}
+
+export interface IIconButtonProps extends IButtonProps {}
