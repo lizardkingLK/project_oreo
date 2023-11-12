@@ -70,7 +70,7 @@ const Messages = () => {
   const [referenceId, setReferenceId] = useState<null | string>(null);
   const [context, setContext] = useState<actions>(actions.create);
   const [media, setMedia] = useState<null | IMessageProps>(null);
-  const [isScrollLock, setScrollLock] = useState<boolean>(false);
+  const [isScrollLock, setIsScrollLock] = useState<boolean>(false);
   const [newMessages, setNewMessages] = useState<null | number>(null);
 
   const textInputRef = useRef<null | HTMLInputElement>(null);
@@ -835,7 +835,7 @@ const Messages = () => {
             setAttachmentModal={setAttachmentModal}
             context={context}
             handleReadUnread={handleReadUnread}
-            setScrollLock={setScrollLock}
+            setIsScrollLock={setIsScrollLock}
             newMessages={newMessages}
             setNewMessages={setNewMessages}
             onClickNewMessageHandler={onClickNewMessageHandler}

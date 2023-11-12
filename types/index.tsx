@@ -350,7 +350,7 @@ export interface ISectionSwitchProps {
   setForwardModal: Function;
   setEmojiModal: Dispatch<SetStateAction<boolean>>;
   setAttachmentModal: Dispatch<SetStateAction<boolean>>;
-  setScrollLock: Dispatch<SetStateAction<boolean>>;
+  setIsScrollLock: Dispatch<SetStateAction<boolean>>;
   lastMessageRef: null | LegacyRef<HTMLDivElement>;
   textInputRef: LegacyRef<HTMLInputElement> | null;
   navbar: boolean;
@@ -388,7 +388,7 @@ export interface IGroupSectionProps {
   setForwardModal: Function;
   setEmojiModal: Dispatch<SetStateAction<boolean>>;
   setAttachmentModal: Dispatch<SetStateAction<boolean>>;
-  setScrollLock: Dispatch<SetStateAction<boolean>>;
+  setIsScrollLock: Dispatch<SetStateAction<boolean>>;
   lastMessageRef: null | LegacyRef<HTMLDivElement>;
   textInputRef: LegacyRef<HTMLInputElement> | null;
   navbar: boolean;
