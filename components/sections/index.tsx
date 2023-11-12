@@ -48,7 +48,7 @@ const SectionSwitch = (props: ISectionSwitchProps) => {
       setAttachmentModal,
       context,
       handleReadUnread,
-      setScrollLock,
+      setIsScrollLock,
       newMessages,
       setNewMessages,
       onClickNewMessageHandler,
@@ -116,7 +116,7 @@ const SectionSwitch = (props: ISectionSwitchProps) => {
           setAttachmentModal={setAttachmentModal}
           context={context}
           handleReadUnread={handleReadUnread}
-          setScrollLock={setScrollLock}
+          setIsScrollLock={setIsScrollLock}
           newMessages={newMessages}
           setNewMessages={setNewMessages}
           onClickNewMessageHandler={onClickNewMessageHandler}

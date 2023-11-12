@@ -6,7 +6,7 @@ import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { getRelativeTime, resolveValue } from '@/utils/helpers';
 
 const Group = (props: IGroupSectionProps) => {
-  const { setScrollLock } = props;
+  const { setIsScrollLock } = props;
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -18,11 +18,11 @@ const Group = (props: IGroupSectionProps) => {
         const scroll = current?.scrollTop ?? 0,
           lockable = maxScroll < scroll;
         setMaxScroll((prev) => resolveValue(lockable, scroll, prev));
-        setScrollLock(scroll > maxScroll - 240);
+        setIsScrollLock(scroll > maxScroll - 240);
       };
     current?.addEventListener('scroll', handler);
     return () => current?.removeEventListener('scroll', handler);
-  }, [maxScroll, scrollRef, setScrollLock]);
+  }, [maxScroll, scrollRef, setIsScrollLock]);
 
   if (props) {
     const {
