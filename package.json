@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "engines": {
-    "npm": "8.1.4",
-    "node": "18.15.0"
+    "npm": "9.5.1",
+    "node": "18.16.1"
   },
   "scripts": {
     "dev": "next dev",
@@ -25,7 +25,10 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "sharp": "^0.32.0",
-    "typescript": "4.9.5"
+    "typescript": "4.9.5",
+    "socket.io": "^4.6.1",
+    "socket.io-client": "^4.6.1",
+    "zustand": "^4.4.6"
   },
   "devDependencies": {
     "@playwright/test": "^1.32.3",
@@ -38,8 +41,6 @@
     "dotenv-cli": "^7.2.1",
     "postcss": "^8.4.31",
     "prisma": "^5.1.1",
-    "socket.io": "^4.6.1",
-    "socket.io-client": "^4.6.1",
     "tailwindcss": "^3.2.7"
   }
 }
