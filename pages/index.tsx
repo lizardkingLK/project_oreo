@@ -43,15 +43,11 @@ import LayoutSwitch from '@/components/layout';
 import Spinner from '@/components/svgs/spinner';
 import SectionSwitch from '@/components/sections';
 import SidebarSwitch from '@/components/sidebar';
-import { useNavbar } from '@/components/navs/user/store';
 
 let messaging: IMessaging | null = null;
 let storing: IStoring | null;
 
 const Messages = () => {
-  const navbar = useNavbar((state) => state.navbar);
-  const setNavbar = useNavbar((state) => state.setNavbar);
-
   const [groups, setGroups] = useState<IGroupProps[]>([]);
   const [group, setGroup] = useState<any>(null);
   const [section, setSection] = useState(sections.loading);
@@ -516,8 +512,6 @@ const Messages = () => {
     }
   }, [section]);
 
-  useEffect(() => setNavbar(false), [group, input, setNavbar]);
-
   useEffect(() => {
     if (!userId) {
       return;
@@ -769,7 +763,6 @@ const Messages = () => {
       </section>
     );
   }
-  console.log(navbar);
 
   return (
     <LayoutSwitch
@@ -784,15 +777,13 @@ const Messages = () => {
           )}
         >
           <SidebarSwitch
-            className={classNames(navbar ? '' : 'mt-24 md:mt-20')}
-            setSection={setSection}
-            newUser={groups.length === 0}
             groups={groups}
             active={active}
             userId={userId}
             onSelectGroupHandler={onSelectGroupHandler}
             group={group}
             handleReadUnread={handleReadUnread}
+            className={'mt-24 md:mt-20'}
           />
         </div>
         <div

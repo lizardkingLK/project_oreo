@@ -4,11 +4,8 @@ import ChevronBack from '@/components/svgs/chevronBack';
 import { IGroupSectionProps } from '@/types';
 import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { getRelativeTime, resolveValue } from '@/utils/helpers';
-import { useNavbar } from '@/components/navs/user/store';
 
 const Group = (props: IGroupSectionProps) => {
-  const navbar = useNavbar((state) => state.navbar);
-
   const { setIsScrollLock } = props;
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -72,7 +69,7 @@ const Group = (props: IGroupSectionProps) => {
           >
             <ChevronBack />
           </button>
-          <div className={`basis-8/12 ${navbar ? 'collapse' : 'visible'}`}>
+          <div className={'basis-8/12'}>
             <h1 className="flex text-md md:text-2xl text-black font-bold">
               <span>{group.name}</span>
             </h1>

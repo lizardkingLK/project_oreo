@@ -434,9 +434,6 @@ export interface IBadgeProps {
 
 export interface ISidebarProps {
   className: string;
-
-  setSection: Function;
-  newUser: boolean;
   groups: IGroupProps[];
   active: boolean;
   userId: string | null;

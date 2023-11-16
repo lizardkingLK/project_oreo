@@ -3,13 +3,9 @@ import { ILayoutProps } from '@/types';
 import Bars from './svgs/bars';
 import Welcome from './welcome';
 import Head from 'next/head';
-import { useNavbar } from './navs/user/store';
 
 const LayoutSwitch = (props: ILayoutProps) => {
-  const navbar = useNavbar((state) => state.navbar);
-  const setNavbar = useNavbar((state) => state.setNavbar);
   const { isSignedIn, rootElementId, titleData } = props;
-
   return (
     <Fragment>
       <Head>
@@ -23,15 +19,10 @@ const LayoutSwitch = (props: ILayoutProps) => {
                 <button
                   id="btnToggleNavbar"
                   className="mr-4 md:mr-2 text-black hover:text-white"
-                  onClick={() => setNavbar(true)}
+                  onClick={() => console.log(true)}
                 >
                   <Bars />
                 </button>
-              )}
-              {!navbar && (
-                <h1 className="text-3xl text-center md:text-left text-black font-bold">
-                  OREO
-                </h1>
               )}
             </div>
           </div>

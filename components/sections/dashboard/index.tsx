@@ -10,15 +10,14 @@ import {
   getRelativeTime,
   getTimeConverted,
   isImage,
+  resolveValue,
 } from '@/utils/helpers';
 import Badge from '@/components/badge';
 import Groups from '@/components/svgs/groups';
 import AddFriend from '@/components/svgs/friend/add';
-import { UserButton, useAuth } from '@clerk/nextjs';
+import { UserButton } from '@clerk/nextjs';
 
 const Dashboard = (props: IDashboardProps) => {
-  const { isSignedIn } = useAuth();
-
   const [unread, setUnread] = useState<number | null>(null);
   const [friends, setFriends] = useState<number | null>(null);
   const [online, setOnline] = useState<number | null>(null);
@@ -89,9 +88,6 @@ const Dashboard = (props: IDashboardProps) => {
           <div
             className={`pt-4 grid grid-flow-row-dense grid-cols-${gridCols} grid-rows-3 gap-2`}
           >
-            {/* {isSignedIn ? (
-              
-            ) : null} */}
             <SummaryCard
               cardType={elementType.button}
               cardStyle={
@@ -160,9 +156,11 @@ const Dashboard = (props: IDashboardProps) => {
                 cardBodyType={cardBodyTypes.ELEMENT}
                 cardBodyContent={
                   <h1 className="text-xl font-bold">
-                    {isImage(latest.content)
-                      ? 'Image'
-                      : getBriefContent(latest.content)}
+                    {resolveValue(
+                      isImage(latest.content),
+                      'Image',
+                      getBriefContent(latest.content)
+                    )}
                   </h1>
                 }
                 cardBodyLongContent={latest.content}
