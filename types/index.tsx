@@ -40,8 +40,7 @@ export interface ILayoutProps {
   children: ReactNode;
   rootElementId: string;
   isSignedIn: boolean;
-  navbar: boolean;
-  setNavbar: Function;
+
   titleData: null | string;
 }
 
@@ -260,8 +259,6 @@ export interface IAvatarProps {
 }
 
 export interface IUserNavbarProps {
-  navbar: boolean;
-  setNavbar: Function;
   setSection: Function;
   newUser: boolean;
 }
@@ -353,7 +350,7 @@ export interface ISectionSwitchProps {
   setIsScrollLock: Dispatch<SetStateAction<boolean>>;
   lastMessageRef: null | LegacyRef<HTMLDivElement>;
   textInputRef: LegacyRef<HTMLInputElement> | null;
-  navbar: boolean;
+
   context: actions;
   handleReadUnread: Function;
   newMessages: null | number;
@@ -391,7 +388,7 @@ export interface IGroupSectionProps {
   setIsScrollLock: Dispatch<SetStateAction<boolean>>;
   lastMessageRef: null | LegacyRef<HTMLDivElement>;
   textInputRef: LegacyRef<HTMLInputElement> | null;
-  navbar: boolean;
+
   context: actions;
   handleReadUnread: Function;
   newMessages: null | number;
@@ -437,8 +434,7 @@ export interface IBadgeProps {
 
 export interface ISidebarProps {
   className: string;
-  navbar: boolean;
-  setNavbar: Function;
+
   setSection: Function;
   newUser: boolean;
   groups: IGroupProps[];

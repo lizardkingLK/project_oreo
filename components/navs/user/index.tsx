@@ -8,12 +8,15 @@ import Invitation from '@/components/svgs/invitation';
 import Home from '@/components/svgs/home';
 import { sections } from '@/utils/enums';
 import { classNames } from '@/utils/helpers';
+import { useNavbar } from './store';
 
 const UserNavbar = (props: IUserNavbarProps) => {
+  const navbar = useNavbar((state) => state.navbar);
+  const setNavbar = useNavbar((state) => state.setNavbar);
   const { isSignedIn } = useAuth();
 
   if (props) {
-    const { navbar, setNavbar, setSection, newUser } = props;
+    const { setSection, newUser } = props;
 
     const handleSelection = (selection: number) => {
       setSection(selection);
@@ -81,9 +84,11 @@ const UserNavbar = (props: IUserNavbarProps) => {
         )}
         {navbar && (
           <button
-            className={`absolute left-full mt-8 ml-4 hover:text-white
-                        ${navbar ? 'text-stone-800' : 'text-black'}`}
-            onClick={(prevState) => setNavbar(!prevState)}
+            className={classNames(
+              'absolute left-full mt-8 ml-4 hover:text-white',
+              navbar ? 'text-stone-800' : 'text-black'
+            )}
+            onClick={() => setNavbar(!navbar)}
           >
             <Bars />
           </button>

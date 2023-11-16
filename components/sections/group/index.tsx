@@ -4,8 +4,11 @@ import ChevronBack from '@/components/svgs/chevronBack';
 import { IGroupSectionProps } from '@/types';
 import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { getRelativeTime, resolveValue } from '@/utils/helpers';
+import { useNavbar } from '@/components/navs/user/store';
 
 const Group = (props: IGroupSectionProps) => {
+  const navbar = useNavbar((state) => state.navbar);
+
   const { setIsScrollLock } = props;
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -48,7 +51,6 @@ const Group = (props: IGroupSectionProps) => {
       onMediaHandler,
       textInputRef,
       loading,
-      navbar,
       forwardModal,
       emojiModal,
       attachmentModal,

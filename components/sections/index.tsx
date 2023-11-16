@@ -39,7 +39,6 @@ const SectionSwitch = (props: ISectionSwitchProps) => {
       onSelectGroupHandler,
       textInputRef,
       loading,
-      navbar,
       forwardModal,
       emojiModal,
       attachmentModal,
@@ -107,7 +106,6 @@ const SectionSwitch = (props: ISectionSwitchProps) => {
           onViewHandler={onViewHandler}
           textInputRef={textInputRef}
           loading={loading}
-          navbar={navbar}
           forwardModal={forwardModal}
           emojiModal={emojiModal}
           attachmentModal={attachmentModal}

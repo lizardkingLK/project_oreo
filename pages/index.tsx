@@ -43,12 +43,15 @@ import LayoutSwitch from '@/components/layout';
 import Spinner from '@/components/svgs/spinner';
 import SectionSwitch from '@/components/sections';
 import SidebarSwitch from '@/components/sidebar';
+import { useNavbar } from '@/components/navs/user/store';
 
 let messaging: IMessaging | null = null;
 let storing: IStoring | null;
 
 const Messages = () => {
-  const [navbar, setNavbar] = useState(false);
+  const navbar = useNavbar((state) => state.navbar);
+  const setNavbar = useNavbar((state) => state.setNavbar);
+
   const [groups, setGroups] = useState<IGroupProps[]>([]);
   const [group, setGroup] = useState<any>(null);
   const [section, setSection] = useState(sections.loading);
@@ -513,7 +516,7 @@ const Messages = () => {
     }
   }, [section]);
 
-  useEffect(() => setNavbar(false), [group, input]);
+  useEffect(() => setNavbar(false), [group, input, setNavbar]);
 
   useEffect(() => {
     if (!userId) {
@@ -766,13 +769,12 @@ const Messages = () => {
       </section>
     );
   }
+  console.log(navbar);
 
   return (
     <LayoutSwitch
       rootElementId="divHome"
       isSignedIn={isSignedIn}
-      navbar={navbar}
-      setNavbar={setNavbar}
       titleData={resolveValue(unread, `(${unread})`, null)}
     >
       <section className="flex justify-center">
@@ -783,8 +785,6 @@ const Messages = () => {
         >
           <SidebarSwitch
             className={classNames(navbar ? '' : 'mt-24 md:mt-20')}
-            navbar={navbar}
-            setNavbar={setNavbar}
             setSection={setSection}
             newUser={groups.length === 0}
             groups={groups}
@@ -825,7 +825,6 @@ const Messages = () => {
             input={input}
             active={active}
             notifs={notifs}
-            navbar={navbar}
             userId={userId}
             forwardModal={forwardModal}
             emojiModal={emojiModal}
