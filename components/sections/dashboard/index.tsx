@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import SectionLayout from '../layout';
 import SummaryCard from '@/components/cards/summary';
-import { cardBodyTypes, elementType } from '@/utils/enums';
+import { cardBodyTypes, elementType, sections } from '@/utils/enums';
 import Avatar from '@/components/avatar';
 import { IDashboardProps, ILatestMessageProps } from '@/types';
 import {
@@ -13,8 +13,12 @@ import {
 } from '@/utils/helpers';
 import Badge from '@/components/badge';
 import Groups from '@/components/svgs/groups';
+import AddFriend from '@/components/svgs/friend/add';
+import { UserButton, useAuth } from '@clerk/nextjs';
 
 const Dashboard = (props: IDashboardProps) => {
+  const { isSignedIn } = useAuth();
+
   const [unread, setUnread] = useState<number | null>(null);
   const [friends, setFriends] = useState<number | null>(null);
   const [online, setOnline] = useState<number | null>(null);
@@ -58,6 +62,7 @@ const Dashboard = (props: IDashboardProps) => {
     return null;
   } else if (props.groups.length > 0) {
     const groups = props.groups,
+      setSection = props.setSection,
       user = props.user,
       name = user?.firstName ?? user?.username,
       gridCols = online || unread ? 3 : 2;
@@ -68,10 +73,36 @@ const Dashboard = (props: IDashboardProps) => {
             <h1 className="text-2xl text-black font-bold" id="textGreeting">
               Hello <span className="text-green-500">{name}</span>
             </h1>
+            <div className="ml-2">
+              <UserButton
+                afterSignOutUrl="/"
+                userProfileMode="modal"
+                appearance={{
+                  elements: {
+                    avatarImage: 'w-12 h-12',
+                    avatarBox: 'w-12 h-12',
+                  },
+                }}
+              />
+            </div>
           </div>
           <div
             className={`pt-4 grid grid-flow-row-dense grid-cols-${gridCols} grid-rows-3 gap-2`}
           >
+            {/* {isSignedIn ? (
+              
+            ) : null} */}
+            <SummaryCard
+              cardType={elementType.button}
+              cardStyle={
+                'bg-gradient-to-r from-green-500 to-green-400 text-black rounded-md'
+              }
+              cardHeaderTitle={'Add Friend'}
+              cardBodyType={cardBodyTypes.ELEMENT}
+              cardBodyStyle="flex justify-center"
+              cardBodyContent={<AddFriend size={12} />}
+              cardClickEvent={() => setSection(sections.addFriend)}
+            />
             {props.groups && (
               <SummaryCard
                 cardType={elementType.button}
