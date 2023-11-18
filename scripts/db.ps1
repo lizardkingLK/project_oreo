@@ -1,6 +1,3 @@
-# db.ps1 - Run As Administrator
-cd ../
-
 # installing dependencies
 Write-Host "Installing Dependencies..."
 npm install -g dotenv-cli
