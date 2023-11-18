@@ -2,7 +2,7 @@ import React, {
   Dispatch,
   Fragment,
   SetStateAction,
-  useEffect,
+  useMemo,
   useState,
 } from 'react';
 import { IMessageEditorProps, IUIProps } from '@/types';
@@ -12,16 +12,17 @@ import SubmitButton from './buttons/Submit';
 import useWidth from '@/components/hooks/useWidth';
 import EmojiModal from '@/components/modals/emoji';
 import AttachmentModal from '@/components/modals/attachment';
+import { classNames } from '@/utils/helpers';
 
 const MessageEditor = (props: IMessageEditorProps) => {
+  const width = useWidth();
+
   const [files, setFiles] = useState(null);
   const [file, setFile] = useState<Blob | MediaSource | null>(null);
   const [type, setType] = useState(null);
   const [ui, setUi] = useState<IUIProps>({ iconSize: 0, iconPadding: 0 });
 
-  const width = useWidth();
-
-  useEffect(() => {
+  useMemo(() => {
     setUi({ iconSize: width < 768 ? 6 : 7, iconPadding: 0 });
   }, [width]);
 
@@ -98,11 +99,15 @@ const MessageEditor = (props: IMessageEditorProps) => {
           />
           <div className="flex items-center justify-center w-full">
             <button
-              className="py-2 md:py-4 pl-2 md:pl-4 rounded-l-full bg-stone-300 text:md md:text-xl text-stone-600 hover:text-green-500 flex items-center justify-center"
+              className={classNames(
+                'py-2 md:py-4 pl-2 md:pl-4 rounded-l-full bg-stone-300 text:md md:text-xl flex items-center justify-center',
+                emojiModal ? 'text-green-500' : 'text-stone-600',
+                'hover:text-green-500'
+              )}
               title="Insert Emoji"
-              onClick={() =>
-                openDialogHandler(setAttachmentModal, setEmojiModal)
-              }
+              onClick={() => {
+                openDialogHandler(setAttachmentModal, setEmojiModal);
+              }}
             >
               <Emoji size={ui.iconSize} />
             </button>
@@ -117,9 +122,11 @@ const MessageEditor = (props: IMessageEditorProps) => {
               title="Type Message Here"
             />
             <button
-              className={`p-2 md:p-4 bg-stone-300 ${
-                attachmentModal ? 'text-green-500' : 'text-stone-600'
-              } hover:text-green-500`}
+              className={classNames(
+                'p-2 md:p-4 bg-stone-300',
+                attachmentModal ? 'text-green-500' : 'text-stone-600',
+                'hover:text-green-500'
+              )}
               title="Send Attachment"
               onClick={() =>
                 openDialogHandler(setEmojiModal, setAttachmentModal)

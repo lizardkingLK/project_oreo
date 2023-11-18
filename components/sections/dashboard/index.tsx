@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import SectionLayout from '../layout';
 import SummaryCard from '@/components/cards/summary';
 import { cardBodyTypes, elementType, sections } from '@/utils/enums';
@@ -16,14 +16,17 @@ import Badge from '@/components/badge';
 import Groups from '@/components/svgs/groups';
 import AddFriend from '@/components/svgs/friend/add';
 import { UserButton } from '@clerk/nextjs';
+import { useSection } from '../store';
 
 const Dashboard = (props: IDashboardProps) => {
+  const setSection = useSection((state) => state.setSection);
+
   const [unread, setUnread] = useState<number | null>(null);
   const [friends, setFriends] = useState<number | null>(null);
   const [online, setOnline] = useState<number | null>(null);
   const [latest, setLatest] = useState<ILatestMessageProps | null>(null);
 
-  useEffect(() => {
+  useMemo(() => {
     setUnread(() => {
       const unread = props.groups
         ?.map((g) => g.unreadCount)
@@ -61,12 +64,11 @@ const Dashboard = (props: IDashboardProps) => {
     return null;
   } else if (props.groups.length > 0) {
     const groups = props.groups,
-      setSection = props.setSection,
       user = props.user,
       name = user?.firstName ?? user?.username,
       gridCols = online || unread ? 3 : 2;
     return (
-      <SectionLayout>
+      <SectionLayout isBackButton={false}>
         <div className="p-4">
           <div className="flex justify-between items-center w-full">
             <h1 className="text-2xl text-black font-bold" id="textGreeting">

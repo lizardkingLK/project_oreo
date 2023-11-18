@@ -1,10 +1,14 @@
 import { ISectionLayoutProps } from '@/types';
 import React from 'react';
-import Badge from '../badge';
+import ChevronBack from '../svgs/chevronBack';
+import { sections } from '@/utils/enums';
+import { useSection } from './store';
 
 const SectionLayout = (props: ISectionLayoutProps) => {
+  const setSection = useSection((state) => state.setSection);
+
   if (props) {
-    const { title, content, tooltip, children } = props;
+    const { title, isBackButton, children } = props;
     return (
       <section className="flex justify-center">
         <div
@@ -18,7 +22,15 @@ const SectionLayout = (props: ISectionLayoutProps) => {
                 {title}
               </h1>
             )}
-            {content && tooltip && <Badge text={content} tooltip={tooltip} />}
+            {isBackButton && (
+              <button
+                className="text-black hover:text-green-500"
+                title="Home"
+                onClick={() => setSection(sections.home)}
+              >
+                <ChevronBack />
+              </button>
+            )}
           </div>
           {children}
         </div>

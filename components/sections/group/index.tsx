@@ -4,9 +4,14 @@ import ChevronBack from '@/components/svgs/chevronBack';
 import { IGroupSectionProps } from '@/types';
 import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { getRelativeTime, resolveValue } from '@/utils/helpers';
+import { useSection } from '../store';
+import { sections } from '@/utils/enums';
+import { useScrollLock } from '@/components/lists/message/store';
 
 const Group = (props: IGroupSectionProps) => {
-  const { setIsScrollLock } = props;
+  const setScrollLock = useScrollLock((state) => state.setScrollLock);
+
+  const setSection = useSection((state) => state.setSection);
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -18,11 +23,11 @@ const Group = (props: IGroupSectionProps) => {
         const scroll = current?.scrollTop ?? 0,
           lockable = maxScroll < scroll;
         setMaxScroll((prev) => resolveValue(lockable, scroll, prev));
-        setIsScrollLock(scroll > maxScroll - 240);
+        setScrollLock(scroll > maxScroll - 240);
       };
     current?.addEventListener('scroll', handler);
     return () => current?.removeEventListener('scroll', handler);
-  }, [maxScroll, scrollRef, setIsScrollLock]);
+  }, [maxScroll, scrollRef, setScrollLock]);
 
   if (props) {
     const {
@@ -62,13 +67,7 @@ const Group = (props: IGroupSectionProps) => {
 
     return (
       <Fragment>
-        <div className="p-4 flex items-center sticky top-0 bg-stone-300 z-10">
-          <button
-            className="block md:hidden text-black hover:text-green-500 basis-1/12 mr-4"
-            onClick={() => setGroup(null)}
-          >
-            <ChevronBack />
-          </button>
+        <div className="p-4 flex justify-between items-center sticky top-0 bg-stone-300 z-10">
           <div className={'basis-8/12'}>
             <h1 className="flex text-md md:text-2xl text-black font-bold">
               <span>{group.name}</span>
@@ -85,6 +84,16 @@ const Group = (props: IGroupSectionProps) => {
               )
             )}
           </div>
+          <button
+            className="text-black hover:text-green-500"
+            title="Home"
+            onClick={() => {
+              setGroup(null);
+              setSection(sections.home);
+            }}
+          >
+            <ChevronBack />
+          </button>
         </div>
         <div
           className="md:ml-4 overflow-scroll h-[calc(100vh-8rem)] md:h-[calc(100vh-12rem)]"

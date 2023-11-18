@@ -4,7 +4,6 @@ import { ISidebarProps } from '@/types';
 
 const SidebarSwitch = (props: ISidebarProps) => {
   const {
-    className,
     groups,
     onSelectGroupHandler,
     group,
@@ -14,7 +13,7 @@ const SidebarSwitch = (props: ISidebarProps) => {
   } = props;
 
   return (
-    <div className={className}>
+    <div className={'mt-24 md:mt-20'}>
       <MessageLinkList
         groups={groups}
         onGroupClickHandler={onSelectGroupHandler}

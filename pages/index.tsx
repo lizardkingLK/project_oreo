@@ -43,14 +43,22 @@ import LayoutSwitch from '@/components/layout';
 import Spinner from '@/components/svgs/spinner';
 import SectionSwitch from '@/components/sections';
 import SidebarSwitch from '@/components/sidebar';
+import { useSection } from '@/components/sections/store';
+import { useScrollLock } from '@/components/lists/message/store';
 
 let messaging: IMessaging | null = null;
 let storing: IStoring | null;
 
 const Messages = () => {
+  // sections
+  const section = useSection((state) => state.section);
+  const setSection = useSection((state) => state.setSection);
+
+  // scroll locks
+  const scrollLock = useScrollLock((state) => state.scrollLock);
+
   const [groups, setGroups] = useState<IGroupProps[]>([]);
   const [group, setGroup] = useState<any>(null);
-  const [section, setSection] = useState(sections.loading);
   const [input, setInput] = useState('');
   const [output, setOutput] = useState<any>(null);
   const [active, setActive] = useState<any>(false);
@@ -69,7 +77,6 @@ const Messages = () => {
   const [referenceId, setReferenceId] = useState<null | string>(null);
   const [context, setContext] = useState<actions>(actions.create);
   const [media, setMedia] = useState<null | IMessageProps>(null);
-  const [isScrollLock, setIsScrollLock] = useState<boolean>(false);
   const [newMessages, setNewMessages] = useState<null | number>(null);
 
   const textInputRef = useRef<null | HTMLInputElement>(null);
@@ -469,8 +476,8 @@ const Messages = () => {
   };
 
   useEffect(() => {
-    isScrollLock && setNewMessages(null);
-  }, [isScrollLock]);
+    scrollLock && setNewMessages(null);
+  }, [scrollLock]);
 
   useEffect(() => {
     if (attachmentModal || emojiModal) {
@@ -541,7 +548,7 @@ const Messages = () => {
     return () => {
       messaging?.dispose();
     };
-  }, [userId]);
+  }, [setSection, userId]);
 
   useEffect(() => {
     const tempGroup = groups?.find(
@@ -555,7 +562,7 @@ const Messages = () => {
 
   useEffect(() => {
     lastMessageRef?.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [notifs, input, group]);
+  }, [notifs, group]);
 
   useEffect(() => {
     setUnread(() => {
@@ -590,6 +597,7 @@ const Messages = () => {
         userId: null,
         readBy: output.readBy,
       };
+
     tempGroupMessages[tempGroupMessages.length] = newMessage;
 
     Object.assign(tempGroup, {
@@ -598,7 +606,7 @@ const Messages = () => {
       unreadCount: resolveValue(isActiveGroup, 0, tempGroup.unreadCount + 1),
     });
 
-    if (isScrollLock) {
+    if (scrollLock) {
       setNotifs(getRandomNumber());
     } else if (isActiveGroup) {
       setNewMessages((prev) => (prev ?? 0) + 1);
@@ -610,7 +618,7 @@ const Messages = () => {
     isActiveGroup && setMessages(tempGroupMessages);
 
     setOutput(null);
-  }, [output, groups, group, isScrollLock]);
+  }, [output, groups, group, scrollLock]);
 
   useEffect(() => {
     if (!online) {
@@ -750,12 +758,6 @@ const Messages = () => {
     });
   }, [rooms, groups, userId]);
 
-  useEffect(() => {
-    console.log({
-      isScrollLock,
-    });
-  }, [isScrollLock]);
-
   if (!isLoaded) {
     return (
       <section className="h-screen flex justify-center items-center">
@@ -767,7 +769,7 @@ const Messages = () => {
   return (
     <LayoutSwitch
       rootElementId="divHome"
-      isSignedIn={isSignedIn}
+      show={isSignedIn && groups.length > 0}
       titleData={resolveValue(unread, `(${unread})`, null)}
     >
       <section className="flex justify-center">
@@ -783,15 +785,12 @@ const Messages = () => {
             onSelectGroupHandler={onSelectGroupHandler}
             group={group}
             handleReadUnread={handleReadUnread}
-            className={'mt-24 md:mt-20'}
           />
         </div>
         <div
           className={`basis-3/4 absolute top-0 bg-stone-300 md:bg-transparent md:relative md:block container`}
         >
           <SectionSwitch
-            section={section}
-            setSection={setSection}
             lastMessageRef={lastMessageRef}
             onChangeHandler={onChangeHandler}
             onEmojiHandler={onEmojiHandler}
@@ -825,7 +824,6 @@ const Messages = () => {
             setAttachmentModal={setAttachmentModal}
             context={context}
             handleReadUnread={handleReadUnread}
-            setIsScrollLock={setIsScrollLock}
             newMessages={newMessages}
             setNewMessages={setNewMessages}
             onClickNewMessageHandler={onClickNewMessageHandler}
