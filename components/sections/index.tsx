@@ -8,13 +8,14 @@ import AddFriend from '@/components/sections/friends/add';
 import Dashboard from '@/components/sections/dashboard';
 import Group from './group';
 import Spinner from '../svgs/spinner';
+import { useSection } from './store';
 
 const SectionSwitch = (props: ISectionSwitchProps) => {
+  const section = useSection((state) => state.section);
+
   if (props) {
     const {
       userId,
-      section,
-      setSection,
       groups,
       user,
       messages,
@@ -39,7 +40,6 @@ const SectionSwitch = (props: ISectionSwitchProps) => {
       onSelectGroupHandler,
       textInputRef,
       loading,
-      navbar,
       forwardModal,
       emojiModal,
       attachmentModal,
@@ -48,7 +48,6 @@ const SectionSwitch = (props: ISectionSwitchProps) => {
       setAttachmentModal,
       context,
       handleReadUnread,
-      setIsScrollLock,
       newMessages,
       setNewMessages,
       onClickNewMessageHandler,
@@ -68,7 +67,6 @@ const SectionSwitch = (props: ISectionSwitchProps) => {
             user={user}
             notifs={notifs}
             onSelectGroupHandler={onSelectGroupHandler}
-            setSection={setSection}
           />
         </div>
       );
@@ -107,7 +105,6 @@ const SectionSwitch = (props: ISectionSwitchProps) => {
           onViewHandler={onViewHandler}
           textInputRef={textInputRef}
           loading={loading}
-          navbar={navbar}
           forwardModal={forwardModal}
           emojiModal={emojiModal}
           attachmentModal={attachmentModal}
@@ -116,7 +113,6 @@ const SectionSwitch = (props: ISectionSwitchProps) => {
           setAttachmentModal={setAttachmentModal}
           context={context}
           handleReadUnread={handleReadUnread}
-          setIsScrollLock={setIsScrollLock}
           newMessages={newMessages}
           setNewMessages={setNewMessages}
           onClickNewMessageHandler={onClickNewMessageHandler}

@@ -1,10 +1,4 @@
-import {
-  actions,
-  elementType,
-  groupTypes,
-  messageWays,
-  sections,
-} from '@/utils/enums';
+import { actions, elementType, groupTypes, messageWays } from '@/utils/enums';
 
 import {
   ChangeEventHandler,
@@ -39,9 +33,7 @@ export type PersistedSocket = {
 export interface ILayoutProps {
   children: ReactNode;
   rootElementId: string;
-  isSignedIn: boolean;
-  navbar: boolean;
-  setNavbar: Function;
+  show: boolean;
   titleData: null | string;
 }
 
@@ -259,13 +251,6 @@ export interface IAvatarProps {
   displayActive?: boolean;
 }
 
-export interface IUserNavbarProps {
-  navbar: boolean;
-  setNavbar: Function;
-  setSection: Function;
-  newUser: boolean;
-}
-
 export interface ISpinnerProps {
   size: number;
 }
@@ -298,8 +283,7 @@ export interface IDialogProps {
 
 export interface ISectionLayoutProps {
   title?: string;
-  content?: string;
-  tooltip?: string;
+  isBackButton: boolean;
   children: ReactNode;
 }
 
@@ -308,19 +292,10 @@ export interface IDashboardProps {
   user: any;
   notifs: NotificationType;
   onSelectGroupHandler: Function;
-  setSection: Function;
-}
-
-export interface IIntroductionProps {
-  user: any;
-  groups: IGroupProps[];
-  setSection: Function;
-  onSelectGroupHandler: Function;
 }
 
 export interface ISectionSwitchProps {
   userId: string | null;
-  section: sections;
   user: any;
   active: any;
   notifs: NotificationType;
@@ -343,17 +318,14 @@ export interface ISectionSwitchProps {
   onAddFriendHandler: Function;
   onSelectGroupHandler: Function;
   setGroup: Function;
-  setSection: Function;
   forwardModal: boolean;
   emojiModal: boolean;
   attachmentModal: boolean;
   setForwardModal: Function;
   setEmojiModal: Dispatch<SetStateAction<boolean>>;
   setAttachmentModal: Dispatch<SetStateAction<boolean>>;
-  setIsScrollLock: Dispatch<SetStateAction<boolean>>;
   lastMessageRef: null | LegacyRef<HTMLDivElement>;
   textInputRef: LegacyRef<HTMLInputElement> | null;
-  navbar: boolean;
   context: actions;
   handleReadUnread: Function;
   newMessages: null | number;
@@ -388,10 +360,8 @@ export interface IGroupSectionProps {
   setForwardModal: Function;
   setEmojiModal: Dispatch<SetStateAction<boolean>>;
   setAttachmentModal: Dispatch<SetStateAction<boolean>>;
-  setIsScrollLock: Dispatch<SetStateAction<boolean>>;
   lastMessageRef: null | LegacyRef<HTMLDivElement>;
   textInputRef: LegacyRef<HTMLInputElement> | null;
-  navbar: boolean;
   context: actions;
   handleReadUnread: Function;
   newMessages: null | number;
@@ -436,11 +406,6 @@ export interface IBadgeProps {
 }
 
 export interface ISidebarProps {
-  className: string;
-  navbar: boolean;
-  setNavbar: Function;
-  setSection: Function;
-  newUser: boolean;
   groups: IGroupProps[];
   active: boolean;
   userId: string | null;

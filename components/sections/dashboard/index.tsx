@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import SectionLayout from '../layout';
 import SummaryCard from '@/components/cards/summary';
-import { cardBodyTypes, elementType } from '@/utils/enums';
+import { cardBodyTypes, elementType, sections } from '@/utils/enums';
 import Avatar from '@/components/avatar';
 import { IDashboardProps, ILatestMessageProps } from '@/types';
 import {
@@ -10,17 +10,23 @@ import {
   getRelativeTime,
   getTimeConverted,
   isImage,
+  resolveValue,
 } from '@/utils/helpers';
 import Badge from '@/components/badge';
 import Groups from '@/components/svgs/groups';
+import AddFriend from '@/components/svgs/friend/add';
+import { UserButton } from '@clerk/nextjs';
+import { useSection } from '../store';
 
 const Dashboard = (props: IDashboardProps) => {
+  const setSection = useSection((state) => state.setSection);
+
   const [unread, setUnread] = useState<number | null>(null);
   const [friends, setFriends] = useState<number | null>(null);
   const [online, setOnline] = useState<number | null>(null);
   const [latest, setLatest] = useState<ILatestMessageProps | null>(null);
 
-  useEffect(() => {
+  useMemo(() => {
     setUnread(() => {
       const unread = props.groups
         ?.map((g) => g.unreadCount)
@@ -62,16 +68,39 @@ const Dashboard = (props: IDashboardProps) => {
       name = user?.firstName ?? user?.username,
       gridCols = online || unread ? 3 : 2;
     return (
-      <SectionLayout>
+      <SectionLayout isBackButton={false}>
         <div className="p-4">
           <div className="flex justify-between items-center w-full">
             <h1 className="text-2xl text-black font-bold" id="textGreeting">
               Hello <span className="text-green-500">{name}</span>
             </h1>
+            <div className="ml-2">
+              <UserButton
+                afterSignOutUrl="/"
+                userProfileMode="modal"
+                appearance={{
+                  elements: {
+                    avatarImage: 'w-12 h-12',
+                    avatarBox: 'w-12 h-12',
+                  },
+                }}
+              />
+            </div>
           </div>
           <div
             className={`pt-4 grid grid-flow-row-dense grid-cols-${gridCols} grid-rows-3 gap-2`}
           >
+            <SummaryCard
+              cardType={elementType.button}
+              cardStyle={
+                'bg-gradient-to-r from-green-500 to-green-400 text-black rounded-md'
+              }
+              cardHeaderTitle={'Add Friend'}
+              cardBodyType={cardBodyTypes.ELEMENT}
+              cardBodyStyle="flex justify-center"
+              cardBodyContent={<AddFriend size={12} />}
+              cardClickEvent={() => setSection(sections.addFriend)}
+            />
             {props.groups && (
               <SummaryCard
                 cardType={elementType.button}
@@ -129,9 +158,11 @@ const Dashboard = (props: IDashboardProps) => {
                 cardBodyType={cardBodyTypes.ELEMENT}
                 cardBodyContent={
                   <h1 className="text-xl font-bold">
-                    {isImage(latest.content)
-                      ? 'Image'
-                      : getBriefContent(latest.content)}
+                    {resolveValue(
+                      isImage(latest.content),
+                      'Image',
+                      getBriefContent(latest.content)
+                    )}
                   </h1>
                 }
                 cardBodyLongContent={latest.content}

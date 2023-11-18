@@ -1,15 +1,9 @@
 import React from 'react';
-import UserNavbar from '../navs/user';
 import MessageLinkList from '../lists/message/MessageLinkList';
 import { ISidebarProps } from '@/types';
 
 const SidebarSwitch = (props: ISidebarProps) => {
   const {
-    className,
-    navbar,
-    setNavbar,
-    setSection,
-    newUser,
     groups,
     onSelectGroupHandler,
     group,
@@ -17,32 +11,20 @@ const SidebarSwitch = (props: ISidebarProps) => {
     userId,
     handleReadUnread,
   } = props;
-  if (navbar) {
-    return (
-      <div className={className}>
-        <UserNavbar
-          navbar={navbar}
-          setNavbar={setNavbar}
-          setSection={setSection}
-          newUser={newUser}
-        />
-      </div>
-    );
-  } else {
-    return (
-      <div className={className}>
-        <MessageLinkList
-          groups={groups}
-          onGroupClickHandler={onSelectGroupHandler}
-          selectedGroup={group}
-          active={active}
-          userId={userId}
-          requireOptions={true}
-          handleReadUnread={handleReadUnread}
-        />
-      </div>
-    );
-  }
+
+  return (
+    <div className={'mt-24 md:mt-20'}>
+      <MessageLinkList
+        groups={groups}
+        onGroupClickHandler={onSelectGroupHandler}
+        selectedGroup={group}
+        active={active}
+        userId={userId}
+        requireOptions={true}
+        handleReadUnread={handleReadUnread}
+      />
+    </div>
+  );
 };
 
 export default SidebarSwitch;

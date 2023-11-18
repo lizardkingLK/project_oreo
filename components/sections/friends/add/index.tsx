@@ -7,7 +7,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import SectionLayout from '../../layout';
 import { IAddFriendProps } from '@/types';
 import { getUsers, inviteFriend } from '@/utils/http';
-import { formatCompactNumber } from '@/utils/helpers';
 
 const AddFriend = (props: IAddFriendProps) => {
   const [search, setSearch] = useState('');
@@ -82,16 +81,8 @@ const AddFriend = (props: IAddFriendProps) => {
       setUser(null);
     };
 
-    const usersCount = formatCompactNumber(
-      users?.length.toString() ?? null
-    ).toString();
-
     return (
-      <SectionLayout
-        title="Add Friend"
-        content={usersCount}
-        tooltip={`${usersCount} users available`}
-      >
+      <SectionLayout title="Add Friend" isBackButton={Boolean(groups?.length)}>
         <form
           onSubmit={handleSearch}
           className="md:flex md:justify-between md:items-center"
