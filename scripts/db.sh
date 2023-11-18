@@ -1,6 +1,3 @@
-# db.ps1 - Run As Priviledged
-cd ../
-
 # installing dependencies
 echo "Installing Dependencies..."
 npm install -g dotenv-cli
