@@ -1,3 +1,4 @@
+import { Database } from '@/types/supabase';
 import { IMessageDataProps } from './../types/index';
 import {
   activeInactive,
@@ -10,7 +11,7 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
-const supabaseClient = createClient(supabaseUrl, supabaseKey, {
+const supabaseClient = createClient<Database>(supabaseUrl, supabaseKey, {
   auth: { persistSession: false },
 });
 
@@ -110,26 +111,28 @@ export const supabaseUtil = {
     ownerId: string,
     groupId: string,
     referenceId: string,
-    userId: string
+    // TODO: add members
   ) {
     return await supabaseClient
       .from(tableNames.message)
       .insert([
         {
-          userId: ownerId,
+          ownerId: ownerId,
           groupId: groupId,
-          referenceId: referenceId,
-          createdFor: [userId, ownerId],
-          readBy: [
-            { id: userId, value: false },
-            { id: ownerId, value: true },
-          ],
+          messageId: referenceId,
           content: quickMessages.hi,
-          timestamp: new Date().getTime(),
+          createdAt: new Date().getTime().toString(),
           messageType: messageTypes.INTRODUCTION,
         },
       ])
       .select();
+  },
+  async getGroups(userId: IdType) {
+    return await supabaseClient
+      .from(tableNames.group)
+      .select()
+      .eq('ownerId', userId)
+      .order('createdAt');
   },
   async getMessages(userId: IdType) {
     return await supabaseClient
@@ -154,7 +157,8 @@ export const supabaseUtil = {
   async updateMarkAsUnread(message: IMessageDataProps) {
     return await supabaseClient
       .from(tableNames.message)
-      .update({ readBy: message.readBy })
+      // .update({ readBy: message.readBy })
+      .update({ status: 1 })
       .eq('referenceId', message.referenceId);
   },
   async updateMessageContent(referenceId: IdType, content: string) {
@@ -166,7 +170,8 @@ export const supabaseUtil = {
   async updateMessages(readBy: { id: string; value: boolean }[], id: string) {
     return await supabaseClient
       .from(tableNames.message)
-      .update({ readBy })
+      // .update({ readBy })
+      .update({ status: 1 })
       .eq('id', id);
   },
   async createMessage(
@@ -179,13 +184,14 @@ export const supabaseUtil = {
   ) {
     return await supabaseClient.from(tableNames.message).insert([
       {
-        referenceId: referenceId,
-        userId: fromId,
+        messageId: referenceId,
+        ownerId: fromId,
         groupId: groupId,
-        createdFor: [toId, fromId],
+        // createdFor: [toId, fromId],
         content: content,
-        readBy,
-        timestamp: new Date().getTime(),
+        // readBy,
+        status: 1,
+        createdAt: new Date().getTime().toString(),
       },
     ]);
   },

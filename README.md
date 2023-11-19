@@ -13,6 +13,7 @@ An open-source chat application to learn real-time messaging.
 ## .env.local file to be added
 
 ```
+NEXT_PUBLIC_HOST_URL=YOU_NEXT_PUBLIC_HOST_URL
 NEXT_PUBLIC_MESSAGING=NEXT_PUBLIC_MESSAGING[local|cloud]
 NEXT_PUBLIC_STORING=NEXT_PUBLIC_STORING[local|cloud]
 NEXT_PUBLIC_SUPABASE_URL=YOUR_NEXT_PUBLIC_SUPABASE_URL

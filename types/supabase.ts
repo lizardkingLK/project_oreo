@@ -48,6 +48,7 @@ export interface Database {
           displayUrl: string
           groupId: string
           id: number
+          members: string[] | null
           name: string
           ownerId: string
           status: number
@@ -58,6 +59,7 @@ export interface Database {
           displayUrl: string
           groupId: string
           id?: number
+          members?: string[] | null
           name: string
           ownerId: string
           status?: number
@@ -68,6 +70,7 @@ export interface Database {
           displayUrl?: string
           groupId?: string
           id?: number
+          members?: string[] | null
           name?: string
           ownerId?: string
           status?: number
@@ -122,6 +125,30 @@ export interface Database {
         }
         Returns: {
           referenceid: string
+        }[]
+      }
+      get_groups: {
+        Args: {
+          userid: string
+        }
+        Returns: {
+          groupid: string
+        }[]
+      }
+      get_messages: {
+        Args: {
+          userid: string
+        }
+        Returns: {
+          id: number
+          createdAt: string
+          content: string
+          status: number
+          groupId: string
+          messageType: number
+          readBy: string[]
+          messageId: string
+          ownerId: string
         }[]
       }
       getgroupsbyuserid: {

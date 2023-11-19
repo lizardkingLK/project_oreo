@@ -525,6 +525,8 @@ const Messages = () => {
     }
     (async () => {
       const groups = await getGroups(userId);
+      console.log(groups);
+
       groupMessages(groups, userId);
       setSection(sections.home);
       messaging = Messaging.create(getMessagingMethod(), {
