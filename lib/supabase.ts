@@ -2,7 +2,6 @@ import { Database } from '@/types/supabase';
 import { IMessageDataProps } from './../types/index';
 import {
   activeInactive,
-  messageTypes,
   quickMessages,
   tableNames,
 } from '@/utils/enums';
