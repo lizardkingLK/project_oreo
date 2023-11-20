@@ -18,14 +18,15 @@ model Message {
 }
 
 model Group {
-  id         Int    @id @default(autoincrement())
+  id         Int      @id @default(autoincrement())
   groupId    String
   ownerId    String
   name       String
   displayUrl String
-  type       Int    @default(1)
+  type       Int      @default(1)
   createdAt  String
-  status     Int    @default(1)
+  status     Int      @default(1)
+  members    String[]
 }
 
 datasource db {

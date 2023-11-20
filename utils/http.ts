@@ -1,8 +1,8 @@
 import { IMessageDataProps, IMessageProps } from '@/types';
 
 export const apiUrls = {
-  feed: '/api/feed',
   message: {
+    getMessages: '/api/message/get_messages',
     updateRead: '/api/message/update_read',
     createMessage: '/api/message/create_message',
     updateMessage: '/api/message/update_message',
@@ -26,14 +26,8 @@ export const apiUrls = {
 
 const headers = { 'Content-Type': 'application/json' };
 
-export const getFeeds = async (userId: string) => {
-  return await fetch(`${apiUrls.feed}?id=${userId}`)
-    .then((response) => response.json())
-    .then((data) => data);
-};
-
 export const getGroups = async (userId: string) => {
-  return await fetch(apiUrls.group.getAllMessages + '?userId=' + userId)
+  return await fetch(apiUrls.message.getMessages + '?userId=' + userId)
     .then((response) => response.json())
     .then((data) => data);
 };
