@@ -14,6 +14,7 @@ import {
 
 import { User } from '@clerk/nextjs/dist/types/server';
 import { EmojiClickData } from 'emoji-picker-react';
+import { Json } from './supabase';
 
 export type NameType = string | null | undefined;
 
@@ -61,7 +62,7 @@ export interface IMessageProps {
   fromId: any;
   toId: any;
   userId: any;
-  readBy: IReadByDataProps[];
+  readBy: any;
 }
 
 export interface ILatestMessageProps extends IMessageProps {
@@ -74,7 +75,7 @@ export interface IMessageDataProps extends IMessageProps {
   userId: any;
   groupType: groupTypes;
   createdFor: ICreatedForDataProps[];
-  readBy: IReadByDataProps[];
+  readBy: any;
   timestamp: string;
 }
 

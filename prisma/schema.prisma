@@ -6,15 +6,20 @@ generator client {
 }
 
 model Message {
-  id          Int      @id @default(autoincrement())
-  messageId   String
-  ownerId     String
-  groupId     String
-  messageType Int      @default(1)
-  readBy      String[]
-  content     String
-  createdAt   String
-  status      Int      @default(1)
+  id            Int      @id @default(autoincrement())
+  referenceId   String
+  userId        String
+  groupId       String
+  groupType     Int      @default(1)
+  groupName     String?
+  groupImageUrl String?
+  messageType   Int      @default(1)
+  createdFor    String[]
+  readBy        Json[]
+  content       String?
+  createdAt     DateTime @default(now())
+  timestamp     String?
+  status        Int      @default(1)
 }
 
 model Group {

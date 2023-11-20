@@ -80,37 +80,52 @@ export interface Database {
       }
       Message: {
         Row: {
-          content: string
+          content: string | null
           createdAt: string
+          createdFor: string[] | null
           groupId: string
+          groupImageUrl: string | null
+          groupName: string | null
+          groupType: number
           id: number
-          messageId: string
           messageType: number
-          ownerId: string
-          readBy: string[] | null
+          readBy: Json[] | null
+          referenceId: string
           status: number
+          timestamp: string | null
+          userId: string
         }
         Insert: {
-          content: string
-          createdAt: string
+          content?: string | null
+          createdAt?: string
+          createdFor?: string[] | null
           groupId: string
+          groupImageUrl?: string | null
+          groupName?: string | null
+          groupType?: number
           id?: number
-          messageId: string
           messageType?: number
-          ownerId: string
-          readBy?: string[] | null
+          readBy?: Json[] | null
+          referenceId: string
           status?: number
+          timestamp?: string | null
+          userId: string
         }
         Update: {
-          content?: string
+          content?: string | null
           createdAt?: string
+          createdFor?: string[] | null
           groupId?: string
+          groupImageUrl?: string | null
+          groupName?: string | null
+          groupType?: number
           id?: number
-          messageId?: string
           messageType?: number
-          ownerId?: string
-          readBy?: string[] | null
+          readBy?: Json[] | null
+          referenceId?: string
           status?: number
+          timestamp?: string | null
+          userId?: string
         }
         Relationships: []
       }
