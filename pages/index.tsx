@@ -1,7 +1,9 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { useAuth, useUser } from '@clerk/nextjs';
-import { EmojiClickData } from 'emoji-picker-react';
-
+import LayoutSwitch from '@/components/layout';
+import { useScrollLock } from '@/components/lists/message/store';
+import SectionSwitch from '@/components/sections';
+import { useSection } from '@/components/sections/store';
+import SidebarSwitch from '@/components/sidebar';
+import Spinner from '@/components/svgs/spinner';
 import {
   ICreatedForDataProps,
   IDeletedMessageProps,
@@ -20,7 +22,6 @@ import {
   strings,
 } from '@/utils/enums';
 import {
-  classNames,
   getMessageType,
   getMessagingMethod,
   getNameOfUser,
@@ -37,14 +38,11 @@ import {
   updateMessage,
   updateUnread,
 } from '@/utils/http';
-import { IMessaging, Messaging } from '@/utils/strategy/messaging';
-import { IStoring, Storing } from '@/utils/strategy/storing';
-import LayoutSwitch from '@/components/layout';
-import Spinner from '@/components/svgs/spinner';
-import SectionSwitch from '@/components/sections';
-import SidebarSwitch from '@/components/sidebar';
-import { useSection } from '@/components/sections/store';
-import { useScrollLock } from '@/components/lists/message/store';
+import { IMessaging, Messaging } from '@/utils/messaging/strategy';
+import { IStoring, Storing } from '@/utils/storing/strategy';
+import { useAuth, useUser } from '@clerk/nextjs';
+import { EmojiClickData } from 'emoji-picker-react';
+import React, { useEffect, useRef, useState } from 'react';
 
 let messaging: IMessaging | null = null;
 let storing: IStoring | null;
@@ -425,6 +423,8 @@ const Messages = () => {
   };
 
   const onAddFriendHandler = (messageData: IMessageDataProps) => {
+    console.log(messageData);
+
     const target: ICreatedForDataProps = resolveValue(
         messageData.userId === userId,
         messageData.createdFor[0],
@@ -525,8 +525,6 @@ const Messages = () => {
     }
     (async () => {
       const groups = await getGroups(userId);
-      console.log(groups);
-
       groupMessages(groups, userId);
       setSection(sections.home);
       messaging = Messaging.create(getMessagingMethod(), {
@@ -649,7 +647,10 @@ const Messages = () => {
         );
         g.unreadCount = resolveValue(
           g.unreadCount > 0 &&
-            deletedMessage?.readBy.find((rb) => rb.id === userId && !rb.value),
+            deletedMessage?.readBy.find(
+              (rb: { id: string | null | undefined; value: any }) =>
+                rb.id === userId && !rb.value
+            ),
           g.unreadCount - 1,
           g.unreadCount
         );
@@ -762,7 +763,7 @@ const Messages = () => {
 
   if (!isLoaded) {
     return (
-      <section className="h-screen flex justify-center items-center">
+      <section className="flex h-screen items-center justify-center">
         <Spinner size={12} />
       </section>
     );
@@ -776,8 +777,10 @@ const Messages = () => {
     >
       <section className="flex justify-center">
         <div
-          className={classNames(
-            groups.length > 0 ? 'basis-3/4 md:basis-1/4' : ''
+          className={resolveValue(
+            groups.length > 0,
+            'basis-3/4 md:basis-1/4',
+            ''
           )}
         >
           <SidebarSwitch
@@ -790,7 +793,7 @@ const Messages = () => {
           />
         </div>
         <div
-          className={`basis-3/4 absolute top-0 bg-stone-300 md:bg-transparent md:relative md:block container`}
+          className={`container absolute top-0 basis-3/4 bg-stone-300 md:relative md:block md:bg-transparent`}
         >
           <SectionSwitch
             lastMessageRef={lastMessageRef}

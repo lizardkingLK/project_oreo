@@ -61,7 +61,7 @@ export interface IMessageProps {
   fromId: any;
   toId: any;
   userId: any;
-  readBy: IReadByDataProps[];
+  readBy: any;
 }
 
 export interface ILatestMessageProps extends IMessageProps {
@@ -74,7 +74,7 @@ export interface IMessageDataProps extends IMessageProps {
   userId: any;
   groupType: groupTypes;
   createdFor: ICreatedForDataProps[];
-  readBy: IReadByDataProps[];
+  readBy: any;
   timestamp: string;
 }
 

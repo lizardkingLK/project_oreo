@@ -9,9 +9,7 @@ export const apiUrls = {
     deleteMessage: '/api/message/delete_message',
   },
   socket: '/api/socket',
-  login: '/api/login',
   file: '/api/file',
-  invitation: '/api/invitation',
   user: {
     getAllUsers: '/api/user/get_all_users',
     getUsersMerged: '/api/user/get_users_merged',
@@ -21,13 +19,18 @@ export const apiUrls = {
     markAsUnread: '/api/group/mark_as_unread',
     getAllMessages: '/api/group/get_all_messages',
   },
-  auth: '/api/auth',
 };
 
 const headers = { 'Content-Type': 'application/json' };
 
-export const getGroups = async (userId: string) => {
+export const getMessages = async (userId: string) => {
   return await fetch(apiUrls.message.getMessages + '?userId=' + userId)
+    .then((response) => response.json())
+    .then((data) => data);
+};
+
+export const getGroups = async (userId: string) => {
+  return await fetch(`${apiUrls.group.getAllMessages}?userId=${userId}`)
     .then((response) => response.json())
     .then((data) => data);
 };
@@ -104,6 +107,8 @@ export const inviteFriend = async (
   userId: string | null,
   friendId: string | undefined
 ) => {
+  console.log({ userId, friendId });
+
   return await fetch(apiUrls.group.createGroup, {
     method: 'POST',
     headers,

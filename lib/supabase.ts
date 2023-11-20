@@ -2,7 +2,6 @@ import { Database } from '@/types/supabase';
 import { IMessageDataProps } from './../types/index';
 import {
   activeInactive,
-  messageTypes,
   quickMessages,
   tableNames,
 } from '@/utils/enums';
@@ -111,18 +110,22 @@ export const supabaseUtil = {
     ownerId: string,
     groupId: string,
     referenceId: string,
-    // TODO: add members
+    userId: string
   ) {
     return await supabaseClient
       .from(tableNames.message)
       .insert([
         {
-          ownerId: ownerId,
+          userId: ownerId,
           groupId: groupId,
-          messageId: referenceId,
+          referenceId: referenceId,
+          createdFor: [userId, ownerId],
+          readBy: [
+            { id: userId, value: false },
+            { id: ownerId, value: true },
+          ],
           content: quickMessages.hi,
-          createdAt: new Date().getTime().toString(),
-          messageType: messageTypes.INTRODUCTION,
+          timestamp: new Date().getTime().toString(),
         },
       ])
       .select();
@@ -157,8 +160,7 @@ export const supabaseUtil = {
   async updateMarkAsUnread(message: IMessageDataProps) {
     return await supabaseClient
       .from(tableNames.message)
-      // .update({ readBy: message.readBy })
-      .update({ status: 1 })
+      .update({ readBy: message.readBy })
       .eq('referenceId', message.referenceId);
   },
   async updateMessageContent(referenceId: IdType, content: string) {
@@ -170,8 +172,7 @@ export const supabaseUtil = {
   async updateMessages(readBy: { id: string; value: boolean }[], id: string) {
     return await supabaseClient
       .from(tableNames.message)
-      // .update({ readBy })
-      .update({ status: 1 })
+      .update({ readBy })
       .eq('id', id);
   },
   async createMessage(
@@ -184,14 +185,13 @@ export const supabaseUtil = {
   ) {
     return await supabaseClient.from(tableNames.message).insert([
       {
-        messageId: referenceId,
-        ownerId: fromId,
+        referenceId: referenceId,
+        userId: fromId,
         groupId: groupId,
-        // createdFor: [toId, fromId],
+        createdFor: [toId, fromId],
         content: content,
-        // readBy,
-        status: 1,
-        createdAt: new Date().getTime().toString(),
+        readBy,
+        timestamp: new Date().getTime().toString(),
       },
     ]);
   },
