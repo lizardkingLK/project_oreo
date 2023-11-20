@@ -14,7 +14,6 @@ import {
 
 import { User } from '@clerk/nextjs/dist/types/server';
 import { EmojiClickData } from 'emoji-picker-react';
-import { Json } from './supabase';
 
 export type NameType = string | null | undefined;
 
