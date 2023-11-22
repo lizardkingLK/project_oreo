@@ -7,32 +7,20 @@ export class Messaging {
     createdBy: string;
     groupId: string;
     content: string;
+    readers: string[];
   }) {
-    const messageId = randomUUID();
-
     const { data: createdMessage } = await supabaseUtil.createMessage({
       content: quickMessages.hi,
       createdBy: message.createdBy,
       groupId: message.groupId,
-      messageId,
+      messageId: randomUUID(),
+      readers: message.readers,
     });
 
     if (!createdMessage) {
       return null;
     }
 
-    const readers = await supabaseUtil.createReaders([
-      {
-        createdAt: new Date().getTime().toString(),
-        memberId: createdMessage.createdBy,
-        messageId: createdMessage.messageId,
-      },
-    ]);
-
-    if (!readers) {
-      return null;
-    }
-
-    return Object.assign(createdMessage, { readers });
+    return Object.assign(createdMessage);
   }
 }

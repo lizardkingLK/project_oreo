@@ -140,12 +140,7 @@ export const supabaseUtil = {
       })
     );
   },
-  async createMessage(message: {
-    content: string;
-    createdBy: string;
-    groupId: string;
-    messageId: string;
-  }) {
+  async createMessage(message: messageType) {
     return await supabaseClient
       .from(tableNames.message)
       .insert([
@@ -155,28 +150,11 @@ export const supabaseUtil = {
           groupId: message.groupId,
           messageId: message.messageId,
           createdAt: new Date().getTime().toString(),
+          readers: message.readers,
         },
       ])
       .select()
       .single();
-  },
-  async createReaders(readers: readersType) {
-    return Promise.all(
-      readers.map(async (reader) => {
-        const { data: createdMember } = await supabaseClient
-          .from(tableNames.messageReader)
-          .insert([
-            {
-              memberId: reader.memberId,
-              messageId: reader.messageId,
-              createdAt: new Date().getTime().toString(),
-            },
-          ])
-          .select()
-          .single();
-        return createdMember;
-      })
-    );
   },
   async getGroups(userId: IdType) {
     return await supabaseClient
@@ -239,8 +217,10 @@ export type groupType = {
   members: membersType;
 };
 
-export type readersType = {
-  createdAt: string;
-  memberId: string;
+export type messageType = {
+  content: string;
+  createdBy: string;
+  groupId: string;
   messageId: string;
-}[];
+  readers: string[];
+};

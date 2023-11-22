@@ -28,25 +28,16 @@ model GroupMember {
 }
 
 model Message {
-  id             Int             @id @default(autoincrement())
-  messageId      String          @unique
-  createdBy      String
-  type           Int             @default(1)
-  content        String
-  group          Group           @relation(fields: [groupId], references: [groupId])
-  groupId        String
-  messageReaders MessageReader[]
-  createdAt      String
-  status         Int             @default(1)
-}
-
-model MessageReader {
-  id        Int     @id @default(autoincrement())
-  memberId  String
-  message   Message @relation(fields: [messageId], references: [messageId])
-  messageId String
+  id        Int      @id @default(autoincrement())
+  messageId String   @unique
+  createdBy String
+  type      Int      @default(1)
+  content   String
+  group     Group    @relation(fields: [groupId], references: [groupId])
+  groupId   String
+  readers   String[]
   createdAt String
-  status    Int     @default(1)
+  status    Int      @default(1)
 }
 
 datasource db {

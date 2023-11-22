@@ -115,6 +115,7 @@ export interface Database {
           groupId: string
           id: number
           messageId: string
+          readers: string[] | null
           status: number
           type: number
         }
@@ -125,6 +126,7 @@ export interface Database {
           groupId: string
           id?: number
           messageId: string
+          readers?: string[] | null
           status?: number
           type?: number
         }
@@ -135,6 +137,7 @@ export interface Database {
           groupId?: string
           id?: number
           messageId?: string
+          readers?: string[] | null
           status?: number
           type?: number
         }
@@ -145,35 +148,6 @@ export interface Database {
             isOneToOne: false
             referencedRelation: "Group"
             referencedColumns: ["groupId"]
-          }
-        ]
-      }
-      MessageReader: {
-        Row: {
-          createdAt: string
-          id: number
-          messageId: string
-          status: number
-        }
-        Insert: {
-          createdAt: string
-          id?: number
-          messageId: string
-          status?: number
-        }
-        Update: {
-          createdAt?: string
-          id?: number
-          messageId?: string
-          status?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "MessageReader_messageId_fkey"
-            columns: ["messageId"]
-            isOneToOne: false
-            referencedRelation: "Message"
-            referencedColumns: ["messageId"]
           }
         ]
       }

@@ -39,12 +39,13 @@ export class Grouping {
       createdBy: createdGroup.createdBy,
       content: quickMessages.hi,
       groupId: createdGroup.groupId,
+      readers: [createdGroup.createdBy],
     });
 
     if (!createdMessage) {
       return null;
     }
 
-    return createdGroup;
+    return Object.assign(createdGroup, { messages: [createdMessage] });
   }
 }
