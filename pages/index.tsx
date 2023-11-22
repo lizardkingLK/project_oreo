@@ -185,6 +185,10 @@ const Messages = () => {
   };
 
   const groupMessages = (messages: IMessageDataProps[], userId: string) => {
+    if (messages.length == 0) {
+      return;
+    }
+
     let groupId,
       group,
       tempMessages,
@@ -423,8 +427,6 @@ const Messages = () => {
   };
 
   const onAddFriendHandler = (messageData: IMessageDataProps) => {
-    console.log(messageData);
-
     const target: ICreatedForDataProps = resolveValue(
         messageData.userId === userId,
         messageData.createdFor[0],
