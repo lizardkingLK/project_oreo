@@ -45,89 +45,111 @@ export interface Database {
       Group: {
         Row: {
           createdAt: string
-          displayUrl: string
+          createdBy: string
+          displayUrl: string | null
           groupId: string
           id: number
-          members: string[] | null
-          name: string
-          ownerId: string
+          name: string | null
           status: number
           type: number
         }
         Insert: {
           createdAt: string
-          displayUrl: string
+          createdBy: string
+          displayUrl?: string | null
           groupId: string
           id?: number
-          members?: string[] | null
-          name: string
-          ownerId: string
+          name?: string | null
           status?: number
           type?: number
         }
         Update: {
           createdAt?: string
-          displayUrl?: string
+          createdBy?: string
+          displayUrl?: string | null
           groupId?: string
           id?: number
-          members?: string[] | null
-          name?: string
-          ownerId?: string
+          name?: string | null
           status?: number
           type?: number
         }
         Relationships: []
       }
-      Message: {
+      GroupMember: {
         Row: {
-          content: string | null
           createdAt: string
-          createdFor: string[] | null
           groupId: string
-          groupImageUrl: string | null
-          groupName: string | null
-          groupType: number
           id: number
-          messageType: number
-          readBy: Json[] | null
-          referenceId: string
+          memberId: string
           status: number
-          timestamp: string | null
-          userId: string
         }
         Insert: {
-          content?: string | null
-          createdAt?: string
-          createdFor?: string[] | null
+          createdAt: string
           groupId: string
-          groupImageUrl?: string | null
-          groupName?: string | null
-          groupType?: number
           id?: number
-          messageType?: number
-          readBy?: Json[] | null
-          referenceId: string
+          memberId: string
           status?: number
-          timestamp?: string | null
-          userId: string
         }
         Update: {
-          content?: string | null
           createdAt?: string
-          createdFor?: string[] | null
           groupId?: string
-          groupImageUrl?: string | null
-          groupName?: string | null
-          groupType?: number
           id?: number
-          messageType?: number
-          readBy?: Json[] | null
-          referenceId?: string
+          memberId?: string
           status?: number
-          timestamp?: string | null
-          userId?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "GroupMember_groupId_fkey"
+            columns: ["groupId"]
+            isOneToOne: false
+            referencedRelation: "Group"
+            referencedColumns: ["groupId"]
+          }
+        ]
+      }
+      Message: {
+        Row: {
+          content: string
+          createdAt: string
+          createdBy: string
+          groupId: string
+          id: number
+          messageId: string
+          readers: string[] | null
+          status: number
+          type: number
+        }
+        Insert: {
+          content: string
+          createdAt: string
+          createdBy: string
+          groupId: string
+          id?: number
+          messageId: string
+          readers?: string[] | null
+          status?: number
+          type?: number
+        }
+        Update: {
+          content?: string
+          createdAt?: string
+          createdBy?: string
+          groupId?: string
+          id?: number
+          messageId?: string
+          readers?: string[] | null
+          status?: number
+          type?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "Message_groupId_fkey"
+            columns: ["groupId"]
+            isOneToOne: false
+            referencedRelation: "Group"
+            referencedColumns: ["groupId"]
+          }
+        ]
       }
     }
     Views: {

@@ -5,33 +5,39 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Message {
-  id            Int      @id @default(autoincrement())
-  referenceId   String
-  userId        String
-  groupId       String
-  groupType     Int      @default(1)
-  groupName     String?
-  groupImageUrl String?
-  messageType   Int      @default(1)
-  createdFor    String[]
-  readBy        Json[]
-  content       String?
-  createdAt     DateTime @default(now())
-  timestamp     String?
-  status        Int      @default(1)
+model Group {
+  id           Int           @id @default(autoincrement())
+  groupId      String        @unique
+  createdBy    String
+  name         String?
+  displayUrl   String?
+  type         Int           @default(1)
+  groupMembers GroupMember[]
+  messages     Message[]
+  createdAt    String
+  status       Int           @default(1)
 }
 
-model Group {
-  id         Int      @id @default(autoincrement())
-  groupId    String
-  ownerId    String
-  name       String
-  displayUrl String
-  type       Int      @default(1)
-  createdAt  String
-  status     Int      @default(1)
-  members    String[]
+model GroupMember {
+  id        Int    @id @default(autoincrement())
+  group     Group  @relation(fields: [groupId], references: [groupId])
+  memberId  String
+  groupId   String
+  createdAt String
+  status    Int    @default(1)
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  messageId String   @unique
+  createdBy String
+  type      Int      @default(1)
+  content   String
+  group     Group    @relation(fields: [groupId], references: [groupId])
+  groupId   String
+  readers   String[]
+  createdAt String
+  status    Int      @default(1)
 }
 
 datasource db {

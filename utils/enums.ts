@@ -36,6 +36,8 @@ export enum userSearchMessageTypes {
 export enum tableNames {
   message = 'Message',
   group = 'Group',
+  groupMember = 'GroupMember',
+  messageReader = 'MessageReader',
 }
 
 export enum quickMessages {

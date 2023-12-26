@@ -1,12 +1,12 @@
 import UserCard from '@/components/cards/user';
 import Spinner from '@/components/svgs/spinner';
+import { IAddFriendProps } from '@/types';
 import { userSearchMessageTypes } from '@/utils/enums';
+import { createGroup, getUsers } from '@/utils/http';
 import { useAuth } from '@clerk/nextjs';
 import { User } from '@clerk/nextjs/dist/types/server';
 import React, { useEffect, useRef, useState } from 'react';
 import SectionLayout from '../../layout';
-import { IAddFriendProps } from '@/types';
-import { getUsers, inviteFriend } from '@/utils/http';
 
 const AddFriend = (props: IAddFriendProps) => {
   const [search, setSearch] = useState('');
@@ -25,7 +25,7 @@ const AddFriend = (props: IAddFriendProps) => {
 
   if (!isLoaded) {
     return (
-      <section className="h-screen flex justify-center items-center">
+      <section className="flex h-screen items-center justify-center">
         <Spinner size={12} />
       </section>
     );
@@ -35,18 +35,29 @@ const AddFriend = (props: IAddFriendProps) => {
     const { onAddFriendHandler, onSelectGroupHandler, groups } = props;
 
     const handleInvitation = async () => {
+      // if already friends start messaging
       const tempGroup = groups?.find((g) => g.targetId === user?.id);
       if (tempGroup) {
         onSelectGroupHandler(tempGroup.id);
         return;
       }
-      setLoading(true);
-      inviteFriend(userId, user?.id).then((data) => {
-        if (data) {
-          setLoading(false);
-          onAddFriendHandler(data[0]);
-        }
-      });
+      // if not create group
+      try {
+        setLoading(true);
+        const group = await createGroup({
+          members: [{ memberId: userId! }, { memberId: user?.id! }],
+          displayUrl: null,
+          name: null,
+          createdBy: userId!,
+        });
+        console.log(group);
+
+        onAddFriendHandler(group);
+      } catch (error) {
+        console.log({ error });
+      } finally {
+        setLoading(false);
+      }
     };
 
     const handleSearch = (event: { preventDefault: () => void }) => {
@@ -85,13 +96,13 @@ const AddFriend = (props: IAddFriendProps) => {
       <SectionLayout title="Add Friend" isBackButton={Boolean(groups?.length)}>
         <form
           onSubmit={handleSearch}
-          className="md:flex md:justify-between md:items-center"
+          className="md:flex md:items-center md:justify-between"
         >
           <input
             value={search}
             id="search"
             onChange={handleChange}
-            className="text-xl md:text-5xl font-bold w-full bg-transparent outline-none placeholder-stone-400 text-green-500 py-4"
+            className="w-full bg-transparent py-4 text-xl font-bold text-green-500 placeholder-stone-400 outline-none md:text-5xl"
             placeholder="Enter email..."
             ref={searchRef}
             autoFocus={true}
@@ -99,14 +110,14 @@ const AddFriend = (props: IAddFriendProps) => {
           />
           <button
             type="submit"
-            className="text-white bg-stone-300 hover:bg-stone-300 focus:outline-none focus:ring-4 focus:ring-stone-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-stone-400 dark:hover:bg-stone-500 dark:hover:text-white dark:focus:ring-stone-700 dark:border-stone-700 w-full md:w-auto"
+            className="w-full rounded-lg bg-stone-300 px-5 py-2.5 text-sm font-medium text-white hover:bg-stone-300 focus:outline-none focus:ring-4 focus:ring-stone-300 dark:border-stone-700 dark:bg-stone-400 dark:hover:bg-stone-500 dark:hover:text-white dark:focus:ring-stone-700 md:w-auto"
             title="Search"
           >
             Search
           </button>
         </form>
         <div className="h-max">
-          <h3 className="text-black py-4">{userFound}</h3>
+          <h3 className="py-4 text-black">{userFound}</h3>
           <UserCard
             user={user}
             handleInvitation={handleInvitation}

@@ -1,10 +1,6 @@
 import { Database } from '@/types/supabase';
 import { IMessageDataProps } from './../types/index';
-import {
-  activeInactive,
-  quickMessages,
-  tableNames,
-} from '@/utils/enums';
+import { activeInactive, tableNames } from '@/utils/enums';
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -106,36 +102,65 @@ export const supabaseUtil = {
   ) {
     return await supabaseClient.storage.from(bucketName).upload(filePath, file);
   },
-  async createGroup(
-    ownerId: string,
-    groupId: string,
-    referenceId: string,
-    userId: string
-  ) {
+  async createGroup(group: {
+    createdBy: string;
+    groupId: string;
+    displayUrl?: string;
+    name?: string;
+  }) {
+    return await supabaseClient
+      .from(tableNames.group)
+      .insert([
+        {
+          createdBy: group.createdBy,
+          groupId: group.groupId,
+          displayUrl: group.displayUrl,
+          name: group.name,
+          createdAt: new Date().getTime().toString(),
+        },
+      ])
+      .select()
+      .single();
+  },
+  async createMembers(members: membersType) {
+    return Promise.all(
+      members.map(async (member) => {
+        const { data: createdMember } = await supabaseClient
+          .from(tableNames.groupMember)
+          .insert([
+            {
+              createdAt: new Date().getTime().toString(),
+              groupId: member.groupId,
+              memberId: member.memberId,
+            },
+          ])
+          .select()
+          .single();
+        return createdMember;
+      })
+    );
+  },
+  async createMessage(message: messageType) {
     return await supabaseClient
       .from(tableNames.message)
       .insert([
         {
-          userId: ownerId,
-          groupId: groupId,
-          referenceId: referenceId,
-          createdFor: [userId, ownerId],
-          readBy: [
-            { id: userId, value: false },
-            { id: ownerId, value: true },
-          ],
-          content: quickMessages.hi,
-          timestamp: new Date().getTime().toString(),
+          content: message.content,
+          createdBy: message.createdBy,
+          groupId: message.groupId,
+          messageId: message.messageId,
+          createdAt: new Date().getTime().toString(),
+          readers: message.readers,
         },
       ])
-      .select();
+      .select()
+      .single();
   },
   async getGroups(userId: IdType) {
     return await supabaseClient
-      .from(tableNames.group)
-      .select()
-      .eq('ownerId', userId)
-      .order('createdAt');
+      .from(tableNames.groupMember)
+      .select(`Group (id, name, displayUrl)`)
+      .eq('memberId', userId);
   },
   async getMessages(userId: IdType) {
     return await supabaseClient
@@ -160,7 +185,8 @@ export const supabaseUtil = {
   async updateMarkAsUnread(message: IMessageDataProps) {
     return await supabaseClient
       .from(tableNames.message)
-      .update({ readBy: message.readBy })
+      // .update({ readBy: message.readBy })
+      .update({ status: 1 })
       .eq('referenceId', message.referenceId);
   },
   async updateMessageContent(referenceId: IdType, content: string) {
@@ -172,27 +198,30 @@ export const supabaseUtil = {
   async updateMessages(readBy: { id: string; value: boolean }[], id: string) {
     return await supabaseClient
       .from(tableNames.message)
-      .update({ readBy })
+      // .update({ readBy })
+      .update({ status: 1 })
       .eq('id', id);
   },
-  async createMessage(
-    referenceId: string,
-    fromId: string,
-    groupId: string,
-    toId: string,
-    content: string,
-    readBy: { id: string; value: boolean }[]
-  ) {
-    return await supabaseClient.from(tableNames.message).insert([
-      {
-        referenceId: referenceId,
-        userId: fromId,
-        groupId: groupId,
-        createdFor: [toId, fromId],
-        content: content,
-        readBy,
-        timestamp: new Date().getTime().toString(),
-      },
-    ]);
-  },
+};
+
+export type membersType = {
+  groupId: string;
+  memberId: string;
+}[];
+
+export type groupType = {
+  createdBy: string;
+  groupId: string;
+  displayUrl?: string;
+  name?: string;
+  type: number;
+  members: membersType;
+};
+
+export type messageType = {
+  content: string;
+  createdBy: string;
+  groupId: string;
+  messageId: string;
+  readers: string[];
 };

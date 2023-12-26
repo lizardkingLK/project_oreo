@@ -56,6 +56,7 @@ const Messages = () => {
   const scrollLock = useScrollLock((state) => state.scrollLock);
 
   const [groups, setGroups] = useState<IGroupProps[]>([]);
+
   const [group, setGroup] = useState<any>(null);
   const [input, setInput] = useState('');
   const [output, setOutput] = useState<any>(null);
@@ -182,72 +183,6 @@ const Messages = () => {
         groupId: group.id,
       });
     });
-  };
-
-  const groupMessages = (messages: IMessageDataProps[], userId: string) => {
-    let groupId,
-      group,
-      tempMessages,
-      target: ICreatedForDataProps,
-      unreadCount: number,
-      hasRead;
-    const groups = new Map();
-    messages?.forEach((message: IMessageDataProps, _: any) => {
-      groupId = message.groupId;
-      Object.assign(message, {
-        type: getMessageType(message.userId, userId),
-        createdOn: message.timestamp,
-      });
-      if (message.groupType === groupTypes.PRIVATE) {
-        if (message.userId === userId) {
-          target = message.createdFor[0];
-          hasRead = message.readBy[1].value;
-        } else {
-          target = message.createdFor[1];
-          hasRead = message.readBy[0].value;
-        }
-        if (groups.has(groupId)) {
-          group = groups.get(groupId);
-          unreadCount = resolveValue(
-            hasRead,
-            group.unreadCount,
-            group.unreadCount + 1
-          );
-        } else {
-          unreadCount = resolveValue(hasRead, 0, 1);
-        }
-      }
-      // if public set group details. then ->
-      if (groups.has(groupId)) {
-        group = groups.get(groupId);
-        group.unreadCount = unreadCount;
-        tempMessages = group.messages;
-        tempMessages[tempMessages.length] = message;
-        Object.assign(group, {
-          lastMessage: message,
-          messages: tempMessages,
-        });
-      } else {
-        group = {
-          id: groupId,
-          name: getNameOfUser(target),
-          displayImage: target?.displayImage,
-          targetId: target?.id,
-          isStatus: false,
-          isOnline: false,
-          messages: [message],
-          lastMessage: message,
-          unreadCount,
-        };
-        groups.set(groupId, group);
-      }
-    });
-    setGroups(
-      Array.from(groups.values()).sort(
-        (first, second) =>
-          second.lastMessage.timestamp - first.lastMessage.timestamp
-      )
-    );
   };
 
   const onBlurHandler = () => {
@@ -423,8 +358,6 @@ const Messages = () => {
   };
 
   const onAddFriendHandler = (messageData: IMessageDataProps) => {
-    console.log(messageData);
-
     const target: ICreatedForDataProps = resolveValue(
         messageData.userId === userId,
         messageData.createdFor[0],
@@ -523,8 +456,80 @@ const Messages = () => {
     if (!userId) {
       return;
     }
+
+    const groupMessages = (messages: IMessageDataProps[], userId: string) => {
+      if (messages.length == 0) {
+        return;
+      }
+      let groupId,
+        group,
+        tempMessages,
+        target: ICreatedForDataProps,
+        unreadCount: number,
+        hasRead;
+      const groups = new Map();
+      messages?.forEach((message: IMessageDataProps, _: any) => {
+        groupId = message.groupId;
+        Object.assign(message, {
+          type: getMessageType(message.userId, userId),
+          createdOn: message.timestamp,
+        });
+        if (message.groupType === groupTypes.PRIVATE) {
+          if (message.userId === userId) {
+            target = message.createdFor[0];
+            hasRead = message.readBy[1].value;
+          } else {
+            target = message.createdFor[1];
+            hasRead = message.readBy[0].value;
+          }
+          if (groups.has(groupId)) {
+            group = groups.get(groupId);
+            unreadCount = resolveValue(
+              hasRead,
+              group.unreadCount,
+              group.unreadCount + 1
+            );
+          } else {
+            unreadCount = resolveValue(hasRead, 0, 1);
+          }
+        }
+        // if public set group details. then ->
+        if (groups.has(groupId)) {
+          group = groups.get(groupId);
+          group.unreadCount = unreadCount;
+          tempMessages = group.messages;
+          tempMessages[tempMessages.length] = message;
+          Object.assign(group, {
+            lastMessage: message,
+            messages: tempMessages,
+          });
+        } else {
+          group = {
+            id: groupId,
+            name: getNameOfUser(target),
+            displayImage: target?.displayImage,
+            targetId: target?.id,
+            isStatus: false,
+            isOnline: false,
+            messages: [message],
+            lastMessage: message,
+            unreadCount,
+          };
+          groups.set(groupId, group);
+        }
+      });
+      setGroups(
+        Array.from(groups.values()).sort(
+          (first, second) =>
+            second.lastMessage.timestamp - first.lastMessage.timestamp
+        )
+      );
+    };
+
     (async () => {
       const groups = await getGroups(userId);
+      console.log({ groups });
+
       groupMessages(groups, userId);
       setSection(sections.home);
       messaging = Messaging.create(getMessagingMethod(), {

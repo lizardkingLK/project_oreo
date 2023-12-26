@@ -15,6 +15,7 @@ export const apiUrls = {
     getUsersMerged: '/api/user/get_users_merged',
   },
   group: {
+    getGroups: '/api/group/get_groups',
     createGroup: '/api/group/create_group',
     markAsUnread: '/api/group/mark_as_unread',
     getAllMessages: '/api/group/get_all_messages',
@@ -24,13 +25,13 @@ export const apiUrls = {
 const headers = { 'Content-Type': 'application/json' };
 
 export const getMessages = async (userId: string) => {
-  return await fetch(apiUrls.message.getMessages + '?userId=' + userId)
+  return await fetch(`${apiUrls.message.getMessages}?userId=${userId}`)
     .then((response) => response.json())
     .then((data) => data);
 };
 
 export const getGroups = async (userId: string) => {
-  return await fetch(`${apiUrls.group.getAllMessages}?userId=${userId}`)
+  return await fetch(`${apiUrls.group.getGroups}?userId=${userId}`)
     .then((response) => response.json())
     .then((data) => data);
 };
@@ -103,16 +104,16 @@ export const updateMessage = async (content: string, referenceId: string) => {
     .then((data) => data);
 };
 
-export const inviteFriend = async (
-  userId: string | null,
-  friendId: string | undefined
-) => {
-  console.log({ userId, friendId });
-
+export const createGroup = async (group: {
+  members: { memberId: string }[];
+  name: string | null;
+  displayUrl: string | null;
+  createdBy: string;
+}) => {
   return await fetch(apiUrls.group.createGroup, {
     method: 'POST',
     headers,
-    body: JSON.stringify({ ownerId: userId, userId: friendId }),
+    body: JSON.stringify(group),
   })
     .then((response) => response.json())
     .then((data) => data);
