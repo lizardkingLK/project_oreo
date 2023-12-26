@@ -214,6 +214,7 @@ export type groupType = {
   groupId: string;
   displayUrl?: string;
   name?: string;
+  type: number;
   members: membersType;
 };
 

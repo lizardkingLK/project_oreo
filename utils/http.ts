@@ -15,6 +15,7 @@ export const apiUrls = {
     getUsersMerged: '/api/user/get_users_merged',
   },
   group: {
+    getGroups: '/api/group/get_groups',
     createGroup: '/api/group/create_group',
     markAsUnread: '/api/group/mark_as_unread',
     getAllMessages: '/api/group/get_all_messages',
@@ -30,7 +31,7 @@ export const getMessages = async (userId: string) => {
 };
 
 export const getGroups = async (userId: string) => {
-  return await fetch(`${apiUrls.message.getMessages}?userId=${userId}`)
+  return await fetch(`${apiUrls.group.getGroups}?userId=${userId}`)
     .then((response) => response.json())
     .then((data) => data);
 };
