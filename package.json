@@ -10,7 +10,7 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
-    "@clerk/nextjs": "^4.22.1",
+    "@clerk/nextjs": "^4.29.3",
     "@supabase/supabase-js": "^2.26.0",
     "dayjs": "^1.11.10",
     "emoji-picker-react": "^4.5.6",
