@@ -16,15 +16,12 @@ const PageLayout = (props: { children: ReactNode }) => {
     <div className="bg:white font-Poppins text-black dark:bg-black dark:text-white">
       <section className="flex min-h-screen">
         {sidepane && (
-          <div className={'w-2/12 bg-green-400'}>
+          <div className={'w-2/12'}>
             <SidePane />
           </div>
         )}
         <div
-          className={classNames(
-            sidepane ? 'w-10/12' : 'w-full',
-            'bg-yellow-400'
-          )}
+          className={classNames(sidepane ? 'w-10/12' : 'w-full', 'bg-gray-800')}
         >
           <Navbar />
           {props.children}

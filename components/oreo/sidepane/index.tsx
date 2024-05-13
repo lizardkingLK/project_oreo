@@ -14,11 +14,7 @@ export const useSidePane = create<SidepaneState>((set) => ({
 }));
 
 const SidePane = () => {
-  return (
-    <div className="p-2">
-      <SidepaneContent />
-    </div>
-  );
+  return <SidepaneContent />;
 };
 
 export default SidePane;
