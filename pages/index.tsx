@@ -1,4 +1,4 @@
-import PageLayout from '@/components/layouts/page';
+import PageLayout from '@/components/oreo/layouts/page';
 import React from 'react';
 
 const Home = () => {
