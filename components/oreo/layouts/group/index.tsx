@@ -10,6 +10,7 @@ export interface GroupState {
   unread: number | null;
   // TODO: unreadMessages array = if unread is not null and > 0
   //    selected group loads + spinner and displays new messages
+  // TODO: messages array = initially loads last 10 messages only
 }
 
 const Group = () => {
