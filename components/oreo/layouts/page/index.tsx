@@ -6,7 +6,6 @@ import Navbar from '../../navbar';
 const PageLayout = (props: { children: ReactNode }) => {
   const { sidepane } = useSidePane();
 
-  // TODO: Add toggle to sidepane place it to the left of brand in navbar
   // TODO: when in mobile hide side pane totally yet set toggleble
   // TODO: when in mobile once clicked on an item in chat link sidepane toggles to false
   // TODO: yellow has chat messages screen
