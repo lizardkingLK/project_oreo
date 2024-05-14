@@ -7,11 +7,15 @@ const Group = () => {
   const router = useRouter();
   const { group } = useGroup();
 
+  if (!group) {
+    return null;
+  }
+
   return (
     <PageLayout>
       <GroupLayout>
         <p>
-          Group: {router.query.id} {group?.description}
+          Group: {router.query.id} {group.description}
         </p>
       </GroupLayout>
     </PageLayout>

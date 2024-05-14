@@ -1,6 +1,7 @@
 import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 import { ReactNode } from 'react';
 import { create } from 'zustand';
+import MessagesScreen, { MessageState } from '../../screens/messages';
 
 export interface GroupState {
   // TODO: separate domain (types) and view models (interface)
@@ -8,9 +9,11 @@ export interface GroupState {
   name: string;
   description: string;
   profilePicture: string | StaticImport;
-  email: string;
+  type: number;
+  email?: string | null;
   unread?: number | null;
   isActiveGroup?: boolean | null;
+  messages?: MessageState[] | null;
   // TODO: unreadMessages array = if unread is not null and > 0
   //    selected group loads + spinner and displays new messages
   // TODO: messages array = initially loads last 10 messages only
@@ -27,7 +30,12 @@ export const useGroup = create<GroupScreenState>((set) => ({
 }));
 
 const GroupLayout = ({ children }: { children: ReactNode }) => {
-  return <div className="p-2">{children}</div>;
+  return (
+    <div className="p-3">
+      <MessagesScreen />
+      {children}
+    </div>
+  );
 };
 
 export default GroupLayout;
