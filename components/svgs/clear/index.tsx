@@ -8,7 +8,7 @@ const Clear = () => {
       viewBox="0 0 24 24"
       strokeWidth={1.5}
       stroke="currentColor"
-      className="w-7 h-7"
+      className="h-7 w-7"
     >
       <path
         strokeLinecap="round"
