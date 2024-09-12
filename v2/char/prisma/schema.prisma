@@ -1,0 +1,56 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "cockroachdb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int       @id @default(sequence())
+  userId   String    @unique
+  username String    @unique
+  Message  Message[]
+  Group    Group[]
+  Settings Settings?
+  Blob     Blob[]
+}
+
+model Blob {
+  id          Int     @id @default(sequence())
+  content     String
+  downloadUrl String
+  Author      User    @relation(fields: [authorId], references: [id])
+  authorId    Int
+  Message     Message @relation(fields: [messageId], references: [id])
+  messageId   Int
+}
+
+model Message {
+  id        Int    @id @default(sequence())
+  content   String
+  blobs     Blob[]
+  createdOn String
+  Group     Group  @relation(fields: [groupId], references: [id])
+  groupId   Int
+  Author    User   @relation(fields: [authorId], references: [id])
+  authorId  Int
+}
+
+model Group {
+  id      Int       @id @default(sequence())
+  groupId String    @unique
+  name    String
+  users   User[]
+  Message Message[]
+}
+
+model Settings {
+  id               Int     @id @default(sequence())
+  autoScroll       Boolean @default(true)
+  expiringMessages Boolean @default(false)
+  enterIsSend      Boolean @default(false)
+  Owner            User    @relation(fields: [ownerId], references: [id])
+  ownerId          Int     @unique
+}
