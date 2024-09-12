@@ -23,12 +23,28 @@ const staticGroups: GroupState[] = [
         content: 'Hi',
         type: 1,
         ownerId: 10,
+        createdOn: 1715253116065,
       },
       {
         id: 2,
         content: 'Hello',
         type: 1,
         ownerId: 11,
+        createdOn: 1715753816065,
+      },
+      {
+        id: 3,
+        content: 'Hello34',
+        type: 1,
+        ownerId: 11,
+        createdOn: 1716753816065,
+      },
+      {
+        id: 4,
+        content: 'yo whats up',
+        type: 1,
+        ownerId: 10,
+        createdOn: new Date().getTime(),
       },
     ],
   },
@@ -39,6 +55,15 @@ const staticGroups: GroupState[] = [
     description: 'Yippee Ka Yay',
     unread: 1,
     type: 2,
+    messages: [
+      {
+        id: 3,
+        content: 'Hello o',
+        type: 1,
+        ownerId: 11,
+        createdOn: 1715753616065,
+      },
+    ],
   },
 ];
 
@@ -82,9 +107,13 @@ const GroupItem = ({ group }: { group: GroupState }) => {
             {description}
           </p>
         </div>
-        <div className="inline-flex items-center text-right text-base font-semibold text-gray-900 dark:text-white">
-          {unread}
-        </div>
+        {unread && (
+          <div className="inline-flex items-center rounded-full bg-red-500 text-right text-base font-semibold text-gray-900 dark:text-white">
+            <div className="-end-2 -top-2 inline-flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-red-500 text-xs font-bold text-white transition-opacity dark:border-gray-900">
+              {unread}
+            </div>
+          </div>
+        )}
       </button>
     </li>
   );
