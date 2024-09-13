@@ -1,12 +1,15 @@
 import { Avatar } from '@/components/avatar';
 import React from 'react';
-import { UserGroupProps } from '../../types';
+import { useGroupListStore } from '../../state';
 
-export const ChatScreenHeader = ({
-  activeGroup,
-}: {
-  activeGroup: UserGroupProps | null;
-}) => {
+export const ChatScreenHeader = () => {
+  const { activeGroup } = useGroupListStore((state) => state);
+
+  if (!activeGroup)
+  {
+    return null;
+  }
+
   return (
     <div className="flex h-[calc(8vh)] items-center justify-between px-4">
       <div className="flex items-center space-x-4">
