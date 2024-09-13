@@ -4,15 +4,15 @@ import { Skeleton } from '@/components/ui/skeleton';
 export const GroupListSkeleton = () => {
   return (
     <div>
-      {Array(5)
+      {Array(10)
         .fill(null)
         .map((_, i) => (
-          <div key={i} className="flex items-center space-x-4 px-4 pt-4 pb-4">
-            <Skeleton className="bg-card/50 h-12 w-12 rounded-full" />
-            <div className="space-y-2">
-              <Skeleton className="h-4 w-[250px]" />
-              <Skeleton className="h-4 w-[200px]" />
-            </div>
+          <div
+            key={i}
+            className="flex h-[calc(8vh)] items-center justify-center space-x-4 rounded-none first:rounded-tr-xl"
+          >
+            <Skeleton className="bg-gray-200 dark:bg-gray-500 h-[calc(4vh)] w-[calc(4vh)] rounded-full" />
+            <Skeleton className="h-[calc(4vh)] w-[150px]" />
           </div>
         ))}
     </div>

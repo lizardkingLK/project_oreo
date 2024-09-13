@@ -10,7 +10,7 @@ import { GroupListSkeleton } from './GroupListSkeleton';
 export const ChatGroupsSection = () => {
   const [isLoading, setLoading] = useState(true);
 
-  const { pagedGroups, initializePagedGroups } = useGroupListStore(
+  const { pagedGroups, page, initializePagedGroups } = useGroupListStore(
     (state) => state
   );
 
@@ -30,7 +30,7 @@ export const ChatGroupsSection = () => {
         behavior: 'smooth',
       });
     }
-  }, [pagedGroups]);
+  }, [page]);
 
   if (isLoading) {
     return <GroupListSkeleton />;
